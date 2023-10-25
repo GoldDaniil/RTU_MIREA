@@ -130,11 +130,8 @@ void letter_sorting() {
 }
 
 int main() {
-    //loan(); // задача заем
-    
+    loan(); // задача заем
     advance(); //задача ссуда
-
-
     working_w_files(); // задача копирование файла и фильтр
     letter_sorting(); // задача сортировка букв
     return 0;
