@@ -3,27 +3,13 @@
 #include<stdio.h>
 #include<fstream>
 #include<string>
+#include<algorithm>
 
 
 using namespace std;
 
-int main() {
-    int i;
-    ///////////////////////////////////////////
-    ///Task "Loan"///
+void loan() {
     double loan_S, monthly_payment_m, date_n, procent_p, object_r;
-    ///Task "lending"///
-    double loan_S2, monthly_payment_m2, date_n2, procent_p2, object_r2;
-    ///Task "Copying a file"///
-    string line;
-    ///Task "Filter"///
-    string line_two, out_two;
-    ///Task "Sorting letters"///
-
-
-
-    ///////////////////////////////////////////
-    ///Task "Loan"///
     while (true) {
         cout << "enter procent_p : " << endl;
         if (!(cin >> procent_p)) {
@@ -59,55 +45,48 @@ int main() {
         break;
     }
 
-    if ((12*(pow((1 + object_r), object_r) - 1)) != 0 and (loan_S > 0 and object_r > 0 and date_n > 0)){
-        monthly_payment_m = (loan_S * object_r * pow((1 + object_r), date_n)) / (12*(pow((1 + object_r), date_n) - 1));
+    if ((12 * (pow((1 + object_r), object_r) - 1)) != 0 and (loan_S > 0 and object_r > 0 and date_n > 0)) {
+        monthly_payment_m = (loan_S * object_r * pow((1 + object_r), date_n)) / (12 * (pow((1 + object_r), date_n) - 1));
         cout << "monthly_payment_m : " << monthly_payment_m << " in rubles for " << date_n << " months" << endl << endl;
-    } else {
+    }
+    else {
         cout << "function m cannot be calculated" << endl << endl;
     }
+}
 
-    ///////////////////////////////////////////
-    ///Task "lending"///double loan_S известно пол вводит, monthly_payment_m известно пол вводит, date_n известно пол вводит, procent_p не известно, object_r не известно;
-    while (true) {
-        cout << "loan_S : " << endl;
-        if (!(cin >> loan_S2)) {
-            cin.clear();
-            cin.ignore();
-            continue;  ///проверка на тип переменной - который вводит пользователь
-        }
-        break;
-    }
-    while (true) {
-        cout << "monthly_payment_m : " << endl;
-        if (!(cin >> monthly_payment_m2)) {
-            cin.clear();
-            cin.ignore();
-            continue;
-        }
-        break;
-    }
-    while (true) {
-        cout << "date_n : " << endl;
-        if (!(cin >> date_n2)) {
-            cin.clear();
-            cin.ignore();
-            continue;
-        }
-        break;
+int advance() {
+    double S = 100000; // Сумма кредита
+    int n = 10; // Количество лет
+    double m = 10000; // Месячная выплата
+
+    // Проверка входных данных
+    switch (S <= 0 || n <= 0 || m <= 0) {
+    case true:
+        cout << "error 0." << endl;
+        return 0;
     }
 
-    object_r2 = (loan_S2 - monthly_payment_m2 * (date_n2 - 1)) / (loan_S2 * date_n2) * 100;
-//    for (procent_p == i; ; i ++) {
-//  перебирать варианты p затем m
-//    }
+    // Перебор процентов
+    for (double p = 0; p <= 100; p += 0.01) {
+        // Расчет ежемесячного платежа по формуле
+        double monthlyPayment = S * (1 + p / 100) * pow(1 + p / 12, -12 * n) / (12 * (1 + p / 100) * pow(1 + p / 12, -12 * n) - 1);
 
-    procent_p = object_r2 * 100; ///формула дана
+        // Сравнение рассчитанного платежа с заданным
+        int percent = static_cast<int>(p);
+        if (monthlyPayment == m) {
+            // Нашли подходящий процент
+            cout << "Procent: " << percent << endl;
+            return 1;
+        }
+    }
 
-    cout << "object_r2 : " << object_r2 << endl;
-    cout << "procent_p : " << procent_p << " %" << endl << endl;
+    // Если процент не найден
+    return 0;
+}
 
-    ///////////////////////////////////////////
-    ///"Copying a file"///
+void working_w_files() {
+    string line, line_two, out_two;
+
     ofstream out_file("text.txt");
     out_file << "asdkasodkaoskdpaskdoakspdkasodkpaosdkaposdkapsodkaopskd";
 
@@ -119,8 +98,6 @@ int main() {
     }
     myText.close();
 
-    ///////////////////////////////////////////
-    ///Task "Filter"///
     ofstream out("text.txt");
     out << "34a43a34atf3gfd";
     out.close();
@@ -137,37 +114,28 @@ int main() {
     myText_two.close();
 
     cout << endl << endl;
-
-
-
-    ///////////////////////////////////////////
-    ///Task "Sorting letters"///
-
-    string str_one = "dasdgASDIGASODjefEkzrfAFSVZX";
-
-    sort(str_one.begin(), str_one.end(), [](char letter_one, char letter_two) {
-        return tolower(letter_one) < tolower(letter_two);
-    });
-    cout << str_one << endl << endl;
-
-    ////другой вариант
-
-    string str_two = "dasdgASDIXPICrfAFSADJIXZdSVZX";
-
-    sort(str_two.begin(), str_two.end(), [](char letter_tree, char letter_four) {
-        if ((letter_tree >= 'A') && (letter_tree <= 'Z')) {
-            letter_tree += 'a' - 'A';
-        }
-        if ((letter_four >= 'A') && (letter_four <= 'Z')) {
-            letter_four += 'a' - 'A';
-        }
-        return letter_tree < letter_four;
-    });
-    cout << str_two << endl << endl;
-    ///////////////////////////////////////////
-
-
-
-    return 0;
 }
 
+void letter_sorting() {
+    char str[] = "osdgkdsofkorkokspadkpadsdasda";
+
+    char arr[30];
+    copy(str, str + strlen(str), arr);
+
+    sort(arr, arr + 30);
+
+    string line(arr);
+
+    cout << line << endl;
+}
+
+int main() {
+    //loan(); // задача заем
+    
+    advance(); //задача ссуда
+
+
+    working_w_files(); // задача копирование файла и фильтр
+    letter_sorting(); // задача сортировка букв
+    return 0;
+}
