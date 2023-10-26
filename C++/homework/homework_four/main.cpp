@@ -5,30 +5,41 @@
 
 using namespace std;
 
-void file_task() {  //нужно доработать
-    ofstream file("number.txt");
-    if (!file) {
-        cout << "error, failed to create file" << endl;
+void file_task() {  //правильно
+    ofstream file("numbers.txt");
+    if (file.is_open()) {
+        cout << "enter 10 numbers: \n";
+        for (int i = 0; i < 10; ++i) {
+            int num;
+            while (true) {
+                if (!(cin >> num)) {
+                    cin.clear();
+                    cin.ignore();
+                    cout << "you need to enter the data type integer\n";
+                    continue;
+                }
+                break;
+            }
+            file << num << endl;
+        }
+        file.close();
+        // повторное открытие файла и нахождение суммы чисел
+    ifstream read_file("numbers.txt");
+    if (read_file.is_open()) {
+        int num, sum = 0;
+        while (read_file >> num) {
+            sum += num;
+        }
+        cout << "sum of numbers: " << sum << endl;
+        read_file.close();
+        }
+        else {
+            cout << "error!" << endl;
+        }
     }
-
-    for (int i = 1; i <= 10; ++i) {
-        file << i << endl;
+    else {
+        cout << "error!" << endl;
     }
-    file.close();
-
-    ifstream in_file("number.txt");
-    if (!in_file) {
-        cout << "failed to open file" << endl;
-    }
-
-    int number, sum = 0;
-    while (in_file >> number) {
-        sum += number;
-    }
-
-    cout << "sum of numbers" << endl;
-    in_file.close();
-
 }
 
 void number_sign() {    //правильно
@@ -77,6 +88,17 @@ void geometric_figures() {  //правильно
     cout << "the area of the rectangle = " << s_rectangle << endl;
 }
 
+void past_glory() {
+    for (int i = 0; i <= 6; i++) {
+    
+        for (int i = 0; i <= 8; i++) {
+            cout << " *" << 
+        }
+    }
+    for 
+
+}
+
 void random_number_generator() {    //правильно
     int variable_m, variable_b, variable_c, variable_n, variable_s = 0, option;
     while (true) {
@@ -121,64 +143,18 @@ void random_number_generator() {    //правильно
     }
 }
 
-string number_systems(const string& number, int source_base, int target_base) { //ошибка - нужно исправить
-    long long decimal = 0;
-    long long power = 1;
-
-    if ((source_base <= 0) || (target_base <= 0)) {
-        return "error! radix cannot be zero or negative! ";
-    }
-
-    for (int i = number.size() - 1; i >= 0; --i) {
-        int digit = number[i] - '0';
-
-        if ((number[i] >= 'A') && (number[i] <= 'Z')) {
-            digit = number[i] - 'A' + 10;
-        }
-        if ((digit < 0) || (digit >= source_base)) {
-            return "error! invalid number for this number system! ";
-        }
-
-        decimal += static_cast<long long>(digit) * power;
-        power *= source_base;
-    }
-
-    string result = "";
-    while (decimal > 0) {
-        int digit = decimal % target_base;
-        char digitChar = (digit < 10) ? (digit + '0') : (digit - 10 + 'A');
-        result = digitChar + result;
-        decimal /= target_base;
-    }
-
-    //return result;
-    if (cin.fail()) {
-        cout << "error " << endl;
-        return;
-    }
-
-    string result = number_systems(number, source_base, target_base);
-
-    cout << "result: " << result << endl;
+string convert_base() {
+    int target_base, source_base;
+    
 }
 
-int main() {
+ int main() {
     file_task(); // задача номер 1 - Файл - нужно доработать
     number_sign(); // задача номер 2 - Знак числа
     geometric_figures(); // задача номер 3 - Геометрические фигуры
+    past_glory(); // задача номер 4 - Былая слава
     random_number_generator(); // задача номер 7 - Генератор псевдослучайных чисел
-
-    //продолжение number_systems();
-    /*if (cin.fail()) {                                ОШИБКА!
-        cout << "error " << endl;
-        return;
-    }
-
-    string number;
-    int source_base, target_base;
-    string result = number_systems(number, source_base, target_base);
-
-    cout << "result: " << result << endl;*/ // задача номер 9 - Системы счисления
-
+    convert_base(); // задача номер 9 - Системы счисления - доработать - находится в файле main.cpp
+    
     return 0;
 }
