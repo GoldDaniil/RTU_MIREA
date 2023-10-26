@@ -24,14 +24,14 @@ void file_task() {  //правильно
         }
         file.close();
         // повторное открытие файла и нахождение суммы чисел
-    ifstream read_file("numbers.txt");
-    if (read_file.is_open()) {
-        int num, sum = 0;
-        while (read_file >> num) {
-            sum += num;
-        }
-        cout << "sum of numbers: " << sum << endl;
-        read_file.close();
+        ifstream read_file("numbers.txt");
+        if (read_file.is_open()) {
+            int num, sum = 0;
+            while (read_file >> num) {
+                sum += num;
+            }
+            cout << "sum of numbers: " << sum << endl << endl;
+            read_file.close();
         }
         else {
             cout << "error!" << endl;
@@ -88,15 +88,23 @@ void geometric_figures() {  //правильно
     cout << "the area of the rectangle = " << s_rectangle << endl;
 }
 
-void past_glory() {
-    for (int i = 0; i <= 6; i++) {
-    
-        for (int i = 0; i <= 8; i++) {
-            cout << " *" << 
+void past_glory(){       //правильно
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 8; j++) {
+            cout << "* ";
         }
+        for (int j = 0; j < 15; j++) {
+            cout << "- ";
+        }
+        cout << endl;
     }
-    for 
-
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 23; j++) {
+            cout << "- ";
+        }
+        cout << endl;
+    }
+    cout << endl << endl;
 }
 
 void random_number_generator() {    //правильно
@@ -143,18 +151,13 @@ void random_number_generator() {    //правильно
     }
 }
 
-string convert_base() {
-    int target_base, source_base;
-    
-}
+int main() {
+    file_task(); // задача номер 1 - Файл - правильно
+    number_sign(); // задача номер 2 - Знак числа - правильно
+    geometric_figures(); // задача номер 3 - Геометрические фигуры - правильно
+    past_glory(); // задача номер 4 - Былая слава - правильно
+    random_number_generator(); // задача номер 7 - Генератор псевдослучайных чисел - правильно
+   // convert_base(); // задача номер 9 - Системы счисления - доработать - находится в файле main.cpp
 
- int main() {
-    file_task(); // задача номер 1 - Файл - нужно доработать
-    number_sign(); // задача номер 2 - Знак числа
-    geometric_figures(); // задача номер 3 - Геометрические фигуры
-    past_glory(); // задача номер 4 - Былая слава
-    random_number_generator(); // задача номер 7 - Генератор псевдослучайных чисел
-    convert_base(); // задача номер 9 - Системы счисления - доработать - находится в файле main.cpp
-    
     return 0;
 }
