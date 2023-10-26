@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void loan() {
+void loan() {   //правильно
     double loan_S, monthly_payment_m, date_n, procent_p, object_r;
     while (true) {
         cout << "enter procent_p : " << endl;
@@ -54,7 +54,7 @@ void loan() {
     }
 }
 
-int advance() {
+int advance() { //нужно доработать
     double S = 100000; // Сумма кредита
     int n = 10; // Количество лет
     double m = 10000; // Месячная выплата
@@ -84,7 +84,7 @@ int advance() {
     return 0;
 }
 
-void working_w_files() {
+void working_w_files() { //правильно
     string line, line_two, out_two;
 
     ofstream out_file("text.txt");
@@ -116,7 +116,7 @@ void working_w_files() {
     cout << endl << endl;
 }
 
-void letter_sorting() {
+void letter_sorting() { //правильно
     char str[] = "osdgkdsofkorkokspadkpadsdasda";
 
     char arr[30];
