@@ -4,7 +4,7 @@
 #include<fstream>
 #include<string>
 #include<algorithm>
-
+#include<Windows.H>
 
 using namespace std;
 
@@ -116,17 +116,25 @@ void working_w_files() { //правильно
     cout << endl << endl;
 }
 
+
+
 void letter_sorting() { //правильно
-    char str[] = "osdgkdsofkorkokspadkpadsdasda";
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    string lum;
+    cin >> lum;
+   //cout << lum;
 
-    char arr[30];
-    copy(str, str + strlen(str), arr);
-
-    sort(arr, arr + 30);
-
-    string line(arr);
-
-    cout << line << endl;
+    for (int i = 0; i < lum.length(); i++) {
+        for (int j = (i + 1); j < lum.length(); j++) {
+            if (tolower(lum[i]) > tolower(lum[j])) {
+                char local = lum[i];
+                lum[i] = lum[j];
+                lum[j] = local;
+            }
+        }
+    }
+    cout << lum << endl;
 }
 
 int main() {
@@ -134,5 +142,8 @@ int main() {
     advance(); //задача ссуда
     working_w_files(); // задача копирование файла и фильтр
     letter_sorting(); // задача сортировка букв
+
+
     return 0;
+
 }
