@@ -2,8 +2,11 @@
 #include<fstream>
 #include<stdio.h>
 #include<cmath>
+#include<Windows.h>
 
 using namespace std;
+
+void past_glory(int num);    ///лаунчер заданий 
 
 void file_task() {  //правильно
     ofstream file("numbers.txt");
@@ -88,25 +91,6 @@ void geometric_figures() {  //правильно
     cout << "the area of the rectangle = " << s_rectangle << endl;
 }
 
-void past_glory(){       //правильно
-    for (int i = 0; i < 6; i++) {
-        for (int j = 0; j < 8; j++) {
-            cout << "* ";
-        }
-        for (int j = 0; j < 15; j++) {
-            cout << "- ";
-        }
-        cout << endl;
-    }
-    for (int i = 0; i < 6; i++) {
-        for (int j = 0; j < 23; j++) {
-            cout << "- ";
-        }
-        cout << endl;
-    }
-    cout << endl << endl;
-}
-
 void random_number_generator() {    //правильно
     int variable_m, variable_b, variable_c, variable_n, variable_s = 0, option;
     while (true) {
@@ -154,10 +138,53 @@ void random_number_generator() {    //правильно
 int main() {
     file_task(); // задача номер 1 - Файл - правильно
     number_sign(); // задача номер 2 - Знак числа - правильно
-    geometric_figures(); // задача номер 3 - Геометрические фигуры - правильно
-    past_glory(); // задача номер 4 - Былая слава - правильно
+    geometric_figures(); // задача номер 3 - Геометрические фигуры - правильно 
+    past_glory(1); // задача номер 4 - Былая слава - правильно
     random_number_generator(); // задача номер 7 - Генератор псевдослучайных чисел - правильно
-   // convert_base(); // задача номер 9 - Системы счисления - доработать - находится в файле main.cpp
+    //convert_base(); // задача номер 9 - Системы счисления - доработать - находится в файле main.cpp
 
     return 0;
+}
+
+void past_glory(int num) {       //правильно
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    //SetConsoleTextAttribute(h, num);
+    cout << "Past Glory 1912 " << endl;
+    for (int i = 0; i < 6; i++) {
+        SetConsoleTextAttribute(h, 0x1f);
+        for (int j = 0; j < 8; j++) {
+            cout << "* ";
+        }
+        if ((i % 2) == 0) {
+            SetConsoleTextAttribute(h, 0x44);
+        }
+        else {
+            SetConsoleTextAttribute(h, 0xff);
+        }
+
+        for (int j = 0; j < 15; j++) {
+            cout << "- ";
+        }
+        SetConsoleTextAttribute(h, 0x00);
+
+        cout << endl;
+    }
+
+
+    for (int i = 0; i < 6; i++) {
+        if ((i % 2) == 0) {
+            SetConsoleTextAttribute(h, 0x44);
+        }
+        else {
+            SetConsoleTextAttribute(h, 0xff);
+        }
+        for (int j = 0; j < 23; j++) {
+            cout << "- ";
+        }
+        SetConsoleTextAttribute(h, 0x00);
+
+        cout << endl;
+    }
+    SetConsoleTextAttribute(h, 0x07);
+    cout << endl << endl ;
 }
