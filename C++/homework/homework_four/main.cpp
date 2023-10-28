@@ -6,7 +6,8 @@
 
 using namespace std;
 
-void past_glory(int num);    ///лаунчер заданий 
+void past_glory();   // обьявление функции
+void comment_output(); // обьявление функции
 
 void file_task() {  //правильно
     ofstream file("numbers.txt");
@@ -124,13 +125,13 @@ void random_number_generator() {    //правильно
         if (!(cin >> variable_n)) {
             cin.clear();
             cin.ignore();
-            cout << "error!" << endl;
+            cout << "error!" << endl << endl;
             continue;
         }
         if (variable_n == 0) {
             cin.clear();
             cin.ignore();
-            cout << "error!" << endl;
+            cout << "error!" << endl << endl;
             continue;
         }
         break;
@@ -139,67 +140,135 @@ void random_number_generator() {    //правильно
         variable_s = (variable_m * variable_s + variable_b) % variable_c;
         cout << variable_s << " ";
     }
+    cout << endl << endl;
 }
 
-void matrix_multiplication() {
-    int matrix_buffer_lines;
-    cout << "enter number of lines: \n";
+//void matrix_multiplication() {
+//    int matrix_buffer_lines;
+//    cout << "enter number of lines: \n";
+//    while (true) {
+//        if (!(cin >> matrix_buffer_lines)) {
+//            cin.clear();
+//            cin.ignore();
+//            cout << "error \n";
+//            continue;
+//        }
+//        break;
+//    }
+//    int matrix_buffer_column;
+//    cout << "enter number of column: \n";
+//    while (true) {
+//        if (!(cin >> matrix_buffer_column)) {
+//            cin.clear();
+//            cin.ignore();
+//            cout << "error \n";
+//            continue;
+//        }
+//        break;
+//    }
+//
+//    const int matrix_line = matrix_buffer_lines;
+//    const int matrix_column = matrix_buffer_column;
+//    int matrix[matrix_line][matrix_column];  //почему ошибка
+//
+//    //
+//     Выделяем память для массива
+//    int** matrix = new int* [matrix_buffer_lines];
+//    for (int i = 0; i < matrix_buffer_lines; i++) {
+//        matrix[i] = new int[matrix_buffer_column];
+//    }
+//
+//     Используйте массив matrix здесь
+//
+//     Не забудьте освободить память после использования массива
+//    for (int i = 0; i < matrix_buffer_lines; i++) {
+//        delete[] matrix[i];
+//    }
+//    delete[] matrix;
+//    //
+//}
+
+void task_launcher() {  
+    int task_number;
+
     while (true) {
-        if (!(cin >> matrix_buffer_lines)) {
+        comment_output();
+  
+        cout << endl;
+        cout << "(if you want to exit the program, enter 'end') \n";
+        cout << "enter task_number: "; 
+
+        if (!(cin >> task_number)) {
             cin.clear();
-            cin.ignore();
+            string input;
+            cin >> input;
+            if (input == "end") {
+                break;
+            }
             cout << "error \n";
             continue;
         }
-        break;
-    }
-    int matrix_buffer_column;
-    cout << "enter number of column: \n";
-    while (true) {
-        if (!(cin >> matrix_buffer_column)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error \n";
-            continue;
+        
+        switch (task_number) {
+        case 1:
+            cout << "\n";
+            cout << "first task - 'File task' \n";
+            file_task();
+            break;
+        case 2:
+            cout << "\n";
+            cout << "second task - 'Problem Number sign' \n";
+            number_sign();
+            break;
+        case 3:
+            cout << "\n";
+            cout << "third task - 'Geometric figures' \n";
+            geometric_figures();
+            break;
+        case 4:
+            cout << "\n";
+            cout << "fourth task - 'Past Glory' \n";
+            past_glory();
+            break;
+        case 5:
+            cout << "\n";
+            cout << "fifth task - 'Sine wave' \n";
+            //  
+            break;
+        case 6:
+            cout << "\n";
+            cout << "sixth task - 'Automatic recognizer' \n";
+            //
+            break;
+        case 7:
+            cout << "\n";
+            cout << "seventh task - 'Pseudo-random number generator' \n";
+            random_number_generator();
+            break;
+        case 8:
+            cout << "\n";
+            cout << "eighth task - 'Matrix multiplication' \n";
+            //matrix_multiplication(); - доработать 
+            break;
+        case 9:
+            cout << "\n";
+            cout << "ninth task - 'Number systems' \n";
+            //convert_base(); - доработать
+            break;
+        default:
+            cout << "\n";
+            cout << "error! \n";
+            break;
         }
-        break;
     }
-
-    const int matrix_line = matrix_buffer_lines;
-    const int matrix_column = matrix_buffer_column;
-    int matrix[matrix_line][matrix_column];  //почему ошибка
-
-
-    ////
-    // Выделяем память для массива
-    int** matrix = new int* [matrix_buffer_lines];
-    for (int i = 0; i < matrix_buffer_lines; i++) {
-        matrix[i] = new int[matrix_buffer_column];
-    }
-
-    // Используйте массив matrix здесь
-
-    // Не забудьте освободить память после использования массива
-    for (int i = 0; i < matrix_buffer_lines; i++) {
-        delete[] matrix[i];
-    }
-    delete[] matrix;
-    ////
 }
 
 int main() {
-    //file_task(); // задача номер 1 - Файл - правильно
-    //number_sign(); // задача номер 2 - Знак числа - правильно
-    //geometric_figures(); // задача номер 3 - Геометрические фигуры - правильно 
-    //past_glory(1); // задача номер 4 - Былая слава - правильно
-    //random_number_generator(); // задача номер 7 - Генератор псевдослучайных чисел - правильно
-    //matrix_multiplication(); // задача номер 8 - Умножение матриц
-    //convert_base(); // задача номер 9 - Системы счисления - доработать - находится в файле main.cpp
-
+    task_launcher(); // - лаунчер
     return 0;
 }
 
-void past_glory(int num) {       //правильно
+void past_glory() {       //правильно
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     //SetConsoleTextAttribute(h, num);
     cout << "Past Glory 1912 " << endl;
@@ -223,7 +292,6 @@ void past_glory(int num) {       //правильно
         cout << endl;
     }
 
-
     for (int i = 0; i < 6; i++) {
         if ((i % 2) == 0) {
             SetConsoleTextAttribute(h, 0x44);
@@ -240,4 +308,15 @@ void past_glory(int num) {       //правильно
     }
     SetConsoleTextAttribute(h, 0x07);
     cout << endl << endl ;
-}
+} //обьявление функции
+
+void comment_output() {
+    HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE); 
+    //SetConsoleTextAttribute(back_color, 0xf1); - синий на белом   
+    // a - зеленый
+    SetConsoleTextAttribute(back_color, 0x0a);
+    cout << "---------------------------------------------\n TASK NUMBER:  \n 1 task - 'File' \n 2 task - 'Number sign' \n 3 task - 'Geometric shapes' \n 4 task - 'Past glory' \n 5 task - 'Sine wave' \n 6 task - 'Automatic recognizer' \n 7 task - 'Pseudorandom number generator' \n 8 task - 'Matrix multiplication' \n 9 task - 'Number systems' " << endl;
+    SetConsoleTextAttribute(back_color, 0x07);
+
+}  //обьявление функции
+
