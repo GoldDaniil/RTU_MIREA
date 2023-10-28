@@ -142,10 +142,10 @@ void random_number_generator() {    //правильно
 }
 
 void matrix_multiplication() {
-    int matrix_row;
+    int matrix_buffer_lines;
     cout << "enter number of lines: \n";
     while (true) {
-        if (!(cin >> matrix_row)) {
+        if (!(cin >> matrix_buffer_lines)) {
             cin.clear();
             cin.ignore();
             cout << "error \n";
@@ -153,10 +153,10 @@ void matrix_multiplication() {
         }
         break;
     }
-    double matrix_column;
+    int matrix_buffer_column;
     cout << "enter number of column: \n";
     while (true) {
-        if (!(cin >> matrix_column)) {
+        if (!(cin >> matrix_buffer_column)) {
             cin.clear();
             cin.ignore();
             cout << "error \n";
@@ -164,8 +164,27 @@ void matrix_multiplication() {
         }
         break;
     }
-    int matrix[matrix_row][matrix_column];  //почему ошибка
 
+    const int matrix_line = matrix_buffer_lines;
+    const int matrix_column = matrix_buffer_column;
+    int matrix[matrix_line][matrix_column];  //почему ошибка
+
+
+    ////
+    // Выделяем память для массива
+    int** matrix = new int* [matrix_buffer_lines];
+    for (int i = 0; i < matrix_buffer_lines; i++) {
+        matrix[i] = new int[matrix_buffer_column];
+    }
+
+    // Используйте массив matrix здесь
+
+    // Не забудьте освободить память после использования массива
+    for (int i = 0; i < matrix_buffer_lines; i++) {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
+    ////
 }
 
 int main() {
@@ -174,7 +193,7 @@ int main() {
     //geometric_figures(); // задача номер 3 - Геометрические фигуры - правильно 
     //past_glory(1); // задача номер 4 - Былая слава - правильно
     //random_number_generator(); // задача номер 7 - Генератор псевдослучайных чисел - правильно
-    matrix_multiplication(); // задача номер 8 - Умножение матриц
+    //matrix_multiplication(); // задача номер 8 - Умножение матриц
     //convert_base(); // задача номер 9 - Системы счисления - доработать - находится в файле main.cpp
 
     return 0;
