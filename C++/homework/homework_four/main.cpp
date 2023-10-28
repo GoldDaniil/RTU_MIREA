@@ -313,7 +313,7 @@ void past_glory() {       //правильно
 void comment_output() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE); 
     //SetConsoleTextAttribute(back_color, 0xf1); - синий на белом   
-    // a - зеленый
+    // a - зеленый 
     SetConsoleTextAttribute(back_color, 0x0a);
     cout << "---------------------------------------------\n TASK NUMBER:  \n 1 task - 'File' \n 2 task - 'Number sign' \n 3 task - 'Geometric shapes' \n 4 task - 'Past glory' \n 5 task - 'Sine wave' \n 6 task - 'Automatic recognizer' \n 7 task - 'Pseudorandom number generator' \n 8 task - 'Matrix multiplication' \n 9 task - 'Number systems' " << endl;
     SetConsoleTextAttribute(back_color, 0x07);
