@@ -88,7 +88,7 @@ void geometric_figures() {  //правильно
     }
     double s_rectangle;
     s_rectangle = length_rectangle * width_rectangle;
-    cout << "the area of the rectangle = " << s_rectangle << endl;
+    cout << "the area of the rectangle = " << s_rectangle << endl << "\n";
 }
 
 void random_number_generator() {    //правильно
@@ -98,7 +98,7 @@ void random_number_generator() {    //правильно
         if (!(cin >> option)) {
             cin.clear();
             cin.ignore();
-            cout << "error";
+            cout << "error" << endl;
             continue;
         }
         break;
@@ -124,7 +124,13 @@ void random_number_generator() {    //правильно
         if (!(cin >> variable_n)) {
             cin.clear();
             cin.ignore();
-            cout << "error!";
+            cout << "error!" << endl;
+            continue;
+        }
+        if (variable_n == 0) {
+            cin.clear();
+            cin.ignore();
+            cout << "error!" << endl;
             continue;
         }
         break;
@@ -135,12 +141,40 @@ void random_number_generator() {    //правильно
     }
 }
 
+void matrix_multiplication() {
+    int matrix_row;
+    cout << "enter number of lines: \n";
+    while (true) {
+        if (!(cin >> matrix_row)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error \n";
+            continue;
+        }
+        break;
+    }
+    double matrix_column;
+    cout << "enter number of column: \n";
+    while (true) {
+        if (!(cin >> matrix_column)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error \n";
+            continue;
+        }
+        break;
+    }
+    int matrix[matrix_row][matrix_column];  //почему ошибка
+
+}
+
 int main() {
-    file_task(); // задача номер 1 - Файл - правильно
-    number_sign(); // задача номер 2 - Знак числа - правильно
-    geometric_figures(); // задача номер 3 - Геометрические фигуры - правильно 
-    past_glory(1); // задача номер 4 - Былая слава - правильно
-    random_number_generator(); // задача номер 7 - Генератор псевдослучайных чисел - правильно
+    //file_task(); // задача номер 1 - Файл - правильно
+    //number_sign(); // задача номер 2 - Знак числа - правильно
+    //geometric_figures(); // задача номер 3 - Геометрические фигуры - правильно 
+    //past_glory(1); // задача номер 4 - Былая слава - правильно
+    //random_number_generator(); // задача номер 7 - Генератор псевдослучайных чисел - правильно
+    matrix_multiplication(); // задача номер 8 - Умножение матриц
     //convert_base(); // задача номер 9 - Системы счисления - доработать - находится в файле main.cpp
 
     return 0;
