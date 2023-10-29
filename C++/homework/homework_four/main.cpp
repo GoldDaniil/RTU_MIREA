@@ -47,7 +47,7 @@ void file_task() {  //правильно
 }
 
 void number_sign() {    //правильно
-    double variable_x, variable_result;
+    double variable_x;
     while (true) {
         cout << "enter variable x : " << endl;
         if (!(cin >> variable_x)) {
@@ -177,6 +177,107 @@ void random_number_generator() {    //правильно
     cout << endl << endl;
 }
 
+void matrix_multiplication() {
+    HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
+    int rows;
+    while (true) {
+        cout << "enter amount rows: \n";
+        if (!(cin >> rows)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error \n";
+            continue;
+        }
+        break;
+    }
+    int cols;
+    while (true) {
+        cout << "enter amount column: \n";
+        if (!(cin >> cols)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error \n" << endl;
+            continue;
+        }
+        break;
+    }
+
+    int** matrix = new int* [rows];
+    for (int i = 0; i < rows; i++) {
+        matrix[i] = new int[cols];
+    }
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << "enter amout elements " << i << " and " << j << "\n" << endl;
+            while (true) {
+                if (!(cin >> matrix[i][j])) {
+                    cin.clear();
+                    cin.ignore();
+                    cout << "error \n";
+                    continue;
+                }
+                break;
+            }
+        }
+    
+    }
+
+    cout << "enter two-dimensional array - matrix :\n" << endl;
+    SetConsoleTextAttribute(back_color, 0x04);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl << endl;
+    }
+    SetConsoleTextAttribute(back_color, 0x07);
+
+
+    //for (int i = 0; i < rows; i++) {
+    //    delete[] matrix[i];
+    //}
+    delete matrix;
+}
+
+///тест
+void arr() {
+    int massiv[4]{ 1, 2, 3, 4};
+    cout << massiv << endl;
+    cout << &massiv << endl;
+    cout << *massiv << endl;
+    cout << &massiv[0] << endl;
+    //cout << *(massiv[0]) << endl;
+    cout << &massiv[1] << endl;
+    //cout << *(massiv[1]) << endl;
+    cout << &massiv[2] << endl;
+    cout << &massiv[3] << endl;
+
+    //int matrix[3][4] ; //3 массива в каждом из которых 4 элемента- итого двумерный массив 
+    
+
+    int *local = &massiv[0];
+    cout << local << endl;
+    cout << (local + 2) << endl;
+    
+    cout << *(local + 2) << endl;
+
+    //delete massiv;
+    //cout << " \n";
+    //
+    //cout << massiv << endl;
+    //cout << &massiv << endl;
+    //cout << *massiv << endl;
+    //cout << &massiv[0] << endl;
+    ////cout << *(massiv[0]) << endl;
+    //cout << &massiv[1] << endl;
+    ////cout << *(massiv[1]) << endl;
+    //cout << &massiv[2] << endl;
+    //cout << &massiv[3] << endl;
+
+    //cout << *(massiv[2]) << endl;  //разница между адресами 4 байта
+}
+///тест
+
 //void matrix_multiplication() {
 //    int matrix_buffer_lines;
 //    cout << "enter number of lines: \n";
@@ -282,7 +383,7 @@ void task_launcher() {
         case 8:
             cout << "\n";
             cout << "eighth task - 'Matrix multiplication' \n";
-            //matrix_multiplication(); - доработать 
+            matrix_multiplication();
             break;
         case 9:
             cout << "\n";
@@ -299,6 +400,7 @@ void task_launcher() {
 
 int main() {
     task_launcher(); // - лаунчер
+    //arr();
     return 0;
 }
 
