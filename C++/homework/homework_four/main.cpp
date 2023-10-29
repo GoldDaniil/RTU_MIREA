@@ -70,7 +70,7 @@ void number_sign() {    //правильно
 }
 
 void geometric_figures() {  //правильно
-    double length_rectangle, width_rectangle, height_triangle, base_triangle, radius_circle;
+    double length_rectangle, width_rectangle;
     while (true) {
         cout << "enter length_rectangle, width_rectangle: " << endl;
         if (!(cin >> length_rectangle)) {
@@ -87,9 +87,43 @@ void geometric_figures() {  //правильно
         }
         break;
     }
-    double s_rectangle;
-    s_rectangle = length_rectangle * width_rectangle;
+    double s_rectangle = length_rectangle * width_rectangle;
     cout << "the area of the rectangle = " << s_rectangle << endl << "\n";
+
+    double height_triangle, base_triangle;
+    while (true) {
+        cout << "enter height triangle, base triangle: " << endl;
+        if (!(cin >> height_triangle)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error!" << "\n";
+            continue;
+        }
+        if (!(cin >> base_triangle)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error" << "\n";
+            continue;
+        }
+        break;
+    }
+    double area_of_triangle = (height_triangle * base_triangle) / 2;
+    cout << "the area of the triangle = " << area_of_triangle << endl << "\n";
+
+    double radius_circle;
+    while (true) {
+        cout << "enter radius circle: " << endl;
+        if (!(cin >> radius_circle)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error!" << "\n";
+            continue;
+        }
+        break;
+    }
+    const int PI = 3.14159265359;
+    double area_of_circle = PI * pow(radius_circle, 2);
+    cout << "the area of the circle = " << area_of_circle << endl << "\n";
 }
 
 void random_number_generator() {    //правильно
@@ -205,7 +239,7 @@ void task_launcher() {
             if (input == "end") {
                 break;
             }
-            cout << "error \n";
+            cout << "error \n" << endl;
             continue;
         }
         
@@ -313,7 +347,7 @@ void past_glory() {       //правильно
 void comment_output() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE); 
     //SetConsoleTextAttribute(back_color, 0xf1); - синий на белом   
-    // a - зеленый 
+    // a - зеленый
     SetConsoleTextAttribute(back_color, 0x0a);
     cout << "---------------------------------------------\n TASK NUMBER:  \n 1 task - 'File' \n 2 task - 'Number sign' \n 3 task - 'Geometric shapes' \n 4 task - 'Past glory' \n 5 task - 'Sine wave' \n 6 task - 'Automatic recognizer' \n 7 task - 'Pseudorandom number generator' \n 8 task - 'Matrix multiplication' \n 9 task - 'Number systems' " << endl;
     SetConsoleTextAttribute(back_color, 0x07);
