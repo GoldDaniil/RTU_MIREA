@@ -3,7 +3,6 @@
 #include<stdio.h>
 #include<cmath>
 #include<Windows.h>
- 
 using namespace std;
 
 void past_glory();   // обьявление функции
@@ -12,14 +11,19 @@ void comment_output(); // обьявление функции
 void file_task() {  //правильно
     ofstream file("numbers.txt");
     if (file.is_open()) {
-        cout << "enter 10 numbers: \n";
+        cout << "\nif you want to stop typing, enter 'exit' \nenter 10 numbers: \n";
         for (int i = 0; i < 10; ++i) {
             int num;
             while (true) {
                 if (!(cin >> num)) {
                     cin.clear();
                     cin.ignore();
-                    cout << "you need to enter the data type integer\n";
+                    //string input;
+                    //cin >> input;
+                    //if (input == "end") {
+                    //    break;
+                    //}
+                    cout << "you need to enter the data type integer \n";
                     continue;
                 }
                 break;
@@ -45,7 +49,7 @@ void file_task() {  //правильно
         cout << "error!" << endl;
     }
 }
-
+            ///подумать об обьединении функций
 void number_sign() {    //правильно
     double variable_x;
     while (true) {
@@ -177,7 +181,9 @@ void random_number_generator() {    //правильно
     cout << endl << endl;
 }
 
-void matrix_multiplication() {
+//!ДИНАМИЧЕСКИЙ ДВУМЕРНЫЙ МАССИВ - 
+//! ДИНАМИЧЕСКОЕ ВЫДЕЛЕНИЕ ПАМЯТИ
+void dynamic_matrix_multiplication() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     int rows;
     while (true) {
@@ -189,7 +195,13 @@ void matrix_multiplication() {
             continue;
         }
         break;
+        
     }
+    //if (rows == "end") {
+    //сделать так - чтобы при вводе end
+    // компилятор закрывался.
+    //}
+
     int cols;
     while (true) {
         cout << "enter amount column: \n";
@@ -201,6 +213,16 @@ void matrix_multiplication() {
         }
         break;
     }
+
+    //выделение памяти
+    //int** matrix = new int* [rows];
+    //for (int i = 0; i < rows; ++i) {
+        //matrix[i] = new int[cols];
+    //}
+    //for (int j = 0; j < cols; ++j) {
+        //matrix[j] = new int[rows];
+    //}
+    //end - del / память
 
     int** matrix = new int* [rows];
     for (int i = 0; i < rows; i++) {
@@ -221,22 +243,40 @@ void matrix_multiplication() {
         }
     
     }
-
+    cout << "table A \n";
+    //SetConsoleTextAttribute(back_color, 0x04);
+    SetConsoleTextAttribute(back_color, 0x0f);
     cout << "enter two-dimensional array - matrix :\n" << endl;
-    SetConsoleTextAttribute(back_color, 0x04);
+    SetConsoleTextAttribute(back_color, 0x07);
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             cout << matrix[i][j] << " ";
         }
         cout << endl << endl;
     }
-    SetConsoleTextAttribute(back_color, 0x07);
 
-
-    //for (int i = 0; i < rows; i++) {
-    //    delete[] matrix[i];
-    //}
     delete matrix;
+}
+//!НЕ ТРОГАТЬ 
+//! фукнция НЕ принадлежит лаунчеру
+
+void static_dimensional_arrays() {
+    //нужен CТАТИЧЕСКИЙ двумерный массив
+    //безинцерционное выделение памяти!
+    cout << "table A: \n" << endl;
+    const int seller_string = 3;
+    //cout << "the number of seller-lines is = " << seller_string << endl;
+    const int product_column = 4;
+    //cout << "the number of product-column is = " << product_column << endl;
+
+    cout << "table B: \n" << endl;
+    const int price_string = 4;
+    const int commission_column = 2;
+    int table_A[seller_string][product_column]{ {5, 2, 0, 10}, {3, 5, 2, 5}, {20, 0, 0, 0} };
+    int table_B[price_string][commission_column]{ {1.20, 0.50}, {2.80, 0.40}, {5.00, 1.00}, {2.00, 1.50} };
+    cout << table_A << "\n" <<"\n" << table_B << endl;
+    
+
 }
 
 ///тест
@@ -324,20 +364,21 @@ void arr() {
 //}
 
 void task_launcher() {  
+    HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     int task_number;
 
     while (true) {
         comment_output();
-  
+        
         cout << endl;
-        cout << "(if you want to exit the program, enter 'end') \n";
+        cout << "(if you want to exit the program, enter 'exit') \n";
         cout << "enter task_number: "; 
 
         if (!(cin >> task_number)) {
             cin.clear();
             string input;
             cin >> input;
-            if (input == "end") {
+            if (input == "exit") {
                 break;
             }
             cout << "error \n" << endl;
@@ -347,47 +388,65 @@ void task_launcher() {
         switch (task_number) {
         case 1:
             cout << "\n";
+            SetConsoleTextAttribute(back_color, 0x0a);
             cout << "first task - 'File task' \n";
+            SetConsoleTextAttribute(back_color, 0x07);
             file_task();
             break;
         case 2:
             cout << "\n";
+            SetConsoleTextAttribute(back_color, 0x0a);
             cout << "second task - 'Problem Number sign' \n";
+            SetConsoleTextAttribute(back_color, 0x07);
             number_sign();
             break;
         case 3:
             cout << "\n";
+            SetConsoleTextAttribute(back_color, 0x0a);
             cout << "third task - 'Geometric figures' \n";
+            SetConsoleTextAttribute(back_color, 0x07);
             geometric_figures();
             break;
         case 4:
             cout << "\n";
-            cout << "fourth task - 'Past Glory' \n";
+            SetConsoleTextAttribute(back_color, 0x0a);
+            cout << "fourth task - 'Past Glory\n' \n";
+            SetConsoleTextAttribute(back_color, 0x07);
             past_glory();
             break;
         case 5:
             cout << "\n";
+            SetConsoleTextAttribute(back_color, 0x0a);
             cout << "fifth task - 'Sine wave' \n";
+            SetConsoleTextAttribute(back_color, 0x07);
             //  
             break;
         case 6:
             cout << "\n";
+            SetConsoleTextAttribute(back_color, 0x0a);
             cout << "sixth task - 'Automatic recognizer' \n";
+            SetConsoleTextAttribute(back_color, 0x07);
             //
             break;
         case 7:
             cout << "\n";
+            SetConsoleTextAttribute(back_color, 0x0a);
             cout << "seventh task - 'Pseudo-random number generator' \n";
+            SetConsoleTextAttribute(back_color, 0x07);
             random_number_generator();
             break;
         case 8:
             cout << "\n";
+            SetConsoleTextAttribute(back_color, 0x0a);
             cout << "eighth task - 'Matrix multiplication' \n";
-            matrix_multiplication();
+            SetConsoleTextAttribute(back_color, 0x07);
+            static_dimensional_arrays();
             break;
         case 9:
             cout << "\n";
+            SetConsoleTextAttribute(back_color, 0x0a);
             cout << "ninth task - 'Number systems' \n";
+            SetConsoleTextAttribute(back_color, 0x07);
             //convert_base(); - доработать
             break;
         default:
@@ -399,8 +458,8 @@ void task_launcher() {
 }
 
 int main() {
-    task_launcher(); // - лаунчер
-    //arr();
+    task_launcher(); 
+
     return 0;
 }
 
