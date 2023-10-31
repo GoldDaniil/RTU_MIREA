@@ -5,10 +5,12 @@
 #include<Windows.h>
 using namespace std;
 
-void past_glory();   // обьявление функции
-void comment_output(); // обьявление функции
+void PastGlory();   // обьявление функции
 
-void file_task() {  //правильно
+void CommentOutput(); // обьявление функции
+//выделять строчки и скрывать в одну
+
+void FileTask() {  //правильно
     ofstream file("numbers.txt");
     if (file.is_open()) {
         cout << "\nif you want to stop typing, enter 'exit' \nenter 10 numbers: \n";
@@ -49,8 +51,8 @@ void file_task() {  //правильно
         cout << "error!" << endl;
     }
 }
-            ///подумать об обьединении функций
-void number_sign() {    //правильно
+
+void NumberSign() {    //правильно
     double variable_x;
     while (true) {
         cout << "enter variable x : " << endl;
@@ -73,7 +75,7 @@ void number_sign() {    //правильно
     }
 }
 
-void geometric_figures() {  //правильно
+void GeometricFigures() {  //правильно
     double length_rectangle, width_rectangle;
     while (true) {
         cout << "enter length_rectangle, width_rectangle: " << endl;
@@ -130,7 +132,7 @@ void geometric_figures() {  //правильно
     cout << "the area of the circle = " << area_of_circle << endl << "\n";
 }
 
-void random_number_generator() {    //правильно
+void RandomNumberGenerator() {    //правильно
     int variable_m, variable_b, variable_c, variable_n, variable_s = 0, option;
     while (true) {
         cout << "select parameter option: (1 / 2) " << endl;
@@ -180,10 +182,9 @@ void random_number_generator() {    //правильно
     }
     cout << endl << endl;
 }
-
 //!ДИНАМИЧЕСКИЙ ДВУМЕРНЫЙ МАССИВ - 
 //! ДИНАМИЧЕСКОЕ ВЫДЕЛЕНИЕ ПАМЯТИ
-void dynamic_matrix_multiplication() {
+void DynamicMatrixMultiplication() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     int rows;
     while (true) {
@@ -195,7 +196,7 @@ void dynamic_matrix_multiplication() {
             continue;
         }
         break;
-        
+
     }
     //if (rows == "end") {
     //сделать так - чтобы при вводе end
@@ -214,16 +215,6 @@ void dynamic_matrix_multiplication() {
         break;
     }
 
-    //выделение памяти
-    //int** matrix = new int* [rows];
-    //for (int i = 0; i < rows; ++i) {
-        //matrix[i] = new int[cols];
-    //}
-    //for (int j = 0; j < cols; ++j) {
-        //matrix[j] = new int[rows];
-    //}
-    //end - del / память
-
     int** matrix = new int* [rows];
     for (int i = 0; i < rows; i++) {
         matrix[i] = new int[cols];
@@ -241,10 +232,9 @@ void dynamic_matrix_multiplication() {
                 break;
             }
         }
-    
+
     }
     cout << "table A \n";
-    //SetConsoleTextAttribute(back_color, 0x04);
     SetConsoleTextAttribute(back_color, 0x0f);
     cout << "enter two-dimensional array - matrix :\n" << endl;
     SetConsoleTextAttribute(back_color, 0x07);
@@ -259,29 +249,22 @@ void dynamic_matrix_multiplication() {
 }
 //!НЕ ТРОГАТЬ 
 //! фукнция НЕ принадлежит лаунчеру
-
-void static_dimensional_arrays() {
-    //нужен CТАТИЧЕСКИЙ двумерный массив
-    //безинцерционное выделение памяти!
-    cout << "table A: \n" << endl;
+void StaticDimensionalArrays() {
     const int seller_string = 3;
     //cout << "the number of seller-lines is = " << seller_string << endl;
     const int product_column = 4;
     //cout << "the number of product-column is = " << product_column << endl;
 
-    cout << "table B: \n" << endl;
     const int price_string = 4;
     const int commission_column = 2;
     int table_A[seller_string][product_column]{ {5, 2, 0, 10}, {3, 5, 2, 5}, {20, 0, 0, 0} };
     int table_B[price_string][commission_column]{ {1.20, 0.50}, {2.80, 0.40}, {5.00, 1.00}, {2.00, 1.50} };
-    cout << table_A << "\n" <<"\n" << table_B << endl;
-    
+    cout << "table A: \n\n" << table_A[seller_string][product_column] << "\n" << "table B \n\n" << table_B[price_string][commission_column] << endl;
 
 }
-
 ///тест
-void arr() {
-    int massiv[4]{ 1, 2, 3, 4};
+void Arr() {
+    int massiv[4]{ 1, 2, 3, 4 };
     cout << massiv << endl;
     cout << &massiv << endl;
     cout << *massiv << endl;
@@ -293,12 +276,12 @@ void arr() {
     cout << &massiv[3] << endl;
 
     //int matrix[3][4] ; //3 массива в каждом из которых 4 элемента- итого двумерный массив 
-    
 
-    int *local = &massiv[0];
+
+    int* local = &massiv[0];
     cout << local << endl;
     cout << (local + 2) << endl;
-    
+
     cout << *(local + 2) << endl;
 
     //delete massiv;
@@ -317,7 +300,6 @@ void arr() {
     //cout << *(massiv[2]) << endl;  //разница между адресами 4 байта
 }
 ///тест
-
 //void matrix_multiplication() {
 //    int matrix_buffer_lines;
 //    cout << "enter number of lines: \n";
@@ -362,17 +344,15 @@ void arr() {
 //    delete[] matrix;
 //    //
 //}
-
-void task_launcher() {  
+void TaskLauncher() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     int task_number;
 
     while (true) {
-        comment_output();
-        
+        CommentOutput();
         cout << endl;
         cout << "(if you want to exit the program, enter 'exit') \n";
-        cout << "enter task_number: "; 
+        cout << "enter task_number: ";
 
         if (!(cin >> task_number)) {
             cin.clear();
@@ -384,35 +364,35 @@ void task_launcher() {
             cout << "error \n" << endl;
             continue;
         }
-        
+
         switch (task_number) {
         case 1:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "first task - 'File task' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            file_task();
+            FileTask();
             break;
         case 2:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "second task - 'Problem Number sign' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            number_sign();
+            NumberSign();
             break;
         case 3:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "third task - 'Geometric figures' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            geometric_figures();
+            GeometricFigures();
             break;
         case 4:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "fourth task - 'Past Glory\n' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            past_glory();
+            PastGlory();
             break;
         case 5:
             cout << "\n";
@@ -433,14 +413,14 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "seventh task - 'Pseudo-random number generator' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            random_number_generator();
+            RandomNumberGenerator();
             break;
         case 8:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "eighth task - 'Matrix multiplication' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            static_dimensional_arrays();
+            StaticDimensionalArrays();
             break;
         case 9:
             cout << "\n";
@@ -457,13 +437,12 @@ void task_launcher() {
     }
 }
 
-int main() {
-    task_launcher(); 
-
+int main() {  
+    TaskLauncher();
     return 0;
 }
 
-void past_glory() {       //правильно
+void PastGlory() {       //правильно
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     //SetConsoleTextAttribute(h, num);
     cout << "Past Glory 1912 " << endl;
@@ -502,11 +481,11 @@ void past_glory() {       //правильно
         cout << endl;
     }
     SetConsoleTextAttribute(h, 0x07);
-    cout << endl << endl ;
+    cout << endl << endl;
 } //обьявление функции
 
-void comment_output() {
-    HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE); 
+void CommentOutput() {
+    HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     //SetConsoleTextAttribute(back_color, 0xf1); - синий на белом   
     // a - зеленый
     SetConsoleTextAttribute(back_color, 0x0a);
@@ -514,4 +493,3 @@ void comment_output() {
     SetConsoleTextAttribute(back_color, 0x07);
 
 }  //обьявление функции
-
