@@ -132,6 +132,48 @@ void GeometricFigures() {  //правильно
     cout << "the area of the circle = " << area_of_circle << endl << "\n";
 }
 
+void AutomaticRecognizer() {  //проверить
+    string roman_numeral;
+    int decoded_number = 0;
+
+    cout << "enter: ";
+    cin >> roman_numeral;
+
+    for (int i = 0; i < roman_numeral.length(); i++) {
+        char current_digit = roman_numeral[i];
+
+        switch (current_digit) {
+        case 'I':
+            decoded_number += 1;
+            break;
+        case 'V':
+            decoded_number += 5;
+            break;
+        case 'X':
+            decoded_number += 10;
+            break;
+        case 'L':
+            decoded_number += 50;
+            break;
+        case 'C':
+            decoded_number += 100;
+            break;
+        case 'D':
+            decoded_number += 500;
+            break;
+        case 'M':
+            decoded_number += 1000;
+            break;
+        }
+
+        if (i > 0 && roman_numeral[i - 1] > current_digit) {
+            decoded_number -= 2 * current_digit;
+        }
+    }
+
+    cout << "good: " << decoded_number << endl;
+}
+
 void RandomNumberGenerator() {    //правильно
     int variable_m, variable_b, variable_c, variable_n, variable_s = 0, option;
     while (true) {
@@ -251,16 +293,88 @@ void DynamicMatrixMultiplication() {
 //! фукнция НЕ принадлежит лаунчеру
 void StaticDimensionalArrays() {
     const int seller_string = 3;
-    //cout << "the number of seller-lines is = " << seller_string << endl;
     const int product_column = 4;
-    //cout << "the number of product-column is = " << product_column << endl;
 
     const int price_string = 4;
     const int commission_column = 2;
-    int table_A[seller_string][product_column]{ {5, 2, 0, 10}, {3, 5, 2, 5}, {20, 0, 0, 0} };
-    int table_B[price_string][commission_column]{ {1.20, 0.50}, {2.80, 0.40}, {5.00, 1.00}, {2.00, 1.50} };
-    cout << "table A: \n\n" << table_A[seller_string][product_column] << "\n" << "table B \n\n" << table_B[price_string][commission_column] << endl;
 
+    double table_A[seller_string][product_column]{ {5, 2, 0, 10}, {3, 5, 2, 5}, {20, 0, 0, 0} };
+    double table_B[price_string][commission_column]{ {1.20, 0.50}, {2.80, 0.40}, {5.00, 1.00}, {2.00, 1.50} };
+
+    cout << "table A: \n";
+    for (int i = 0; i < seller_string; i++) {
+        for (int j = 0; j < product_column; j++) {
+            cout << table_A[i][j] << " ";
+        }
+        cout << "\n";
+    }
+    cout << endl;
+    cout << "table B: \n";
+    for (int i = 0; i < price_string; i++) {
+        for (int j = 0; j < commission_column; j++) {
+            cout << table_B[i][j] << " ";
+        }
+        cout << "\n";
+    }
+    cout << endl;
+
+    double multiplication_result[seller_string][commission_column] = {};
+    for (int i = 0; i < seller_string; i++) {
+        for (int j = 0; j < commission_column; j++) {
+            for (int k = 0; k < product_column; k++) {
+                multiplication_result[i][j] += table_A[i][k] * table_B[k][j];
+            }
+        }
+    }
+    if (product_column != price_string) {   
+        cout << "error \n"; //проверка на возможность перемножения матриц
+        return;
+    }
+
+    cout << "result two-dimensional array \ntable C: \n";
+    for (int i = 0; i < seller_string; i++) {
+        for (int j = 0; j < commission_column; j++) {
+            cout << multiplication_result[i][j] << " ";
+        }
+        cout << "\n";
+    }
+    cout << endl;
+
+
+
+}
+
+void ConvertBase() {
+    string hexNumber;
+    cout << "enter : "; //ввод в 16 сист счисления
+    cin >> hexNumber;
+
+    string octalNumber = "";
+    
+    string hexTable[16] = { "000", "001", "010", "011", "100", "101", "110", "111",
+                                "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111" };
+
+    for (int i = 0; i < hexNumber.length(); i++) {
+        
+        if ((hexNumber[i] >= '0') && (hexNumber[i] <= '9')) {
+            int index = hexNumber[i] - '0';
+            octalNumber += hexTable[index];
+        }
+        else if ((hexNumber[i] >= 'A') && (hexNumber[i] <= 'F')) {
+            int index = hexNumber[i] - 'A' + 10;
+            octalNumber += hexTable[index];
+        }
+    }
+
+    int pos = octalNumber.find_first_not_of('0');
+    if (pos != string::npos) {
+        octalNumber = octalNumber.substr(pos);
+    }
+    else {
+        octalNumber = "0";
+    }
+
+    cout << "result: " << octalNumber << endl;
 }
 ///тест
 void Arr() {
@@ -406,7 +520,7 @@ void TaskLauncher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "sixth task - 'Automatic recognizer' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            //
+            AutomaticRecognizer();
             break;
         case 7:
             cout << "\n";
@@ -427,11 +541,10 @@ void TaskLauncher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "ninth task - 'Number systems' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            //convert_base(); - доработать
+            ConvertBase(); 
             break;
         default:
-            cout << "\n";
-            cout << "error! \n";
+            cout << "\nerror! \n";
             break;
         }
     }
