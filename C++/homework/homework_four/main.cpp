@@ -5,12 +5,12 @@
 #include<Windows.h>
 using namespace std;
 
-void PastGlory();   // обьявление функции
+void past_glory();   // обьявление функции
 
-void CommentOutput(); // обьявление функции
+void comment_output(); // обьявление функции
 //выделять строчки и скрывать в одну
 
-void FileTask() {  //правильно
+void file_task() {  //правильно
     ofstream file("numbers.txt");
     if (file.is_open()) {
         cout << "\nif you want to stop typing, enter 'exit' \nenter 10 numbers: \n";
@@ -52,7 +52,7 @@ void FileTask() {  //правильно
     }
 }
 
-void NumberSign() {    //правильно
+void number_sign() {    //правильно
     double variable_x;
     while (true) {
         cout << "enter variable x : " << endl;
@@ -75,7 +75,7 @@ void NumberSign() {    //правильно
     }
 }
 
-void GeometricFigures() {  //правильно
+void geometric_figures() {  //правильно
     double length_rectangle, width_rectangle;
     while (true) {
         cout << "enter length_rectangle, width_rectangle: " << endl;
@@ -132,7 +132,7 @@ void GeometricFigures() {  //правильно
     cout << "the area of the circle = " << area_of_circle << endl << "\n";
 }
 
-void AutomaticRecognizer() {  //проверить
+void automatic_recognizer() {  //проверить
     string roman_numeral;
     int decoded_number = 0;
 
@@ -174,7 +174,7 @@ void AutomaticRecognizer() {  //проверить
     cout << "good: " << decoded_number << endl;
 }
 
-void RandomNumberGenerator() {    //правильно
+void random_number_generator() {    //правильно
     int variable_m, variable_b, variable_c, variable_n, variable_s = 0, option;
     while (true) {
         cout << "select parameter option: (1 / 2) " << endl;
@@ -226,7 +226,7 @@ void RandomNumberGenerator() {    //правильно
 }
 //!ДИНАМИЧЕСКИЙ ДВУМЕРНЫЙ МАССИВ - 
 //! ДИНАМИЧЕСКОЕ ВЫДЕЛЕНИЕ ПАМЯТИ
-void DynamicMatrixMultiplication() {
+void dynamic_matrix_multiplication() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     int rows;
     while (true) {
@@ -291,7 +291,7 @@ void DynamicMatrixMultiplication() {
 }
 //!НЕ ТРОГАТЬ 
 //! фукнция НЕ принадлежит лаунчеру
-void StaticDimensionalArrays() {
+void static_dimensional_arrays() {
     const int seller_string = 3;
     const int product_column = 4;
 
@@ -326,7 +326,7 @@ void StaticDimensionalArrays() {
             }
         }
     }
-    if (product_column != price_string) {   
+    if (product_column != price_string) {
         cout << "error \n"; //проверка на возможность перемножения матриц
         return;
     }
@@ -344,40 +344,40 @@ void StaticDimensionalArrays() {
 
 }
 
-void ConvertBase() {
-    string hexNumber;
+void convert_base() {
+    string hex_number;
     cout << "enter : "; //ввод в 16 сист счисления
-    cin >> hexNumber;
+    cin >> hex_number;
 
-    string octalNumber = "";
-    
+    string octal_number = "";
+
     string hexTable[16] = { "000", "001", "010", "011", "100", "101", "110", "111",
                                 "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111" };
 
-    for (int i = 0; i < hexNumber.length(); i++) {
-        
-        if ((hexNumber[i] >= '0') && (hexNumber[i] <= '9')) {
-            int index = hexNumber[i] - '0';
-            octalNumber += hexTable[index];
+    for (int i = 0; i < hex_number.length(); i++) {
+
+        if ((hex_number[i] >= '0') && (hex_number[i] <= '9')) {
+            int index = hex_number[i] - '0';
+            octal_number += hexTable[index];
         }
-        else if ((hexNumber[i] >= 'A') && (hexNumber[i] <= 'F')) {
-            int index = hexNumber[i] - 'A' + 10;
-            octalNumber += hexTable[index];
+        else if ((hex_number[i] >= 'A') && (hex_number[i] <= 'F')) {
+            int index = hex_number[i] - 'A' + 10;
+            octal_number += hexTable[index];
         }
     }
 
-    int pos = octalNumber.find_first_not_of('0');
+    int pos = octal_number.find_first_not_of('0');
     if (pos != string::npos) {
-        octalNumber = octalNumber.substr(pos);
+        octal_number = octal_number.substr(pos);
     }
     else {
-        octalNumber = "0";
+        octal_number = "0";
     }
 
-    cout << "result: " << octalNumber << endl;
-}
-///тест
-void Arr() {
+    cout << "result: " << octal_number << endl;
+}///тест
+
+void arr() {
     int massiv[4]{ 1, 2, 3, 4 };
     cout << massiv << endl;
     cout << &massiv << endl;
@@ -458,12 +458,12 @@ void Arr() {
 //    delete[] matrix;
 //    //
 //}
-void TaskLauncher() {
+void task_launcher() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     int task_number;
 
     while (true) {
-        CommentOutput();
+        comment_output();
         cout << endl;
         cout << "(if you want to exit the program, enter 'exit') \n";
         cout << "enter task_number: ";
@@ -485,28 +485,28 @@ void TaskLauncher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "first task - 'File task' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            FileTask();
+            file_task();
             break;
         case 2:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "second task - 'Problem Number sign' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            NumberSign();
+            number_sign();
             break;
         case 3:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "third task - 'Geometric figures' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            GeometricFigures();
+            geometric_figures();
             break;
         case 4:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "fourth task - 'Past Glory\n' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            PastGlory();
+            past_glory();
             break;
         case 5:
             cout << "\n";
@@ -520,28 +520,28 @@ void TaskLauncher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "sixth task - 'Automatic recognizer' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            AutomaticRecognizer();
+            automatic_recognizer();
             break;
         case 7:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "seventh task - 'Pseudo-random number generator' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            RandomNumberGenerator();
+            random_number_generator();
             break;
         case 8:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "eighth task - 'Matrix multiplication' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            StaticDimensionalArrays();
+            static_dimensional_arrays();
             break;
         case 9:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "ninth task - 'Number systems' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            ConvertBase(); 
+            convert_base();
             break;
         default:
             cout << "\nerror! \n";
@@ -550,12 +550,12 @@ void TaskLauncher() {
     }
 }
 
-int main() {  
-    TaskLauncher();
+int main() {
+    task_launcher();
     return 0;
 }
 
-void PastGlory() {       //правильно
+void past_glory() {       //правильно
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     //SetConsoleTextAttribute(h, num);
     cout << "Past Glory 1912 " << endl;
@@ -597,7 +597,7 @@ void PastGlory() {       //правильно
     cout << endl << endl;
 } //обьявление функции
 
-void CommentOutput() {
+void comment_output() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     //SetConsoleTextAttribute(back_color, 0xf1); - синий на белом   
     // a - зеленый
