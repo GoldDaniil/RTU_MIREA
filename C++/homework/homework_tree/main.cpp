@@ -10,7 +10,7 @@
 using namespace std;
 
 void CommentOutput();
-void Launcher(); // Fixed the function name
+void Launcher();
 
 void Loan() { // правильно
     double loan_S, monthly_payment_m, date_n, procent_p, object_r;
@@ -157,7 +157,7 @@ void LetterSorting() { //правильно
 }
 
 int main() {
-    Launcher(); // Fixed function name
+    Launcher();
     return 0;
 }
 
