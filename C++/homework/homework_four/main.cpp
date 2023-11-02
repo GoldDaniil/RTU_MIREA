@@ -6,6 +6,7 @@
 #include<stdio.h>
 #include<cmath>
 #include<Windows.h>
+
 using namespace std;
 
 void past_glory();   // обьявление функции
