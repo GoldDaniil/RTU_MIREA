@@ -1,3 +1,5 @@
+// Homework 4 blocks of Procedural programming.
+// The code uses the snake_case naming style!
 #include<iostream>
 #include<fstream>
 #include<stdio.h>
@@ -376,7 +378,7 @@ void convert_base() {
 
     cout << "result: " << octal_number << endl;
 }///тест
-
+//тест
 void arr() {
     int massiv[4]{ 1, 2, 3, 4 };
     cout << massiv << endl;
@@ -413,7 +415,7 @@ void arr() {
 
     //cout << *(massiv[2]) << endl;  //разница между адресами 4 байта
 }
-///тест
+//тест
 //void matrix_multiplication() {
 //    int matrix_buffer_lines;
 //    cout << "enter number of lines: \n";
