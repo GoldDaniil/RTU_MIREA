@@ -54,34 +54,50 @@ void loan() {   //правильно
     }
 }
 
-int advance() { //нужно доработать
-    double S = 100000; // Сумма кредита
-    int n = 10; // Количество лет
-    double m = 10000; // Месячная выплата
+int advance() {
+    double S, m, n, p = 0, eps, monthly_payment;
+    cout << "enter (S): ";
+    cin >> S;
+    cout << "enter (m): ";
+    cin >> m;
+    cout << "enter (n): ";
+    cin >> n;
 
-    // Проверка входных данных
-    switch (S <= 0 || n <= 0 || m <= 0) {
-    case true:
-        cout << "error 0." << endl;
-        return 0;
+    if (S <= 0) {
+        cout << "error!" << endl;
+        return 1;
+    }
+    if (n <= 0) {
+        cout << "error!" << endl;
+        return 1;
     }
 
-    // Перебор процентов
-    for (double p = 0; p <= 100; p += 0.01) {
-        // Расчет ежемесячного платежа по формуле
-        double monthlyPayment = S * (1 + p / 100) * pow(1 + p / 12, -12 * n) / (12 * (1 + p / 100) * pow(1 + p / 12, -12 * n) - 1);
+    eps = 0.00001;
 
-        // Сравнение рассчитанного платежа с заданным
-        int percent = static_cast<int>(p);
-        if (monthlyPayment == m) {
-            // Нашли подходящий процент
-            cout << "Procent: " << percent << endl;
-            return 1;
+    while (p <= 100) {
+        double r = p / 1200; // процентная ставка в месяц
+        monthly_payment = (S * r * pow(1 + r, n * 12)) / (12 * (pow(1 + r, n * 12) - 1));
+
+        if (fabs(m - monthly_payment) < eps) {
+            break;
+        }
+        else if (monthly_payment < m) {
+            p += 0.01;
+        }
+        else {
+            p -= 0.01;
+            eps += 0.01; // увеличиваем точность
         }
     }
 
-    // Если процент не найден
-    return 0;
+    if (p > 100) {
+        cout << "error!" << endl;
+        return 1;
+    }
+    else {
+        cout << fixed << setprecision(4);
+        cout << "procent p: " << p << "%" << endl;
+    }
 }
 
 void working_w_files() { //правильно
@@ -116,14 +132,12 @@ void working_w_files() { //правильно
     cout << endl << endl;
 }
 
-
-
 void letter_sorting() { //правильно
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     string lum;
     cin >> lum;
-   //cout << lum;
+    //cout << lum;
 
     for (int i = 0; i < lum.length(); i++) {
         for (int j = (i + 1); j < lum.length(); j++) {
@@ -140,10 +154,7 @@ void letter_sorting() { //правильно
 int main() {
     loan(); // задача заем
     advance(); //задача ссуда
-    working_w_files(); // задача копирование файла и фильтр
-    letter_sorting(); // задача сортировка букв
-
-
+    working_w_files(); // задача копирование файла и фильтр 3 и 4 вместе
+    letter_sorting(); // задача сортировка 
     return 0;
-
 }
