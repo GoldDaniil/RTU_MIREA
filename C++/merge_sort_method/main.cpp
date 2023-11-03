@@ -2,12 +2,18 @@
 //the code uses the style, snake_case naming notation
 
 #include<iostream>;
-#include<stdio.h>;
 
 using namespace std;
 
 void merge(int arr[], int left, int right, int middle);
 void merge_sort(int arr[], int left, int right);
+
+void printArray(int arr[], int size) {  //отображение элементов массива до и после сортировки слиянием
+    for (int i = 0; i < size; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
 
 void input_and_verification() { //функция для ввода и проверки элементов массива
     int n;
@@ -50,10 +56,9 @@ void input_and_verification() { //функция для ввода и прове
     merge_sort(integer_array, 0, amount_elements - 1); //вызов функции сортировки слиянием  
 
     cout << "Sorted array: " << endl;
-    for (int i = 0; i < X; i++) { //цикл для вывода отсортированных элементов массива
-        cout << integer_array[i] << " "; //вывод отсортированных элементов массива
-    }
-    cout << endl << "\n";
+    printArray(integer_array, X);
+    
+    cout << "\n";
 }
 
 void merge(int arr[], int left, int right, int middle) { //функция для слияния двух подмассивов arr[left, middle] и arr[middle+1, right]
@@ -102,6 +107,13 @@ void merge(int arr[], int left, int right, int middle) { //функция для
         j++; //увеличиваем индекс Right_subarray[j]
         k++;
     }
+
+    delete[] Left_subarray;
+    delete[] Right_subarray;
+
+    cout << "merged pairs:" ; 
+    printArray(arr + left, right - left + 1);
+    cout << endl;
 }
 
 void merge_sort(int arr[], int left, int right) { //функция сортировки слиянием
