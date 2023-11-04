@@ -18,17 +18,12 @@ void file_task() {  //правильно
     ofstream file("numbers.txt");
     if (file.is_open()) {
         cout << "\nif you want to stop typing, enter 'exit' \nenter 10 numbers: \n";
+        double num;
         for (int i = 0; i < 10; ++i) {
-            int num;
             while (true) {
                 if (!(cin >> num)) {
                     cin.clear();
                     cin.ignore();
-                    //string input;
-                    //cin >> input;
-                    //if (input == "end") {
-                    //    break;
-                    //}
                     cout << "you need to enter the data type integer \n";
                     continue;
                 }
@@ -40,7 +35,7 @@ void file_task() {  //правильно
         // повторное открытие файла и нахождение суммы чисел
         ifstream read_file("numbers.txt");
         if (read_file.is_open()) {
-            int num, sum = 0;
+            double num, sum = 0;
             while (read_file >> num) {
                 sum += num;
             }
@@ -97,9 +92,15 @@ void geometric_figures() {  //правильно
         }
         break;
     }
-    double s_rectangle = length_rectangle * width_rectangle;
-    cout << "the area of the rectangle = " << s_rectangle << endl << "\n";
+    if (length_rectangle <= 0 or width_rectangle <= 0) {
+        cout << "error\n\n";
+    }
+    else {
+        double s_rectangle = length_rectangle * width_rectangle;
 
+        cout << "the area of the rectangle = " << s_rectangle << endl << "\n";
+    }
+    
     double height_triangle, base_triangle;
     while (true) {
         cout << "enter height triangle, base triangle: " << endl;
@@ -117,9 +118,14 @@ void geometric_figures() {  //правильно
         }
         break;
     }
-    double area_of_triangle = (height_triangle * base_triangle) / 2;
-    cout << "the area of the triangle = " << area_of_triangle << endl << "\n";
-
+    if (height_triangle <= 0 or base_triangle <= 0) {
+        cout << "error\n\n";
+    }
+    else {
+        double area_of_triangle = (height_triangle * base_triangle) / 2;
+        cout << "the area of the triangle = " << area_of_triangle << endl << "\n";
+    }
+    
     double radius_circle;
     while (true) {
         cout << "enter radius circle: " << endl;
@@ -131,12 +137,17 @@ void geometric_figures() {  //правильно
         }
         break;
     }
-    const int PI = 3.14159265359;
-    double area_of_circle = PI * pow(radius_circle, 2);
-    cout << "the area of the circle = " << area_of_circle << endl << "\n";
+    if (radius_circle <= 0) {
+        cout << "error\n\n";
+    }
+    else {
+        const int PI = 3.14159265359;
+        double area_of_circle = PI * pow(radius_circle, 2);
+        cout << "the area of the circle = " << area_of_circle << endl << "\n";
+    }
 }
 
-void automatic_recognizer() {  //проверить
+void automatic_recognizer() {  //проверить  //
     string roman_numeral;
     int decoded_number = 0;
 
@@ -147,27 +158,31 @@ void automatic_recognizer() {  //проверить
         char current_digit = roman_numeral[i];
 
         switch (current_digit) {
-        case 'I':
-            decoded_number += 1;
-            break;
-        case 'V':
-            decoded_number += 5;
-            break;
-        case 'X':
-            decoded_number += 10;
-            break;
-        case 'L':
-            decoded_number += 50;
-            break;
-        case 'C':
-            decoded_number += 100;
-            break;
-        case 'D':
-            decoded_number += 500;
-            break;
-        case 'M':
-            decoded_number += 1000;
-            break;
+            case 'I':
+                decoded_number += 1;
+                break;
+            case 'V':
+                decoded_number += 5;
+                break;
+            case 'X':
+                decoded_number += 10;
+                break;
+            case 'L':
+                decoded_number += 50;
+                break;
+            case 'C':
+                decoded_number += 100;
+                break;
+            case 'D':
+                decoded_number += 500;
+                break;
+            case 'M':
+                decoded_number += 1000;
+                break;
+            default:
+                cout << "error \n";
+                return; // доделать
+                break;
         }
 
         if (i > 0 && roman_numeral[i - 1] > current_digit) {
@@ -178,7 +193,7 @@ void automatic_recognizer() {  //проверить
     cout << "good: " << decoded_number << endl;
 }
 
-void random_number_generator() {    //правильно
+void random_number_generator() {    //правильно   ТОЛЬКО ЦЕЛЫЕ И ПОЛОЖИТЕЛЬНЫЕ ЗНАЧНИЕЯ
     int variable_m, variable_b, variable_c, variable_n, variable_s = 0, option;
     while (true) {
         cout << "select parameter option: (1 / 2) " << endl;
@@ -230,7 +245,7 @@ void random_number_generator() {    //правильно
 }
 //!ДИНАМИЧЕСКИЙ ДВУМЕРНЫЙ МАССИВ - 
 //! ДИНАМИЧЕСКОЕ ВЫДЕЛЕНИЕ ПАМЯТИ
-void dynamic_matrix_multiplication() {
+void dynamic_matrix_multiplication() {   
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     int rows;
     while (true) {
@@ -343,9 +358,57 @@ void static_dimensional_arrays() {
         cout << "\n";
     }
     cout << endl;
+    double max_sales = multiplication_result[0][0];
+    double min_sales = multiplication_result[0][0];
+    double max_commission = multiplication_result[0][1];
+    double min_commission = multiplication_result[0][1];
+    double total_sales = 0;
+    double total_commission = 0;
+    double total_money_through_sellers = 0;
 
+    for (int i = 0; i < seller_string; i++) {
+        double seller_sales = 0;
+        double seller_commission = 0;
+        for (int j = 0; j < commission_column; j++) {
+            seller_sales += multiplication_result[i][j];
+            seller_commission += multiplication_result[i][j];
+            total_money_through_sellers += multiplication_result[i][j];
+            if (j == 0) {
+                if (seller_sales > max_sales) {
+                    max_sales = seller_sales;
+                }
+                if (seller_sales < min_sales) {
+                    min_sales = seller_sales;
+                }
+            }
+            if (j == 1) {
+                if (seller_commission > max_commission) {
+                    max_commission = seller_commission;
+                }
+                if (seller_commission < min_commission) {
+                    min_commission = seller_commission;
+                }
+            }
+            total_commission += multiplication_result[i][j];
+        }
+        total_sales += seller_sales;
+    }
+    
+    cout << "highest sales: " << max_sales << ", lowest sales: \n" << min_sales << "high commission " << max_commission << ", low commission: " << min_commission << endl;
+    cout << "total amount of money received from sales " << total_sales << endl;
+    cout << "total commission amount " << total_commission << endl;
+    cout << "sum money " << total_money_through_sellers;
+}
 
+void static_dimensional() {
+    const int seller_string = 3;
+    const int product_column = 4;
 
+    const int price_string = 4;
+    const int commission_column = 2;
+
+    double table_A[seller_string][product_column]{ {5, 2, 0, 10}, {3, 5, 2, 5}, {20, 0, 0, 0} };
+    double table_B[price_string][commission_column]{ {1.20, 0.50}, {2.80, 0.40}, {5.00, 1.00}, {2.00, 1.50} };
 }
 
 void convert_base() {
