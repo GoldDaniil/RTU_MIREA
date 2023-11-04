@@ -100,7 +100,7 @@ void geometric_figures() {  //правильно
 
         cout << "the area of the rectangle = " << s_rectangle << endl << "\n";
     }
-    
+
     double height_triangle, base_triangle;
     while (true) {
         cout << "enter height triangle, base triangle: " << endl;
@@ -125,7 +125,7 @@ void geometric_figures() {  //правильно
         double area_of_triangle = (height_triangle * base_triangle) / 2;
         cout << "the area of the triangle = " << area_of_triangle << endl << "\n";
     }
-    
+
     double radius_circle;
     while (true) {
         cout << "enter radius circle: " << endl;
@@ -158,31 +158,31 @@ void automatic_recognizer() {  //проверить  //
         char current_digit = roman_numeral[i];
 
         switch (current_digit) {
-            case 'I':
-                decoded_number += 1;
-                break;
-            case 'V':
-                decoded_number += 5;
-                break;
-            case 'X':
-                decoded_number += 10;
-                break;
-            case 'L':
-                decoded_number += 50;
-                break;
-            case 'C':
-                decoded_number += 100;
-                break;
-            case 'D':
-                decoded_number += 500;
-                break;
-            case 'M':
-                decoded_number += 1000;
-                break;
-            default:
-                cout << "error \n";
-                return; // доделать
-                break;
+        case 'I':
+            decoded_number += 1;
+            break;
+        case 'V':
+            decoded_number += 5;
+            break;
+        case 'X':
+            decoded_number += 10;
+            break;
+        case 'L':
+            decoded_number += 50;
+            break;
+        case 'C':
+            decoded_number += 100;
+            break;
+        case 'D':
+            decoded_number += 500;
+            break;
+        case 'M':
+            decoded_number += 1000;
+            break;
+        default:
+            cout << "error \n";
+            return; // доделать
+            break;
         }
 
         if (i > 0 && roman_numeral[i - 1] > current_digit) {
@@ -245,7 +245,7 @@ void random_number_generator() {    //правильно   ТОЛЬКО ЦЕЛЫ
 }
 //!ДИНАМИЧЕСКИЙ ДВУМЕРНЫЙ МАССИВ - 
 //! ДИНАМИЧЕСКОЕ ВЫДЕЛЕНИЕ ПАМЯТИ
-void dynamic_matrix_multiplication() {   
+void dynamic_matrix_multiplication() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     int rows;
     while (true) {
@@ -393,7 +393,7 @@ void static_dimensional_arrays() {
         }
         total_sales += seller_sales;
     }
-    
+
     cout << "highest sales: " << max_sales << ", lowest sales: \n" << min_sales << "high commission " << max_commission << ", low commission: " << min_commission << endl;
     cout << "total amount of money received from sales " << total_sales << endl;
     cout << "total commission amount " << total_commission << endl;
@@ -441,7 +441,7 @@ void convert_base() {
         octal_number = "0";
     }
 
-    cout << "result: " << octal_number << endl;
+    cout << "result: " << octal_number << "010" << endl;
 }///тест
 //тест
 void arr() {
