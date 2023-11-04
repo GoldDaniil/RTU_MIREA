@@ -1,24 +1,29 @@
+// Homework 3 blocks of Procedural programmin.
+// The code uses the snake_case naming style!
+
 #include <iostream>
-#include <cmath>
-#include <cstdio>
 #include <fstream>
 #include <string>
 #include <algorithm>
 #include <Windows.h>
 #include <iomanip>
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 using namespace std;
 
-void CommentOutput();
-void Launcher();
+void comment_output(); //объявление функции для компилятора
+void launcher(); //объявление функции для компилятора
 
-void Loan() { // правильно
+void loan() { // правильно
     double loan_S, monthly_payment_m, date_n, procent_p, object_r;
     while (true) {
         cout << "enter procent_p : " << endl;
         if (!(cin >> procent_p)) {
             cin.clear();
-            cin.ignore(INT_MAX, '\n');
+            cin.ignore();
             cout << "Error, you entered a non-numeric value!" << endl;
             continue;
         }
@@ -49,7 +54,7 @@ void Loan() { // правильно
         break;
     }
 
-    if ((12 * (pow((1 + object_r), object_r) - 1)) != 0 && (loan_S > 0 && object_r > 0 && date_n > 0)) {
+    if ((12 * (pow((1 + object_r), object_r) - 1)) != 0 and (loan_S > 0 and object_r > 0 and date_n > 0)) {
         monthly_payment_m = (loan_S * object_r * pow((1 + object_r), date_n)) / (12 * (pow((1 + object_r), date_n) - 1));
         cout << "monthly_payment_m : " << monthly_payment_m << " in rubles for " << date_n << " months" << endl << endl;
     }
@@ -58,54 +63,60 @@ void Loan() { // правильно
     }
 }
 
-int Advance() {
-    double S, m, n, p = 0, eps, monthly_payment;
-    cout << "enter (S): ";
-    cin >> S;
-    cout << "enter (m): ";
-    cin >> m;
-    cout << "enter (n): ";
-    cin >> n;
-
-    if (S <= 0) {
-        cout << "error!" << endl;
-        return 1;
+int advance() {
+    double S, n, m = 0, mTest, r;
+    double rTemp = 0.0001;
+    while (true) {
+        cout << "enter S\n";
+        if (!(cin >> S)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error!\n";
+            continue;
+        }
+        break;
     }
-    if (n <= 0) {
-        cout << "error!" << endl;
-        return 1;
+    while (true) {
+        cout << "enter n\n";
+        if (!(cin >> n)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error!\n";
+            continue;
+        }
+        break;
+    }
+    while (true) {
+        cout << "enter m\n";
+        if (!(cin >> mTest)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error!\n";
+            continue;
+        }
+        break;
     }
 
-    eps = 0.00001;
+    if (n == 0 || S <= 0) {
+        cout << "error! \n";
+        return 0;
+    }
 
-    while (p <= 100) {
-        double r = p / 1200; // процентная ставка в месяц
-        monthly_payment = (S * r * pow(1 + r, n * 12)) / (12 * (pow(1 + r, n * 12) - 1));
-
-        if (fabs(m - monthly_payment) < eps) {
+    while (m < mTest) {
+        r = rTemp;
+        m = S * r * pow(1 + r, n) / (12 * (pow(1 + r, n) - 1));
+        if (r > 1) {
+            cout << "r exceeds 1, breaking the loop." << endl;
             break;
         }
-        else if (monthly_payment < m) {
-            p += 0.01;
-        }
-        else {
-            p -= 0.01;
-            eps += 0.01; // увеличиваем точность
-        }
+        rTemp += 0.0001;
     }
 
-    if (p > 100) {
-        cout << "error!" << endl;
-        return 1;
-    }
-    else {
-        cout << fixed << setprecision(4);
-        cout << "procent p: " << p << "%" << endl;
-    }
-    return 0; // Added return statement
+    cout << "p = " << r * 100 << "%" << endl;
+    return 0;
 }
 
-void WorkingWFiles() { //правильно
+void working_w_files() { //правильно
     string line, line_two, out_two;
 
     ofstream out_file("text.txt");
@@ -127,7 +138,7 @@ void WorkingWFiles() { //правильно
 
     while (getline(myText_two, line_two)) {
         for (char one_character : line_two) {
-            if (one_character >= '0' && one_character <= '9') {
+            if (one_character >= '0' and one_character <= '9') {
                 cout << one_character;
             }
         }
@@ -137,49 +148,48 @@ void WorkingWFiles() { //правильно
     cout << endl << endl;
 }
 
-void LetterSorting() { //правильно
-    SetConsoleCP(65001); // Changed from 1251 to 65001
-    SetConsoleOutputCP(65001); // Changed from 1251 to 65001
+void letter_sorting() {
+#ifdef _WIN32
+    SetConsoleCP(65001);
+    SetConsoleOutputCP(65001);
+#endif
+
     string lum;
     cin >> lum;
-    //cout << lum;
 
-    for (int i = 0; i < lum.length(); i++) {
-        for (int j = (i + 1); j < lum.length(); j++) {
-            if (tolower(lum[i]) > tolower(lum[j])) {
-                char local = lum[i];
-                lum[i] = lum[j];
-                lum[j] = local;
-            }
+    sort(lum.begin(), lum.end(), [](char a, char b) {
+        if (islower(a) and isupper(b)) {
+            return false;
         }
-    }
+        else if (isupper(a) and islower(b)) {
+            return true;
+        }
+        else {
+            return a < b;
+        }
+        });
+
     cout << lum << endl;
 }
 
 int main() {
-    Launcher();
+    launcher();
     return 0;
 }
 
-void Launcher() { // Fixed function name
+void launcher() { // Fixed function name
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     int task_number;
 
     while (true) {
-        CommentOutput();
+        comment_output();
         cout << endl;
         cout << "(if you want to exit the program, enter 'exit') \n";
         cout << "enter task_number: ";
-
         if (!(cin >> task_number)) {
             cin.clear();
-            cin.ignore(INT_MAX, '\n'); // Changed from cin.ignore() to cin.ignore(INT_MAX, '\n')
-            string input;
-            cin >> input;
-            if (input == "exit") {
-                break;
-            }
-            cout << "error \n" << endl;
+            cin.ignore();
+            cout << "error!\n" << endl;
             continue;
         }
 
@@ -189,27 +199,28 @@ void Launcher() { // Fixed function name
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "first task - 'Loan' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            Loan();
+            loan();
             break;
         case 2:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "second task - 'Advance' \n";
-            Advance(); // Function name corrected
+            SetConsoleTextAttribute(back_color, 0x07);
+            advance();
             break;
         case 3:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "third task - 'Copying a file' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            WorkingWFiles();
+            working_w_files();
             break;
-        case 4: // Changed from 5 to 4
+        case 4: 
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "fourth task - 'Filter' \n' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            LetterSorting();
+            letter_sorting();
             break;
         default:
             cout << "\nerror! \n";
@@ -218,7 +229,7 @@ void Launcher() { // Fixed function name
     }
 }
 
-void CommentOutput() {
+void comment_output() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(back_color, 0x0a);
     cout << "-----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Loan' \n 2 task - 'Advance' \n 3 task - 'WorkingWFiles' \n 4 task - 'LetterSorting'" << endl;
