@@ -10,10 +10,18 @@
 
 using namespace std;
 
-class FunctionHolder {
-public:
+namespace FunctionHolder {
     //void past_glory();   // обьявление функции
     //void comment_output(); // обьявление функции
+    void comment_output() {
+        HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
+        //SetConsoleTextAttribute(back_color, 0xf1); - синий на белом   
+        // a - зеленый
+        SetConsoleTextAttribute(back_color, 0x0a);
+        cout << "---------------------------------------------\n TASK NUMBER:  \n 1 task - 'File' \n 2 task - 'Number sign' \n 3 task - 'Geometric shapes' \n 4 task - 'Past glory' \n 5 task - 'Sine wave' \n 6 task - 'Automatic recognizer' \n 7 task - 'Pseudorandom number generator' \n 8 task - 'Matrix multiplication' \n 9 task - 'Number systems' " << endl;
+        SetConsoleTextAttribute(back_color, 0x07);
+
+    }  //обьявление функции
 
     void file_task() {  //правильно
         ofstream file("numbers.txt");
@@ -51,6 +59,48 @@ public:
             cout << "error!" << endl;
         }
     }
+
+    void past_glory() {       //правильно
+        HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+        //SetConsoleTextAttribute(h, num);
+        cout << "Past Glory 1912 " << endl;
+        for (int i = 0; i < 6; i++) {
+            SetConsoleTextAttribute(h, 0x1f);
+            for (int j = 0; j < 8; j++) {
+                cout << "* ";
+            }
+            if ((i % 2) == 0) {
+                SetConsoleTextAttribute(h, 0x44);
+            }
+            else {
+                SetConsoleTextAttribute(h, 0xff);
+            }
+
+            for (int j = 0; j < 15; j++) {
+                cout << "- ";
+            }
+            SetConsoleTextAttribute(h, 0x00);
+
+            cout << endl;
+        }
+
+        for (int i = 0; i < 6; i++) {
+            if ((i % 2) == 0) {
+                SetConsoleTextAttribute(h, 0x44);
+            }
+            else {
+                SetConsoleTextAttribute(h, 0xff);
+            }
+            for (int j = 0; j < 23; j++) {
+                cout << "- ";
+            }
+            SetConsoleTextAttribute(h, 0x00);
+
+            cout << endl;
+        }
+        SetConsoleTextAttribute(h, 0x07);
+        cout << endl << endl;
+    } //обьявление функции
 
     void number_sign() {    //правильно
         double variable_x;
@@ -617,64 +667,9 @@ public:
             }
         }
     }
-
-    void past_glory() {       //правильно
-        HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-        //SetConsoleTextAttribute(h, num);
-        cout << "Past Glory 1912 " << endl;
-        for (int i = 0; i < 6; i++) {
-            SetConsoleTextAttribute(h, 0x1f);
-            for (int j = 0; j < 8; j++) {
-                cout << "* ";
-            }
-            if ((i % 2) == 0) {
-                SetConsoleTextAttribute(h, 0x44);
-            }
-            else {
-                SetConsoleTextAttribute(h, 0xff);
-            }
-
-            for (int j = 0; j < 15; j++) {
-                cout << "- ";
-            }
-            SetConsoleTextAttribute(h, 0x00);
-
-            cout << endl;
-        }
-
-        for (int i = 0; i < 6; i++) {
-            if ((i % 2) == 0) {
-                SetConsoleTextAttribute(h, 0x44);
-            }
-            else {
-                SetConsoleTextAttribute(h, 0xff);
-            }
-            for (int j = 0; j < 23; j++) {
-                cout << "- ";
-            }
-            SetConsoleTextAttribute(h, 0x00);
-
-            cout << endl;
-        }
-        SetConsoleTextAttribute(h, 0x07);
-        cout << endl << endl;
-    } //обьявление функции
-
-    void comment_output() {
-        HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
-        //SetConsoleTextAttribute(back_color, 0xf1); - синий на белом   
-        // a - зеленый
-        SetConsoleTextAttribute(back_color, 0x0a);
-        cout << "---------------------------------------------\n TASK NUMBER:  \n 1 task - 'File' \n 2 task - 'Number sign' \n 3 task - 'Geometric shapes' \n 4 task - 'Past glory' \n 5 task - 'Sine wave' \n 6 task - 'Automatic recognizer' \n 7 task - 'Pseudorandom number generator' \n 8 task - 'Matrix multiplication' \n 9 task - 'Number systems' " << endl;
-        SetConsoleTextAttribute(back_color, 0x07);
-
-    }  //обьявление функции
 };
 
 int main() {
-    FunctionHolder combining_function;
-    combining_function.task_launcher();
-
+    FunctionHolder::task_launcher();
     return 0;
 }
-
