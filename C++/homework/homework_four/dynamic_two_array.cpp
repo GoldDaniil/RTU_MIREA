@@ -74,12 +74,58 @@ void two_dimensional_array() {
             }
             cout << endl;
         }
+        //  a/b == a * b**-1
 
         for (int i = 0; i < number_lines; i++) {
             delete[] array[i];
         }
         delete[] array;
     }
+
+    while (true) {
+        char actions_matrix;
+        SetConsoleTextAttribute(matrix_color, 0x0a);
+        cout << "\nwhat to do with matrices?\n";
+        SetConsoleTextAttribute(matrix_color, 0x07);
+        cout << "if not, then enter ";
+        SetConsoleTextAttribute(matrix_color, 0x0a);
+        cout << "'exit'";
+        SetConsoleTextAttribute(matrix_color, 0x07);
+        cout << "!";
+        cout << "\nif yes, enter the action sign : ";
+        SetConsoleTextAttribute(matrix_color, 0x0a);
+        cout << "' + ', ' - ', ' / ', ' * '";
+        SetConsoleTextAttribute(matrix_color, 0x07);
+        cout << "!\n";
+        cin >> actions_matrix;
+        switch (actions_matrix) {
+        case '+':
+            cout << "sum of matrices: \n";
+
+            break;
+        case '-':
+            cout << "matrix difference: \n";
+            
+            break;
+        case '/':
+            cout << "quotient of matrices: \n";
+
+            break;
+        case '*':
+            cout << "product of matrices: \n";
+            
+            break;
+        case 'exit':
+            cout << "asdsda \n";
+            return;
+            break;
+        default:
+            cout << "error!\n";
+            break;
+        }
+
+    }
+
 }
 
 //3 подмассива с 4 элементами
