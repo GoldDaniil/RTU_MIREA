@@ -48,10 +48,10 @@ void two_dimensional_array() {
 
             array[i] = new double[number_elements];
             for (int j = 0; j < number_elements; j++) {
+                string arr_exit;
                 cout << "enter element " << j + 1 << " of row " << i + 1 << " of matrix " << k + 1 << ": \n";
                 while (true) {
-                    string arr_exit;
-                    if (arr_exit == "end") {
+                    if (arr_exit == "exit" or arr_exit == "end") {
                         return;
                     }
                     if (!(cin >> array[i][j])) {
@@ -82,30 +82,36 @@ void two_dimensional_array() {
         delete[] array;
     }
 
+    char actions_matrix;
+
+    SetConsoleTextAttribute(matrix_color, 0x0a);
+    cout << "\nwhat to do with matrices?\n";
+    SetConsoleTextAttribute(matrix_color, 0x07);
+    cout << "if not, then enter ";
+    SetConsoleTextAttribute(matrix_color, 0x0a);
+    cout << "'exit'";
+    SetConsoleTextAttribute(matrix_color, 0x07);
+    cout << "!";
+    cout << "\nif yes, enter the action sign : ";
+    SetConsoleTextAttribute(matrix_color, 0x0a);
+    cout << "' + ', ' - ', ' / ', ' * '";
+    SetConsoleTextAttribute(matrix_color, 0x07);
+    cout << "!\n";
+
     while (true) {
-        char actions_matrix;
-        SetConsoleTextAttribute(matrix_color, 0x0a);
-        cout << "\nwhat to do with matrices?\n";
-        SetConsoleTextAttribute(matrix_color, 0x07);
-        cout << "if not, then enter ";
-        SetConsoleTextAttribute(matrix_color, 0x0a);
-        cout << "'exit'";
-        SetConsoleTextAttribute(matrix_color, 0x07);
-        cout << "!";
-        cout << "\nif yes, enter the action sign : ";
-        SetConsoleTextAttribute(matrix_color, 0x0a);
-        cout << "' + ', ' - ', ' / ', ' * '";
-        SetConsoleTextAttribute(matrix_color, 0x07);
-        cout << "!\n";
         cin >> actions_matrix;
         switch (actions_matrix) {
         case '+':
             cout << "sum of matrices: \n";
 
+            for (int i = 0; i < number_matrices; i++) {
+                cout << "r";
+            }
+
             break;
         case '-':
             cout << "matrix difference: \n";
-            
+
             break;
         case '/':
             cout << "quotient of matrices: \n";
@@ -113,7 +119,7 @@ void two_dimensional_array() {
             break;
         case '*':
             cout << "product of matrices: \n";
-            
+
             break;
         case 'exit':
             cout << "asdsda \n";
@@ -123,9 +129,7 @@ void two_dimensional_array() {
             cout << "error!\n";
             break;
         }
-
     }
-
 }
 
 //3 подмассива с 4 элементами
