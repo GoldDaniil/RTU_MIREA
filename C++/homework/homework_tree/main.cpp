@@ -2,11 +2,12 @@
 // The code uses the snake_case naming style!
 
 #include <iostream>
+#include <limits>
+#include <cmath>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <algorithm>
-#include <Windows.h>
-#include <iomanip>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -64,55 +65,45 @@ void loan() { // правильно
 }
 
 int advance() {
-    double S, n, m = 0, mTest, r;
-    double rTemp = 0.0001;
-    while (true) {
-        cout << "enter S\n";
-        if (!(cin >> S)) {
+    double monthly_payment_mf, procent_p, t, object_r, monthly_payment_m, loan_S, date_n;;
+    bool f1 = false;
+    while (!f1) {
+        cout << "enter S:\n";
+        if (!(cin >> loan_S)) {
             cin.clear();
             cin.ignore();
-            cout << "error!\n";
-            continue;
+            cout << "error\n";
         }
-        break;
-    }
-    while (true) {
-        cout << "enter n\n";
-        if (!(cin >> n)) {
+        cout << "enter m:\n";
+        if (!(cin >> monthly_payment_m)) {
             cin.clear();
             cin.ignore();
-            cout << "error!\n";
-            continue;
+            cout << "error\n";
         }
-        break;
-    }
-    while (true) {
-        cout << "enter m\n";
-        if (!(cin >> mTest)) {
+        cout << "enter n:\n";
+        if (!(cin >> date_n)) {
             cin.clear();
             cin.ignore();
-            cout << "error!\n";
-            continue;
+            cout << "error\n";
         }
-        break;
+        else if (loan_S < 0 || monthly_payment_m < 0 || date_n < 0) {
+            cout << "error\n";
+        }
+        else {
+            f1 = true;
+        }
     }
 
-    if (n == 0 || S <= 0) {
-        cout << "error! \n";
-        return 0;
-    }
-
-    while (m < mTest) {
-        r = rTemp;
-        m = S * r * pow(1 + r, n) / (12 * (pow(1 + r, n) - 1));
-        if (r > 1) {
-            cout << "r exceeds 1, breaking the loop." << endl;
+    for (procent_p = 0; procent_p <= 300; procent_p += 0.01) {
+        object_r = procent_p / 100;
+        t = 12 * (pow((1 + object_r), date_n) - 1);
+        monthly_payment_mf = (loan_S * object_r * pow((1 + object_r), date_n / t));
+        if (abs(monthly_payment_m - monthly_payment_mf) < 1) {
             break;
         }
-        rTemp += 0.0001;
     }
 
-    cout << "p = " << r * 100 << "%" << endl;
+    cout << "\n" << procent_p << "%" << endl;
     return 0;
 }
 
@@ -215,7 +206,7 @@ void launcher() { // Fixed function name
             SetConsoleTextAttribute(back_color, 0x07);
             working_w_files();
             break;
-        case 4: 
+        case 4:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "fourth task - 'Filter' \n' \n";
