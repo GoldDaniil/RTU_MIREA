@@ -92,7 +92,9 @@ int advance() {
         else {
             f1 = true;
         }
-    }
+    } //динамический шаг
+    //бинарный поиск - сравнение по колвам шагам
+    //подобрать начальный шаг
 
     for (procent_p = 0; procent_p <= 300; procent_p += 0.01) {
         object_r = procent_p / 100;
