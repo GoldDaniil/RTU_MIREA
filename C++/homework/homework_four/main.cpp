@@ -7,18 +7,16 @@
 #include<stdio.h>
 #include<cmath>
 #include<Windows.h>
+#include<time.h>
 
 using namespace std;
 
 namespace FunctionHolder {
-    //void past_glory();   // обьявление функции
-    //void comment_output(); // обьявление функции
+    HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
+   
     void comment_output() {
-        HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
-        //SetConsoleTextAttribute(back_color, 0xf1); - синий на белом   
-        // a - зеленый
         SetConsoleTextAttribute(back_color, 0x0a);
-        cout << "---------------------------------------------\n TASK NUMBER:  \n 1 task - 'File' \n 2 task - 'Number sign' \n 3 task - 'Geometric shapes' \n 4 task - 'Past glory' \n 5 task - 'Sine wave' \n 6 task - 'Automatic recognizer' \n 7 task - 'Pseudorandom number generator' \n 8 task - 'Matrix multiplication' \n 9 task - 'Number systems' " << endl;
+        cout << "-------------------------------------------------\n TASK NUMBER:  \n 1 task - 'File' \n 2 task - 'Number sign' \n 3 task - 'Geometric shapes' \n 4 task - 'Past glory' \n 5 task - 'Sine wave' \n 6 task - 'Automatic recognizer' \n 7 task - 'Pseudorandom number generator' \n 8 task - 'Matrix multiplication' \n 9 task - 'Number systems' " << endl;
         SetConsoleTextAttribute(back_color, 0x07);
 
     }  //обьявление функции
@@ -42,6 +40,8 @@ namespace FunctionHolder {
             }
             file.close();
             // повторное открытие файла и нахождение суммы чисел
+            clock_t start_time = clock();
+
             ifstream read_file("numbers.txt");
             if (read_file.is_open()) {
                 double num, sum = 0;
@@ -54,53 +54,66 @@ namespace FunctionHolder {
             else {
                 cout << "error!" << endl;
             }
+
+            clock_t end_time = clock();
+            double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+            SetConsoleTextAttribute(back_color, 0x0b); //бирюзовый
+            cout << "function execution time in milliseconds: " << spent_time << " ml \n\n";
+            SetConsoleTextAttribute(back_color, 0x07);
+
         }
         else {
             cout << "error!" << endl;
         }
     }
 
-    void past_glory() {       //правильно
-        HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-        //SetConsoleTextAttribute(h, num);
+    void past_glory() {    
+        clock_t start_time = clock();
+
         cout << "Past Glory 1912 " << endl;
         for (int i = 0; i < 6; i++) {
-            SetConsoleTextAttribute(h, 0x1f);
+            SetConsoleTextAttribute(back_color, 0x1f);
             for (int j = 0; j < 8; j++) {
                 cout << "* ";
             }
             if ((i % 2) == 0) {
-                SetConsoleTextAttribute(h, 0x44);
+                SetConsoleTextAttribute(back_color, 0x44);
             }
             else {
-                SetConsoleTextAttribute(h, 0xff);
+                SetConsoleTextAttribute(back_color, 0xff);
             }
 
             for (int j = 0; j < 15; j++) {
                 cout << "- ";
             }
-            SetConsoleTextAttribute(h, 0x00);
+            SetConsoleTextAttribute(back_color, 0x00);
 
             cout << endl;
         }
 
         for (int i = 0; i < 6; i++) {
             if ((i % 2) == 0) {
-                SetConsoleTextAttribute(h, 0x44);
+                SetConsoleTextAttribute(back_color, 0x44);
             }
             else {
-                SetConsoleTextAttribute(h, 0xff);
+                SetConsoleTextAttribute(back_color, 0xff);
             }
             for (int j = 0; j < 23; j++) {
                 cout << "- ";
             }
-            SetConsoleTextAttribute(h, 0x00);
+            SetConsoleTextAttribute(back_color, 0x00);
 
             cout << endl;
         }
-        SetConsoleTextAttribute(h, 0x07);
+        SetConsoleTextAttribute(back_color, 0x07);
         cout << endl << endl;
-    } //обьявление функции
+
+        clock_t end_time = clock();
+        double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+        SetConsoleTextAttribute(back_color, 0x0b); //бирюзовый
+        cout << "function execution time in milliseconds: " << spent_time << " ml \n\n";
+        SetConsoleTextAttribute(back_color, 0x07);
+    } 
 
     void number_sign() {    //правильно
         double variable_x;
@@ -114,6 +127,9 @@ namespace FunctionHolder {
             }
             break;
         }
+
+        clock_t start_time = clock();
+
         if (variable_x > 0) {
             cout << 1 << endl << endl;
         }
@@ -123,6 +139,13 @@ namespace FunctionHolder {
         else if (variable_x == 0) {
             cout << 0 << endl << endl;
         }
+
+        clock_t end_time = clock();
+        double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+        SetConsoleTextAttribute(back_color, 0x0b); //бирюзовый
+        cout << "function execution time in milliseconds: " << spent_time << " ml \n\n";
+        SetConsoleTextAttribute(back_color, 0x07);
+
     }
 
     void geometric_figures() {  //правильно
@@ -205,6 +228,8 @@ namespace FunctionHolder {
         cout << "enter: ";
         cin >> roman_numeral;
 
+        clock_t start_time = clock();
+
         for (int i = 0; i < roman_numeral.length(); i++) {
             char current_digit = roman_numeral[i];
 
@@ -242,6 +267,13 @@ namespace FunctionHolder {
         }
 
         cout << "good: " << decoded_number << endl;
+
+        clock_t end_time = clock();
+        double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+        SetConsoleTextAttribute(back_color, 0x0b); //бирюзовый
+        cout << "function execution time in milliseconds: " << spent_time << " ml \n\n";
+        SetConsoleTextAttribute(back_color, 0x07);
+
     }
 
     void random_number_generator() {    //правильно   ТОЛЬКО ЦЕЛЫЕ И ПОЛОЖИТЕЛЬНЫЕ ЗНАЧНИЕЯ
@@ -288,16 +320,21 @@ namespace FunctionHolder {
             }
             break;
         }
+        clock_t start_time = clock();
+
         for (int i = 0; i < variable_n; i++) {
             variable_s = (variable_m * variable_s + variable_b) % variable_c;
             cout << variable_s << " ";
         }
         cout << endl << endl;
+        clock_t end_time = clock();
+        double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+        SetConsoleTextAttribute(back_color, 0x0b); //бирюзовый
+        cout << "function execution time in milliseconds: " << spent_time << " ml \n\n";
+        SetConsoleTextAttribute(back_color, 0x07);
     }
-    //!ДИНАМИЧЕСКИЙ ДВУМЕРНЫЙ МАССИВ - 
-    //! ДИНАМИЧЕСКОЕ ВЫДЕЛЕНИЕ ПАМЯТИ
+   
     void dynamic_matrix_multiplication() {
-        HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
         int rows;
         while (true) {
             cout << "enter amount rows: \n";
@@ -359,9 +396,10 @@ namespace FunctionHolder {
 
         delete matrix;
     }
-    //!НЕ ТРОГАТЬ 
     //! фукнция НЕ принадлежит лаунчеру
     void static_dimensional_arrays() {
+        clock_t start_time = clock();
+
         const int seller_string = 3;
         const int product_column = 4;
 
@@ -425,7 +463,7 @@ namespace FunctionHolder {
         for (int i = 0; i < seller_string; i++) {
             total_sales += multiplication_result[i][0];
             total_commission += multiplication_result[i][1];
-        
+
             if (multiplication_result[i][0] > max_sales) {
                 max_sales = multiplication_result[i][0];
                 max_sales_seller = i;
@@ -461,17 +499,13 @@ namespace FunctionHolder {
         cout << "3) total sales: " << total_sales << endl;
         cout << "4) total commission: " << total_commission << endl;
         cout << "5) total money passed through sellers hands: " << total_sales + total_commission << endl << endl;
-    }
 
-    void static_dimensional() {
-        const int seller_string = 3;
-        const int product_column = 4;
+        clock_t end_time = clock();
+        double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+        SetConsoleTextAttribute(back_color, 0x0b); //бирюзовый
+        cout << "function execution time in milliseconds: " << spent_time << " ml \n\n";
+        SetConsoleTextAttribute(back_color, 0x07);
 
-        const int price_string = 4;
-        const int commission_column = 2;
-
-        double table_A[seller_string][product_column]{ {5, 2, 0, 10}, {3, 5, 2, 5}, {20, 0, 0, 0} };
-        double table_B[price_string][commission_column]{ {1.20, 0.50}, {2.80, 0.40}, {5.00, 1.00}, {2.00, 1.50} };
     }
 
     void convert_base() {
@@ -508,6 +542,7 @@ namespace FunctionHolder {
     }///тест
     //тест
     void arr() {
+        clock_t start_time = clock();
         int massiv[4]{ 1, 2, 3, 4 };
         cout << massiv << endl;
         cout << &massiv << endl;
@@ -528,70 +563,17 @@ namespace FunctionHolder {
 
         cout << *(local + 2) << endl;
 
-        //delete massiv;
-        //cout << " \n";
-        //
-        //cout << massiv << endl;
-        //cout << &massiv << endl;
-        //cout << *massiv << endl;
-        //cout << &massiv[0] << endl;
-        ////cout << *(massiv[0]) << endl;
-        //cout << &massiv[1] << endl;
-        ////cout << *(massiv[1]) << endl;
-        //cout << &massiv[2] << endl;
-        //cout << &massiv[3] << endl;
+        clock_t end_time = clock();
+        double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+        SetConsoleTextAttribute(back_color, 0x0b); //бирюзовый
+        cout << "function execution time in milliseconds: " << spent_time << " ml \n\n";
+        SetConsoleTextAttribute(back_color, 0x07);
 
-        //cout << *(massiv[2]) << endl;  //разница между адресами 4 байта
     }
-    //тест
-    //void matrix_multiplication() {
-    //    int matrix_buffer_lines;
-    //    cout << "enter number of lines: \n";
-    //    while (true) {
-    //        if (!(cin >> matrix_buffer_lines)) {
-    //            cin.clear();
-    //            cin.ignore();
-    //            cout << "error \n";
-    //            continue;
-    //        }
-    //        break;
-    //    }
-    //    int matrix_buffer_column;
-    //    cout << "enter number of column: \n";
-    //    while (true) {
-    //        if (!(cin >> matrix_buffer_column)) {
-    //            cin.clear();
-    //            cin.ignore();
-    //            cout << "error \n";
-    //            continue;
-    //        }
-    //        break;
-    //    }
-    //
-    //    const int matrix_line = matrix_buffer_lines;
-    //    const int matrix_column = matrix_buffer_column;
-    //    int matrix[matrix_line][matrix_column];  //почему ошибка
-    //
-    //    //
-    //     Выделяем память для массива
-    //    int** matrix = new int* [matrix_buffer_lines];
-    //    for (int i = 0; i < matrix_buffer_lines; i++) {
-    //        matrix[i] = new int[matrix_buffer_column];
-    //    }
-    //
-    //     Используйте массив matrix здесь
-    //
-    //     Не забудьте освободить память после использования массива
-    //    for (int i = 0; i < matrix_buffer_lines; i++) {
-    //        delete[] matrix[i];
-    //    }
-    //    delete[] matrix;
-    //    //
-    //}
-    void task_launcher() {
-        HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
-        int task_number;
 
+    //лаунчер
+    void task_launcher() {
+        int task_number;
         while (true) {
             comment_output();
             cout << endl;
@@ -634,7 +616,7 @@ namespace FunctionHolder {
             case 4:
                 cout << "\n";
                 SetConsoleTextAttribute(back_color, 0x0a);
-                cout << "fourth task - 'Past Glory\n' \n";
+                cout << "fourth task - 'Past Glory' \n";
                 SetConsoleTextAttribute(back_color, 0x07);
                 past_glory();
                 break;
@@ -677,7 +659,7 @@ namespace FunctionHolder {
                 cout << "\nerror! \n";
                 break;
             }
-        }
+        }   
     }
 };
 
