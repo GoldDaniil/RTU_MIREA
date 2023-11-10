@@ -401,7 +401,7 @@ namespace FunctionHolder {
             return;
         }
 
-        cout << "result two-dimensional array \ntable C: \n";
+        cout << "result two-dimensional array: \ntable C: \n";
         for (int i = 0; i < seller_string; i++) {
             for (int j = 0; j < commission_column; j++) {
                 cout << multiplication_result[i][j] << " ";
@@ -409,46 +409,58 @@ namespace FunctionHolder {
             cout << "\n";
         }
         cout << endl;
+
+        double total_sales = 0;
+        double total_commission = 0;
         double max_sales = multiplication_result[0][0];
         double min_sales = multiplication_result[0][0];
         double max_commission = multiplication_result[0][1];
         double min_commission = multiplication_result[0][1];
-        double total_sales = 0;
-        double total_commission = 0;
-        double total_money_through_sellers = 0;
+
+        int max_sales_seller = 0;
+        int min_sales_seller = 0;
+        int max_commission_seller = 0;
+        int min_commission_seller = 0;
 
         for (int i = 0; i < seller_string; i++) {
-            double seller_sales = 0;
-            double seller_commission = 0;
-            for (int j = 0; j < commission_column; j++) {
-                seller_sales += multiplication_result[i][j];
-                seller_commission += multiplication_result[i][j];
-                total_money_through_sellers += multiplication_result[i][j];
-                if (j == 0) {
-                    if (seller_sales > max_sales) {
-                        max_sales = seller_sales;
-                    }
-                    if (seller_sales < min_sales) {
-                        min_sales = seller_sales;
-                    }
-                }
-                if (j == 1) {
-                    if (seller_commission > max_commission) {
-                        max_commission = seller_commission;
-                    }
-                    if (seller_commission < min_commission) {
-                        min_commission = seller_commission;
-                    }
-                }
-                total_commission += multiplication_result[i][j];
+            total_sales += multiplication_result[i][0];
+            total_commission += multiplication_result[i][1];
+        
+            if (multiplication_result[i][0] > max_sales) {
+                max_sales = multiplication_result[i][0];
+                max_sales_seller = i;
             }
-            total_sales += seller_sales;
-        }
+            if (multiplication_result[i][0] < min_sales) {
+                min_sales = multiplication_result[i][0];
+                min_sales_seller = i;
+            }
 
-        cout << "highest sales: " << max_sales << ", lowest sales: \n" << min_sales << "high commission " << max_commission << ", low commission: " << min_commission << endl;
-        cout << "total amount of money received from sales " << total_sales << endl;
-        cout << "total commission amount " << total_commission << endl;
-        cout << "sum money " << total_money_through_sellers;
+            if (multiplication_result[i][1] > max_commission) {
+                max_commission = multiplication_result[i][1];
+                max_commission_seller = i;
+            }
+            if (multiplication_result[i][1] < min_commission) {
+                min_commission = multiplication_result[i][1];
+                min_commission_seller = i;
+            }
+        }
+        cout << "result two-dimensional array: \ntable C: \n";
+        for (int i = 0; i < seller_string; i++) {
+            for (int j = 0; j < commission_column; j++) {
+                cout << multiplication_result[i][j] << " ";
+            }
+            cout << "\n";
+        }
+        cout << endl;
+
+        // Output additional information
+        cout << "1)seller " << max_sales_seller + 1 << " achieved the highest sales: " << max_sales << endl;
+        cout << "  seller " << min_sales_seller + 1 << " achieved the lowest sales: " << min_sales << endl;
+        cout << "2) seller " << max_commission_seller + 1 << " received the highest commission: " << max_commission << endl;
+        cout << "  seller " << min_commission_seller + 1 << " received the lowest commission: " << min_commission << endl;
+        cout << "3) total sales: " << total_sales << endl;
+        cout << "4) total commission: " << total_commission << endl;
+        cout << "5) total money passed through sellers hands: " << total_sales + total_commission << endl << endl;
     }
 
     void static_dimensional() {
