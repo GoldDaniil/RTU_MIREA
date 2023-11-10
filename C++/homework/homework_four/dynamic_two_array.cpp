@@ -44,7 +44,7 @@ void two_dimensional_array() {
 
         double** array = new double* [number_lines];
 
-        for (int i = 0; i < number_lines; i++) { // строим матрицу A с динамическим выделением памяти
+        for (int i = 0; i < number_lines; i++) { // строим матрицу A с выделением памяти
 
             array[i] = new double[number_elements];
             for (int j = 0; j < number_elements; j++) {
@@ -103,7 +103,6 @@ void two_dimensional_array() {
         switch (actions_matrix) {
         case '+':
             cout << "sum of matrices: \n";
-
             for (int i = 0; i < number_matrices; i++) {
                 cout << "r";
             }
@@ -119,6 +118,19 @@ void two_dimensional_array() {
             break;
         case '*':
             cout << "product of matrices: \n";
+
+
+
+            double ***number_lines
+            double multiplication_result[number_lines][number_elements] = {};
+            for (int i = 0; i < number_lines; i++) {
+                for (int j = 0; j < number_elements; j++) {
+                    for (int k = 0; k < number_matrices; k++) {
+                        multiplication_result[i][j] += table_A[i][k] * table_B[k][j];
+                    }
+                }
+            }
+
 
             break;
         case 'exit':
