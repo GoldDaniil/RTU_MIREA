@@ -1,230 +1,148 @@
-// Homework 3 blocks of Procedural programmin.
-// The code uses the snake_case naming style!
-
-#include <iostream>
-#include <limits>
-#include <cmath>
-#include <iomanip>
-#include <fstream>
-#include <string>
-#include <algorithm>
-
-#ifdef _WIN32
-#include <Windows.h>
-#endif
+//Using snake_case! Using camelCase for class!
+#include<iostream>
+#include<Windows.h>
+//тест
+#include<time.h>
 
 using namespace std;
 
-void comment_output(); //объявление функции для компилятора
-void launcher(); //объявление функции для компилятора
-
-void loan() { // правильно
-    double loan_S, monthly_payment_m, date_n, procent_p, object_r;
+void two_dimensional_array() {
+    HANDLE matrix_color = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(matrix_color, 0x0a);
+    int number_matrices;
     while (true) {
-        cout << "enter procent_p : " << endl;
-        if (!(cin >> procent_p)) {
+        cout << "enter the number of matrices: \n";
+        if (!(cin >> number_matrices)) {
             cin.clear();
             cin.ignore();
-            cout << "Error, you entered a non-numeric value!" << endl;
+            cout << "error\n";
             continue;
         }
         break;
     }
+    SetConsoleTextAttribute(matrix_color, 0x07);
 
-    object_r = procent_p / 100;
-    cout << "object_r : " << object_r << endl;
+    for (int k = 0; k < number_matrices; k++) { // создание матриц
+
+        int number_lines;
+        double number_elements;
+        while (true) {
+            cout << "\nenter the number of rows of matrix: \n";
+            if (!(cin >> number_lines)) {
+                cin.clear();
+                cin.ignore();
+                cout << "error\n";
+                continue;
+            }
+            cout << "enter the number of elements in each row: \n";
+            if (!(cin >> number_elements)) {
+                cin.clear();
+                cin.ignore();
+                cout << "error\n";
+                continue;
+            }
+            break;
+        }
+
+        double** array = new double* [number_lines];
+
+        for (int i = 0; i < number_lines; i++) { // строим матрицу A с выделением памяти
+
+            array[i] = new double[number_elements];
+            for (int j = 0; j < number_elements; j++) {
+                string arr_exit;
+                cout << "enter element " << j + 1 << " of row " << i + 1 << " of matrix " << k + 1 << ": \n";
+                while (true) {
+                    if (arr_exit == "exit" or arr_exit == "end") {
+                        return;
+                    }
+                    if (!(cin >> array[i][j])) {
+                        cin.clear();
+                        cin.ignore();
+                        cout << "error!\n";
+                        continue;
+                    }
+                    break;
+                }
+            }
+        }
+
+        SetConsoleTextAttribute(matrix_color, 0x0a);
+        cout << endl << "matrix " << k + 1 << ":\n";
+        SetConsoleTextAttribute(matrix_color, 0x07);
+        for (int i = 0; i < number_lines; i++) {
+            for (int j = 0; j < number_elements; j++) {
+                cout << array[i][j] << " ";
+            }
+            cout << endl;
+        }
+        //  a/b == a * b**-1
+
+        for (int i = 0; i < number_lines; i++) {
+            delete[] array[i];
+        }
+        delete[] array;
+    }
+
+    char actions_matrix;
+
+    SetConsoleTextAttribute(matrix_color, 0x0a);
+    cout << "\nwhat to do with matrices?\n";
+    SetConsoleTextAttribute(matrix_color, 0x07);
+    cout << "if not, then enter ";
+    SetConsoleTextAttribute(matrix_color, 0x0a);
+    cout << "'exit'";
+    SetConsoleTextAttribute(matrix_color, 0x07);
+    cout << "!";
+    cout << "\nif yes, enter the action sign : ";
+    SetConsoleTextAttribute(matrix_color, 0x0a);
+    cout << "' + ', ' - ', ' / ', ' * '";
+    SetConsoleTextAttribute(matrix_color, 0x07);
+    cout << "!\n";
 
     while (true) {
-        cout << "enter loan_S in rubles : " << endl;
-        if (!(cin >> loan_S)) {
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
-            cout << "Error, you entered a non-numeric value!" << endl;
-            continue;
-        }
-        break;
-    }
-    while (true) {
-        cout << "enter date_n : " << endl;
-        if (!(cin >> date_n)) {
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
-            cout << "Error, you entered a non-numeric value!" << endl;
-            continue;
-        }
-        break;
-    }
+        cin >> actions_matrix;
+        switch (actions_matrix) {
+        case '+':
+            //действия с матрицами 
 
-    if ((12 * (pow((1 + object_r), object_r) - 1)) != 0 and (loan_S > 0 and object_r > 0 and date_n > 0)) {
-        monthly_payment_m = (loan_S * object_r * pow((1 + object_r), date_n)) / (12 * (pow((1 + object_r), date_n) - 1));
-        cout << "monthly_payment_m : " << monthly_payment_m << " in rubles for " << date_n << " months" << endl << endl;
-    }
-    else {
-        cout << "function m cannot be calculated" << endl << endl;
-    }
-}
 
-int advance() {
-    double monthly_payment_mf, procent_p, t, object_r, monthly_payment_m, loan_S, date_n;;
-    bool f1 = false;
-    while (!f1) {
-        cout << "enter S:\n";
-        if (!(cin >> loan_S)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error\n";
-        }
-        cout << "enter m:\n";
-        if (!(cin >> monthly_payment_m)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error\n";
-        }
-        cout << "enter n:\n";
-        if (!(cin >> date_n)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error\n";
-        }
-        else if (loan_S < 0 || monthly_payment_m < 0 || date_n < 0) {
-            cout << "error\n";
-        }
-        else {
-            f1 = true;
-        }
-    } //динамический шаг
-    //бинарный поиск - сравнение по колвам шагам
-    //подобрать начальный шаг
 
-    for (procent_p = 0; procent_p <= 300; procent_p += 0.01) {
-        object_r = procent_p / 100;
-        t = 12 * (pow((1 + object_r), date_n) - 1);
-        monthly_payment_mf = (loan_S * object_r * pow((1 + object_r), date_n / t));
-        if (abs(monthly_payment_m - monthly_payment_mf) < 1) {
+
+            //проверка на возможность сложения
+            break;
+        case '-':
+            cout << "matrix difference: \n";
+
+
+
+            break;
+        case '/':
+            cout << "quotient of matrices: \n";
+
+            break;
+        case '*':
+            cout << "product of matrices: \n";
+
+
+
+
+            break;
+
+
+        case 'exit': //выход из программы
+            cout << "asdsda \n";
+            return;
+            break;
+        default:
+            cout << "error!\n";
             break;
         }
     }
-
-    cout << "\n" << procent_p << "%" << endl;
-    return 0;
-}
-
-void working_w_files() { //правильно
-    string line, line_two, out_two;
-
-    ofstream out_file("text.txt");
-    out_file << "asdkasodkaoskdpaskdoakspdkasodkpaosdkaposdkapsodkaopskd";
-
-    out_file.close();
-
-    ifstream myText("text.txt");
-    while (getline(myText, line)) {
-        cout << line << endl;
-    }
-    myText.close();
-
-    ofstream out("text.txt");
-    out << "34a43a34atf3gfd";
-    out.close();
-
-    ifstream myText_two("text.txt");
-
-    while (getline(myText_two, line_two)) {
-        for (char one_character : line_two) {
-            if (one_character >= '0' and one_character <= '9') {
-                cout << one_character;
-            }
-        }
-    }
-    myText_two.close();
-
-    cout << endl << endl;
-}
-
-void letter_sorting() {
-#ifdef _WIN32
-    SetConsoleCP(65001);
-    SetConsoleOutputCP(65001);
-#endif
-
-    string lum;
-    cin >> lum;
-
-    sort(lum.begin(), lum.end(), [](char a, char b) {
-        if (islower(a) and isupper(b)) {
-            return false;
-        }
-        else if (isupper(a) and islower(b)) {
-            return true;
-        }
-        else {
-            return a < b;
-        }
-        });
-
-    cout << lum << endl;
 }
 
 int main() {
-    launcher();
+    two_dimensional_array();
+
     return 0;
-}
-
-void launcher() { // Fixed function name
-    HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
-    int task_number;
-
-    while (true) {
-        comment_output();
-        cout << endl;
-        cout << "(if you want to exit the program, enter 'exit') \n";
-        cout << "enter task_number: ";
-        if (!(cin >> task_number)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error!\n" << endl;
-            continue;
-        }
-
-        switch (task_number) {
-        case 1:
-            cout << "\n";
-            SetConsoleTextAttribute(back_color, 0x0a);
-            cout << "first task - 'Loan' \n";
-            SetConsoleTextAttribute(back_color, 0x07);
-            loan();
-            break;
-        case 2:
-            cout << "\n";
-            SetConsoleTextAttribute(back_color, 0x0a);
-            cout << "second task - 'Advance' \n";
-            SetConsoleTextAttribute(back_color, 0x07);
-            advance();
-            break;
-        case 3:
-            cout << "\n";
-            SetConsoleTextAttribute(back_color, 0x0a);
-            cout << "third task - 'Copying a file' \n";
-            SetConsoleTextAttribute(back_color, 0x07);
-            working_w_files();
-            break;
-        case 4:
-            cout << "\n";
-            SetConsoleTextAttribute(back_color, 0x0a);
-            cout << "fourth task - 'Filter' \n' \n";
-            SetConsoleTextAttribute(back_color, 0x07);
-            letter_sorting();
-            break;
-        default:
-            cout << "\nerror! \n";
-            break;
-        }
-    }
-}
-
-void comment_output() {
-    HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(back_color, 0x0a);
-    cout << "-----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Loan' \n 2 task - 'Advance' \n 3 task - 'WorkingWFiles' \n 4 task - 'LetterSorting'" << endl;
-    SetConsoleTextAttribute(back_color, 0x07);
 }
