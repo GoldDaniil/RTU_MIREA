@@ -97,9 +97,10 @@ void file_task() {  //правильно
         ofstream file("numbers.txt");
 
         if (file.is_open()) {   // использованы исключения с помощью try catch 
-            cout << "\nif you want to stop typing, enter 'exit' \nenter 10 numbers: \n";
+            cout << "\nif you want to stop typing, enter 'exit' \n";
             double num;
             for (int i = 0; i < 10; ++i) {
+                cout << "enter " << i + 1 << " number:\n";
                 while (true) {
                     if (!(cin >> num)) {
                         cin.clear();
@@ -118,8 +119,6 @@ void file_task() {  //правильно
             double total_spent_time = 0, reserch_time;
             for (int i = 0; i < size; i++) {
                 clock_t start_time = clock();
-
-                //подопытный
 
                 ifstream read_file("numbers.txt");
                 if (read_file.is_open()) {
@@ -143,11 +142,13 @@ void file_task() {  //правильно
             double average_time = total_spent_time / size;
             cout << "\naverage time = " << average_time << " ml\n";
 
-        } else {
+        }
+        else {
             cout << "error!\n"; // ИСПОЛЬЗОВАТЬ SWITCH CASE -> try {} catch {switch {case}}
         }
 
-    } catch(const exception& err) {
+    }
+    catch (const exception& err) {
         cerr << "\nan exception occurred!\n" << err.what() << endl;
 
         ofstream new_file("text.txt");
