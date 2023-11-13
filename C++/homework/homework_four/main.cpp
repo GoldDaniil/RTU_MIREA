@@ -11,6 +11,7 @@
 
 #include<thread>
 #include<chrono>
+#include<stdexcept>
 
 using namespace std;
 
@@ -28,28 +29,19 @@ void comment_output() {
 
 }  //обьявление функции
 
-void file_task() {
+void file_task() {  //правильно
     try {
-        ofstream file("text.txt");
+        ofstream file("numbers.txt");
 
-        int file_status;
-        if (file.is_open()) {
-            file_status = 1;
-        }
-        else {
-            file_status = 0;
-        }
-
-        switch (file_status) {
-        case 1:
-            cout << "\nIf you want to stop typing, enter 'exit' \nEnter 10 numbers: \n";
+        if (file.is_open()) {   // использованы исключения с помощью try catch 
+            cout << "\nif you want to stop typing, enter 'exit' \nenter 10 numbers: \n";
             double num;
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 10; ++i) {
                 while (true) {
                     if (!(cin >> num)) {
                         cin.clear();
                         cin.ignore();
-                        cout << "Error\n";
+                        cout << "you need to enter the data type integer \n";
                         continue;
                     }
                     break;
@@ -57,56 +49,51 @@ void file_task() {
                 file << num << endl;
             }
             file.close();
+            // повторное открытие файла и нахождение суммы чисел
 
             const int size = 300;
-            double total_spent_time = 0, research_time; 
+            double total_spent_time = 0, reserch_time;
             for (int i = 0; i < size; i++) {
                 clock_t start_time = clock();
 
-                try {
-                    ifstream read_file("text.txt");
+                //подопытный
 
-                    if (read_file.is_open()) {
-                        file_status = 1;
-                    }
-                    else {
-                        file_status = 0;
-                    }
-
+                ifstream read_file("numbers.txt");
+                if (read_file.is_open()) {
                     double num, sum = 0;
                     while (read_file >> num) {
                         sum += num;
                     }
-                    research_time = sum; 
+                    reserch_time = sum;
                     read_file.close();
-
                 }
-                catch (const exception& err) { 
-                    cout << err.what() << endl;
+                else {
+                    cout << "error!" << endl;
                 }
 
                 clock_t end_time = clock();
                 double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
                 total_spent_time += spent_time;
             }
-
-            cout << "Sum of numbers: " << research_time << endl; 
+            cout << "sum of numbers: " << reserch_time << endl;
+            ///НАЙТИ МАКСИМАЛЬНО ОПТИМИЗИРОВАННЫЙ ВАРИАНТ СЧЕТА - ЭТОТ НЕ ПОДХОДИТ
             double average_time = total_spent_time / size;
-            cout << "\nAverage time = " << average_time << " ml\n"; 
-            break;
+            cout << "\naverage time = " << average_time << " ml\n";
 
-        case 0: 
-            throw runtime_error("Unable to open file for writing\n");
-            break;
-
-        default:
-            cout << "Error\n";
-            break;
+        } else {
+            cout << "error!\n"; // ИСПОЛЬЗОВАТЬ SWITCH CASE -> try {} catch {switch {case}}
         }
 
-    }
-    catch (const exception& err) {
-        cout << err.what() << endl;
+    } catch(const exception& err) {
+        cerr << "\nan exception occurred!\n" << err.what() << endl;
+
+        ofstream new_file("text.txt");
+
+        if (!new_file.is_open()) {
+            cerr << "failed to create new file!\n";
+            return;
+        }
+        cerr << "new file created successfully!\n";
     }
 }
 void past_glory() {
