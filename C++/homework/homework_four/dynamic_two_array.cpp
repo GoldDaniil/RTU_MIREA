@@ -98,14 +98,100 @@ void two_dimensional_array() {
     SetConsoleTextAttribute(matrix_color, 0x07);
     cout << "!\n";
 
+    //  ИСПОЛЬЗОВАТЬ ИСКЛЮЧЕНИЯ НА ПРЕДМЕТ ПРОВЕРКИ ДВУМЕРНЫХ-МАССИВОВ
+
+    int storage_rows, storange_cols;
+    int** storage_array = new int*[storage_rows];
+    for (int i = 0; i < storage_rows; i++) {
+        storage_array[i] = new int[storange_cols];
+    } //создали динамический двумерный массив, в котором будут храниться 
+    //результаты + - / * матриц    - после каждого окончательного действия 
+    // очищать память
+
     while (true) {
         cin >> actions_matrix;
         switch (actions_matrix) {
         case '+':
             cout << "sum of matrices: \n";
-            for (int i = 0; i < number_matrices; i++) {
-                cout << "r";
+            try {
+      
+                if (number_matrices <= 1) {
+                    throw std::logic_error("Недостаточно матриц для выполнения сложения.");
+                }
+
+                cout << "Введите размеры первой матрицы:\n";
+                int number_lines, number_elements;
+                cout << "Количество строк: ";
+                if (!(cin >> number_lines) || number_lines <= 0) {
+                    throw std::invalid_argument("Ошибка ввода размера матрицы.");
+                }
+                cout << "Количество элементов в каждой строке: ";
+                if (!(cin >> number_elements) || number_elements <= 0) {
+                    throw std::invalid_argument("Ошибка ввода размера матрицы.");
+                }
+
+                double** storage_array = new double* [number_lines];
+                for (int i = 0; i < number_lines; i++) {
+                    storage_array[i] = new double[number_elements];
+                }
+
+                // Вводим первую матрицу
+                cout << "Введите элементы первой матрицы:\n";
+                for (int i = 0; i < number_lines; i++) {
+                    for (int j = 0; j < number_elements; j++) {
+                        cout << "Элемент " << j + 1 << " строки " << i + 1 << ": ";
+                        if (!(cin >> storage_array[i][j])) {
+                            throw std::invalid_argument("Ошибка ввода элемента матрицы.");
+                        }
+                    }
+                }
+
+                for (int k = 1; k < number_matrices; k++) {
+                   // использовать существующий код для ввода)
+
+
+                    if (number_lines != storage_rows || number_elements != storange_cols) {
+                        throw std::invalid_argument("Несовместимые размеры матриц для сложения.");
+                    }
+
+                    // Выполняем сложение матриц
+                    for (int i = 0; i < number_lines; i++) {
+                        for (int j = 0; j < number_elements; j++) {
+                            storage_array[i][j] += array[i][j];
+                        }
+                    }
+                }
+
+                // Выводим результат сложения
+                cout << "Результат сложения:\n";
+                for (int i = 0; i < number_lines; i++) {
+                    for (int j = 0; j < number_elements; j++) {
+                        cout << storage_array[i][j] << " ";
+                    }
+                    cout << endl;
+                }
+
+                // Освобождаем память для входных матриц
+                for (int i = 0; i < number_lines; i++) {
+                    delete[] array[i];
+                }
+                delete[] array;
+
+                // Освобождаем память для storage_array
+                for (int i = 0; i < number_lines; i++) {
+                    delete[] storage_array[i];
+                }
+                delete[] storage_array;
+
+                // По желанию, сбрасываем storage_array для будущих операций
+                // (в зависимости от логики вашей программы)
+                // ...
             }
+            catch (const std::exception& e) {
+                cerr << "Ошибка: " << e.what() << endl;
+                // Обрабатываем ошибку, например, очищаем память и выходим из программы
+            }
+            
 
             break;
         case '-':
@@ -118,19 +204,6 @@ void two_dimensional_array() {
             break;
         case '*':
             cout << "product of matrices: \n";
-
-
-
-            double ***number_lines
-            double multiplication_result[number_lines][number_elements] = {};
-            for (int i = 0; i < number_lines; i++) {
-                for (int j = 0; j < number_elements; j++) {
-                    for (int k = 0; k < number_matrices; k++) {
-                        multiplication_result[i][j] += table_A[i][k] * table_B[k][j];
-                    }
-                }
-            }
-
 
             break;
         case 'exit':
