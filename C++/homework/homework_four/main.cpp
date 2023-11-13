@@ -8,7 +8,6 @@
 #include<cmath>
 #include<Windows.h>
 #include<time.h>
-
 #include<thread>
 #include<chrono>
 #include<stdexcept>
@@ -16,6 +15,70 @@
 using namespace std;
 
 HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
+
+void dynamic_matrix_multiplication() {
+    //другой файл
+    int rows;
+    while (true) {
+        cout << "enter amount rows: \n";
+        if (!(cin >> rows)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error \n";
+            continue;
+        }
+        break;
+
+    }
+    //if (rows == "end") {
+    //сделать так - чтобы при вводе end
+    // компилятор закрывался.
+    //}
+
+    int cols;
+    while (true) {
+        cout << "enter amount column: \n";
+        if (!(cin >> cols)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error \n" << endl;
+            continue;
+        }
+        break;
+    }
+
+    int** matrix = new int* [rows];
+    for (int i = 0; i < rows; i++) {
+        matrix[i] = new int[cols];
+    }
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << "enter amout elements " << i << " and " << j << "\n" << endl;
+            while (true) {
+                if (!(cin >> matrix[i][j])) {
+                    cin.clear();
+                    cin.ignore();
+                    cout << "error \n";
+                    continue;
+                }
+                break;
+            }
+        }
+
+    }
+    cout << "table A \n";
+    SetConsoleTextAttribute(back_color, 0x0f);
+    cout << "enter two-dimensional array - matrix :\n" << endl;
+    SetConsoleTextAttribute(back_color, 0x07);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl << endl;
+    }
+
+    delete matrix;
+}
 
 void long_operation() {
     using namespace std::chrono_literals;
@@ -96,6 +159,7 @@ void file_task() {  //правильно
         cerr << "new file created successfully!\n";
     }
 }
+
 void past_glory() {
     clock_t start_time = clock();
 
@@ -363,69 +427,6 @@ void random_number_generator() {    //правильно   ТОЛЬКО ЦЕЛЫ
     SetConsoleTextAttribute(back_color, 0x07);
 }
 
-void dynamic_matrix_multiplication() {
-    int rows;
-    while (true) {
-        cout << "enter amount rows: \n";
-        if (!(cin >> rows)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error \n";
-            continue;
-        }
-        break;
-
-    }
-    //if (rows == "end") {
-    //сделать так - чтобы при вводе end
-    // компилятор закрывался.
-    //}
-
-    int cols;
-    while (true) {
-        cout << "enter amount column: \n";
-        if (!(cin >> cols)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error \n" << endl;
-            continue;
-        }
-        break;
-    }
-
-    int** matrix = new int* [rows];
-    for (int i = 0; i < rows; i++) {
-        matrix[i] = new int[cols];
-    }
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            cout << "enter amout elements " << i << " and " << j << "\n" << endl;
-            while (true) {
-                if (!(cin >> matrix[i][j])) {
-                    cin.clear();
-                    cin.ignore();
-                    cout << "error \n";
-                    continue;
-                }
-                break;
-            }
-        }
-
-    }
-    cout << "table A \n";
-    SetConsoleTextAttribute(back_color, 0x0f);
-    cout << "enter two-dimensional array - matrix :\n" << endl;
-    SetConsoleTextAttribute(back_color, 0x07);
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            cout << matrix[i][j] << " ";
-        }
-        cout << endl << endl;
-    }
-
-    delete matrix;
-}
-//! фукнция НЕ принадлежит лаунчеру
 void static_dimensional_arrays() {
     clock_t start_time = clock();
 
@@ -520,7 +521,6 @@ void static_dimensional_arrays() {
     }
     cout << endl;
 
-    // Output additional information
     cout << "1)seller " << max_sales_seller + 1 << " achieved the highest sales: " << max_sales << endl;
     cout << "  seller " << min_sales_seller + 1 << " achieved the lowest sales: " << min_sales << endl;
     cout << "2) seller " << max_commission_seller + 1 << " received the highest commission: " << max_commission << endl;
@@ -569,38 +569,7 @@ void convert_base() {
 
     cout << "result: " << octal_number << "010" << endl;
 }///тест
-//тест
-void arr() {
-    clock_t start_time = clock();
-    int massiv[4]{ 1, 2, 3, 4 };
-    cout << massiv << endl;
-    cout << &massiv << endl;
-    cout << *massiv << endl;
-    cout << &massiv[0] << endl;
-    //cout << *(massiv[0]) << endl;
-    cout << &massiv[1] << endl;
-    //cout << *(massiv[1]) << endl;
-    cout << &massiv[2] << endl;
-    cout << &massiv[3] << endl;
 
-    //int matrix[3][4] ; //3 массива в каждом из которых 4 элемента- итого двумерный массив 
-
-
-    int* local = &massiv[0];
-    cout << local << endl;
-    cout << (local + 2) << endl;
-
-    cout << *(local + 2) << endl;
-
-    clock_t end_time = clock();
-    double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
-    SetConsoleTextAttribute(back_color, 0x0b); //бирюзовый
-    cout << "function execution time in milliseconds: " << spent_time << " ml \n\n";
-    SetConsoleTextAttribute(back_color, 0x07);
-
-}
-
-//лаунчер
 void task_launcher() {
     int task_number;
     while (true) {
