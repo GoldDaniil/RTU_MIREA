@@ -9,9 +9,17 @@
 #include<Windows.h>
 #include<time.h>
 
+#include<thread>
+#include<chrono>
+
 using namespace std;
 
 HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
+
+void long_operation() {
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(150ms);
+} //для врремени 
 
 void comment_output() {
     SetConsoleTextAttribute(back_color, 0x0a);
@@ -20,60 +28,87 @@ void comment_output() {
 
 }  //обьявление функции
 
-void file_task() {  //правильно
-    ofstream file("numbers.txt");
-    if (file.is_open()) {   // ИСПОЛЬЗОВАТЬ SWITCH CASE -> try {} catch {switch {case}}
-        cout << "\nif you want to stop typing, enter 'exit' \nenter 10 numbers: \n";
-        double num;
-        for (int i = 0; i < 10; ++i) {
-            while (true) {
-                if (!(cin >> num)) {
-                    cin.clear();
-                    cin.ignore();
-                    cout << "you need to enter the data type integer \n";
-                    continue;
-                }
-                break;
-            }
-            file << num << endl;
+void file_task() {
+    try {
+        ofstream file("text.txt");
+
+        int file_status;
+        if (file.is_open()) {
+            file_status = 1;
         }
-        file.close();
-        // повторное открытие файла и нахождение суммы чисел
-
-        const int size = 300;
-        double total_spent_time = 0, reserch_time;
-        for (int i = 0; i < size; i++) {
-            clock_t start_time = clock();
-
-            //подопытный
-
-            ifstream read_file("numbers.txt");
-            if (read_file.is_open()) {
-                double num, sum = 0;
-                while (read_file >> num) {
-                    sum += num;
-                }
-                reserch_time = sum;
-                read_file.close();
-            }
-            else {
-                cout << "error!" << endl;
-            }
-
-            clock_t end_time = clock();
-            double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
-            total_spent_time += spent_time;
+        else {
+            file_status = 0;
         }
-        cout << "sum of numbers: " << reserch_time << endl;
-            ///НАЙТИ МАКСИМАЛЬНО ОПТИМИЗИРОВАННЫЙ ВАРИАНТ СЧЕТА - ЭТОТ НЕ ПОДХОДИТ
-        double average_time = total_spent_time / size;
-        cout << "\naverage time = " << average_time << " ml\n";
+
+        switch (file_status) {
+        case 1:
+            cout << "\nIf you want to stop typing, enter 'exit' \nEnter 10 numbers: \n";
+            double num;
+            for (int i = 0; i < 10; i++) {
+                while (true) {
+                    if (!(cin >> num)) {
+                        cin.clear();
+                        cin.ignore();
+                        cout << "Error\n";
+                        continue;
+                    }
+                    break;
+                }
+                file << num << endl;
+            }
+            file.close();
+
+            const int size = 300;
+            double total_spent_time = 0, research_time; 
+            for (int i = 0; i < size; i++) {
+                clock_t start_time = clock();
+
+                try {
+                    ifstream read_file("text.txt");
+
+                    if (read_file.is_open()) {
+                        file_status = 1;
+                    }
+                    else {
+                        file_status = 0;
+                    }
+
+                    double num, sum = 0;
+                    while (read_file >> num) {
+                        sum += num;
+                    }
+                    research_time = sum; 
+                    read_file.close();
+
+                }
+                catch (const exception& err) { 
+                    cout << err.what() << endl;
+                }
+
+                clock_t end_time = clock();
+                double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+                total_spent_time += spent_time;
+            }
+
+            cout << "Sum of numbers: " << research_time << endl; 
+            double average_time = total_spent_time / size;
+            cout << "\nAverage time = " << average_time << " ml\n"; 
+            break;
+
+        case 0: 
+            throw runtime_error("Unable to open file for writing\n");
+            break;
+
+        default:
+            cout << "Error\n";
+            break;
+        }
+
     }
-    else {
-        cout << "error!\n"; // ИСПОЛЬЗОВАТЬ SWITCH CASE -> try {} catch {switch {case}}
+    catch (const exception& err) {
+        cout << err.what() << endl;
     }
 }
-
 void past_glory() {
     clock_t start_time = clock();
 
