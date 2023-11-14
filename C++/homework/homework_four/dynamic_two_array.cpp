@@ -20,20 +20,23 @@ void two_dimensional_array() {
     }
     SetConsoleTextAttribute(matrix_color, 0x07);
 
+    int number_lines, number_elements;
+
+    double*** all_matrices = new double** [number_matrices]; // создаем массив для
+    //хранения всех двумерных массивов
+
     for (int k = 0; k < number_matrices; k++) { // создание матриц
 
-        int number_lines;
-        double number_elements;
         while (true) {
-            cout << "\nenter the number of rows of matrix: \n";
-            if (!(cin >> number_lines)) {
+            cout << "\nenter the number of rows of matrix " << k + 1 << ": \n";
+            if (!(cin >> number_lines) or (number_lines <= 1)) {
                 cin.clear();
                 cin.ignore();
                 cout << "error\n";
                 continue;
             }
-            cout << "enter the number of elements in each row: \n";
-            if (!(cin >> number_elements)) {
+            cout << "enter the number of elements in each row " << k + 1 << ": \n";
+            if (!(cin >> number_elements) or (number_elements <= 1)) {
                 cin.clear();
                 cin.ignore();
                 cout << "error\n";
@@ -43,17 +46,15 @@ void two_dimensional_array() {
         }
 
         double** array = new double* [number_lines];
+        all_matrices[k] = array;
+        string arr_exit;
 
         for (int i = 0; i < number_lines; i++) { // строим матрицу A с выделением памяти
-
             array[i] = new double[number_elements];
+
             for (int j = 0; j < number_elements; j++) {
-                string arr_exit;
                 cout << "enter element " << j + 1 << " of row " << i + 1 << " of matrix " << k + 1 << ": \n";
                 while (true) {
-                    if (arr_exit == "exit" or arr_exit == "end") {
-                        return;
-                    }
                     if (!(cin >> array[i][j])) {
                         cin.clear();
                         cin.ignore();
@@ -61,36 +62,30 @@ void two_dimensional_array() {
                         continue;
                     }
                     break;
+                    //if (arr_exit == "exit" or arr_exit == "end") {
+                    //    return;
+                    //}
                 }
             }
-        }
-
-        SetConsoleTextAttribute(matrix_color, 0x0a);
-        cout << endl << "matrix " << k + 1 << ":\n";
-        SetConsoleTextAttribute(matrix_color, 0x07);
-
-        const int Z = number_matrices;
-        double** array_mas = new double*[Z]; //ВЫДЕЛЯЕМ АДРЕСА ЯЧЕЙКИ В ПАМЯТИ НА number_matrices МЕСТ
-        
-        for (int i = 0; i < Z; i++) {
-            array_mas[i] = new double[number_lines * number_elements];
-            for (int j = 0; j < number_lines; j++) {
-                for (int k = 0; k < number_elements; k++) {
-                    cout << array_mas[i][j * number_elements + k] << " ";
-                }
-                cout << endl;
-            }
-            cout << endl;
-        }
-                                    //СОХРАНЯЕМ КАЖДЫЙ ДВУМЕРНЫЙ МАССИВ В ОДИНАРНЫЙ МАССИВ array_mas
-                                    // ВЫЗОВ ПО ИНДЕКСАМ
-
-        for (int i = 0; i < number_matrices; i++) {
-            cout << array_mas[i+1];
         }
     }
 
-    char actions_matrix;
+    // Вывод всех матриц
+    SetConsoleTextAttribute(matrix_color, 0x0a);
+    for (int k = 0; k < number_matrices; k++) {
+        cout << "\nMatrix " << k + 1 << ":\n";
+        SetConsoleTextAttribute(matrix_color, 0x07);
+
+        for (int i = 0; i < number_lines; i++) {
+            for (int j = 0; j < number_elements; j++) {
+                cout << all_matrices[k][i][j] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+
+    SetConsoleTextAttribute(matrix_color, 0x07);
 
     SetConsoleTextAttribute(matrix_color, 0x0a);
     cout << "\nwhat to do with matrices?\n";
@@ -106,7 +101,7 @@ void two_dimensional_array() {
     SetConsoleTextAttribute(matrix_color, 0x07);
     cout << "!\n";
 
-
+    int actions_matrix;
 
     while (true) {
         cin >> actions_matrix;
