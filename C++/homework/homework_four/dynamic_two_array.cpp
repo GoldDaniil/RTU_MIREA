@@ -1,6 +1,7 @@
 //Using snake_case! Using camelCase for class!
 #include<iostream>
 #include<Windows.h>
+#include<time.h>
 
 using namespace std;
 
@@ -103,6 +104,12 @@ void two_dimensional_array() {
 
     char actions_matrix;
 
+
+    //использовать switch case и иницилизации
+
+
+
+
     while (true) {
         cin >> actions_matrix;
         switch (actions_matrix) {
@@ -129,7 +136,7 @@ void two_dimensional_array() {
                     }
                 }
                 catch (const exception& err) {
-                    cout << "error! failed to allocate memory!\n";
+                    cout << "error! failed to allocate memory!\n" << err.what() << endl;
                 }
             }
             else {
@@ -138,8 +145,42 @@ void two_dimensional_array() {
             //cout << "sum of matrices: \n";
             break;
 
-        case '-':
-            cout << "matrix difference: \n";
+        case '-':  //исправить с минусом
+            cout << "the result of difference two-dimensional arrays (matrices): \n\ntwo-dimensional array (matrix):\n";
+
+            if (number_matrices >= 2) {
+                cout << "\nDifference of matrices:\n";
+                try {
+                    double** result_matrix = new double* [number_lines];
+
+                    for (int i = 0; i < number_lines; i++) {
+                        result_matrix[i] = new double[number_elements];
+
+                        for (int j = 0; j < number_elements; j++) {
+                            result_matrix[i][j] = all_matrices[0][i][j]; // Initialize with the first matrix
+
+                            try {
+                                for (int k = 1; k < number_matrices; k++) {
+                                    result_matrix[i][j] -= all_matrices[k][i][j];
+                                }
+                            }
+                            catch (const exception& e) {
+                                cout << "Error: " << e.what() << endl;
+                                // Handle the error as needed
+                            }
+
+                            cout << result_matrix[i][j] << " ";
+                        }
+                        cout << endl;
+                    }
+                }
+                catch (const exception& rr) {
+                    cout << "Error: Memory allocation failed." << endl;
+                }
+            }
+            else {
+                cout << "Error: Not enough matrices for subtraction.\n";
+            }
 
             break;
         case '/':
@@ -162,7 +203,56 @@ void two_dimensional_array() {
 }
 
 
+class void_vector {
+public:
+    clock_t zero_user = clock();
+
+    void zero_recurrent(int arr_set) {
+        cerr << arr_set << " \n";
+        
+        try {
+            if (arr_set == 0) {
+                return;
+            }
+            switch (arr_set) {
+            case 1:
+                cout << arr_set - 1 << endl;
+                break;
+            case 2:
+                cout << arr_set - 2 << endl;
+                break;
+            case 3:
+                cout << arr_set - 3 << endl;
+                break;
+            case 4:
+                cout << arr_set - 4 << endl;
+                break;
+            default:
+                cerr << arr_set << endl;
+                break;
+            }
+        }
+        catch (const exception& err) {
+            cout << "return 1" << err.what();
+        }
+    }
+
+    clock_t one_user = clock();
+    double spent_time = (double)(zero_user - one_user) / CLOCKS_PER_SEC;
+    
+//private:
+//    const int return_function = 0, const return_claster = 0;
+//    int** local_array = new int*[return_function];
+//    for (int k = 0; k < arr_set; k++) {
+//        local_array[k] = new int[return_claster];
+//    }
+};
+
 int main() {
-    two_dimensional_array();
+    //two_dimensional_array()
+
+    void_vector long_long;
+    long_long.zero_recurrent(2);
+
     return 0;
 }
