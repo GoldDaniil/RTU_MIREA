@@ -101,15 +101,43 @@ void two_dimensional_array() {
     SetConsoleTextAttribute(matrix_color, 0x07);
     cout << "!\n";
 
-    int actions_matrix;
+    char actions_matrix;
 
     while (true) {
         cin >> actions_matrix;
         switch (actions_matrix) {
         case '+':
-            cout << "sum of matrices: \n";
+            cout << "the result of adding two-dimensional arrays (matrices): \n\ntwo-dimensional array (matrix):\n";
+            if (number_matrices >= 2) {
 
+                try {
+                    double** result_matrix = new double* [number_lines];
+
+                    for (int i = 0; i < number_lines; i++) {
+                        result_matrix[i] = new double[number_elements];
+
+                        for (int j = 0; j < number_elements; j++) {
+                            result_matrix[i][j] = 0;
+
+                            for (int k = 0; k < number_matrices; k++) {
+                                result_matrix[i][j] += all_matrices[k][i][j];
+                            }
+
+                            cout << result_matrix[i][j] << " ";
+                        }
+                        cout << endl;
+                    }
+                }
+                catch (const exception& err) {
+                    cout << "error! failed to allocate memory!\n";
+                }
+            }
+            else {
+                cout << "error! not enough matrices to add!\n";
+            }
+            //cout << "sum of matrices: \n";
             break;
+
         case '-':
             cout << "matrix difference: \n";
 
@@ -123,7 +151,7 @@ void two_dimensional_array() {
 
             break;
         case 'exit':
-            cout << "asdsda \n";
+            cout << "end! \n";
             return;
             break;
         default:
