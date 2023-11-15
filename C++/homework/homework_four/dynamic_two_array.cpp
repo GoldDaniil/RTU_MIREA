@@ -29,8 +29,12 @@ void two_dimensional_array() {
     for (int k = 0; k < number_matrices; k++) { // создание матриц
 
         while (true) {
-            cout << "\nenter the number of rows of matrix " << k + 1 << ": \n";
+            cout << "\nif you want to exit stop typing, enter 'exit'\nenter the number of rows of matrix " << k + 1 << ": \n";
             if (!(cin >> number_lines) or (number_lines <= 1)) {
+                if (number_lines == 'exit') {
+                    return;
+                    break;
+                }
                 cin.clear();
                 cin.ignore();
                 cout << "error\n";
@@ -104,11 +108,7 @@ void two_dimensional_array() {
 
     char actions_matrix;
 
-
     //использовать switch case и иницилизации
-
-
-
 
     while (true) {
         cin >> actions_matrix;
@@ -116,7 +116,6 @@ void two_dimensional_array() {
         case '+':
             cout << "the result of adding two-dimensional arrays (matrices): \n\ntwo-dimensional array (matrix):\n";
             if (number_matrices >= 2) {
-
                 try {
                     double** result_matrix = new double* [number_lines];
 
@@ -149,7 +148,7 @@ void two_dimensional_array() {
             cout << "the result of difference two-dimensional arrays (matrices): \n\ntwo-dimensional array (matrix):\n";
 
             if (number_matrices >= 2) {
-                cout << "\nDifference of matrices:\n";
+                cout << "\ndifference of matrices:\n";
                 try {
                     double** result_matrix = new double* [number_lines];
 
@@ -157,7 +156,7 @@ void two_dimensional_array() {
                         result_matrix[i] = new double[number_elements];
 
                         for (int j = 0; j < number_elements; j++) {
-                            result_matrix[i][j] = all_matrices[0][i][j]; // Initialize with the first matrix
+                            result_matrix[i][j] = all_matrices[0][i][j]; 
 
                             try {
                                 for (int k = 1; k < number_matrices; k++) {
@@ -165,8 +164,7 @@ void two_dimensional_array() {
                                 }
                             }
                             catch (const exception& e) {
-                                cout << "Error: " << e.what() << endl;
-                                // Handle the error as needed
+                                cout << "error: " << e.what() << endl;
                             }
 
                             cout << result_matrix[i][j] << " ";
@@ -175,11 +173,11 @@ void two_dimensional_array() {
                     }
                 }
                 catch (const exception& rr) {
-                    cout << "Error: Memory allocation failed." << endl;
+                    cout << "error!" << endl;
                 }
             }
             else {
-                cout << "Error: Not enough matrices for subtraction.\n";
+                cout << "error!\n";
             }
 
             break;
@@ -202,57 +200,86 @@ void two_dimensional_array() {
     }
 }
 
-
-class void_vector {
-public:
-    clock_t zero_user = clock();
-
-    void zero_recurrent(int arr_set) {
-        cerr << arr_set << " \n";
-        
-        try {
-            if (arr_set == 0) {
-                return;
-            }
-            switch (arr_set) {
-            case 1:
-                cout << arr_set - 1 << endl;
-                break;
-            case 2:
-                cout << arr_set - 2 << endl;
-                break;
-            case 3:
-                cout << arr_set - 3 << endl;
-                break;
-            case 4:
-                cout << arr_set - 4 << endl;
-                break;
-            default:
-                cerr << arr_set << endl;
-                break;
-            }
-        }
-        catch (const exception& err) {
-            cout << "return 1" << err.what();
-        }
-    }
-
-    clock_t one_user = clock();
-    double spent_time = (double)(zero_user - one_user) / CLOCKS_PER_SEC;
-    
-//private:
-//    const int return_function = 0, const return_claster = 0;
-//    int** local_array = new int*[return_function];
-//    for (int k = 0; k < arr_set; k++) {
-//        local_array[k] = new int[return_claster];
+//class void_vector {
+//public:
+//    clock_t zero_user = clock();
+//
+//    void zero_recurrent(int arr_set) {
+//        cerr << arr_set << " \n";
+//        
+//        try {
+//            if (arr_set == 0) {
+//                return;
+//            }
+//            switch (arr_set) {
+//            case 1:
+//                cout << arr_set - 1 << endl;
+//                break;
+//            case 2:
+//                cout << arr_set - 2 << endl;
+//                break;
+//            case 3:
+//                cout << arr_set - 3 << endl;
+//                break;
+//            case 4:
+//                cout << arr_set - 4 << endl;
+//                break;
+//            default:
+//                cerr << arr_set << endl;
+//                break;
+//            }
+//        }
+//        catch (const exception& err) {
+//            cout << "return 1" << err.what();
+//        }
 //    }
-};
+//
+//    clock_t one_user = clock();
+//    double spent_time = (double)(zero_user - one_user) / CLOCKS_PER_SEC;
+//    
+////private:
+////    const int return_function = 0, const return_claster = 0;
+////    int** local_array = new int*[return_function];
+////    for (int k = 0; k < arr_set; k++) {
+////        local_array[k] = new int[return_claster];
+////    }
+//};
 
 int main() {
-    //two_dimensional_array()
+    //two_dimensional_array();
 
-    void_vector long_long;
-    long_long.zero_recurrent(2);
+    /*void_vector long_long;
+    long_long.zero_recurrent(2);*/
+    //тест//
 
+    char local;
+    cin >> local;
+
+    switch (local) {
+    case 'exit':
+        cout << "ehhhh, okay ;(\n";
+
+        return 1;
+        break;
+    default:
+        while (true) {
+            if (!local) {
+                cin.clear();
+                cin.ignore();
+                cout << "error!\n";
+                continue;
+            }
+            break;
+        }
+        break;
+    }
+
+
+
+
+
+
+
+    //тест//
     return 0;
 }
