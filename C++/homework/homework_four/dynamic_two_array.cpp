@@ -144,7 +144,7 @@ void two_dimensional_array() {
             //cout << "sum of matrices: \n";
             break;
 
-        case '-':  //исправить с минусом
+        case '-':  
             cout << "the result of difference two-dimensional arrays (matrices): \n\ntwo-dimensional array (matrix):\n";
 
             if (number_matrices >= 2) {
@@ -246,61 +246,59 @@ void two_dimensional_array() {
 //};
 
 int main() {
-    //two_dimensional_array();
+    two_dimensional_array();
 
     /*void_vector long_long;
     long_long.zero_recurrent(2);*/
     //тест//
 
-    char local;
-    cin >> local;
+    //char local;
+    //cin >> local;
 
-    switch (local) {
-    case 'exit':
-        cout << "ehhhh, okay ;(\n";
+    //switch (local) {
+    //case 'exit':
+    //    cout << "ehhhh, okay ;(\n";
 
-        return 1;
-        break;
-    default:
-        while (true) {
-            if (!local) {
-                cin.clear();
-                cin.ignore();
-                cout << "error!\n";
-                continue;
-            }
-            break;
-        }
-        break;
-    }
-    /////////////////////////////////////////
-    string user_input;
+    //    return 1;
+    //    break;
+    //default:
+    //    while (true) {
+    //        if (!local) {
+    //            cin.clear();
+    //            cin.ignore();
+    //            cout << "error!\n";
+    //            continue;
+    //        }
+    //        break;
+    //    }
+    //    break;
+    //}
+    ///////////////////////////////////////////
+    //string user_input;
 
-    while (true) {
-        cout << "введите целочисленное значение (или 'exit' для завершения): ";
-        cin >> user_input;
+    //while (true) {
+    //    cout << "введите целочисленное значение (или 'exit' для завершения): ";
+    //    cin >> user_input;
 
-        if (user_input == "exit") {
-            cout << "end" << endl;
-            break;
-        }
+    //    if (user_input == "exit") {
+    //        cout << "end" << endl;
+    //        break;
+    //    }
 
-        try {
-            size_t pos;
-            int number = stoi(user_input, &pos);
+    //    try {
+    //        size_t pos;
+    //        int number = stoi(user_input, &pos);
 
-            if (pos == 0 || pos != user_input.length()) {
-                throw invalid_argument("error");
-            }
+    //        if (pos == 0 || pos != user_input.length()) {
+    //            throw invalid_argument("error");
+    //        }
 
-            cout << "введенное значение: " << number << endl;
-        }
-        catch (invalid_argument&) {
-            cout << "error" << endl;
-        }
-    }
-
-
+    //        cout << "введенное значение: " << number << endl;
+    //    }
+    //    catch (invalid_argument&) {
+    //        cout << "error" << endl;
+    //    }
+    //}
 
 
 
