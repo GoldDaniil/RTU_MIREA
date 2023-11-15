@@ -273,8 +273,32 @@ int main() {
         }
         break;
     }
+    /////////////////////////////////////////
+    string user_input;
 
+    while (true) {
+        cout << "введите целочисленное значение (или 'exit' для завершения): ";
+        cin >> user_input;
 
+        if (user_input == "exit") {
+            cout << "end" << endl;
+            break;
+        }
+
+        try {
+            size_t pos;
+            int number = stoi(user_input, &pos);
+
+            if (pos == 0 || pos != user_input.length()) {
+                throw invalid_argument("error");
+            }
+
+            cout << "введенное значение: " << number << endl;
+        }
+        catch (invalid_argument&) {
+            cout << "error" << endl;
+        }
+    }
 
 
 
