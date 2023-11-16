@@ -4,146 +4,59 @@
 #include<time.h>
 #include<string>
 #include<sstream>
+#include<algorithm>
 
 using namespace std;
-    
-void test_zero() {
-    
-
-
-}                                   // ИСПРАВИТЬ ОШИБКИ
 
 void two_dimensional_array() {
     HANDLE matrix_color = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(matrix_color, 0x0a);
-
-    //было int number_matrices;
-    string number_matrices_str;
+    int number_matrices;
     while (true) {
         cout << "enter the number of matrices: \n";
-
-        cin >> number_matrices_str;
-        if (number_matrices_str == "exit") {
-            cout << "Oh, okay;(\n" << endl;
-            break;
+        if (!(cin >> number_matrices)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error\n";
+            continue;
         }
-        try {
-            size_t pos;
-            int number = stoi(number_matrices_str, &pos);
-
-            if ((pos == 0) || (pos != number_matrices_str.length())) {
-                throw exception("error");
-            }
-            cout << "entered number: " << number << endl;
-            return;
-        }
-        catch (exception&) {
-            try {
-                size_t pos;
-                double real_number = stod(number_matrices_str, &pos);
-
-                if ((pos == 0) || (pos != number_matrices_str.length())) {
-                    throw exception("error");
-                }
-
-                cout << "entered value: " << real_number << endl;
-                return;
-            }
-            catch (exception&) {
-                cout << "error\n\n";
-            }
-        }
+        break;
     }
-
-    int number_matrices;
-    stringstream(number_matrices_str) >> number_matrices;
-
     SetConsoleTextAttribute(matrix_color, 0x07);
 
-    string number_lines_str, number_elements_str;
-    double*** all_matrices = new double** [number_matrices]; // создаем массив - хранения всех двумерных массивов
+    int number_lines, number_elements;
+
+    double*** all_matrices = new double** [number_matrices]; // создаем массив для
+    //хранения всех двумерных массивов
 
     for (int k = 0; k < number_matrices; k++) { // создание матриц
+
         while (true) {
             cout << "\nif you want to exit stop typing, enter 'exit'\nenter the number of rows of matrix " << k + 1 << ": \n";
-            //работаем сначала с number_lines_str
-            cin >> number_lines_str;
-            if (number_lines_str == "exit") {
-                cout << "Oh, okay;(\n" << endl;
-                break;
-            }
-            try {
-                size_t pos;
-                int number = stoi(number_lines_str, &pos);
-
-                if ((pos == 0) || (pos != number_lines_str.length())) {
-                    throw exception("error");
-                }
-                cout << "entered number: " << number << endl;
-                return;
-            }
-            catch (exception&) {
-                try {
-                    size_t pos;
-                    double real_number = stod(number_lines_str, &pos);
-                    if ((pos == 0) || (pos != number_lines_str.length())) {
-                        throw exception("error");
-                    }
-                    cout << "entered value: " << real_number << endl;
+            if (!(cin >> number_lines) or (number_lines <= 1)) {
+                if (number_lines == 'exit') {
                     return;
+                    break;
                 }
-                catch (exception&) {
-                    cout << "error\n\n";
-                }
+                cin.clear();
+                cin.ignore();
+                cout << "error\n";
+                continue;
             }
+            cout << "enter the number of elements in each row " << k + 1 << ": \n";
+            if (!(cin >> number_elements) or (number_elements <= 1)) {
+                cin.clear();
+                cin.ignore();
+                cout << "error\n";
+                continue;
+            }
+            break;
         }
 
-        int number_lines;
-        stringstream(number_lines_str) >> number_lines;
-
-        while (true) {
-            cout << "\nif you want to exit stop typing, enter 'exit'\nenter the number of elements in each row " << k + 1 << ": \n";
-            //работаем с number_elements_str
-            cin >> number_elements_str;
-            if (number_elements_str == "exit") {
-                cout << "Oh, okay;(\n" << endl;
-                break;
-            }
-            try {
-                size_t pos;
-                int number = stoi(number_elements_str, &pos);
-
-                if ((pos == 0) || (pos != number_elements_str.length())) {
-                    throw exception("error");
-                }
-                cout << "entered number: " << number << endl;
-                return;
-            }
-            catch (exception&) {
-                try {
-                    size_t pos;
-                    double real_number = stod(number_elements_str, &pos);
-                    if ((pos == 0) || (pos != number_elements_str.length())) {
-                        throw exception("error");
-                    }
-                    cout << "entered value: " << real_number << endl;
-                    return;
-                }
-                catch (exception&) {
-                    cout << "error\n\n";
-                }
-            }
-        }
-
-        int number_elements;
-        stringstream(number_elements_str) >> number_elements;
-
-       /* number_lines <= 1
-            number_elements <= 1*/
-        
         double** array = new double* [number_lines];
         all_matrices[k] = array;
         string arr_exit;
+
 
         for (int i = 0; i < number_lines; i++) { // строим матрицу A с выделением памяти
             array[i] = new double[number_elements];
@@ -232,7 +145,7 @@ void two_dimensional_array() {
             }
             break;
 
-        case '-':  
+        case '-':
             cout << "the result of difference two-dimensional arrays (matrices): \n\ntwo-dimensional array (matrix):\n";
             if (number_matrices >= 2) {
                 cout << "\ndifference of matrices:\n";
@@ -243,7 +156,7 @@ void two_dimensional_array() {
                         result_matrix[i] = new double[number_elements];
 
                         for (int j = 0; j < number_elements; j++) {
-                            result_matrix[i][j] = all_matrices[0][i][j]; 
+                            result_matrix[i][j] = all_matrices[0][i][j];
 
                             try {
                                 for (int k = 1; k < number_matrices; k++) {
@@ -278,7 +191,7 @@ void two_dimensional_array() {
 
             break;
 
-        //case "exit":
+            //case "exit":
         default:
             cout << "error!\n";
             break;
@@ -286,59 +199,45 @@ void two_dimensional_array() {
     }
 }
 
-//class void_vector {
-//public:
-//    clock_t zero_user = clock();
-//
-//    void zero_recurrent(int arr_set) {
-//        cerr << arr_set << " \n";
-//        
-//        try {
-//            if (arr_set == 0) {
-//                return;
-//            }
-//            switch (arr_set) {
-//            case 1:
-//                cout << arr_set - 1 << endl;
-//                break;
-//            case 2:
-//                cout << arr_set - 2 << endl;
-//                break;
-//            case 3:
-//                cout << arr_set - 3 << endl;
-//                break;
-//            case 4:
-//                cout << arr_set - 4 << endl;
-//                break;
-//            default:
-//                cerr << arr_set << endl;
-//                break;
-//            }
-//        }
-//        catch (const exception& err) {
-//            cout << "return 1" << err.what();
-//        }
-//    }
-//
-//    clock_t one_user = clock();
-//    double spent_time = (double)(zero_user - one_user) / CLOCKS_PER_SEC;
-//    
-////private:
-////    const int return_function = 0, const return_claster = 0;
-////    int** local_array = new int*[return_function];
-////    for (int k = 0; k < arr_set; k++) {
-////        local_array[k] = new int[return_claster];
-////    }
-//};
+
+void test_zero() {
+    while (true) {
+        string test_array_str;
+        int test_array;
+
+        cout << "enter a number or 'exit' to exit:\n";
+        cin >> test_array_str;
+
+        if (test_array_str == "exit") {
+            cout << "program completed!\n";
+            return;
+        }
+
+        bool has_non_digit = false;
+        for (char type : test_array_str) {
+            if (!isdigit(type)) {
+                has_non_digit = true;
+                break;
+            }
+        }
+
+        if (has_non_digit) {
+            cerr << "error, enter only numbers!\n";
+            cin.clear();
+            cin.ignore();
+        }
+        else {
+            stringstream(test_array_str) >> test_array;
+            cout << "u enter : " << test_array << endl;
+            break;
+        }
+    }
+}
 
 int main() {
     two_dimensional_array();
 
-    ///////////////////////////////////////////
     //test_zero();
-    //test_one();
-
-
-    //тест//
+    
     return 0;
 }
