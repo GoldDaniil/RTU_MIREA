@@ -7,7 +7,20 @@
 #include<algorithm>
 
 using namespace std;
+
+void test_stroka() {
+    for (size_t i = 0; i < test_array_str.length(); ++i) {
+        if (!isdigit(test_array_str[i])) {
+            test_array_str.erase(i, 1);
+            --i;  //уменьшаем индекс чтобы избежать пропуски символов
+        }
+    }
     
+    cout << "sorting test_string " << test_array_str << endl;
+    
+    stringstream(test_array_str) >> test_array;
+}
+
 void test_zero() {
     int test_array;
     string test_array_str;
