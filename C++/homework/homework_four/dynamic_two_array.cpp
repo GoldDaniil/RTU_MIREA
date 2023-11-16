@@ -2,8 +2,47 @@
 #include<iostream>
 #include<Windows.h>
 #include<time.h>
+#include<string>
 
 using namespace std;
+    
+void test_zero() {
+    string user_input;
+    while (true) {
+        cout << "enter a number or write 'exit' to end: \n";
+        cin >> user_input;
+        if (user_input == "exit") {
+            cout << "Oh, okay;(\n" << endl;
+            break;
+        }
+        try {
+            size_t pos;
+            int number = stoi(user_input, &pos);
+
+            if ((pos == 0) || (pos != user_input.length())) {
+                throw exception("error");
+            }
+            cout << "entered number: " << number << endl;
+            return;
+        }
+        catch (exception&) {
+            try {
+                size_t pos;
+                double real_number = stod(user_input, &pos);
+
+                if ((pos == 0) || (pos != user_input.length())) {
+                    throw exception("error");
+                }
+
+                cout << "entered value: " << real_number << endl;
+                return;
+            }
+            catch (exception&) {
+                cout << "error\n\n";
+            }
+        }
+    }
+}
 
 void two_dimensional_array() {
     HANDLE matrix_color = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -22,7 +61,6 @@ void two_dimensional_array() {
     SetConsoleTextAttribute(matrix_color, 0x07);
 
     int number_lines, number_elements;
-
     double*** all_matrices = new double** [number_matrices]; // создаем массив для
     //хранения всех двумерных массивов
 
@@ -106,10 +144,8 @@ void two_dimensional_array() {
     SetConsoleTextAttribute(matrix_color, 0x07);
     cout << "!\n";
 
+    //начало действия с двумерными массивами
     char actions_matrix;
-
-    //использовать switch case и иницилизации
-
     while (true) {
         cin >> actions_matrix;
         switch (actions_matrix) {
@@ -141,12 +177,10 @@ void two_dimensional_array() {
             else {
                 cout << "error! not enough matrices to add!\n";
             }
-            //cout << "sum of matrices: \n";
             break;
 
         case '-':  
             cout << "the result of difference two-dimensional arrays (matrices): \n\ntwo-dimensional array (matrix):\n";
-
             if (number_matrices >= 2) {
                 cout << "\ndifference of matrices:\n";
                 try {
@@ -179,20 +213,19 @@ void two_dimensional_array() {
             else {
                 cout << "error!\n";
             }
-
             break;
+
         case '/':
             cout << "quotient of matrices: \n";
 
             break;
+
         case '*':
             cout << "product of matrices: \n";
 
             break;
-        case 'exit':
-            cout << "end! \n";
-            return;
-            break;
+
+        //case "exit":
         default:
             cout << "error!\n";
             break;
@@ -246,60 +279,11 @@ void two_dimensional_array() {
 //};
 
 int main() {
-    two_dimensional_array();
+    //two_dimensional_array();
 
-    /*void_vector long_long;
-    long_long.zero_recurrent(2);*/
-    //тест//
-
-    //char local;
-    //cin >> local;
-
-    //switch (local) {
-    //case 'exit':
-    //    cout << "ehhhh, okay ;(\n";
-
-    //    return 1;
-    //    break;
-    //default:
-    //    while (true) {
-    //        if (!local) {
-    //            cin.clear();
-    //            cin.ignore();
-    //            cout << "error!\n";
-    //            continue;
-    //        }
-    //        break;
-    //    }
-    //    break;
-    //}
     ///////////////////////////////////////////
-    //string user_input;
-
-    //while (true) {
-    //    cout << "введите целочисленное значение (или 'exit' для завершения): ";
-    //    cin >> user_input;
-
-    //    if (user_input == "exit") {
-    //        cout << "end" << endl;
-    //        break;
-    //    }
-
-    //    try {
-    //        size_t pos;
-    //        int number = stoi(user_input, &pos);
-
-    //        if (pos == 0 || pos != user_input.length()) {
-    //            throw invalid_argument("error");
-    //        }
-
-    //        cout << "введенное значение: " << number << endl;
-    //    }
-    //    catch (invalid_argument&) {
-    //        cout << "error" << endl;
-    //    }
-    //}
-
+    test_zero();
+    //test_one();
 
 
     //тест//
