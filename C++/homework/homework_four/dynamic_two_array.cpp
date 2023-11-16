@@ -11,52 +11,114 @@ using namespace std;
 void two_dimensional_array() {
     HANDLE matrix_color = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(matrix_color, 0x0a);
+
+    string number_matrices_str;
     int number_matrices;
     while (true) {
-        cout << "enter the number of matrices: \n";
-        if (!(cin >> number_matrices)) {
+        //проверка на тип переменной number_matrices - количество матриц
+        cout << "enter the number of matrices! Or if you want to stop entering, enter 'exit': \n";
+        cin >> number_matrices_str;
+
+        if (number_matrices_str == "exit") {
+            cout << "program completed!\n";
+            return;
+        }
+
+        bool has_non_digit = false;
+        for (char type : number_matrices_str) {
+            if (!isdigit(type)) {
+                has_non_digit = true;
+                break;
+            }
+        }
+
+        if (has_non_digit) {
+            cerr << "error, enter only numbers!\n";
             cin.clear();
             cin.ignore();
-            cout << "error\n";
-            continue;
         }
-        break;
-    }
-    SetConsoleTextAttribute(matrix_color, 0x07);
+        else {
+            stringstream(number_matrices_str) >> number_matrices;
+            cout << "u enter : " << number_matrices << endl;
+            break;
+        }
 
-    int number_lines, number_elements;
+    }
+
+    SetConsoleTextAttribute(matrix_color, 0x07);
 
     double*** all_matrices = new double** [number_matrices]; // создаем массив для
     //хранения всех двумерных массивов
 
     for (int k = 0; k < number_matrices; k++) { // создание матриц
 
+        string number_lines_str;
+        int number_lines;
         while (true) {
+            //проверка на тип переменной number_lines - количество строк - подмассивов
             cout << "\nif you want to exit stop typing, enter 'exit'\nenter the number of rows of matrix " << k + 1 << ": \n";
-            if (!(cin >> number_lines) or (number_lines <= 1)) {
-                if (number_lines == 'exit') {
-                    return;
+            cin >> number_lines_str;
+
+            if (number_lines_str == "exit") {
+                cout << "program completed!\n";
+                return;
+            }
+
+            bool has_non_digit = false;
+            for (char type : number_lines_str) {
+                if (!isdigit(type)) {
+                    has_non_digit = true;
                     break;
                 }
+            }
+
+            if (has_non_digit) {
+                cerr << "error, enter only numbers!\n";
                 cin.clear();
                 cin.ignore();
-                cout << "error\n";
-                continue;
             }
+            else {
+                stringstream(number_lines_str) >> number_lines;
+                cout << "u enter : " << number_lines << endl;
+                break;
+            }
+        }
+
+        string number_elements_str;
+        int number_elements;
+        while (true) {
+            //проверка на тип переменной number_elements - количество элементов в строках - подмассивах
             cout << "enter the number of elements in each row " << k + 1 << ": \n";
-            if (!(cin >> number_elements) or (number_elements <= 1)) {
+            cin >> number_elements_str;
+
+            if (number_elements_str == "exit") {
+                cout << "program completed!\n";
+                return;
+            }
+
+            bool has_non_digit = false;
+            for (char type : number_elements_str) {
+                if (!isdigit(type)) {
+                    has_non_digit = true;
+                    break;
+                }
+            }
+
+            if (has_non_digit) {
+                cerr << "error, enter only numbers!\n";
                 cin.clear();
                 cin.ignore();
-                cout << "error\n";
-                continue;
             }
-            break;
+            else {
+                stringstream(number_elements_str) >> number_elements;
+                cout << "u enter : " << number_elements << endl;
+                break;
+            }
         }
 
         double** array = new double* [number_lines];
         all_matrices[k] = array;
         string arr_exit;
-
 
         for (int i = 0; i < number_lines; i++) { // строим матрицу A с выделением памяти
             array[i] = new double[number_elements];
@@ -71,9 +133,6 @@ void two_dimensional_array() {
                         continue;
                     }
                     break;
-                    //if (arr_exit == "exit" or arr_exit == "end") {
-                    //    return;
-                    //}
                 }
             }
         }
@@ -198,7 +257,6 @@ void two_dimensional_array() {
         }
     }
 }
-
 
 void test_zero() {
     while (true) {
