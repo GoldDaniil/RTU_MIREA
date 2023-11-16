@@ -8,6 +8,40 @@
 
 using namespace std;
 
+void test_zero() {
+    while (true) {
+        string test_array_str;
+        int test_array;
+
+        cout << "enter a number or 'exit' to exit:\n";
+        cin >> test_array_str;
+
+        if (test_array_str == "exit") {
+            cout << "program completed!\n";
+            return;
+        }
+
+        bool has_non_digit = false;
+        for (char type : test_array_str) {
+            if (!isdigit(type)) {
+                has_non_digit = true;
+                break;
+            }
+        }
+
+        if (has_non_digit) {
+            cerr << "error, enter only numbers!\n";
+            cin.clear();
+            cin.ignore();
+        }
+        else {
+            stringstream(test_array_str) >> test_array;
+            cout << "u enter : " << test_array << endl;
+            break;
+        }
+    }
+}
+
 void two_dimensional_array() {
     HANDLE matrix_color = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(matrix_color, 0x0a);
@@ -17,12 +51,16 @@ void two_dimensional_array() {
     while (true) {
         //проверка на тип переменной number_matrices - количество матриц
         cout << "enter the number of matrices! Or if you want to stop entering, enter 'exit': \n";
+        SetConsoleTextAttribute(matrix_color, 0x07);
+
         cin >> number_matrices_str;
 
+        SetConsoleTextAttribute(matrix_color, 0x0a);
         if (number_matrices_str == "exit") {
             cout << "program completed!\n";
             return;
         }
+        SetConsoleTextAttribute(matrix_color, 0x07);
 
         bool has_non_digit = false;
         for (char type : number_matrices_str) {
@@ -47,13 +85,13 @@ void two_dimensional_array() {
 
     SetConsoleTextAttribute(matrix_color, 0x07);
 
-    double*** all_matrices = new double** [number_matrices]; // создаем массив для
-    //хранения всех двумерных массивов
+    double*** all_matrices = new double** [number_matrices]; // создаем массив для хранения всех двумерных массивов
+
+    string number_elements_str, number_lines_str;
+    int number_lines, number_elements;
 
     for (int k = 0; k < number_matrices; k++) { // создание матриц
 
-        string number_lines_str;
-        int number_lines;
         while (true) {
             //проверка на тип переменной number_lines - количество строк - подмассивов
             cout << "\nif you want to exit stop typing, enter 'exit'\nenter the number of rows of matrix " << k + 1 << ": \n";
@@ -84,8 +122,6 @@ void two_dimensional_array() {
             }
         }
 
-        string number_elements_str;
-        int number_elements;
         while (true) {
             //проверка на тип переменной number_elements - количество элементов в строках - подмассивах
             cout << "enter the number of elements in each row " << k + 1 << ": \n";
@@ -118,7 +154,6 @@ void two_dimensional_array() {
 
         double** array = new double* [number_lines];
         all_matrices[k] = array;
-        string arr_exit;
 
         for (int i = 0; i < number_lines; i++) { // строим матрицу A с выделением памяти
             array[i] = new double[number_elements];
@@ -253,40 +288,6 @@ void two_dimensional_array() {
             //case "exit":
         default:
             cout << "error!\n";
-            break;
-        }
-    }
-}
-
-void test_zero() {
-    while (true) {
-        string test_array_str;
-        int test_array;
-
-        cout << "enter a number or 'exit' to exit:\n";
-        cin >> test_array_str;
-
-        if (test_array_str == "exit") {
-            cout << "program completed!\n";
-            return;
-        }
-
-        bool has_non_digit = false;
-        for (char type : test_array_str) {
-            if (!isdigit(type)) {
-                has_non_digit = true;
-                break;
-            }
-        }
-
-        if (has_non_digit) {
-            cerr << "error, enter only numbers!\n";
-            cin.clear();
-            cin.ignore();
-        }
-        else {
-            stringstream(test_array_str) >> test_array;
-            cout << "u enter : " << test_array << endl;
             break;
         }
     }
