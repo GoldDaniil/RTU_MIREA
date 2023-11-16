@@ -160,6 +160,11 @@ void two_dimensional_array() {
 
             for (int j = 0; j < number_elements; j++) {
                 cout << "enter element " << j + 1 << " of row " << i + 1 << " of matrix " << k + 1 << ": \n";
+
+                //
+                // ПОДУМАТЬ ПРО ПРОВЕРКУ НА ТИП ЗДЕСЬ - вводим i и j
+                //
+
                 while (true) {
                     if (!(cin >> array[i][j])) {
                         cin.clear();
