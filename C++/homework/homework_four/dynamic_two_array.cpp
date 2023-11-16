@@ -50,13 +50,38 @@ void two_dimensional_array() {
     int number_matrices;
     while (true) {
         cout << "enter the number of matrices: \n";
-        if (!(cin >> number_matrices)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error\n";
-            continue;
+
+        cin >> number_matrices;
+        if (number_matrices == "exit") {
+            cout << "Oh, okay;(\n" << endl;
+            break;
         }
-        break;
+        try {
+            size_t pos;
+            int number = stoi(number_matrices, &pos);
+
+            if ((pos == 0) || (pos != number_matrices.length())) {
+                throw exception("error");
+            }
+            cout << "entered number: " << number << endl;
+            return;
+        }
+        catch (exception&) {
+            try {
+                size_t pos;
+                double real_number = stod(number_matrices, &pos);
+
+                if ((pos == 0) || (pos != number_matrices.length())) {
+                    throw exception("error");
+                }
+
+                cout << "entered value: " << real_number << endl;
+                return;
+            }
+            catch (exception&) {
+                cout << "error\n\n";
+            }
+        }
     }
     SetConsoleTextAttribute(matrix_color, 0x07);
 
