@@ -3,64 +3,35 @@
 #include<Windows.h>
 #include<time.h>
 #include<string>
+#include<sstream>
 
 using namespace std;
     
 void test_zero() {
-    string user_input;
-    while (true) {
-        cout << "enter a number or write 'exit' to end: \n";
-        cin >> user_input;
-        if (user_input == "exit") {
-            cout << "Oh, okay;(\n" << endl;
-            break;
-        }
-        try {
-            size_t pos;
-            int number = stoi(user_input, &pos);
+    
 
-            if ((pos == 0) || (pos != user_input.length())) {
-                throw exception("error");
-            }
-            cout << "entered number: " << number << endl;
-            return;
-        }
-        catch (exception&) {
-            try {
-                size_t pos;
-                double real_number = stod(user_input, &pos);
 
-                if ((pos == 0) || (pos != user_input.length())) {
-                    throw exception("error");
-                }
-
-                cout << "entered value: " << real_number << endl;
-                return;
-            }
-            catch (exception&) {
-                cout << "error\n\n";
-            }
-        }
-    }
-}
+}                                   // ИСПРАВИТЬ ОШИБКИ
 
 void two_dimensional_array() {
     HANDLE matrix_color = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(matrix_color, 0x0a);
-    int number_matrices;
+
+    //было int number_matrices;
+    string number_matrices_str;
     while (true) {
         cout << "enter the number of matrices: \n";
 
-        cin >> number_matrices;
-        if (number_matrices == "exit") {
+        cin >> number_matrices_str;
+        if (number_matrices_str == "exit") {
             cout << "Oh, okay;(\n" << endl;
             break;
         }
         try {
             size_t pos;
-            int number = stoi(number_matrices, &pos);
+            int number = stoi(number_matrices_str, &pos);
 
-            if ((pos == 0) || (pos != number_matrices.length())) {
+            if ((pos == 0) || (pos != number_matrices_str.length())) {
                 throw exception("error");
             }
             cout << "entered number: " << number << endl;
@@ -69,9 +40,9 @@ void two_dimensional_array() {
         catch (exception&) {
             try {
                 size_t pos;
-                double real_number = stod(number_matrices, &pos);
+                double real_number = stod(number_matrices_str, &pos);
 
-                if ((pos == 0) || (pos != number_matrices.length())) {
+                if ((pos == 0) || (pos != number_matrices_str.length())) {
                     throw exception("error");
                 }
 
@@ -83,36 +54,93 @@ void two_dimensional_array() {
             }
         }
     }
+
+    int number_matrices;
+    stringstream(number_matrices_str) >> number_matrices;
+
     SetConsoleTextAttribute(matrix_color, 0x07);
 
-    int number_lines, number_elements;
-    double*** all_matrices = new double** [number_matrices]; // создаем массив для
-    //хранения всех двумерных массивов
+    string number_lines_str, number_elements_str;
+    double*** all_matrices = new double** [number_matrices]; // создаем массив - хранения всех двумерных массивов
 
     for (int k = 0; k < number_matrices; k++) { // создание матриц
-
         while (true) {
             cout << "\nif you want to exit stop typing, enter 'exit'\nenter the number of rows of matrix " << k + 1 << ": \n";
-            if (!(cin >> number_lines) or (number_lines <= 1)) {
-                if (number_lines == 'exit') {
-                    return;
-                    break;
+            //работаем сначала с number_lines_str
+            cin >> number_lines_str;
+            if (number_lines_str == "exit") {
+                cout << "Oh, okay;(\n" << endl;
+                break;
+            }
+            try {
+                size_t pos;
+                int number = stoi(number_lines_str, &pos);
+
+                if ((pos == 0) || (pos != number_lines_str.length())) {
+                    throw exception("error");
                 }
-                cin.clear();
-                cin.ignore();
-                cout << "error\n";
-                continue;
+                cout << "entered number: " << number << endl;
+                return;
             }
-            cout << "enter the number of elements in each row " << k + 1 << ": \n";
-            if (!(cin >> number_elements) or (number_elements <= 1)) {
-                cin.clear();
-                cin.ignore();
-                cout << "error\n";
-                continue;
+            catch (exception&) {
+                try {
+                    size_t pos;
+                    double real_number = stod(number_lines_str, &pos);
+                    if ((pos == 0) || (pos != number_lines_str.length())) {
+                        throw exception("error");
+                    }
+                    cout << "entered value: " << real_number << endl;
+                    return;
+                }
+                catch (exception&) {
+                    cout << "error\n\n";
+                }
             }
-            break;
         }
 
+        int number_lines;
+        stringstream(number_lines_str) >> number_lines;
+
+        while (true) {
+            cout << "\nif you want to exit stop typing, enter 'exit'\nenter the number of elements in each row " << k + 1 << ": \n";
+            //работаем с number_elements_str
+            cin >> number_elements_str;
+            if (number_elements_str == "exit") {
+                cout << "Oh, okay;(\n" << endl;
+                break;
+            }
+            try {
+                size_t pos;
+                int number = stoi(number_elements_str, &pos);
+
+                if ((pos == 0) || (pos != number_elements_str.length())) {
+                    throw exception("error");
+                }
+                cout << "entered number: " << number << endl;
+                return;
+            }
+            catch (exception&) {
+                try {
+                    size_t pos;
+                    double real_number = stod(number_elements_str, &pos);
+                    if ((pos == 0) || (pos != number_elements_str.length())) {
+                        throw exception("error");
+                    }
+                    cout << "entered value: " << real_number << endl;
+                    return;
+                }
+                catch (exception&) {
+                    cout << "error\n\n";
+                }
+            }
+        }
+
+        int number_elements;
+        stringstream(number_elements_str) >> number_elements;
+
+       /* number_lines <= 1
+            number_elements <= 1*/
+        
         double** array = new double* [number_lines];
         all_matrices[k] = array;
         string arr_exit;
@@ -304,10 +332,10 @@ void two_dimensional_array() {
 //};
 
 int main() {
-    //two_dimensional_array();
+    two_dimensional_array();
 
     ///////////////////////////////////////////
-    test_zero();
+    //test_zero();
     //test_one();
 
 
