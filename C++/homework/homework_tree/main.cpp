@@ -8,6 +8,8 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include<sstream>
+
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -50,17 +52,40 @@ public:
         double loan_S, monthly_payment_mf;
         int date_n;
 
-        cout << "enter the loan amount (S): ";
-        cin >> loan_S;
+        while (true) {
+            cout << "enter the loan amount (S): ";
+            if (!(cin >> loan_S)) {
+                cin.clear();
+                cin.ignore();
+                cout << "error\n";
+                continue;
+            }
+            break;
+        }
 
-        cout << "enter the monthly payment (m): ";
-        cin >> monthly_payment_mf;
+        while (true) {
+            cout << "enter the monthly payment (m): ";
+            if (!(cin >> monthly_payment_mf)) {
+                cin.clear();
+                cin.ignore();
+                cout << "error\n";
+                continue;
+            }
+            break;
+        }
 
-        cout << "Enter the loan term in years (n): ";
-        cin >> date_n;
+        while (true) {
+            cout << "Enter the loan term in years (n): ";
+            if (!(cin >> date_n)) {
+                cin.clear();
+                cin.ignore();
+                cout << "error\n";
+                continue;
+            }
+            break;
+        }
 
         double interest_rate = findInterestRate(loan_S, monthly_payment_mf, date_n);
-
         cout << "interest rate on the loan: " << interest_rate << "%" << endl;
     }
 };
@@ -110,7 +135,7 @@ void loan() { // правильно
         cout << "function m cannot be calculated" << endl << endl;
     }
 }
-
+//предыдущий вариант 2 задания
 int advance() {
     double monthly_payment_mf, procent_p, t, object_r, monthly_payment_m, loan_S, date_n;;
     bool f1 = false;
@@ -156,7 +181,7 @@ int advance() {
     cout << "\n" << procent_p << "%" << endl;
     return 0;
 }
-
+//предыдущий вариант 2 задания
 void working_w_files() { //правильно
     string line, line_two, out_two;
 
@@ -220,10 +245,41 @@ void launcher() { // Fixed function name
     while (true) {
         comment_output();
         cout << endl;
-        cout << "(if you want to exit the program, enter 'exit') \n";
-        cout << "enter task_number: ";
+        
 
-        cin >> task_number;
+        while (true) {
+            string task_number_str;
+            int task_number;
+
+            cout << "(if you want to exit the program, enter 'exit') \n";
+            cout << "enter task_number: ";
+            cin >> task_number_str;
+
+            if (task_number_str == "exit") {
+                cout << "program completed!\n";
+                return;
+            }
+
+            bool has_non_digit = false;
+            for (char type : task_number_str) {
+                if (!isdigit(type)) {
+                    has_non_digit = true;
+                    break;
+                }
+            }
+
+            if (has_non_digit) {
+                cerr << "error, enter only numbers!\n";
+                cin.clear();
+                cin.ignore();
+            }
+            else {
+                stringstream(task_number_str) >> task_number;
+                //cout << "u enter : " << task_number  << endl;
+                break;
+            }
+        }
+
 
         switch (task_number) {
         case 1:
