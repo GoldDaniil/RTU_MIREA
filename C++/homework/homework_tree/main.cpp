@@ -238,18 +238,17 @@ void letter_sorting() {
     cout << lum << endl;
 }
 
-void launcher() { // Fixed function name
+void launcher() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
-    char task_number;
+    char task_number_char;
+    int task_number_int;
 
     while (true) {
         comment_output();
         cout << endl;
-        
 
         while (true) {
             string task_number_str;
-            int task_number;
 
             cout << "(if you want to exit the program, enter 'exit') \n";
             cout << "enter task_number: ";
@@ -274,14 +273,13 @@ void launcher() { // Fixed function name
                 cin.ignore();
             }
             else {
-                stringstream(task_number_str) >> task_number;
-                //cout << "u enter : " << task_number  << endl;
+                stringstream(task_number_str) >> task_number_int;
+                // cout << "u enter : " << task_number_int  << endl;
                 break;
             }
         }
 
-
-        switch (task_number) {
+        switch (task_number_int) {
         case 1:
             cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
