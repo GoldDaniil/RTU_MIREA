@@ -524,11 +524,11 @@ void static_dimensional_arrays() {
 
     cout << "1)seller " << max_sales_seller + 1 << " achieved the highest sales: " << max_sales << endl;
     cout << "  seller " << min_sales_seller + 1 << " achieved the lowest sales: " << min_sales << endl;
-    cout << "2) seller " << max_commission_seller + 1 << " received the highest commission: " << max_commission << endl;
+    cout << "2)seller " << max_commission_seller + 1 << " received the highest commission: " << max_commission << endl;
     cout << "  seller " << min_commission_seller + 1 << " received the lowest commission: " << min_commission << endl;
-    cout << "3) total sales: " << total_sales << endl;
-    cout << "4) total commission: " << total_commission << endl;
-    cout << "5) total money passed through sellers hands: " << total_sales + total_commission << endl << endl;
+    cout << "3)total sales: " << total_sales << endl;
+    cout << "4)total commission: " << total_commission << endl;
+    cout << "5)total money passed through sellers hands: " << total_sales + total_commission << endl << endl;
 
     clock_t end_time = clock();
     double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
