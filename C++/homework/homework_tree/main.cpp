@@ -15,8 +15,55 @@
 
 using namespace std;
 
-void comment_output(); //объявление функции для компилятора
-void launcher(); //объявление функции для компилятора
+void comment_output() {
+    HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(back_color, 0x0a);
+    cout << "-----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Loan' \n 2 task - 'Advance' \n 3 task - 'WorkingWFiles' \n 4 task - 'LetterSorting'" << endl;
+    SetConsoleTextAttribute(back_color, 0x07);
+}
+
+class BinarySearch {
+public:
+    double calculateMonthlyPayment(double loan_S, double object_r, int date_n) {
+        return (loan_S * object_r * pow((1 + object_r), date_n)) / (12 * (pow((1 + object_r), date_n) - 1));
+    }
+
+    double findInterestRate(double loan_S, double monthly_payment_mf, int date_n) {
+        double left = 0.0; // левая граница интервала
+        double right = 1.0; // правая граница интервала
+
+        while (right - left > 0.000000001) {
+            double mid = (left + right) / 2; //  определения середины текущего интервала поиска
+            double monthly_payment_calculated = calculateMonthlyPayment(loan_S, mid, date_n);
+
+            if (monthly_payment_calculated > monthly_payment_mf) {
+                right = mid;
+            }
+            else {
+                left = mid;
+            }
+        }
+        return left * 100;
+    }
+
+    void calculateAndPrintInterestRate() {
+        double loan_S, monthly_payment_mf;
+        int date_n;
+
+        cout << "enter the loan amount (S): ";
+        cin >> loan_S;
+
+        cout << "enter the monthly payment (m): ";
+        cin >> monthly_payment_mf;
+
+        cout << "Enter the loan term in years (n): ";
+        cin >> date_n;
+
+        double interest_rate = findInterestRate(loan_S, monthly_payment_mf, date_n);
+
+        cout << "interest rate on the loan: " << interest_rate << "%" << endl;
+    }
+};
 
 void loan() { // правильно
     double loan_S, monthly_payment_m, date_n, procent_p, object_r;
@@ -97,9 +144,10 @@ int advance() {
     //подобрать начальный шаг
 
     for (procent_p = 0; procent_p <= 300; procent_p += 0.01) {
+
         object_r = procent_p / 100;
-        t = 12 * (pow((1 + object_r), date_n) - 1);
-        monthly_payment_mf = (loan_S * object_r * pow((1 + object_r), date_n / t));
+        monthly_payment_mf = (loan_S * object_r * pow((1 + object_r), date_n)) / (12 * (pow((1 + object_r), date_n) - 1));
+
         if (abs(monthly_payment_m - monthly_payment_mf) < 1) {
             break;
         }
@@ -165,26 +213,17 @@ void letter_sorting() {
     cout << lum << endl;
 }
 
-int main() {
-    launcher();
-    return 0;
-}
-
 void launcher() { // Fixed function name
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
-    int task_number;
+    char task_number;
 
     while (true) {
         comment_output();
         cout << endl;
         cout << "(if you want to exit the program, enter 'exit') \n";
         cout << "enter task_number: ";
-        if (!(cin >> task_number)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error!\n" << endl;
-            continue;
-        }
+
+        cin >> task_number;
 
         switch (task_number) {
         case 1:
@@ -199,7 +238,9 @@ void launcher() { // Fixed function name
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "second task - 'Advance' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            advance();
+            BinarySearch loan_task;
+            loan_task.calculateAndPrintInterestRate();
+            //advance();
             break;
         case 3:
             cout << "\n";
@@ -222,9 +263,7 @@ void launcher() { // Fixed function name
     }
 }
 
-void comment_output() {
-    HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(back_color, 0x0a);
-    cout << "-----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Loan' \n 2 task - 'Advance' \n 3 task - 'WorkingWFiles' \n 4 task - 'LetterSorting'" << endl;
-    SetConsoleTextAttribute(back_color, 0x07);
+int main() {
+    launcher();
+    return 0;
 }
