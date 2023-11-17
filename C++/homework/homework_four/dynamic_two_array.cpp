@@ -5,6 +5,7 @@
 #include<string>
 #include<sstream>
 #include<algorithm>
+#include<cmath>
 
 using namespace std;
 
@@ -302,6 +303,6 @@ int main() {
     two_dimensional_array();
 
     //test_zero();
-    
+
     return 0;
 }
