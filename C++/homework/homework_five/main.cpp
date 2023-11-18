@@ -1,3 +1,7 @@
+// Homework 5 blocks of Procedural programming.
+// The code uses the snake_case naming style for functions and variables.
+// CamelCase is used for classes.
+
 #include<iostream>
 #include<string>
 #include<Windows.h>
