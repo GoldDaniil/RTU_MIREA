@@ -287,8 +287,32 @@ void two_dimensional_array() {
             break;
 
         case '*':
-            cout << "product of matrices: \n";
+            if (number_matrices >= 2) {
+                cout << "\nproduct of matrices :\n";
+                if (number_matrices >= 2) {
+                    try {
+                        double** result_matrix = new double* [number_lines];
 
+                        for (int i = 0; i < number_lines; i++) {
+                            result_matrix[i] = new double[number_elements];
+
+                            for (int j = 0; j < number_elements; j++) {
+                                result_matrix[i][j] = 0;
+
+                                for (int k = 0; k < number_matrices; k++) {
+                                    result_matrix[i][j] = result_matrix[i][j]*all_matrices[k][i][j];
+                                }
+
+                                cout << result_matrix[i][j] << " ";
+                            }
+                            cout << endl;
+                        }
+                    }
+                    catch (const exception& err) {
+                        cout << "error! failed to allocate memory!\n" << err.what() << endl;
+                    }
+                }
+            }
             break;
 
             //case "exit":
@@ -301,7 +325,6 @@ void two_dimensional_array() {
 
 int main() {
     two_dimensional_array();
-
     //test_zero();
 
     return 0;
