@@ -122,7 +122,7 @@ namespace TaskOne {
 }
 
 void sieve_eratosthenes() {
-
+	
 }
 
 void launcher() {
@@ -164,15 +164,19 @@ void launcher() {
 		switch (task_number_int) {
 		case 1:
 			cout << "\n";
+
 			SetConsoleTextAttribute(back_col, 0x0a);
 			cout << "Task 'Euclidean Algorithm'. Give 2 numbers and find their most common divisor methods : division and subtraction.\n";
 			SetConsoleTextAttribute(back_col, 0x07);
+
 			cout << "division method: \n";
 			TaskOne::FindTheGDBDivisionByDivision gcdCalculator_one;
 			gcdCalculator_one.euclidean_algorithm_division();
+
 			cout << "\n\nsubtraction method: \n";
 			TaskOne::FindTheGDBDivisionBySubtraction gcdCalculator_two;
 			gcdCalculator_two.euclidean_algorithm_subtraction();
+
 			cout << "\n";
 			break;
 		case 2:
