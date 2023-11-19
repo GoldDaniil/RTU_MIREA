@@ -15,7 +15,7 @@ void comment_output() {
 	SetConsoleTextAttribute(back_col, 0x07);
 }
 
-namespace TaskOne {
+namespace TaskOneVarTwo {
 	//метод деления
 	class FindTheGDBDivisionByDivision {
 	public:
@@ -121,8 +121,47 @@ namespace TaskOne {
 	};
 }
 
-void sieve_eratosthenes() {
-	
+namespace SieveOfEratosthenes {
+	bool is_prime(int num) {
+		if (num < 2) {
+			return false;
+		}
+
+		for (int i = 2; i < num; i++) {
+			if ((num % i) == 0) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	void find_primes() {
+		int upper_limit;
+		while (true) {
+			cout << "enter limit: \n";
+			if (!(cin >> upper_limit)) {
+				cin.clear();
+				cin.ignore();
+				cerr << "error\n";
+				continue;
+			}
+			break;
+		}
+
+		if (upper_limit < 2) {
+			cout << "error!" << endl;
+			return;
+		} ///исключения добавить!
+
+		cout << "prime numbers from 2 to " << upper_limit << ": ";
+		for (int j = 2; j <= upper_limit; j++) {
+			if (is_prime(j)) {
+				cout << j << " ";
+			}
+		}
+		cout << endl;
+	}
 }
 
 void launcher() {
@@ -169,14 +208,12 @@ void launcher() {
 			cout << "Task 'Euclidean Algorithm'. Give 2 numbers and find their most common divisor methods : division and subtraction.\n";
 			SetConsoleTextAttribute(back_col, 0x07);
 
-			cout << "division method: \n";
-			TaskOne::FindTheGDBDivisionByDivision gcdCalculator_one;
+			cout << "division method: \n";	
+			TaskOneVarTwo::FindTheGDBDivisionByDivision gcdCalculator_one;
 			gcdCalculator_one.euclidean_algorithm_division();
-
 			cout << "\n\nsubtraction method: \n";
-			TaskOne::FindTheGDBDivisionBySubtraction gcdCalculator_two;
+			TaskOneVarTwo::FindTheGDBDivisionBySubtraction gcdCalculator_two;
 			gcdCalculator_two.euclidean_algorithm_subtraction();
-
 			cout << "\n";
 			break;
 		case 2:
@@ -184,7 +221,7 @@ void launcher() {
 			SetConsoleTextAttribute(back_col, 0x0a);
 			cout << "'The Sieve of Eratosthenes' task. Find all prime numbers in the range from 2 to the number you enter natural number\n";
 			SetConsoleTextAttribute(back_col, 0x07);
-			//sieve_eratosthenes();
+			SieveOfEratosthenes::find_primes();
 			cout << "\n";
 			break;
 		case 3:
