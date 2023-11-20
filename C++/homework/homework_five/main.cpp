@@ -13,7 +13,7 @@ using namespace std;
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
 void comment_output() {
 	SetConsoleTextAttribute(back_col, 0x0a);
-	cout << "----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Euclid's algorithm' \n 2 task - 'Sieve of Eratosthenes' \n 3 task - '-' \n 4 task - '-'" << endl;
+	cout << "----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Euclid's algorithm' \n 2 task - 'Sieve of Eratosthenes' \n 3 task - Task “Processing text files” \n 4 task - '-'" << endl;
 	SetConsoleTextAttribute(back_col, 0x07);
 }
 
@@ -183,12 +183,27 @@ namespace ProcessingTextFiles {
 			}
 
 			char replace_char;
-
-
+			cout << "enter a character(symbol) to replace spacec: ";
+			cin >> replace_char;
+			/*while (true) {
+				if (!(cin >> replace_char)) {
+					cin.clear();
+					cin.ignore();
+					cout << "error\n";
+					continue;
+				}
+				break;*/
+			//}
+			for (char char_ch : input_string) {
+				if (char_ch == ' ') {
+					char_ch = replace_char;
+				}
+			}
+			cout << "result :" << input_string << endl;
 
 		}
 		catch (const exception& err) {
-
+			cerr << "error " << err.what() << endl;
 		}
 
 
@@ -196,21 +211,21 @@ namespace ProcessingTextFiles {
 
 		/*try {
 			ifstream TextFile("text.txt");
-			
+
 			string input_string;
 			cout << "enter string: ";
 			getline(cin, input_string);
 
 			char replace_char;
 			cout << "enter a character(symbol) to replace spaces: ";
-			 
+
 			for (char char_ch : input_string) {
 				if (char_ch == ' ') {
 					char_ch = replace_char;
 				}
 			}
 
-			cout << "result : " << input_string << endl; 
+			cout << "result : " << input_string << endl;
 		}
 		catch (const exception& err) {
 			cerr << "error " << err.what() << endl;
@@ -283,9 +298,9 @@ void launcher() {
 		case 3:
 			cout << "\n";
 			SetConsoleTextAttribute(back_col, 0x0a);
-			cout << "' ' task. \n";
+			cout << "Task 'Processing text files' task.\nTASK 1: Delimiter conversion: replacing spaces with other (specific) characters\n";
 			SetConsoleTextAttribute(back_col, 0x07);
-			//sieve_eratosthenes();
+			ProcessingTextFiles::converting_delimiters();
 			break;
 		case 4:
 			cout << "\n";
