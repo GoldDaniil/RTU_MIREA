@@ -13,7 +13,7 @@ using namespace std;
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
 void comment_output() {
 	SetConsoleTextAttribute(back_col, 0x0a);
-	cout << "----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Euclid's algorithm' \n 2 task - 'Sieve of Eratosthenes' \n 3 task - Task “Processing text files” \n 4 task - '-'" << endl;
+	cout << "----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Euclid's algorithm' \n 2 task - 'Sieve of Eratosthenes' \n 3 task - Task 'Processing text files' \n 4 task - '-'" << endl;
 	SetConsoleTextAttribute(back_col, 0x07);
 }
 
@@ -168,71 +168,23 @@ namespace SieveOfEratosthenes {
 
 namespace ProcessingTextFiles {
 	void converting_delimiters() {
-		try {
-			ifstream TextFile("text.txt");
-			string input_string;
-			while (true) {
-				cout << "enter string: ";
-				if (!(cin >> input_string)) {
-					cin.clear();
-					cin.ignore();
-					cout << "error\n";
-					continue;
-				}
-				break;
-			}
+		string input_string;
+		cout << "enter input string: ";
+		cin >> input_string;
+		getline(cin, input_string);
 
-			char replace_char;
-			cout << "enter a character(symbol) to replace spacec: ";
-			cin >> replace_char;
-			/*while (true) {
-				if (!(cin >> replace_char)) {
-					cin.clear();
-					cin.ignore();
-					cout << "error\n";
-					continue;
-				}
-				break;*/
-			//}
-			for (char char_ch : input_string) {
-				if (char_ch == ' ') {
-					char_ch = replace_char;
-				}
-			}
-			cout << "result :" << input_string << endl;
+		char replace_char;
+		cout << "enter the character(symbol) you want to insert in place of the blanks: ";
+		cin >> replace_char;
+
+		for (char &i_symbol : input_string) {
+			if (i_symbol == ' ') {
+				i_symbol = replace_char;
+			} 
 
 		}
-		catch (const exception& err) {
-			cerr << "error " << err.what() << endl;
-		}
-
-
-
-
-		/*try {
-			ifstream TextFile("text.txt");
-
-			string input_string;
-			cout << "enter string: ";
-			getline(cin, input_string);
-
-			char replace_char;
-			cout << "enter a character(symbol) to replace spaces: ";
-
-			for (char char_ch : input_string) {
-				if (char_ch == ' ') {
-					char_ch = replace_char;
-				}
-			}
-
-			cout << "result : " << input_string << endl;
-		}
-		catch (const exception& err) {
-			cerr << "error " << err.what() << endl;
-		}*/
+		cout << input_string << endl << endl;
 	}
-
-
 }
 
 void launcher() {
@@ -248,7 +200,7 @@ void launcher() {
 			cin >> task_number_str;
 
 			if (task_number_str == "exit") {
-				cout << "program completed!\n";
+				cout << "ohhhh, okay;(\n";
 				return;
 			}
 
@@ -296,11 +248,37 @@ void launcher() {
 			cout << "\n";
 			break;
 		case 3:
-			cout << "\n";
-			SetConsoleTextAttribute(back_col, 0x0a);
-			cout << "Task 'Processing text files' task.\nTASK 1: Delimiter conversion: replacing spaces with other (specific) characters\n";
-			SetConsoleTextAttribute(back_col, 0x07);
-			ProcessingTextFiles::converting_delimiters();
+
+			cout << "\nAssignments on the topic 'Processing text files'\n\ntask 1 : Converting delimiters = replacing spaces with other (specific) characters.\ntask 4 : Searching for a word of maximum length in the text.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
+			cout << "\nenter the number of a specific task : ";
+			int local_switch_tree;
+			while (true) {
+				if (!(cin >> local_switch_tree)) {
+					cin.clear();
+					cin.ignore();
+					cout << "error!\n";
+					continue;
+				}
+				break;
+			}
+
+			switch (local_switch_tree) {
+			case 1:
+				ProcessingTextFiles::converting_delimiters();
+				break;
+			case 4:
+				cout << "coming soon\n";
+				break;
+			case 19:
+				cout << "coming soon\n";
+				break;
+			default:
+				cout << "error!\n";
+				break;
+			}
+			//SetConsoleTextAttribute(back_col, 0x0a);
+			//cout << "Task 'Processing text files' task.\nTASK 1: Delimiter conversion: replacing spaces with other (specific) characters\n";
+			//SetConsoleTextAttribute(back_col, 0x07);
 			break;
 		case 4:
 			cout << "\n";
