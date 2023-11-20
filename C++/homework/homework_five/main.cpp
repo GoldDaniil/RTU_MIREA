@@ -6,6 +6,8 @@
 #include<string>
 #include<Windows.h>
 #include<sstream>
+#include<fstream>
+#include<time.h>
 
 using namespace std;
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -164,6 +166,60 @@ namespace SieveOfEratosthenes {
 	}
 }
 
+namespace ProcessingTextFiles {
+	void converting_delimiters() {
+		try {
+			ifstream TextFile("text.txt");
+			string input_string;
+			while (true) {
+				cout << "enter string: ";
+				if (!(cin >> input_string)) {
+					cin.clear();
+					cin.ignore();
+					cout << "error\n";
+					continue;
+				}
+				break;
+			}
+
+			char replace_char;
+
+
+
+		}
+		catch (const exception& err) {
+
+		}
+
+
+
+
+		/*try {
+			ifstream TextFile("text.txt");
+			
+			string input_string;
+			cout << "enter string: ";
+			getline(cin, input_string);
+
+			char replace_char;
+			cout << "enter a character(symbol) to replace spaces: ";
+			 
+			for (char char_ch : input_string) {
+				if (char_ch == ' ') {
+					char_ch = replace_char;
+				}
+			}
+
+			cout << "result : " << input_string << endl; 
+		}
+		catch (const exception& err) {
+			cerr << "error " << err.what() << endl;
+		}*/
+	}
+
+
+}
+
 void launcher() {
 	char task_number_char;
 	int task_number_int;
@@ -208,7 +264,7 @@ void launcher() {
 			cout << "Task 'Euclidean Algorithm'. Give 2 numbers and find their most common divisor methods : division and subtraction.\n";
 			SetConsoleTextAttribute(back_col, 0x07);
 
-			cout << "division method: \n";	
+			cout << "division method: \n";
 			TaskOneVarTwo::FindTheGDBDivisionByDivision gcdCalculator_one;
 			gcdCalculator_one.euclidean_algorithm_division();
 			cout << "\n\nsubtraction method: \n";
