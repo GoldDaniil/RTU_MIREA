@@ -167,7 +167,7 @@ namespace SieveOfEratosthenes {
 }
 
 namespace ProcessingTextFiles {
-	void converting_delimiters() {
+	void converting_delimiters_spaces() {
 		string input_string;
 		cout << "enter input string: ";
 		cin >> input_string;
@@ -177,15 +177,44 @@ namespace ProcessingTextFiles {
 		cout << "enter the character(symbol) you want to insert in place of the blanks: ";
 		cin >> replace_char;
 
-		for (char &i_symbol : input_string) {
+		for (char& i_symbol : input_string) {
 			if (i_symbol == ' ') {
 				i_symbol = replace_char;
-			} 
+			}
 
 		}
 		cout << input_string << endl << endl;
 	}
+	
+	void converting_delimiters_words() {
+		string input_string;
+		cout << "enter input string: ";
+		cin >> input_string;
+		getline(cin, input_string);
+
+		char char_space = ' ';
+		if (&char_space : input_string) {
+
+		}
+
+	}
+
+	void max_word_length() {
+		string search_text;
+		cout << "enter input text: ";
+		cin >> search_text;
+		getline(cin, search_text);
+
+		//stringstream max_lenght(search_text);
+		istringstream max_vec_lenght(search_text);
+		string longest_word;
+
+		//while (max_vec_lenght >> ) {
+
+		//}
+	}
 }
+
 
 void launcher() {
 	char task_number_char;
@@ -264,7 +293,7 @@ void launcher() {
 
 			switch (local_switch_tree) {
 			case 1:
-				ProcessingTextFiles::converting_delimiters();
+				ProcessingTextFiles::converting_delimiters_spaces();
 				break;
 			case 4:
 				cout << "coming soon\n";
