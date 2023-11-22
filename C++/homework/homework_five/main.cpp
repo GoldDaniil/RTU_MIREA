@@ -179,6 +179,8 @@ namespace ProcessingTextFiles {
 		
 		const int size = 300;
 		double total_spent_time = 0, research_time;
+
+		clock_t start_time_test = clock();
 		for (int j = 0; j < size; j++) {
 			clock_t start_time = clock();
 
@@ -192,6 +194,10 @@ namespace ProcessingTextFiles {
 			double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
 			total_spent_time += spent_time;
 		}
+		clock_t end_time_test = clock();
+		double spent_time_test = (double)(end_time_test - start_time_test) / CLOCKS_PER_SEC;
+		cout << "     test : " << spent_time_test << endl;
+
 		double average_time = total_spent_time / size;
 		cout << input_string << endl;
 
