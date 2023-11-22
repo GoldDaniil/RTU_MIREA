@@ -185,33 +185,28 @@ namespace ProcessingTextFiles {
 		}
 		cout << input_string << endl << endl;
 	}
-	
-	void converting_delimiters_words() {
-		string input_string;
-		cout << "enter input string: ";
-		cin >> input_string;
-		getline(cin, input_string);
-
-		char char_space = ' ';
-		if (&char_space : input_string) {
-
-		}
-
-	}
 
 	void max_word_length() {
 		string search_text;
 		cout << "enter input text: ";
 		cin >> search_text;
 		getline(cin, search_text);
+		
+		//wstring size_text = search_text;
+		//добавить проверку на колво слов - если 1 слово - вывести вы ввели 1 слово
 
-		//stringstream max_lenght(search_text);
-		istringstream max_vec_lenght(search_text);
+		istringstream iss(search_text);
 		string longest_word;
 
-		//while (max_vec_lenght >> ) {
+		while (iss >> ws) {
+			string word;
+			iss >> word;
 
-		//}
+			if (word.length() > longest_word.length()) {
+				longest_word = word;
+			}
+		}
+		cout << "word of maximum length: " << longest_word << endl << endl;
 	}
 }
 
@@ -259,7 +254,6 @@ void launcher() {
 			SetConsoleTextAttribute(back_col, 0x0a);
 			cout << "Task 'Euclidean Algorithm'. Give 2 numbers and find their most common divisor methods : division and subtraction.\n";
 			SetConsoleTextAttribute(back_col, 0x07);
-
 			cout << "division method: \n";
 			TaskOneVarTwo::FindTheGDBDivisionByDivision gcdCalculator_one;
 			gcdCalculator_one.euclidean_algorithm_division();
@@ -277,15 +271,20 @@ void launcher() {
 			cout << "\n";
 			break;
 		case 3:
+			//задания обработка текстовых файлов
+			SetConsoleTextAttribute(back_col, 0x0a);
+			cout << "\nAssignments on the topic 'Processing text files'\n";
+			SetConsoleTextAttribute(back_col, 0x07);
 
-			cout << "\nAssignments on the topic 'Processing text files'\n\ntask 1 : Converting delimiters = replacing spaces with other (specific) characters.\ntask 4 : Searching for a word of maximum length in the text.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
-			cout << "\nenter the number of a specific task : ";
+			cout << "task 1 : Converting delimiters = replacing spaces with other(specific) characters.\ntask 4 : Searching for a word of maximum length in the text.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
+			
 			int local_switch_tree;
 			while (true) {
+				cout << "\nenter the number of a specific task : ";
 				if (!(cin >> local_switch_tree)) {
 					cin.clear();
 					cin.ignore();
-					cout << "error!\n";
+					cout << "error!";
 					continue;
 				}
 				break;
@@ -296,7 +295,7 @@ void launcher() {
 				ProcessingTextFiles::converting_delimiters_spaces();
 				break;
 			case 4:
-				cout << "coming soon\n";
+				ProcessingTextFiles::max_word_length();
 				break;
 			case 19:
 				cout << "coming soon\n";
