@@ -176,14 +176,30 @@ namespace ProcessingTextFiles {
 		char replace_char;
 		cout << "enter the character(symbol) you want to insert in place of the blanks: ";
 		cin >> replace_char;
+		
+		const int size = 300;
+		double total_spent_time = 0, research_time;
+		for (int j = 0; j < size; j++) {
+			clock_t start_time = clock();
 
-		for (char& i_symbol : input_string) {
-			if (i_symbol == ' ') {
-				i_symbol = replace_char;
+			for (char& i_symbol : input_string) {
+				if (i_symbol == ' ') {
+					i_symbol = replace_char;
+				}
+
 			}
-
+			clock_t end_time = clock();
+			double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+			total_spent_time += spent_time;
 		}
-		cout << input_string << endl << endl;
+		double average_time = total_spent_time / size;
+		cout << input_string << endl;
+
+		SetConsoleTextAttribute(back_col, 0x0b);
+		cout << "test average time " << total_spent_time << endl;;
+		cout << "\naverage time = " << average_time << " ml\n\n";
+		SetConsoleTextAttribute(back_col, 0x0a);
+
 	}
 
 	void max_word_length() {
@@ -191,7 +207,7 @@ namespace ProcessingTextFiles {
 		cout << "enter input text: ";
 		cin >> search_text;
 		getline(cin, search_text);
-		
+
 		//wstring size_text = search_text;
 		//добавить проверку на колво слов - если 1 слово - вывести вы ввели 1 слово
 
@@ -277,7 +293,7 @@ void launcher() {
 			SetConsoleTextAttribute(back_col, 0x07);
 
 			cout << "task 1 : Converting delimiters = replacing spaces with other(specific) characters.\ntask 4 : Searching for a word of maximum length in the text.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
-			
+
 			int local_switch_tree;
 			while (true) {
 				cout << "\nenter the number of a specific task : ";
