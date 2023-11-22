@@ -258,7 +258,36 @@ namespace ProcessingTextFiles {
 		catch (const exception& err) {
 			cerr << "error : " << err.what() << endl;
 		}
+	}
 
+	void most_occurring_character() {
+		try {
+			ifstream file("example.txt");
+
+			if (!file.is_open()) {
+				cerr << "error\n";
+				return;
+			}
+
+			const int ASCII_SIZE = 128;
+			int char_frequency[ASCII_SIZE] = { 0 };
+
+			char symbol;
+			while (file.get(symbol)) {
+				char_frequency[symbol]++;
+			}
+
+			for (char i = 0; i < ASCII_SIZE; ++i) {
+				if (char_frequency[i] > 0) {
+					cout << "symbol '" << i << "': " << char_frequency[i] << " once\n";
+				}
+			}
+
+			file.close();
+		}
+		catch (const exception& err) {
+			cerr << "error : " << err.what() << endl;
+		}
 	}
 }
 
@@ -355,7 +384,7 @@ void launcher() {
 				ProcessingTextFiles::max_word_length();
 				break;
 			case 19:
-				cout << "coming soon\n";
+				ProcessingTextFiles::most_occurring_character();
 				break;
 			default:
 				cout << "error!\n";
