@@ -208,27 +208,57 @@ namespace ProcessingTextFiles {
 
 	}
 
-	void max_word_length() {
-		string search_text;
-		cout << "enter input text: ";
-		cin >> search_text;
-		getline(cin, search_text);
-
-		//wstring size_text = search_text;
-		//добавить проверку на колво слов - если 1 слово - вывести вы ввели 1 слово
-
-		istringstream iss(search_text);
-		string longest_word;
-
-		while (iss >> ws) {
+	void convert_rows_columns() {
+		string input_string;
+		cout << "enter text: ";
+		cin >> input_string;
+		
+		while (getline(cin, input_string) && !input_string.empty()) {
 			string word;
-			iss >> word;
+			for (char& symbol : input_string) {
+				if (symbol != ' ') {
+					word += symbol;
+				}
+				else {
+					cout << word << endl;
+					word.clear();
+				}
+			}
 
-			if (word.length() > longest_word.length()) {
-				longest_word = word;
+			if (!word.empty()) {
+				cout << word << endl;
+			}
+			break;
+		}
+		cout << endl;
+	}
+
+	void max_word_length() {
+		try {
+			cout << "enter text: ";
+			string text;
+			cin >> text;
+			getline(cin, text);
+
+			stringstream subject_w(text);
+			string word, longest_word;
+			while (subject_w >> word) {
+				if (word.length() > longest_word.length()) {
+					longest_word = word;
+				}
+			}
+
+			if (!longest_word.empty()) {
+				cout << "longest word in text: " << longest_word << endl;
+			}
+			else {
+				cout << "error, text is empty!\n";
 			}
 		}
-		cout << "word of maximum length: " << longest_word << endl << endl;
+		catch (const exception& err) {
+			cerr << "error : " << err.what() << endl;
+		}
+
 	}
 }
 
@@ -246,7 +276,9 @@ void launcher() {
 			cin >> task_number_str;
 
 			if (task_number_str == "exit") {
+				SetConsoleTextAttribute(back_col, 0x0b);
 				cout << "ohhhh, okay;(\n";
+				SetConsoleTextAttribute(back_col, 0x07);
 				return;
 			}
 
@@ -298,7 +330,7 @@ void launcher() {
 			cout << "\nAssignments on the topic 'Processing text files'\n";
 			SetConsoleTextAttribute(back_col, 0x07);
 
-			cout << "task 1 : Converting delimiters = replacing spaces with other(specific) characters.\ntask 4 : Searching for a word of maximum length in the text.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
+			cout << "task 1 : Converting delimiters = replacing spaces with other(specific) characters.\ntask 2 : Convert Delimiters = convert rows to columns of words.\ntask 4 : Searching for a word of maximum length in the text.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
 
 			int local_switch_tree;
 			while (true) {
@@ -315,6 +347,9 @@ void launcher() {
 			switch (local_switch_tree) {
 			case 1:
 				ProcessingTextFiles::converting_delimiters_spaces();
+				break;
+			case 2:
+				ProcessingTextFiles::convert_rows_columns();
 				break;
 			case 4:
 				ProcessingTextFiles::max_word_length();
