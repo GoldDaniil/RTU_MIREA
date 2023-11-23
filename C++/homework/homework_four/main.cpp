@@ -539,37 +539,10 @@ void static_dimensional_arrays() {
 }
 
 void convert_base() {
-    string hex_number;
-    cout << "enter : "; //ввод в 16 сист счисления
-    cin >> hex_number;
+ 
 
-    string octal_number = "";
 
-    string hexTable[16] = { "000", "001", "010", "011", "100", "101", "110", "111",
-                                "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111" };
-
-    for (int i = 0; i < hex_number.length(); i++) {
-
-        if ((hex_number[i] >= '0') && (hex_number[i] <= '9')) {
-            int index = hex_number[i] - '0';
-            octal_number += hexTable[index];
-        }
-        else if ((hex_number[i] >= 'A') && (hex_number[i] <= 'F')) {
-            int index = hex_number[i] - 'A' + 10;
-            octal_number += hexTable[index];
-        }
-    }
-
-    int pos = octal_number.find_first_not_of('0');
-    if (pos != string::npos) {
-        octal_number = octal_number.substr(pos);
-    }
-    else {
-        octal_number = "0";
-    }
-
-    cout << "result: " << octal_number << "010" << endl;
-}///тест
+}
 
 void task_launcher() {
     int task_number;
