@@ -9,6 +9,7 @@
 #include<fstream>
 #include<time.h>
 #include<iterator>
+#include<algorithm>
 
 using namespace std;
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -327,9 +328,25 @@ namespace ProcessingTextFiles {
 			ifstream input_file("input_text.txt");
 			ofstream output_file("output_text.txt");
 
-			if ((!input_file.is_open()) and ) {
-
+			if ((!input_file.is_open()) || (!output_file.is_open())) {
+				cerr << "error!\n";
 			}
+			
+			stringstream ww;
+			ww << input_file.rdbuf();
+
+			string file_content = ww.str();
+			istringstream iww(file_content);
+
+			istream_iterator<string> begin(iww), end;
+			sort(begin, end);
+
+			copy(begin, end, ostream_iterator<string>(output_file, " "));
+
+			cout << "return 1::!::!::!::!::\n";
+
+			input_file.close();
+			output_file.close();
 
 		}
 		catch (const exception& err) {
