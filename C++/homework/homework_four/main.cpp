@@ -2,6 +2,13 @@
 // The code uses the snake_case naming style for functions and variables.
 // CamelCase is used for classes.
 
+
+///         ИСПРАВИТЬ КОСЯК С ВЫДЕЛЕНИЕМ ДИНАМИЧЕСКОЙ ПАМЯТИ И ЕЁ УТЕЧКОЙ
+///           ИСПОЛЬЗОВАТЬ ИСКЛЮЧЕНИЯ - TRY/CATCH(CONST EXCEPTION&) 
+///             проверить в какой конкретно момент ошибка
+
+
+
 #include<iostream>
 #include<fstream>
 #include<stdio.h>
@@ -11,6 +18,7 @@
 #include<thread>
 #include<chrono>
 #include<stdexcept>
+#include<string>
 
 using namespace std;
 
@@ -538,11 +546,90 @@ void static_dimensional_arrays() {
 
 }
 
-void convert_base() {
- 
+namespace ConvertBase {
+    int char_to_digit(char symbol) {
+        if ((symbol >= '0') && (symbol <= '9')) {
+            return symbol - '0';
+        }
+        else if((symbol >= 'A') && (symbol <= 'Z')) {
+            return symbol - 'A' + 10;
+        }
+        else if ((symbol >= 'a') && (symbol <= 'Z')) {
+            return symbol - 'a' + 10;
+        }
+        else {
+            return -1;
+        }
+    }
+
+    string convert_base(const string& number, int old_base, int new_base) {
+        int decimal_number = 0;
+
+        for (char digit_char : number) {
+            int digit = char_to_digit(digit_char);
+            if ((digit == -1) || (digit >= old_base)) {
+                cerr << "error!\n";
+                exit(1);
+            }
+
+            decimal_number = decimal_number * old_base + digit;
+        }
 
 
+        string result = "";
+        while (decimal_number > 0) {
+            int remainder = decimal_number % new_base;
+
+            char digit_char;
+            if (remainder < 10) {
+                digit_char = remainder + '0';
+            }
+            else {
+                digit_char = remainder - 10 + 'A';
+            }
+
+            result = digit_char + result;
+            decimal_number /= new_base;
+        }
+        //проверить объектный код на утечку памяти!!!!
+        return result.empty() ? "0" : result;
+    }
+
+    void cout_convert_base() {
+        string number;
+        int old_base, new_base;
+
+        cout << "enter number: ";
+        cin >> number;
+
+        while (true) {
+            cout << "enter old foundation: ";
+            if (!(cin >> old_base)) {
+                cin.clear();
+                cin.ignore();
+                cout << "error!\n";
+                continue;
+            }
+            break;
+        }
+
+        while (true) {
+            cout << "enter new foundation: ";
+            if (!(cin >> new_base)) {
+                cin.clear();
+                cin.ignore();
+                cout << "error!\n";
+                continue;
+            }
+            break;
+        }
+
+        string result = convert_base(number, old_base, new_base);
+
+        cout << "result : " << result << endl << endl;
+    }
 }
+
 
 void task_launcher() {
     int task_number;
@@ -625,7 +712,7 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "ninth task - 'Number systems' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            convert_base();
+            ConvertBase::cout_convert_base();
             break;
         default:
             cout << "\nerror! \n";
