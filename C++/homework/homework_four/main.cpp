@@ -39,8 +39,7 @@ void dynamic_matrix_multiplication() {
 
     }
     //if (rows == "end") {
-    //сделать так - чтобы при вводе end
-    // компилятор закрывался.
+    
     //}
 
     int cols;
