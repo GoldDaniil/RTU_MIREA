@@ -292,9 +292,86 @@ namespace ProcessingTextFiles {
 		}
 	}
 
-	void search_specific_word() {
+	class SearchSpecificWord {
+	public:
+		void display_file_contents(const string& filename) {
+			try {
+				ifstream input_file(filename);
+				if (!input_file.is_open()) {
+					cerr << "error opening file! " << filename << endl;
+					return;
+				}
+
+				string line;
+				cout << "\ncontents of the file '" << filename << "': \n\n";
+				while (getline(input_file, line)) {
+					cout << line << endl;
+				}
+
+				input_file.close();
+			}
+			catch (const exception& err) {
+				cerr << "error : " << err.what() << endl;
+			}
+		}
+
+		void search_word(const string& filename, string& target_word) {
+			try {
+				ifstream input_file(filename);
+
+				if (!input_file.is_open()) {
+					cerr << "error opening file! " << filename << endl;
+					return;
+				}
+
+				string line;
+				bool word_found = false;
+				int line_number = 0;
+
+				while (getline(input_file, line)) {
+					line_number++;
+					size_t pos = line.find(target_word);
+					if (pos != string::npos) {
+						cout << "\nword: " << target_word << " found in line " << line_number << " at position " << pos << endl << endl;
+						word_found = true;
+					}
+				}
+
+				input_file.close();
+
+				if (!word_found) {
+					cout << "\nword: " << target_word << " not found in the file! \n\n";
+				}
+			}
+			catch (const exception& err) {
+				cerr << "error : " << err.what() << endl;
+			}
+
+		}
+
+		void cout_search_specific_word() {
+			try {
+				string filename = "text.txt";
+
+				display_file_contents(filename);
+
+				string target_word;
+				cout << "\nenter the word you want to find in the text: ";
+				cin >> target_word;
+
+				search_word(filename, target_word);
+			} catch (const exception& err) {
+				cerr << "error : " << err.what() << endl;
+			}
+		}
+	};
+
+	/*void search_specific_word() {
 		try {
-			ifstream input_file("text.txt");
+			ofstream input_file("text.txt");
+			input_file << "asdiah sdihaisdh iashd";
+
+
 
 			if (!input_file.is_open()) {
 				cerr << "error!\n";
@@ -321,37 +398,10 @@ namespace ProcessingTextFiles {
 		catch (const exception& err) {
 			cerr << "rrror: " << err.what() << endl;
 		}
-	}
+	}*/
 
 	void sort_word_text() {
-		try {
-			ifstream input_file("input_text.txt");
-			ofstream output_file("output_text.txt");
-
-			if ((!input_file.is_open()) || (!output_file.is_open())) {
-				cerr << "error!\n";
-			}
-			
-			stringstream ww;
-			ww << input_file.rdbuf();
-
-			string file_content = ww.str();
-			istringstream iww(file_content);
-
-			istream_iterator<string> begin(iww), end;
-			sort(begin, end);
-
-			copy(begin, end, ostream_iterator<string>(output_file, " "));
-
-			cout << "return 1::!::!::!::!::\n";
-
-			input_file.close();
-			output_file.close();
-
-		}
-		catch (const exception& err) {
-
-		}
+		//доделать завтра
 
 	}
 }
@@ -434,6 +484,7 @@ void launcher() {
 					cout << "error!";
 					continue;
 				}
+				cout << "------------------------------------------------------------------------------------------------------------------------\n";
 				break;
 			}
 
@@ -448,7 +499,8 @@ void launcher() {
 				ProcessingTextFiles::max_word_length();
 				break;
 			case 15:
-				ProcessingTextFiles::search_specific_word();
+				ProcessingTextFiles::SearchSpecificWord TestLaunch;
+				TestLaunch.cout_search_specific_word();
 				break;
 			case 17:
 				ProcessingTextFiles::sort_word_text();
