@@ -178,7 +178,7 @@ namespace ProcessingTextFiles {
 		char replace_char;
 		cout << "enter the character(symbol) you want to insert in place of the blanks: ";
 		cin >> replace_char;
-		
+
 		const int size = 300;
 		double total_spent_time = 0, research_time;
 
@@ -214,7 +214,7 @@ namespace ProcessingTextFiles {
 		string input_string;
 		cout << "enter text: ";
 		cin >> input_string;
-		
+
 		while (getline(cin, input_string) && !input_string.empty()) {
 			string word;
 			for (char& symbol : input_string) {
@@ -360,7 +360,8 @@ namespace ProcessingTextFiles {
 				cin >> target_word;
 
 				search_word(filename, target_word);
-			} catch (const exception& err) {
+			}
+			catch (const exception& err) {
 				cerr << "error : " << err.what() << endl;
 			}
 		}
@@ -444,10 +445,12 @@ void launcher() {
 			}
 		}
 
+		string local_switch_tree_str;
+		int local_switch_tree;
+
 		switch (task_number_int) {
 		case 1:
 			cout << "\n";
-
 			SetConsoleTextAttribute(back_col, 0x0a);
 			cout << "Task 'Euclidean Algorithm'. Give 2 numbers and find their most common divisor methods : division and subtraction.\n";
 			SetConsoleTextAttribute(back_col, 0x07);
@@ -468,24 +471,40 @@ void launcher() {
 			cout << "\n";
 			break;
 		case 3:
-			//задания обработка текстовых файлов
+			// Задания обработка текстовых файлов
 			SetConsoleTextAttribute(back_col, 0x0a);
 			cout << "\nAssignments on the topic 'Processing text files'\n";
 			SetConsoleTextAttribute(back_col, 0x07);
 
-			cout << "task 1 : Converting delimiters = replacing spaces with other(specific) characters.\ntask 2 : Convert Delimiters = convert rows to columns of words.\ntask 4 : Searching for a word of maximum length in the text.\ntask 15 : Find a specific word in a text file. \ntask 17 : Sort words in a text file alphabetically.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
+			cout << "(if you want to exit the program, enter 'exit') \n\ntask 1 : Converting delimiters = replacing spaces with other(specific) characters.\ntask 2 : Convert Delimiters = convert rows to columns of words.\ntask 4 : Searching for a word of maximum length in the text.\ntask 15 : Find a specific word in a text file. \ntask 17 : Sort words in a text file alphabetically.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
 
-			int local_switch_tree;
+			
 			while (true) {
-				cout << "\nenter the number of a specific task : ";
-				if (!(cin >> local_switch_tree)) {
+				cout << "\nenter the number of a specific task or enter 'exit' : ";
+				cin >> local_switch_tree_str;
+
+				if (local_switch_tree_str == "exit") {
+					cout << " ;( \n";
+					return;
+				}
+
+				bool has_no_digit_tree = false;
+				for (char type : local_switch_tree_str) {
+					if (!isdigit(type)) {
+						has_no_digit_tree = true;
+						break;
+					}
+				}
+
+				if (has_no_digit_tree) {
+					cerr << "error! enter only members!\n";
 					cin.clear();
 					cin.ignore();
-					cout << "error!";
-					continue;
 				}
-				cout << "------------------------------------------------------------------------------------------------------------------------\n";
-				break;
+				else {
+					stringstream(local_switch_tree_str) >> local_switch_tree;
+					break;
+				}
 			}
 
 			switch (local_switch_tree) {
@@ -509,19 +528,16 @@ void launcher() {
 				ProcessingTextFiles::most_occurring_character();
 				break;
 			default:
-				cout << "error!\n";
+				cerr << "error!\n";
 				break;
 			}
-			//SetConsoleTextAttribute(back_col, 0x0a);
-			//cout << "Task 'Processing text files' task.\nTASK 1: Delimiter conversion: replacing spaces with other (specific) characters\n";
-			//SetConsoleTextAttribute(back_col, 0x07);
 			break;
 		case 4:
 			cout << "\n";
 			SetConsoleTextAttribute(back_col, 0x0a);
 			cout << "'' task.\n";
 			SetConsoleTextAttribute(back_col, 0x07);
-			//sieve_eratosthenes();
+			// sieve_eratosthenes();
 			break;
 		default:
 			cerr << "error!\n";
@@ -534,3 +550,5 @@ int main() {
 	launcher();
 	return 0;
 }
+
+
