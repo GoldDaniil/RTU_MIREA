@@ -8,6 +8,7 @@
 #include<sstream>
 #include<fstream>
 #include<time.h>
+#include<iterator>
 
 using namespace std;
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -289,8 +290,54 @@ namespace ProcessingTextFiles {
 			cerr << "error : " << err.what() << endl;
 		}
 	}
-}
 
+	void search_specific_word() {
+		try {
+			ifstream input_file("text.txt");
+
+			if (!input_file.is_open()) {
+				cerr << "error!\n";
+				return;
+			}
+
+			string target_word, line;
+			cout << "enter the word you want to find in the text: ";
+			cin >> target_word;
+
+			bool word_found = false;
+			while (getline(input_file, line)) {
+				if (line.find(target_word) != string::npos) {
+					cout << "word: " << target_word << " found in line: " << line << endl;
+					word_found = true;
+				}
+			}
+			input_file.close();
+
+			if (!word_found) {
+				cout << "word: " << target_word << " not found in the file\n";
+			}
+		}
+		catch (const exception& err) {
+			cerr << "rrror: " << err.what() << endl;
+		}
+	}
+
+	void sort_word_text() {
+		try {
+			ifstream input_file("input_text.txt");
+			ofstream output_file("output_text.txt");
+
+			if ((!input_file.is_open()) and ) {
+
+			}
+
+		}
+		catch (const exception& err) {
+
+		}
+
+	}
+}
 
 void launcher() {
 	char task_number_char;
@@ -359,7 +406,7 @@ void launcher() {
 			cout << "\nAssignments on the topic 'Processing text files'\n";
 			SetConsoleTextAttribute(back_col, 0x07);
 
-			cout << "task 1 : Converting delimiters = replacing spaces with other(specific) characters.\ntask 2 : Convert Delimiters = convert rows to columns of words.\ntask 4 : Searching for a word of maximum length in the text.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
+			cout << "task 1 : Converting delimiters = replacing spaces with other(specific) characters.\ntask 2 : Convert Delimiters = convert rows to columns of words.\ntask 4 : Searching for a word of maximum length in the text.\ntask 15 : Find a specific word in a text file. \ntask 17 : Sort words in a text file alphabetically.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
 
 			int local_switch_tree;
 			while (true) {
@@ -382,6 +429,12 @@ void launcher() {
 				break;
 			case 4:
 				ProcessingTextFiles::max_word_length();
+				break;
+			case 15:
+				ProcessingTextFiles::search_specific_word();
+				break;
+			case 17:
+				ProcessingTextFiles::sort_word_text();
 				break;
 			case 19:
 				ProcessingTextFiles::most_occurring_character();
