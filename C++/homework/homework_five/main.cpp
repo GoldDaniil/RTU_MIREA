@@ -15,7 +15,7 @@ using namespace std;
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
 void comment_output() {
 	SetConsoleTextAttribute(back_col, 0x0a);
-	cout << "----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Euclid's algorithm' \n 2 task - 'Sieve of Eratosthenes' \n 3 task - Task 'Processing text files' \n 4 task - '-'" << endl;
+	cout << "----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Euclid's algorithm' \n 2 task - 'Sieve of Eratosthenes' \n 3 task - Task 'Processing text files' \n 4 task - Task 'Rows'" << endl;
 	SetConsoleTextAttribute(back_col, 0x07);
 }
 
@@ -349,7 +349,6 @@ namespace ProcessingTextFiles {
 			catch (const exception& err) {
 				cerr << "error : " << err.what() << endl;
 			}
-
 		}
 
 		void cout_search_specific_word() {
@@ -370,43 +369,24 @@ namespace ProcessingTextFiles {
 		}
 	};
 
-	/*void search_specific_word() {
-		try {
-			ofstream input_file("text.txt");
-			input_file << "asdiah sdihaisdh iashd";
-
-
-
-			if (!input_file.is_open()) {
-				cerr << "error!\n";
-				return;
-			}
-
-			string target_word, line;
-			cout << "enter the word you want to find in the text: ";
-			cin >> target_word;
-
-			bool word_found = false;
-			while (getline(input_file, line)) {
-				if (line.find(target_word) != string::npos) {
-					cout << "word: " << target_word << " found in line: " << line << endl;
-					word_found = true;
-				}
-			}
-			input_file.close();
-
-			if (!word_found) {
-				cout << "word: " << target_word << " not found in the file\n";
-			}
-		}
-		catch (const exception& err) {
-			cerr << "rrror: " << err.what() << endl;
-		}
-	}*/
-
 	void sort_word_text() {
-		//доделать завтра
+		
+		//сложная задача - исправить 
+	}
+}
 
+namespace TaskRows {
+	void task_one() {
+		int n;
+		cout << "enter n: ";
+		cin >> n;
+
+		double sum = 0;
+		for (int i = 1; i <= n; i++) {
+			sum += ((1 / (sin(i) + 1)) + (2 / (sin(i) * sin(i))));
+		}
+
+		cout << "1/(sin + 1) + 2/(sin1 + sin2) + ... + sin(n) = " << sum << endl;
 	}
 }
 
@@ -536,11 +516,18 @@ void launcher() {
 			}
 			break;
 		case 4:
+			SetConsoleTextAttribute(back_col, 0x0a);
+			cout << "\nTask 'Row'\n";
+			SetConsoleTextAttribute(back_col, 0x07);
+			
+			cout << "(if you want to exit the program, enter 'exit') \n\ntask 1 : An integer n is given (entered from the keyboard). Calculate\n";
+
+
 			cout << "\n";
 			SetConsoleTextAttribute(back_col, 0x0a);
 			cout << "'' task.\n";
 			SetConsoleTextAttribute(back_col, 0x07);
-			// sieve_eratosthenes();
+			TaskRows::task_one();
 			break;
 		default:
 			cerr << "error!\n";
