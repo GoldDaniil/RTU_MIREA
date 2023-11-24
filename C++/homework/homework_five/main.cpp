@@ -172,7 +172,9 @@ namespace ProcessingTextFiles {
 	void converting_delimiters_spaces() {
 		string input_string;
 		cout << "enter input string: ";
-		cin >> input_string;
+		//cin >> input_string;
+		cin.clear(); //перед гитлайном надо очистить буфер обмена
+		cin.ignore();
 		getline(cin, input_string);
 
 		char replace_char;
@@ -551,4 +553,3 @@ int main() {
 	launcher();
 	return 0;
 }
-
