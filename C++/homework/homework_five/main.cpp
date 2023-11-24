@@ -329,9 +329,10 @@ namespace ProcessingTextFiles {
 				int line_number = 0;
 
 				while (getline(input_file, line)) {
-					line_number++;
+					//line_number++;
 					size_t pos = line.find(target_word);
 					if (pos != string::npos) {
+						line_number++;
 						cout << "\nword: " << target_word << " found in line " << line_number << " at position " << pos << endl << endl;
 						word_found = true;
 					}
@@ -478,7 +479,7 @@ void launcher() {
 
 			cout << "(if you want to exit the program, enter 'exit') \n\ntask 1 : Converting delimiters = replacing spaces with other(specific) characters.\ntask 2 : Convert Delimiters = convert rows to columns of words.\ntask 4 : Searching for a word of maximum length in the text.\ntask 15 : Find a specific word in a text file. \ntask 17 : Sort words in a text file alphabetically.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
 
-			
+
 			while (true) {
 				cout << "\nenter the number of a specific task or enter 'exit' : ";
 				cin >> local_switch_tree_str;
@@ -550,5 +551,4 @@ int main() {
 	launcher();
 	return 0;
 }
-
 
