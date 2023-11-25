@@ -378,16 +378,48 @@ namespace ProcessingTextFiles {
 namespace TaskRows {
 	void task_one() {
 		int n;
-		cout << "enter n: ";
-		cin >> n;
+		while (true) {
+			cout << "\nenter n: ";
+			if (!(cin >> n)) {
+				cin.clear();
+				cin.ignore();
+				cout << "error \n";
+				continue;
+			}
+			break;
 
-		double sum = 0;
-		for (int i = 1; i <= n; i++) {
-			sum += ((1 / (sin(i) + 1)) + (2 / (sin(i) * sin(i))));
 		}
 
-		cout << "1/(sin + 1) + 2/(sin1 + sin2) + ... + sin(n) = " << sum << endl;
+		cout << "\nexample: \n";
+		long double result_sum = 0.0, sin_sum = 0.0;
+
+		for (int i = 1; i <= n; ++i) {
+			long double denominator = 0.0;
+			for (int j = 1; j <= i; ++j) {
+				denominator += sin(j);
+			}
+			result_sum += i / denominator;
+
+			cout << i << "/(";
+			for (int k = 1; k <= i; ++k) {
+				cout << "sin(" << k << ")";
+				if (k < i) {
+					cout << " + ";
+				}
+			}
+			cout << ")";
+
+			if (i < n) {
+				cout << " + ";
+			}
+		}
+		cout << "\n\nresult : " << result_sum << endl << endl;
 	}
+
+	//void task_() {
+
+	//}
+
 }
 
 void launcher() {
@@ -428,8 +460,8 @@ void launcher() {
 			}
 		}
 
-		string local_switch_tree_str;
-		int local_switch_tree;
+		string local_switch_tree_str, local_switch_four_str;
+		int local_switch_tree, local_switch_four;
 
 		switch (task_number_int) {
 		case 1:
@@ -460,7 +492,6 @@ void launcher() {
 			SetConsoleTextAttribute(back_col, 0x07);
 
 			cout << "(if you want to exit the program, enter 'exit') \n\ntask 1 : Converting delimiters = replacing spaces with other(specific) characters.\ntask 2 : Convert Delimiters = convert rows to columns of words.\ntask 4 : Searching for a word of maximum length in the text.\ntask 15 : Find a specific word in a text file. \ntask 17 : Sort words in a text file alphabetically.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
-
 
 			while (true) {
 				cout << "\nenter the number of a specific task or enter 'exit' : ";
@@ -514,6 +545,7 @@ void launcher() {
 				cerr << "error!\n";
 				break;
 			}
+
 			break;
 		case 4:
 			SetConsoleTextAttribute(back_col, 0x0a);
@@ -521,13 +553,48 @@ void launcher() {
 			SetConsoleTextAttribute(back_col, 0x07);
 			
 			cout << "(if you want to exit the program, enter 'exit') \n\ntask 1 : An integer n is given (entered from the keyboard). Calculate\n";
+			
+			while (true) {
+				cout << "\nenter the number of a specific task or enter 'exit' : ";
+				cin >> local_switch_four_str;
 
+				if (local_switch_four_str == "exit") {
+					cout << " ;( \n";
+				}
+			
+				bool has_no_digit_four = false;
+				for (char type : local_switch_four_str) {
+					if (!isdigit(type)) {
+						local_switch_four_str = true;
+						break;
+					}
+ 				}
 
-			cout << "\n";
-			SetConsoleTextAttribute(back_col, 0x0a);
-			cout << "'' task.\n";
-			SetConsoleTextAttribute(back_col, 0x07);
-			TaskRows::task_one();
+				if (has_no_digit_four) {
+					cerr << "error! enter only members!\n";
+					cin.clear();
+					cin.ignore();
+				}
+				else {
+					stringstream(local_switch_four_str) >> local_switch_four;
+					break;
+				}
+			}
+
+			switch (local_switch_four) {
+			case 1:
+				TaskRows::task_one();
+				break;
+			case 2:
+				//TaskRows::
+				break;
+			default:
+				cerr << "error!\n\n";
+			}
+			
+			break;
+		case 5:
+			cout << "coming soon!\n";
 			break;
 		default:
 			cerr << "error!\n";
