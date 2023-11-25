@@ -215,10 +215,10 @@ namespace ProcessingTextFiles {
 	void convert_rows_columns() {
 		string input_string;
 		cout << "enter text: ";
-		cin >> input_string;
-
+		getline(cin, input_string);
+		
+		string word;
 		while (getline(cin, input_string) && !input_string.empty()) {
-			string word;
 			for (char& symbol : input_string) {
 				if (symbol != ' ') {
 					word += symbol;
@@ -370,7 +370,7 @@ namespace ProcessingTextFiles {
 	};
 
 	void sort_word_text() {
-		
+
 		//сложная задача - исправить 
 	}
 }
@@ -387,7 +387,6 @@ namespace TaskRows {
 				continue;
 			}
 			break;
-
 		}
 
 		cout << "\nexample: \n";
@@ -416,9 +415,48 @@ namespace TaskRows {
 		cout << "\n\nresult : " << result_sum << endl << endl;
 	}
 
-	//void task_() {
+	class TaskSigma {
+	public:
+		int factorial_function(int n) {
+			if ((n == 0) || (n == 1)) {
+				return 1;
+			}
+			else {
+				return n * factorial_function(n - 1); // рекурсивная функция для нахождения
+			}											// факториала
 
-	//}
+		}
+
+		void task_sigma() {
+			int n;
+			while (true) {
+				cout << "\nenter natural number n: ";
+				if (!(cin >> n)) {
+					cin.clear();
+					cin.ignore();
+					cout << "error \n";
+					continue;
+				}
+				break;
+			}
+			
+			long double y = 0.0, partial_sum = 0.0;
+
+			for (int k = 1; k <= n; ++k) {
+				if ((k % 2) == 0) {
+					partial_sum += -1.0 / k;
+				}
+				else {
+					partial_sum += 1.0 / k;
+				}
+
+				y += factorial_function(k) / partial_sum;
+			}
+
+			cout << "\nresult : " << y << endl;
+		}
+	};
+
 
 }
 
@@ -551,9 +589,9 @@ void launcher() {
 			SetConsoleTextAttribute(back_col, 0x0a);
 			cout << "\nTask 'Row'\n";
 			SetConsoleTextAttribute(back_col, 0x07);
-			
-			cout << "(if you want to exit the program, enter 'exit') \n\ntask 1 : An integer n is given (entered from the keyboard). Calculate\n";
-			
+
+			cout << "(if you want to exit the program, enter 'exit') \n\ntask 1 : An integer n is given (entered from the keyboard).\ntask 4 : Given a natural number n, calculate sigma \n";
+
 			while (true) {
 				cout << "\nenter the number of a specific task or enter 'exit' : ";
 				cin >> local_switch_four_str;
@@ -561,14 +599,14 @@ void launcher() {
 				if (local_switch_four_str == "exit") {
 					cout << " ;( \n";
 				}
-			
+
 				bool has_no_digit_four = false;
 				for (char type : local_switch_four_str) {
 					if (!isdigit(type)) {
 						local_switch_four_str = true;
 						break;
 					}
- 				}
+				}
 
 				if (has_no_digit_four) {
 					cerr << "error! enter only members!\n";
@@ -585,13 +623,14 @@ void launcher() {
 			case 1:
 				TaskRows::task_one();
 				break;
-			case 2:
-				//TaskRows::
+			case 4:
+				TaskRows::TaskSigma TimeFunction;
+				TimeFunction.task_sigma();
 				break;
 			default:
 				cerr << "error!\n\n";
 			}
-			
+
 			break;
 		case 5:
 			cout << "coming soon!\n";
