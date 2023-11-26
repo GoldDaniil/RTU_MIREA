@@ -216,7 +216,7 @@ namespace ProcessingTextFiles {
 		string input_string;
 		cout << "enter text: ";
 		getline(cin, input_string);
-		
+
 		string word;
 		while (getline(cin, input_string) && !input_string.empty()) {
 			for (char& symbol : input_string) {
@@ -439,7 +439,7 @@ namespace TaskRows {
 				}
 				break;
 			}
-			
+
 			long double y = 0.0, partial_sum = 0.0;
 
 			for (int k = 1; k <= n; ++k) {
@@ -537,13 +537,12 @@ void launcher() {
 
 				if (local_switch_tree_str == "exit") {
 					cout << " ;( \n";
-					return;
 				}
 
 				bool has_no_digit_tree = false;
 				for (char type : local_switch_tree_str) {
 					if (!isdigit(type)) {
-						has_no_digit_tree = true;
+						local_switch_tree_str = true;
 						break;
 					}
 				}
