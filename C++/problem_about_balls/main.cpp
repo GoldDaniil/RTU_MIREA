@@ -7,50 +7,58 @@
 // с порядковым номером действия "вынимания", например, когда шарик № 3 будет вынут 3-им по порядку.
 
 #include<iostream>
-#include<string>
-#include<algorithm>
-#include<cstdlib>
 
 using namespace std;
 
-const int number_balls = 10;  // количество шариков
-int* arr = new int[number_balls]; // выделяем память под массив шариков
-int count_situations = 0; // количество ситуаций
+void print_permutation(int permutation[], int size) {
+	/*for (int num : permutation[size]) {
 
-void generate_permutations(int selected_count) { 
-	if (selected_count == number_balls) {   // вывод очередной перестановки	
-		// проверяем, совпадает ли номер вынутого шарика с порядковым номером действия
-		for (int i = 0; i < number_balls; ++i) {
-			cout << arr[i] << " ";
-			if (arr[i] == i + 1) {
-				count_situations++;
-			}
-		} 
-		cerr << endl;
-		exit(0);
-		//return; 
-	} 
+	}*/
+	for (int i = 0; i < size; i++) {
+		cout << permutation[i] << " ";
+	}
+	cout << endl;
+}
+
+void generate_permutation(int permutation[], int m, int n, int i) {
+	if (i == n) {
+		print_permutation(permutation, n);
+		return;
+	}
+
+	if (i == m) {
+		print_permutation(permutation, n);
+	}
 	else {
-		for (int j = selected_count; j < number_balls; ++j) {		// запускаем процесс обмена
-			swap(arr[selected_count], arr[j]);
-			generate_permutations(selected_count + 1); // рекурсивный вызов функции
-			swap(arr[selected_count], arr[j]); // восстанавливаем порядок для следующей итерации
-			//sum_numbers++;	
-			//sum_numbers--;
+		for (int j = i; j < n; j++) {
+			swap(permutation[i], permutation[j]);
+			generate_permutation(permutation, m, n, i + 1);
+			swap(permutation[i], permutation[j]);
 		}
 	}
 }
 
 int main() {
-	// иницилизируем массив шариков
-	for (int k = 0; k < number_balls; ++k) {
-		arr[k] = k + 1;
+	int n;
+	while (true) {
+		cout << "enter the number of balls: ";
+		if (!(cin >> n)) {
+			cin.clear();
+			cin.ignore();
+			cout << "error\n";
+			continue;
+		}
+		break;
 	}
 
-	generate_permutations(3);
-	cout << "total situations: " << count_situations << endl;
+	int* balls = new int[n];
+	for (int i = 0; i < n; i++) {
+		balls[i] = i + 1;
+	}
 
-	delete[] arr;
+	generate_permutation(balls, n, n, 1);
+
+	delete[] balls;
 
 	return 0;
 }
