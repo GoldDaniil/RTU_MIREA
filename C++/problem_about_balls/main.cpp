@@ -11,9 +11,6 @@
 using namespace std;
 
 void print_permutation(int permutation[], int size) {
-	/*for (int num : permutation[size]) {
-
-	}*/
 	for (int i = 0; i < size; i++) {
 		cout << permutation[i] << " ";
 	}
@@ -56,7 +53,11 @@ int main() {
 		balls[i] = i + 1;
 	}
 
+	int count = 0;
+
 	generate_permutation(balls, n, n, 1);
+
+	cout << "kolvo : " << count << endl;
 
 	delete[] balls;
 
