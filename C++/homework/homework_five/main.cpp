@@ -378,7 +378,7 @@ namespace ProcessingTextFiles {
 	public:
 		void balance_brackets_cout() {
 			try {
-				ifstream inputFile("input.txt");
+				ifstream inputFile("input_task_38.txt");
 				if (!inputFile.is_open()) {
 					cerr << "\nthe file could not be opened\n" << endl;
 					return;
