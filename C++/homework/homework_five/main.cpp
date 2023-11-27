@@ -2,6 +2,9 @@
 // The code uses the snake_case naming style for functions and variables.
 // CamelCase is used for classes.
 
+
+//ОШИБКИ : 17 = 3 БЛОК - КОДА НЕТ \ 19 = 3 БЛОК - ОШИБКА В КОДЕ \ 20 = 4 БЛОК - ОШИБКА В КОДЕ \ + ЗАДАЧА ПРО ШАРИКИ - ОШИБКА В КОДЕ
+
 #include<iostream>
 #include<string>
 #include<Windows.h>
@@ -757,7 +760,7 @@ void launcher() {
 				TimeFunction.task_sigma();
 				break;
 			case 20:
-				TaskRows::TransferToFour LocalFunction;
+				TaskRows::TransferToFour LocalFunction;		//ОШИБКА
 				LocalFunction.cout_binary_to_quaternary();
 			default:
 				cerr << "error!\n\n";
