@@ -513,7 +513,61 @@ namespace TaskRows {
 		}
 	};
 
+	class TransferToFour {
+	public:
+		string binary_to_quaternary(const string& binary) {
+			try {
 
+
+
+			}
+			catch (const exception& err) {
+				cerr << "error: " << err.what() << endl;
+			}
+
+		}
+
+		void cout_binary_to_quaternary() {
+			int n;
+			while (true) {
+				cout << "\nenter the number of variables (n): ";
+				if (!(cin >> n)) {
+					cin.clear();
+					cin.ignore();
+					cerr << "error!\n";
+					continue;
+				}
+				break;
+			}
+
+			// cоздание массива для хранения исходных чисел в двоичной системе
+			string* binary_array = new string[n];
+
+			for (int i = 0; i < n; ++i) {
+				cout << "enter binary number: " << i + 1 << ": ";
+				cin >> binary_array[i];
+			}
+
+			string* quaternary_array = new string[n];
+
+			for (int j = 0; j < n; ++j) {
+				quaternary_array[j] = binary_to_quaternary(binary_array[j]);
+			}
+
+			cout << "\nsource array in binary system: \n";
+			for (int k = 0; k < n; ++k) {
+				cout << binary_array[k] << " ";
+			}
+
+			cout << "\nthe result of the translation into the quaternary system: \n";
+			for (int i = 0; i < n; ++i) {
+				std::cout << quaternary_array[i] << " ";
+			}
+
+			delete[] binary_array;
+			delete[] quaternary_array;
+		};
+	};
 }
 
 void launcher() {
@@ -651,7 +705,7 @@ void launcher() {
 			cout << "\nTask 'Row'\n";
 			SetConsoleTextAttribute(back_col, 0x07);
 
-			cout << "(if you want to exit the program, enter 'exit') \n\ntask 1 : An integer n is given (entered from the keyboard).\ntask 4 : Given a natural number n, calculate sigma \n";
+			cout << "(if you want to exit the program, enter 'exit') \n\ntask 1 : An integer n is given (entered from the keyboard).\ntask 4 : Given a natural number n, calculate sigma\ntask 20 : An array of F[1:n] numbers in binary notation is given. In another array, organize the translationof the original array into the quaternary number system \n";
 
 			while (true) {
 				cout << "\nenter the number of a specific task or enter 'exit' : ";
@@ -688,6 +742,8 @@ void launcher() {
 				TaskRows::TaskSigma TimeFunction;
 				TimeFunction.task_sigma();
 				break;
+			case 20:
+				TaskRows::
 			default:
 				cerr << "error!\n\n";
 			}
