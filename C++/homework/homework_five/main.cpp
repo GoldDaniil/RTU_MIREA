@@ -517,9 +517,23 @@ namespace TaskRows {
 	public:
 		string binary_to_quaternary(const string& binary) {
 			try {
+				string quaternary;
 
+				int binary_length = binary.length();
 
+				while ((binary_length % 2) != 0) {
+					binary_length++;
+				}
 
+				for (int i = 0; i < binary_length; i += 2) {
+					
+					string two_digits = binary.substr(i, 2);
+
+					int decimal = stoi(two_digits, nullptr, 2);
+
+					quaternary += to_string(decimal);
+				}
+				return quaternary;
 			}
 			catch (const exception& err) {
 				cerr << "error: " << err.what() << endl;
@@ -559,7 +573,7 @@ namespace TaskRows {
 				cout << binary_array[k] << " ";
 			}
 
-			cout << "\nthe result of the translation into the quaternary system: \n";
+			cout << "\n\nthe result of the translation into the quaternary system: \n";
 			for (int i = 0; i < n; ++i) {
 				std::cout << quaternary_array[i] << " ";
 			}
@@ -743,11 +757,11 @@ void launcher() {
 				TimeFunction.task_sigma();
 				break;
 			case 20:
-				TaskRows::
+				TaskRows::TransferToFour LocalFunction;
+				LocalFunction.cout_binary_to_quaternary();
 			default:
 				cerr << "error!\n\n";
 			}
-
 			break;
 		case 5:
 			cout << "coming soon!\n";
