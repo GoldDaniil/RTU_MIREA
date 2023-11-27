@@ -10,6 +10,7 @@
 #include<time.h>
 #include<iterator>
 #include<algorithm>
+#include<vector>
 
 using namespace std;
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -373,6 +374,75 @@ namespace ProcessingTextFiles {
 
 		//сложная задача - исправить 
 	}
+
+	class CheckingBalance {
+	public:
+		void balance_brackets(const string& inputFileName, const string& outputFileName) {
+			try {
+				ifstream input_file(inputFileName);
+				ofstream output_file(outputFileName);
+
+				if (!input_file.is_open()) {
+					cerr << "error opening input file : " << inputFileName << endl;
+					return;
+				}
+
+				if (!output_file.is_open()) {
+					cerr << "error opening output file : " << outputFileName << endl;
+					input_file.close(); // close input_file before returning
+					return;
+				}
+
+				vector<char> bracket_stack;
+				char current_char;
+
+				// read characters from the input file
+				while (input_file.get(current_char)) {
+					if ((current_char == '(') || (current_char == ')')) {
+						if (current_char == '(') {
+							bracket_stack.push_back(current_char);
+						}
+						else if (current_char == ')') {
+							if (!bracket_stack.empty() && bracket_stack.back() == '(') {
+								bracket_stack.pop_back();
+							}
+							else {
+								bracket_stack.push_back('(');
+								output_file << '(';
+							}
+						}
+					}
+					output_file << current_char;
+				}
+
+				// 
+				for (char unclosed_bracket : bracket_stack) {
+					output_file << ')';
+				}
+
+				input_file.close();
+				output_file.close();
+
+				cout << "balancing completed. Check the output file : " << outputFileName << endl;
+			}
+			catch (const exception& err) {
+				cerr << "error! " << err.what() << endl;
+			}
+		}
+
+		int balance_brackets_cout(int argc, char* argv[]) {
+			if (argc != 3) {
+				cerr << "usage : " << argv[0] << " inputFileName outputFilename\n";
+				return 1; //
+			}
+
+			string inputFileName = argv[1], outputFileName = argv[2];
+
+			balance_brackets(inputFileName, outputFileName);
+
+			return 0; //
+		}
+	};
 }
 
 namespace TaskRows {
@@ -529,7 +599,7 @@ void launcher() {
 			cout << "\nAssignments on the topic 'Processing text files'\n";
 			SetConsoleTextAttribute(back_col, 0x07);
 
-			cout << "(if you want to exit the program, enter 'exit') \n\ntask 1 : Converting delimiters = replacing spaces with other(specific) characters.\ntask 2 : Convert Delimiters = convert rows to columns of words.\ntask 4 : Searching for a word of maximum length in the text.\ntask 15 : Find a specific word in a text file. \ntask 17 : Sort words in a text file alphabetically.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\n";
+			cout << "(if you want to exit the program, enter 'exit') \n\ntask 1 : Converting delimiters = replacing spaces with other(specific) characters.\ntask 2 : Convert Delimiters = convert rows to columns of words.\ntask 4 : Searching for a word of maximum length in the text.\ntask 15 : Find a specific word in a text file. \ntask 17 : Sort words in a text file alphabetically.\ntask 19 : Statistical processing of a text file = searching for the most frequently occurring character\ntask 38 : Checking parenthesis balance in a text file.\n";
 
 			while (true) {
 				cout << "\nenter the number of a specific task or enter 'exit' : ";
@@ -577,6 +647,10 @@ void launcher() {
 				break;
 			case 19:
 				ProcessingTextFiles::most_occurring_character();
+				break;
+			case 38:
+				ProcessingTextFiles::CheckingBalance LocalLaunch;
+				LocalLaunch.balance_brackets_cout();
 				break;
 			default:
 				cerr << "error!\n";
