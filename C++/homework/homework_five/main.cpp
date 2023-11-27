@@ -11,6 +11,8 @@
 #include<iterator>
 #include<algorithm>
 #include<vector>
+#include <stdexcept>
+
 
 using namespace std;
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -383,20 +385,28 @@ namespace ProcessingTextFiles {
 				ofstream output_file(outputFileName);
 
 				if (!input_file.is_open()) {
-					cerr << "error opening input file : " << inputFileName << endl;
-					return;
+					throw runtime_error("Error opening input file: " + inputFileName);
 				}
 
 				if (!output_file.is_open()) {
-					cerr << "error opening output file : " << outputFileName << endl;
-					input_file.close(); // close input_file before returning
-					return;
+					throw runtime_error("Error opening output file: " + outputFileName);
 				}
 
 				vector<char> bracket_stack;
 				char current_char;
+				string input_text;
 
-				// read characters from the input file
+				// Read and display the text from input.txt
+				while (input_file.get(current_char)) {
+					cout << current_char;
+					input_text.push_back(current_char);
+				}
+
+				// Reset the input file stream to the beginning
+				input_file.clear();
+				input_file.seekg(0);
+
+				// Process brackets and write to the output file
 				while (input_file.get(current_char)) {
 					if ((current_char == '(') || (current_char == ')')) {
 						if (current_char == '(') {
@@ -415,32 +425,27 @@ namespace ProcessingTextFiles {
 					output_file << current_char;
 				}
 
-				// 
+				// Output the text with balanced brackets to the screen
+				cout << endl << "Balanced text:" << endl << input_text << endl;
+
 				for (char unclosed_bracket : bracket_stack) {
-					output_file << ')';
+					output_file << '(';  // Output opening brackets for unclosed opening brackets
 				}
 
-				input_file.close();
-				output_file.close();
-
-				cout << "balancing completed. Check the output file : " << outputFileName << endl;
+				cout << "Balancing completed. Check the output file: " << outputFileName << endl;
 			}
 			catch (const exception& err) {
-				cerr << "error! " << err.what() << endl;
+				cerr << "Error! " << err.what() << endl;
 			}
 		}
 
-		int balance_brackets_cout(int argc, char* argv[]) {
-			if (argc != 3) {
-				cerr << "usage : " << argv[0] << " inputFileName outputFilename\n";
-				return 1; //
-			}
-
-			string inputFileName = argv[1], outputFileName = argv[2];
+		int balance_brackets_cout() {
+			string inputFileName = "input.txt";
+			string outputFileName = "output.txt";
 
 			balance_brackets(inputFileName, outputFileName);
 
-			return 0; //
+			return 0;  // Return success
 		}
 	};
 }
