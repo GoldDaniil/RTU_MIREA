@@ -10,9 +10,6 @@
 #include<time.h>
 #include<iterator>
 #include<algorithm>
-#include<vector>
-#include <stdexcept>
-
 
 using namespace std;
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -379,73 +376,57 @@ namespace ProcessingTextFiles {
 
 	class CheckingBalance {
 	public:
-		void balance_brackets(const string& inputFileName, const string& outputFileName) {
+		void balance_brackets_cout() {
 			try {
-				ifstream input_file(inputFileName);
-				ofstream output_file(outputFileName);
-
-				if (!input_file.is_open()) {
-					throw runtime_error("Error opening input file: " + inputFileName);
+				ifstream inputFile("input.txt");
+				if (!inputFile.is_open()) {
+					cerr << "\nthe file could not be opened\n" << endl;
+					return;
 				}
 
-				if (!output_file.is_open()) {
-					throw runtime_error("Error opening output file: " + outputFileName);
+				string text;
+				char ch;
+				while (inputFile.get(ch)) {
+					text += ch;
 				}
 
-				vector<char> bracket_stack;
-				char current_char;
-				string input_text;
+				inputFile.close();
 
-				// Read and display the text from input.txt
-				while (input_file.get(current_char)) {
-					cout << current_char;
-					input_text.push_back(current_char);
-				}
+				int openCount = 0;
+				int closeCount = 0;
 
-				// Reset the input file stream to the beginning
-				input_file.clear();
-				input_file.seekg(0);
-
-				// Process brackets and write to the output file
-				while (input_file.get(current_char)) {
-					if ((current_char == '(') || (current_char == ')')) {
-						if (current_char == '(') {
-							bracket_stack.push_back(current_char);
-						}
-						else if (current_char == ')') {
-							if (!bracket_stack.empty() && bracket_stack.back() == '(') {
-								bracket_stack.pop_back();
-							}
-							else {
-								bracket_stack.push_back('(');
-								output_file << '(';
-							}
-						}
+				for (char c : text) {
+					if (c == '(') {
+						openCount++;
 					}
-					output_file << current_char;
+					else if (c == ')') {
+						closeCount++;
+					}
 				}
 
-				// Output the text with balanced brackets to the screen
-				cout << endl << "Balanced text:" << endl << input_text << endl;
+				cout << "\nsource text: \n" << text << endl << endl;
 
-				for (char unclosed_bracket : bracket_stack) {
-					output_file << '(';  // Output opening brackets for unclosed opening brackets
+				cout << "number of opening brackets: " << openCount << endl;
+				cout << "number of closing brackets: " << closeCount << endl << endl;
+
+				int diff = openCount - closeCount;
+
+				if (diff > 0) {
+					for (int i = 0; i < diff; i++) {
+						text += ")";
+					}
+				}
+				else if (diff < 0) {
+					for (int i = 0; i < -diff; i++) {
+						text = "(" + text;
+					}
 				}
 
-				cout << "Balancing completed. Check the output file: " << outputFileName << endl;
+				cout << "text after checking the balance of brackets: \n" << text << endl << endl;
 			}
 			catch (const exception& err) {
-				cerr << "Error! " << err.what() << endl;
+				cout << "error ! :" << err.what();
 			}
-		}
-
-		int balance_brackets_cout() {
-			string inputFileName = "input.txt";
-			string outputFileName = "output.txt";
-
-			balance_brackets(inputFileName, outputFileName);
-
-			return 0;  // Return success
 		}
 	};
 }
