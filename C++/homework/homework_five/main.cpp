@@ -264,7 +264,7 @@ namespace ProcessingTextFiles {
 		}
 	}
 
-	void most_occurring_character() {
+	void most_occurring_character() { // доработать
 		try {
 			ifstream file("example.txt");
 
@@ -629,9 +629,11 @@ void launcher() {
 				TestLaunch.cout_search_specific_word();
 				break;
 			case 17:
-				ProcessingTextFiles::sort_word_text();
+				cerr << "poka netu\n"; 		//сложная задача - исправить 
+
+				ProcessingTextFiles::sort_word_text(); 
 				break;
-			case 19:
+			case 19: //сложная задача - исправить 
 				ProcessingTextFiles::most_occurring_character();
 				break;
 			case 38:
