@@ -50,7 +50,7 @@ void generate_permutation(int permutation[], int n, int i, int& count, vector<in
 
 int main() {
     while (true) {
-
+        //добавить ввод проверку
 
         int n;
         while (true) {
