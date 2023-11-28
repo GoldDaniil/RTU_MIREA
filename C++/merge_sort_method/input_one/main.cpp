@@ -16,7 +16,7 @@ void checking_entered_elements() {
 	cout << "Enter array elements. To end, enter 'end': " << endl;
 
 	while (count < maxSize) {
-		cin >> input;//массив с безтипной подушкой
+		cin >> input;
 
 		if (input == "end") {
 			break;
@@ -25,34 +25,31 @@ void checking_entered_elements() {
 		count++;
 	}
 
-	// Создаем новый массив без элемента "end"    новый тип с подушкой
+	
 	int newCount = 0;
 
 	for (int i = 0; i < count; i++) {
-		while (true) {							//начало
+		while (true) {							
 			if (!(cin >> inputArray[i])) {
-				cin.clear();					// проверить на директиву setlocale
+				cin.clear();					
 				cin.ignore();
 				cout << "error!";
 				continue;
 			}
 			break;
-		}										//конец
+		}										
 		if (inputArray[i] != "end") {
 			newArray[newCount] = inputArray[i];
 			newCount++;
 		}
 	}
 
-	// Выводим элементы нового массива
 	cout << "Input array elements without 'end': " << endl;
 	for (int i = 0; i < newCount; i++) {
 		cout << newArray[i] << " ";
 	}
 	cout << endl;
-	//при вводе элементов в буферный массив - проверки на тип нет! , 
-	// при передачи значений элементов из буферного массива в искомый массив проверка есть!
-	//														  | отсортировывание элементов |
+														
 }
 
 int main() {
