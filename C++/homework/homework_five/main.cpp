@@ -3,7 +3,7 @@
 // CamelCase is used for classes.
 
 
-//ОШИБКИ : 17 = 3 БЛОК - КОДА НЕТ \ 19 = 3 БЛОК - ОШИБКА В КОДЕ \ 20 = 4 БЛОК - ОШИБКА В КОДЕ \ + ЗАДАЧА ПРО ШАРИКИ - ОШИБКА В КОДЕ
+//ОШИБКИ : 17 = 3 БЛОК - КОДА НЕТ \ 20 = 4 БЛОК - ОШИБКА В КОДЕ \ + ЗАДАЧА ПРО ШАРИКИ - ОШИБКА В КОДЕ
 
 #include<iostream>
 #include<string>
@@ -267,7 +267,8 @@ namespace ProcessingTextFiles {
 		}
 	}
 
-	void most_occurring_character() { // доработать
+	void most_occurring_character() {
+		cout << "\n";
 		try {
 			ifstream file("example.txt");
 
@@ -279,15 +280,28 @@ namespace ProcessingTextFiles {
 			const int ASCII_SIZE = 128;
 			int char_frequency[ASCII_SIZE] = { 0 };
 
-			char symbol;
-			while (file.get(symbol)) {
-				char_frequency[symbol]++;
+			int symbol;
+			while ((symbol = file.get()) != EOF) {
+				if (symbol >= 32 && symbol <= 126) {
+					char_frequency[symbol]++;
+				}
 			}
 
-			for (char i = 0; i < ASCII_SIZE; ++i) {
+			int max_frequency = 0;
+			int most_occurred_symbol = -1;
+
+			for (int i = 32; i <= 126; ++i) {
 				if (char_frequency[i] > 0) {
-					cout << "symbol '" << i << "': " << char_frequency[i] << " once\n";
+					cout << "symbol '" << static_cast<char>(i) << "': " << char_frequency[i] << " times\n";
+					if (char_frequency[i] > max_frequency) {
+						max_frequency = char_frequency[i];
+						most_occurred_symbol = i;
+					}
 				}
+			}
+
+			if (most_occurred_symbol != -1) {
+				cout << "\nmost occurring symbol: '" << static_cast<char>(most_occurred_symbol) << "' with frequency: " << max_frequency << " times\n\n";
 			}
 
 			file.close();
@@ -529,7 +543,7 @@ namespace TaskRows {
 				}
 
 				for (int i = 0; i < binary_length; i += 2) {
-					
+
 					string two_digits = binary.substr(i, 2);
 
 					int decimal = stoi(two_digits, nullptr, 2);
@@ -702,7 +716,7 @@ void launcher() {
 			case 17:
 				cerr << "poka netu\n"; 		//сложная задача - исправить 
 
-				ProcessingTextFiles::sort_word_text(); 
+				ProcessingTextFiles::sort_word_text();
 				break;
 			case 19: //сложная задача - исправить 
 				ProcessingTextFiles::most_occurring_character();
@@ -760,7 +774,7 @@ void launcher() {
 				TimeFunction.task_sigma();
 				break;
 			case 20:
-				TaskRows::TransferToFour LocalFunction;		//ОШИБКА
+				TaskRows::TransferToFour LocalFunction;		
 				LocalFunction.cout_binary_to_quaternary();
 			default:
 				cerr << "error!\n\n";
