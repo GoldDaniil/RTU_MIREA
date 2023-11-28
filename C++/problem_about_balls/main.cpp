@@ -46,11 +46,11 @@ int main() {
     while (true) {
         int n;
         while (true) {
-            cout << "Enter the number of balls: ";
+            cout << "enter the number of balls: ";
             if (!(cin >> n)) {
                 cin.clear();
                 cin.ignore();
-                cout << "Error\n";
+                cout << "error\n";
                 continue;
             }
             break;
@@ -69,7 +69,7 @@ int main() {
 
         delete[] balls;
     }
-    
+
 
     return 0;
 }
