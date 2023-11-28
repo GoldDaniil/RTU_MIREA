@@ -1,5 +1,5 @@
 ﻿#include<iostream>
-#include<vector>	//!Да, префиксная сумма и операнды могут помешать кэшированию результатов.!!!
+#include<vector>	
 #include<string>
 
 using namespace std;
