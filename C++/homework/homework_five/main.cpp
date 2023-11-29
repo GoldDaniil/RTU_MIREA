@@ -3,7 +3,7 @@
 // CamelCase is used for classes.
 
 
-//ОШИБКИ : 17 = 3 БЛОК - КОДА НЕТ (не срочно)\ 20 = 4 БЛОК - ОШИБКА В КОДЕ (не срочно)
+//ОШИБКИ : 17 = 3 БЛОК - КОДА НЕТ (не срочно)\ 20 = 4 БЛОК - ОШИБКА В КОДЕ (не срочно)\ 4 номер = 4 блок - ошибка
 
 #include<iostream>
 #include<string>
@@ -774,14 +774,11 @@ void launcher() {
 				TimeFunction.task_sigma();
 				break;
 			case 20:
-				TaskRows::TransferToFour LocalFunction;		
+				TaskRows::TransferToFour LocalFunction;
 				LocalFunction.cout_binary_to_quaternary();
 			default:
 				cerr << "error!\n\n";
 			}
-			break;
-		case 5:
-			cout << "coming soon!\n";
 			break;
 		default:
 			cerr << "error!\n";
