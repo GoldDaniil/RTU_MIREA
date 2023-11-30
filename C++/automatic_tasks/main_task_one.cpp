@@ -116,7 +116,11 @@ void initialize_generation_from_file(ifstream& file, int generation[size][size])
 			if (current[i][j] > 0 && current[i][j] < max_life_level) {
 				int neighbors = 0;
 				
-				for(int x = -1)
+				for (int x = -1; x <= -1; ++x) {
+					for (int y = -1; y <= -1; ++y) {
+
+					}
+				}
 
 			}
 		}
