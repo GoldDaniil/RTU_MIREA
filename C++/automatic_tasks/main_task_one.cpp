@@ -60,7 +60,7 @@ const int max_life_level = 12;
 void display_generation(int generation[size][size]) {
 	for (int i = 0; i < size; ++i) {
 		for (int j = 0; j < size; ++j) {
-			cout << (generation[i][j] == 0 ? "." : to_string(generation[i][j]));
+		// to_string(generation[i][j]));
 		}
 		cout << endl;
 	}
