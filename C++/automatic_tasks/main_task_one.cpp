@@ -110,6 +110,18 @@ int count_living_cells(int generation[size][size]) {
 	return count;
 }
 
-void initialize_generation_from_file(ifstream& file) {
+void initialize_generation_from_file(ifstream& file, int generation[size][size]) {
+	for (int i = 0; i < size; ++i) {
+		for (int j = 0; j < size; ++j) {
+			if (current[i][j] > 0 && current[i][j] < max_life_level) {
+				int neighbors = 0;
+				
+				for(int x = -1)
+
+			}
+		}
+
+	}
+
 
 }
