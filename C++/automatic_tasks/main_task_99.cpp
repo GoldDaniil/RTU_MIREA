@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-
+                        //готово
 using namespace std;
 
 int generate_number() {
