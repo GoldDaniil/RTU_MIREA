@@ -19,7 +19,7 @@ using namespace std;
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
 void comment_output() {
 	SetConsoleTextAttribute(back_col, 0x0a);
-	cout << "----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Euclid's algorithm' \n 2 task - 'Sieve of Eratosthenes' \n 3 task - Task 'Processing text files' \n 4 task - Task 'Rows'\n 5 task - " << endl;
+	cout << "----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Euclid's algorithm' \n 2 task - 'Sieve of Eratosthenes' \n 3 task - Task 'Processing text files' \n 4 task - Task 'Rows'\n 5 task - Task 'Files'\n" << endl;
 	SetConsoleTextAttribute(back_col, 0x07);
 }
 
