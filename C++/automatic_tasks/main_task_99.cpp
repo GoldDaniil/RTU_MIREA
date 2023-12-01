@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-                        //готово
+                       //готовая
 using namespace std;
 
 int generate_number() {
@@ -18,7 +18,7 @@ int generate_number() {
 
 bool is_valid_input(int number) {
     if (number < 1000 || number > 9999) {
-        return false; // Не четырехзначное число
+        return false; // не четырехзначное число
     }
 
     return true;
