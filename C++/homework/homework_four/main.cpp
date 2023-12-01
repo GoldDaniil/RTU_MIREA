@@ -551,7 +551,7 @@ namespace ConvertBase {
         else if ((symbol >= 'A') && (symbol <= 'Z')) {
             return symbol - 'A' + 10;
         }
-        else if ((symbol >= 'a') && (symbol <= 'Z')) {
+        else if ((symbol >= 'a') && (symbol <= 'z')) {
             return symbol - 'a' + 10;
         }
         else {
@@ -565,13 +565,11 @@ namespace ConvertBase {
         for (char digit_char : number) {
             int digit = char_to_digit(digit_char);
             if ((digit == -1) || (digit >= old_base)) {
-                cerr << "error!\n";
-                exit(1);
+                throw invalid_argument("Invalid digit for the specified old_base");
             }
 
             decimal_number = decimal_number * old_base + digit;
         }
-
 
         string result = "";
         while (decimal_number > 0) {
@@ -588,7 +586,7 @@ namespace ConvertBase {
             result = digit_char + result;
             decimal_number /= new_base;
         }
-        //проверить объектный код на утечку памяти!!!!
+
         if (result.empty()) {
             return "0";
         }
@@ -599,17 +597,17 @@ namespace ConvertBase {
 
     void cout_convert_base() {
         string number;
-        int old_base, new_base;
+        int old_base = 0, new_base;
 
         cout << "enter number: ";
         cin >> number;
 
         while (true) {
             cout << "enter old foundation: ";
-            if (!(cin >> old_base)) {
+            if (!(cin >> old_base) || old_base <= 1 || old_base > 36) {
                 cin.clear();
                 cin.ignore();
-                cout << "error!\n";
+                cerr << "error: Invalid old foundation\n";
                 continue;
             }
             break;
@@ -617,18 +615,29 @@ namespace ConvertBase {
 
         while (true) {
             cout << "enter new foundation: ";
-            if (!(cin >> new_base)) {
+            if (!(cin >> new_base) || new_base <= 1 || new_base > 36) {
                 cin.clear();
                 cin.ignore();
-                cout << "error!\n";
+                cerr << "error: Invalid new foundation\n";
                 continue;
             }
             break;
         }
 
-        string result = convert_base(number, old_base, new_base);
+        try {
+            for (char digit_char : number) {
+                int digit = char_to_digit(digit_char);
+                if ((digit == -1) || (digit >= old_base)) {
+                    throw invalid_argument("Invalid digit for the specified old_base");
+                }
+            }
 
-        cout << "result : " << result << endl << endl;
+            string result = convert_base(number, old_base, new_base);
+            cout << "result : " << result << endl << endl;
+        }
+        catch (const exception& e) {
+            cerr << "error: " << e.what() << endl;
+        }
     }
 }
 
@@ -715,6 +724,7 @@ void task_launcher() {
             cout << "ninth task - 'Number systems' \n";
             SetConsoleTextAttribute(back_color, 0x07);
             ConvertBase::cout_convert_base();
+
             break;
         default:
             cout << "\nerror! \n";
