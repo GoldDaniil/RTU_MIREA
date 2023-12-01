@@ -101,8 +101,8 @@ void task_five() {
     int n, k;
 
     cout << "enter : ";
-    if (cin >> n >> k && k > 1 && k <= n) {
-        while (k > 1) {
+    if (cin >> n >> k && k >= 1 && k <= n) {
+        while (k >= 1) {
             n = (n - k % 2) / 2;
             k /= 2;
         }
