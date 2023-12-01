@@ -119,70 +119,72 @@ void task_five() {
     }
 }
 void launcher() {
-    cout << "launcher tasks:\n";
-
-    int taskNumber;
-    string taskNumberStr;
-
     while (true) {
-        cout << "If you want to exit the program, enter 'exit'\nEnter task number: ";
-        cin >> taskNumberStr;
+        cout << "launcher tasks:\n";
 
-        if (taskNumberStr == "exit") {
-            cout << "Exiting the program\n";
-            return;
-        }
+        int taskNumber;
+        string taskNumberStr;
 
-        bool hasNonDigit = false;
+        while (true) {
+            cout << "If you want to exit the program, enter 'exit'\nEnter task number: ";
+            cin >> taskNumberStr;
 
-        for (char digit : taskNumberStr) {
-            if (!isdigit(digit)) {
-                hasNonDigit = true;
+            if (taskNumberStr == "exit") {
+                cout << "Exiting the program\n";
+                return;
+            }
+
+            bool hasNonDigit = false;
+
+            for (char digit : taskNumberStr) {
+                if (!isdigit(digit)) {
+                    hasNonDigit = true;
+                    break;
+                }
+            }
+
+            if (hasNonDigit) {
+                cerr << "error!\n";
+                cin.clear();
+                cin.ignore();
+            }
+            else {
+                stringstream(taskNumberStr) >> taskNumber;
                 break;
             }
         }
 
-        if (hasNonDigit) {
-            cerr << "error!\n";
-            cin.clear();
-            cin.ignore();
-        }
-        else {
-            stringstream(taskNumberStr) >> taskNumber;
+        switch (taskNumber) {
+        case 1:
+            cout << endl;
+            return_abc_max();
+            cout << endl;
+            break;
+        case 2:
+            cout << endl;
+            return_abc_max_two();
+            cout << endl;
+            break;
+        case 3:
+            cout << endl;
+            return_abc_max_tree();
+            cout << endl;
+            break;
+        case 4:
+            cout << endl;
+            VoidFour vf;
+            vf.main_task();
+            cout << endl;
+            break;
+        case 5:
+            cout << endl;
+            task_five();
+            cout << endl;
+            break;
+        default:
+            cout << "error!\n";
             break;
         }
-    }
-
-    switch (taskNumber) {
-    case 1:
-        cout << endl;
-        return_abc_max();
-        cout << endl;
-        break;
-    case 2:
-        cout << endl;
-        return_abc_max_two();
-        cout << endl;
-        break;
-    case 3:
-        cout << endl;
-        return_abc_max_tree();
-        cout << endl;
-        break;
-    case 4:
-        cout << endl;
-        VoidFour vf;
-        vf.main_task();
-        cout << endl;
-        break;
-    case 5:
-        cout << endl;
-        task_five();
-        cout << endl;
-        break;
-    default:
-        cout << "error!\n";
-        break;
     }
 }
 
