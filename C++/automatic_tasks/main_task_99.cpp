@@ -20,17 +20,21 @@ int generate_number() {
 }
 
 bool is_valid_input(int number) {
+	if (number < 1000 || number > 9999) {
+		return false; // Не четырехзначное число
+	}
+
 	bool digits[10] = { false };
 
 	for (int i = 0; i < 4; ++i) {
 		int digit = (number / (int)pow(10, 3 - i)) % 10;
 		if (digits[digit]) {
-			return false;
+			return false; // Найдена повторяющаяся цифра
 		}
 		digits[digit] = true;
 	}
 
-	return false;
+	return true;
 }
 
 void check_guess(int secret_number, int user_number, int& pluses, int& minuses) {
@@ -45,7 +49,7 @@ void check_guess(int secret_number, int user_number, int& pluses, int& minuses) 
 		}
 		else {
 			for (int j = 0; j < 4; ++j) {
-				if (secret_digit == ((user_number / (int)pow(10, 3 - i)) % 10)) {
+				if (secret_digit == (user_number / (int)pow(10, 3 - j)) % 10) {
 					++minuses;
 					break;
 				}
@@ -56,34 +60,29 @@ void check_guess(int secret_number, int user_number, int& pluses, int& minuses) 
 
 int main() {
 	int secret_number = generate_number();
-	int user_number, pluses, minuses, attemps = 0;
+	int user_number, pluses, minuses, attempts = 0;
 
 	cout << "Welcome to the game 'Bulls and Cows!'\n";
 	cout << "The computer guessed a four-digit number. Try to guess!\n\n";
 
 	do {
 		do {
-			while (true) {
-				try {
-					cout << "enter number: ";
+			cout << "enter number: ";
+			cin >> user_number;
 
-					if (!is_valid_input(user_number)) {
-						cout << "error!\n";
-					}
-					continue;
-				}
-				catch (const exception& err) {
-					cerr << err.what() << endl;
-				}
-				break;
+			if (!is_valid_input(user_number)) {
+				cout << "\nerror!\n";
 			}
-			
-			
-		} while {
+		} while (!is_valid_input(user_number));
 
-		}
-	} while{
+		check_guess(secret_number, user_number, pluses, minuses);
 
-	}
+		cout << "\nresult : " << pluses << " pluses and " << minuses << " minuses! \n";
 
+		++attempts;
+	} while (pluses < 4);
+	
+	cout << "\ncongratulations! U guessed the number " << secret_number << " behind " << attempts << " attempts!\n";
+
+	return 0;
 }
