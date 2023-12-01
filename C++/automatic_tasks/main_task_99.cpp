@@ -1,6 +1,6 @@
-#include<iostream>
-#include<cstdlib>
-#include<ctime>
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -19,17 +19,6 @@ int generate_number() {
 bool is_valid_input(int number) {
     if (number < 1000 || number > 9999) {
         return false; // Не четырехзначное число
-    }
-
-    bool digits[10] = { false };
-
-    for (int i = 0; i < 4; ++i) {
-        int digit = (number % 10);
-        if (digits[digit]) {
-            return false; // Найдена повторяющаяся цифра
-        }
-        digits[digit] = true;
-        number /= 10;
     }
 
     return true;
