@@ -97,7 +97,6 @@ public:
 
 int VoidFour::counterArray[VoidFour::MaxArraySize] = { 0 };
 
-
 void task_five() {
     int n, k;
 
@@ -118,6 +117,7 @@ void task_five() {
         cout << "error! ";
     }
 }
+
 void launcher() {
     while (true) {
         cout << "launcher tasks:\n";
@@ -172,8 +172,8 @@ void launcher() {
             break;
         case 4:
             cout << endl;
-            VoidFour vf;
-            vf.main_task();
+            VoidFour LocalSubject;
+            LocalSubject.main_task();
             cout << endl;
             break;
         case 5:
