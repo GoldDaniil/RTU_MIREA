@@ -37,7 +37,7 @@ void dynamic_matrix_multiplication() {
 
     }
     //if (rows == "end") {
-    
+
     //}
 
     int cols;
@@ -548,7 +548,7 @@ namespace ConvertBase {
         if ((symbol >= '0') && (symbol <= '9')) {
             return symbol - '0';
         }
-        else if((symbol >= 'A') && (symbol <= 'Z')) {
+        else if ((symbol >= 'A') && (symbol <= 'Z')) {
             return symbol - 'A' + 10;
         }
         else if ((symbol >= 'a') && (symbol <= 'Z')) {
@@ -589,7 +589,12 @@ namespace ConvertBase {
             decimal_number /= new_base;
         }
         //проверить объектный код на утечку памяти!!!!
-        return result.empty() ? "0" : result;
+        if (result.empty()) {
+            return "0";
+        }
+        else {
+            return result;
+        }
     }
 
     void cout_convert_base() {
