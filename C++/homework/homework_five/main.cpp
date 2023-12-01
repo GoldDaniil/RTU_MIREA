@@ -599,6 +599,47 @@ namespace TaskRows {
 	};
 }
 
+namespace TaskFiles {
+	void task_four() {
+		try {
+			const char* fileName = "words.txt";
+
+			ifstream inputFile(fileName);
+
+			if (!inputFile.is_open()) {
+				cerr << "error!" << endl;
+				return;
+			}
+
+			string word;
+			inputFile >> word;
+			sort(word.begin(), word.end());
+
+			ofstream outputFile(fileName);
+
+			if (!outputFile.is_open()) {
+				cerr << "error" << endl;
+				return;
+			}
+
+			outputFile << word;
+
+			string newWord = "apple";
+			word += newWord;
+			sort(word.begin(), word.end());
+
+			outputFile << "\n" << word;
+
+			outputFile.close();
+
+			cout << "file " << endl;
+		}
+		catch (const exception& err) {
+			cerr << "error!" << err.what();
+		}
+	}
+}
+
 void launcher() {
 	char task_number_char;
 	int task_number_int;
@@ -777,6 +818,10 @@ void launcher() {
 			default:
 				cerr << "error!\n\n";
 			}
+			break;
+		case 5:
+			cout << endl;
+			TaskFiles::task_four();
 			break;
 		default:
 			cerr << "error!\n";
