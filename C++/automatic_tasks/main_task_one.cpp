@@ -71,7 +71,12 @@ void initializeGenerationFromFile(ifstream& file, int generation[SIZE][SIZE]) {
         for (int j = 0; j < SIZE; ++j) {
             char symbol;
             file >> symbol;
-            generation[i][j] = (symbol == 'X') ? 1 : 0;
+            if (symbol == 'X') {
+                generation[i][j] = 1;
+            }
+            else {
+                generation[i][j] = 0;
+            }
         }
     }
 }
@@ -82,7 +87,7 @@ int main() {
         cerr << "Error opening work.dat" << endl;
         return 1;
     }
-    // Здесь можно заполнить файл work.dat нужными символами
+    // You can fill the work.dat file with necessary symbols here
 
     ifstream workDatReader("work.dat");
     if (!workDatReader.is_open()) {
@@ -100,14 +105,14 @@ int main() {
     workDatReader.close();
 
     int numGenerations;
-    cout << "Введите количество поколений: ";
+    cout << "Enter the number of generations: ";
     if (!(cin >> numGenerations) || numGenerations <= 0) {
         cerr << "Invalid input for the number of generations." << endl;
         return 1;
     }
 
     for (int generationCount = 1; generationCount <= numGenerations; ++generationCount) {
-        cout << "Поколение " << generationCount << endl;
+        cout << "Generation " << generationCount << endl;
         displayGeneration(currentGeneration);
 
         ofstream workOut("work.out");
@@ -118,7 +123,12 @@ int main() {
 
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
-                workOut << (currentGeneration[i][j] == 1 ? 'X' : '.');
+                if (currentGeneration[i][j] == 1) {
+                    workOut << 'X';
+                }
+                else {
+                    workOut << '.';
+                }
             }
             workOut << endl;
         }
@@ -127,10 +137,10 @@ int main() {
         generateNextGeneration(currentGeneration, nextGeneration);
 
         int livingCells = countLivingCells(nextGeneration);
-        cout << "Количество микробов в поколении: " << livingCells << endl;
+        cout << "Number of microorganisms in generation: " << livingCells << endl;
 
         if (livingCells == 0) {
-            cout << "Все микробы погибли. Программа завершена." << endl;
+            cout << "All microorganisms have died. The program is terminated." << endl;
             break;
         }
 
