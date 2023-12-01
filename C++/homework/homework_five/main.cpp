@@ -13,6 +13,7 @@
 #include<time.h>
 #include<iterator>
 #include<algorithm>
+#include <vector>
 
 using namespace std;
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -543,61 +544,58 @@ namespace TaskRows {
 				}
 
 				for (int i = 0; i < binary_length; i += 2) {
-
 					string two_digits = binary.substr(i, 2);
-
 					int decimal = stoi(two_digits, nullptr, 2);
-
 					quaternary += to_string(decimal);
 				}
 				return quaternary;
 			}
 			catch (const exception& err) {
-				cerr << "error: " << err.what() << endl;
+				throw runtime_error("Error converting binary to quaternary: " + string(err.what()));
 			}
-
 		}
 
 		void cout_binary_to_quaternary() {
 			int n;
 			while (true) {
-				cout << "\nenter the number of variables (n): ";
+				cout << "\nEnter the number of variables (n): ";
 				if (!(cin >> n)) {
 					cin.clear();
 					cin.ignore();
-					cerr << "error!\n";
+					cerr << "Error! Invalid input.\n";
 					continue;
 				}
 				break;
 			}
 
-			// cоздание массива для хранения исходных чисел в двоичной системе
-			string* binary_array = new string[n];
+			// Create vectors for storing binary and quaternary numbers
+			vector<string> binary_array(n);
+			vector<string> quaternary_array(n);
 
 			for (int i = 0; i < n; ++i) {
-				cout << "enter binary number: " << i + 1 << ": ";
+				cout << "Enter binary number " << i + 1 << ": ";
 				cin >> binary_array[i];
 			}
 
-			string* quaternary_array = new string[n];
-
 			for (int j = 0; j < n; ++j) {
-				quaternary_array[j] = binary_to_quaternary(binary_array[j]);
+				try {
+					quaternary_array[j] = binary_to_quaternary(binary_array[j]);
+				}
+				catch (const exception& e) {
+					cerr << e.what() << " (Binary number " << j + 1 << ")\n";
+				}
 			}
 
-			cout << "\nsource array in binary system: \n";
-			for (int k = 0; k < n; ++k) {
-				cout << binary_array[k] << " ";
+			cout << "\nSource array in binary system:\n";
+			for (const auto& binary : binary_array) {
+				cout << binary << " ";
 			}
 
-			cout << "\n\nthe result of the translation into the quaternary system: \n";
-			for (int i = 0; i < n; ++i) {
-				std::cout << quaternary_array[i] << " ";
+			cout << "\n\nResult of the translation into the quaternary system:\n";
+			for (const auto& quaternary : quaternary_array) {
+				cout << quaternary << " ";
 			}
-
-			delete[] binary_array;
-			delete[] quaternary_array;
-		};
+		}
 	};
 }
 
