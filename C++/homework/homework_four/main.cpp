@@ -644,6 +644,11 @@ namespace ConvertBase {
 
 void task_launcher() {
     int task_number;
+
+    float y = 0, scl = 1, ampl = 100, yoff = 0;
+    HWND hw = GetConsoleWindow();
+    HDC dc = GetDC(hw);
+
     while (true) {
         comment_output();
         cout << endl;
@@ -695,7 +700,17 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "fifth task - 'Sine wave' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            //  
+
+
+           
+            
+            for (float x = 0; x < 1000; x += 0.05) {
+                yoff = sin(x / 54) * 50;
+                y = 400 + yoff - sin(x / 3) * ampl * scl;
+                SetPixel(dc, (int)x, (int)y, RGB(155 + yoff * 2, 0, 155 - yoff * 2));
+
+            }
+            return;
             break;
         case 6:
             cout << "\n";
