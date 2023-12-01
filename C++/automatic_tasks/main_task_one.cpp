@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
-
+                    //разработка
 using namespace std;
 
 #ifndef GAME_OF_LIFE_H
