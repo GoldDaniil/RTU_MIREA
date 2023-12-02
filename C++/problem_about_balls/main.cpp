@@ -9,6 +9,7 @@
 #include<iostream>
 #include<vector>
 #include<algorithm>
+#include<sstream>
 
 using namespace std;
 
@@ -50,43 +51,59 @@ void generate_permutation(int permutation[], int n, int i, int& count, vector<in
 
 int main() {
     while (true) {
-        //добавить ввод проверку
+        int n_int;
+        string n_str;
 
-        int n;
         while (true) {
-            cout << "enter the number of balls: ";
-            if (!(cin >> n)) {
+            cout << "if u want to exit the program, enter 'exit'\nenter the number of balls: ";
+            cin >> n_str;
+
+            if (n_str == "exit") {
+                cout << " \nbye\n";
+            }
+
+            bool has_non_degit = false; // has no degit = 1
+            for (char type_degit : n_str) {
+                if (!isdigit(type_degit)) {
+                    has_non_degit = true;
+                    return 0;
+                }
+            }
+
+            if (has_non_degit) {
+                cerr << "error\n";
                 cin.clear();
                 cin.ignore();
-                cout << "\nerror!\n";
-                continue;
             }
-            break;
+            else {
+                stringstream(n_str) >> n_int;
+                break;
+            }
         }
 
-        int* balls = new int[n];
-        for (int i = 0; i < n; i++) {
+        int* balls = new int[n_int];
+        for (int i = 0; i < n_int; i++) {
             balls[i] = i + 1;
         }
 
         int count_matches = 0;
         vector<int*> valid_permutations;
 
-        generate_permutation(balls, n, 0, count_matches, valid_permutations);
+        generate_permutation(balls, n_int, 0, count_matches, valid_permutations);
 
         cout << "\npermutations with at least one match:\n";
         for (int i = 0; i < valid_permutations.size(); i++) {
-            print_permutation(valid_permutations[i], n);
+            print_permutation(valid_permutations[i], n_int);
         }
         cout << "\ntotal number of permutations with at least one match: " << count_matches << endl << endl;
 
         cout << "\nall permutations:\n";
         do {
-            print_permutation(balls, n);
-        } while (next_permutation(balls, balls + n));
+            print_permutation(balls, n_int);
+        } while (next_permutation(balls, balls + n_int));
 
         int total_permutations = 1;
-        for (int i = 1; i <= n; i++) {
+        for (int i = 1; i <= n_int; i++) {
             total_permutations *= i;
         }
 
@@ -98,7 +115,5 @@ int main() {
 
         delete[] balls;
     }
-    
-
     return 0;
 }
