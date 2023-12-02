@@ -57,10 +57,16 @@ int main() {
     int secret_number = generate_number();
     int user_number, pluses, minuses, attempts = 0;
 
-    setColor(14);
-    cout << "Welcome to the game 'Bulls and Cows!'\n";
+    //setColor(14);
+    const WORD textColor = 0xE; 
+    const WORD bgColor = 0x70;   
+
+    SetConsoleTextAttribute(console, textColor | (bgColor << 4));
+    
+    cout << "Welcome to the game 'Bulls and Cows!'\n\n";
     cout << "The computer guessed a four-digit number. Try to guess!\n\n";
-    setColor(15); 
+    SetConsoleTextAttribute(console, 15);
+    setColor(15);
 
     do {
         do {
@@ -72,22 +78,22 @@ int main() {
             if (!is_valid_input(user_number)) {
                 setColor(12);
                 cout << "\nerror!\n";
-                setColor(15); 
+                setColor(15);
             }
         } while (!is_valid_input(user_number));
 
         check_guess(secret_number, user_number, pluses, minuses);
 
-        setColor(13); 
+        setColor(13);
         cout << "\nresult: " << pluses << " pluses and " << minuses << " minuses! \n";
-        setColor(15); 
+        setColor(15);
 
         ++attempts;
     } while (pluses < 4);
 
     setColor(10);
     cout << "\ncongratulations! U guessed the number " << secret_number << " in " << attempts << " attempts!\n";
-    setColor(15); 
+    setColor(15);
 
     return 0;
 }
