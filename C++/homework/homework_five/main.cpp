@@ -607,43 +607,34 @@ namespace TaskFiles {
 	void findMaxFrequencyNumbers(int numbers[], int size, int& max_count, int*& result_numbers) {
 		max_count = 0;
 
-		// Поддерживаем массив для отслеживания уже проверенных чисел
-		bool* checked = new bool[size];
+		int max_number = *max_element(numbers, numbers + size);
+
+		int* frequency_array = new int[max_number + 1]();
+
 		for (int i = 0; i < size; i++) {
-			checked[i] = false;
+			frequency_array[numbers[i]]++;
+			max_count = max(max_count, frequency_array[numbers[i]]);
 		}
 
-		for (int i = 0; i < size; i++) {
-			if (checked[i]) {
-				continue; // Пропускаем числа, которые уже рассмотрены
-			}
-
-			int count = 1;
-
-			for (int j = i + 1; j < size; j++) {
-				if (numbers[i] == numbers[j]) {
-					count++;
-					checked[j] = true;
-				}
-			}
-
-			if (count > max_count) {
-				max_count = count;
+		int count = 0;
+		for (int num = 0; num <= max_number; num++) {
+			if (frequency_array[num] == max_count) {
+				count++;
 			}
 		}
 
-		// Сохраняем числа с максимальной частотой в массив result_numbers
+		result_numbers = new int[count];
 		int index = 0;
-		result_numbers = new int[max_count];
-		for (int i = 0; i < size; i++) {
-			if (checked[i]) {
-				result_numbers[index++] = numbers[i];
+		for (int num = 0; num <= max_number; num++) {
+			if (frequency_array[num] == max_count) {
+				result_numbers[index++] = num;
 			}
 		}
 
-		delete[] checked;
-	}
+		delete[] frequency_array;
 
+	}	
+	
 	void cout_task() {
 		const char* input_file_name = "input_13.txt";
 		const char* output_file_name = "output_13.txt";
@@ -668,13 +659,19 @@ namespace TaskFiles {
 			int max_count;
 			int* result_numbers;
 
-			// Поиск чисел с максимальной частотой
+			int* sorted_numbers = new int[number];
+			copy(numbers, numbers + number, sorted_numbers);
+
+			merge_sort(sorted_numbers, 0, number - 1);
+
 			findMaxFrequencyNumbers(numbers, number, max_count, result_numbers);
 
-			// Запись чисел с максимальной частотой в отдельный файл
 			ofstream output_file(output_file_name);
 			if (!output_file) {
 				cerr << "\nerror!\n" << output_file_name << endl;
+				delete[] numbers;
+				delete[] result_numbers;
+				delete[] sorted_numbers;
 				return;
 			}
 
@@ -684,21 +681,17 @@ namespace TaskFiles {
 
 			output_file.close();
 
-			// Сортировка методом слияния
-			merge_sort(numbers, 0, number - 1);
-
-			// Вывод исходного массива
 			cout << "original numbers: ";
 			printArray(numbers, number);
 			cout << endl;
 
-			// Вывод отсортированного массива
 			cout << "\nsorted numbers: ";
-			printArray(numbers, number);
+			printArray(sorted_numbers, number);
 			cout << endl;
 
 			delete[] numbers;
 			delete[] result_numbers;
+			delete[] sorted_numbers;
 		}
 		catch (const exception& err) {
 			cerr << "error : " << err.what() << endl;
@@ -779,8 +772,6 @@ namespace TaskFiles {
 		cout << endl;
 	}
 }
-
-
 
 void launcher() {
 	char task_number_char;
