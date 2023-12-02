@@ -149,7 +149,7 @@ void file_task() {  //правильно
 
         }
         else {
-            cout << "error!\n"; // ИСПОЛЬЗОВАТЬ SWITCH CASE -> try {} catch {switch {case}}
+            cout << "error!\n"; 
         }
 
     }
