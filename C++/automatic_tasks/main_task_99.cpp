@@ -1,8 +1,11 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-                       //готовая
+#include <Windows.h>
+
 using namespace std;
+
+HANDLE back = GetStdHandle(STD_OUTPUT_HANDLE);
 
 int generate_number() {
     srand(time(0));
@@ -50,8 +53,10 @@ int main() {
     int secret_number = generate_number();
     int user_number, pluses, minuses, attempts = 0;
 
+
     cout << "Welcome to the game 'Bulls and Cows!'\n";
     cout << "The computer guessed a four-digit number. Try to guess!\n\n";
+    
 
     do {
         do {
