@@ -21,7 +21,7 @@ void return_abc_max() {
         cout << (max_spinner_cost - base_cost) / spinner_cost;
     }
     else {
-        cout << "The maximum cost of the entire spinner cannot be less than the cost of the spinner base" << endl;
+        cout << "error!" << endl;
     }
 }
 
@@ -39,7 +39,7 @@ void return_abc_max_two() {
         }
     }
     else {
-        cout << "Enter a positive integer";
+        cout << "error!\n";
     }
 }
 
@@ -49,7 +49,7 @@ void return_abc_max_tree() {
         cout << row_count * (row_count + 1) / 2 * col_count * (col_count + 1) / 2;
     }
     else {
-        cout << "Enter positive integers";
+        cout << "error!\n";
     }
 }
 
@@ -90,7 +90,7 @@ public:
             cout << maxSequence;
         }
         else {
-            cout << "Enter a positive integer from 0 to 54";
+            cout << "error!\n";
         }
     }
 };
@@ -126,11 +126,11 @@ void launcher() {
         string taskNumberStr;
 
         while (true) {
-            cout << "If you want to exit the program, enter 'exit'\nEnter task number: ";
+            cout << "if you want to exit the program, enter 'exit'\nEnter task number: ";
             cin >> taskNumberStr;
 
             if (taskNumberStr == "exit") {
-                cout << "Exiting the program\n";
+                cout << "okay(\n";
                 return;
             }
 
