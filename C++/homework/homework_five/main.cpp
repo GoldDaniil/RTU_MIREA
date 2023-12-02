@@ -602,58 +602,107 @@ namespace TaskRows {
 namespace TaskFiles {
 	void merge(int arr[], int left, int right, int middle);
 	void merge_sort(int arr[], int left, int right);
+	void printArray(int arr[], int size);
 
-	void printArray(int arr[], int size) {  //отображение элементов массива до и после сортировки слиянием
+	void findMaxFrequencyNumbers(int numbers[], int size, int& max_count, int*& result_numbers) {
+		max_count = 0;
+
+		// Поддерживаем массив для отслеживания уже проверенных чисел
+		bool* checked = new bool[size];
 		for (int i = 0; i < size; i++) {
-			cout << arr[i] << " ";
+			checked[i] = false;
 		}
-		cout << endl;
+
+		for (int i = 0; i < size; i++) {
+			if (checked[i]) {
+				continue; // Пропускаем числа, которые уже рассмотрены
+			}
+
+			int count = 1;
+
+			for (int j = i + 1; j < size; j++) {
+				if (numbers[i] == numbers[j]) {
+					count++;
+					checked[j] = true;
+				}
+			}
+
+			if (count > max_count) {
+				max_count = count;
+			}
+		}
+
+		// Сохраняем числа с максимальной частотой в массив result_numbers
+		int index = 0;
+		result_numbers = new int[max_count];
+		for (int i = 0; i < size; i++) {
+			if (checked[i]) {
+				result_numbers[index++] = numbers[i];
+			}
+		}
+
+		delete[] checked;
 	}
 
-	void input_and_verification() { //функция для ввода и проверки элементов массива
-		int n;
-		while (true) {
-			cout << "enter the number of elements: ";
-			if (!(cin >> n)) {
-				cin.clear(); //очищаем буфер ввода
-				cin.ignore(); //игнорируем введенные данные
-				cout << "error! you need to enter the data type integer! " << endl;
-				continue; //повторяем цикл
+	void cout_task() {
+		const char* input_file_name = "input_13.txt";
+		const char* output_file_name = "output_13.txt";
+
+		try {
+			ifstream input_file(input_file_name);
+			if (!input_file) {
+				cerr << "\nerror!\n" << input_file_name << endl;
+				return;
 			}
-			break; //прерываем цикл
-		}
 
-		const int X = n; //задаем константу X - равную введенному значению n
-		int* integer_array = new int[X]; //создаем массив целых чисел размером X
+			int number;
+			input_file >> number;
 
-		cout << "enter array elements: " << endl;
-		for (int i = 0; i < X; i++) { //цикл для ввода элементов массива
-			while (true) {
-				if (!(cin >> integer_array[i])) {
-					cin.clear();
-					cin.ignore();
-					cout << "error! you need to enter the data type integer! " << endl;
-					continue;
-				}
-				break;
+			int* numbers = new int[number];
+			for (int i = 0; i < number; i++) {
+				input_file >> numbers[i];
 			}
+
+			input_file.close();
+
+			int max_count;
+			int* result_numbers;
+
+			// Поиск чисел с максимальной частотой
+			findMaxFrequencyNumbers(numbers, number, max_count, result_numbers);
+
+			// Запись чисел с максимальной частотой в отдельный файл
+			ofstream output_file(output_file_name);
+			if (!output_file) {
+				cerr << "\nerror!\n" << output_file_name << endl;
+				return;
+			}
+
+			for (int i = 0; i < max_count; i++) {
+				output_file << result_numbers[i] << endl;
+			}
+
+			output_file.close();
+
+			// Сортировка методом слияния
+			merge_sort(numbers, 0, number - 1);
+
+			// Вывод исходного массива
+			cout << "original numbers: ";
+			printArray(numbers, number);
+			cout << endl;
+
+			// Вывод отсортированного массива
+			cout << "\nsorted numbers: ";
+			printArray(numbers, number);
+			cout << endl;
+
+			delete[] numbers;
+			delete[] result_numbers;
 		}
-		cout << "\n";
-
-		cout << "array elements: " << endl;
-		for (int i = 0; i < X; i++) { //цикл для вывода элементов массива
-			cout << integer_array[i] << " "; //вывод элементов массива на экран
+		catch (const exception& err) {
+			cerr << "error : " << err.what() << endl;
 		}
-		cout << endl;
-		int amount_elements = X; //задаем переменную amount_elements, равную X
-		cout << "number of elements in the array: " << amount_elements << endl << endl; //выводим количество элементов массива
-
-		merge_sort(integer_array, 0, amount_elements - 1); //вызов функции сортировки слиянием  
-
-		cout << "Sorted array: " << endl;
-		printArray(integer_array, X);
-
-		cout << "\n";
 	}
 
 	void merge(int arr[], int left, int right, int middle) { //функция для слияния двух подмассивов arr[left, middle] и arr[middle+1, right]
@@ -723,89 +772,15 @@ namespace TaskFiles {
 		merge(arr, left, right, middle_index); //вызываем merge = соединяем - сливаем две отсортированные половины
 	}
 
-
-	void cout_task() {
-		const char* input_file_name = "input_13.txt";
-		const char* output_file_name = "output_13.txt";
-
-		try {
-			ifstream input_file(input_file_name);
-			if (!(input_file)) {
-				cerr << "\nerror!\n" << input_file_name << endl;
-				return;
-			}
-
-			int number;
-			input_file >> number;
-
-			int* numbers = new int[number];
-			for (int i = 0; i < number; i++) {
-				input_file >> numbers[i];
-			}
-
-			input_file.close();
-
-			//нахождение чисел с макс частотой
-			int max_count = 0;
-			for (int i = 0; i < number; i++) {
-				int count = 1;
-				for (int j = 0; j < number; j++) {
-					if (numbers[i] == numbers[j]) {
-						count++;
-					}
-				}
-
-				if (count > max_count) {
-					max_count = count;
-				}
-			}
-
-			//запись чисел с макс частотой в отдельный файл
-			ofstream output_file(output_file_name);
-			if (!(output_file)) {
-				cerr << "\nerror!\n" << output_file_name << endl;
-				return;
-			}
-			
-			for (int i = 0; i < number; i++) {
-				int count = 1;
-				for (int j = i + 1; j < number; j++) {
-					if (numbers[i] == numbers[j]) {
-						count++;
-					}
-				}
-
-				if (count == max_count) {
-					output_file << numbers[i] << endl;
-				}
-			}
-
-			output_file.close();
-
-			//сортировка методом слияния
-			merge_sort(numbers, 0, number - 1);
-
-			//вывод исходного массива
-			cout << "original numbers: ";
-			for (int i = 0; i < number; i++) {
-				cout << numbers[i] << " ";
-			}
-			cout << endl;
-
-			//вывод отсортированного массива
-			cout << "\nsorted numbers: ";
-			for (int i = 0; i < number; i++) {
-				cout << numbers[i] << " ";
-			}
-			cout << endl;
-
-			delete[] numbers;
+	void printArray(int arr[], int size) {  //отображение элементов массива до и после сортировки слиянием
+		for (int i = 0; i < size; i++) {
+			cout << arr[i] << " ";
 		}
-		catch (const exception& err) {
-			cerr << "error : " << err.what() << endl;
-		}
+		cout << endl;
 	}
 }
+
+
 
 void launcher() {
 	char task_number_char;
