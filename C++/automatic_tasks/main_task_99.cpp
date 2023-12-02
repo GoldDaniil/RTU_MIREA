@@ -57,37 +57,37 @@ int main() {
     int secret_number = generate_number();
     int user_number, pluses, minuses, attempts = 0;
 
-    setColor(14); // Set color to yellow
+    setColor(14);
     cout << "Welcome to the game 'Bulls and Cows!'\n";
     cout << "The computer guessed a four-digit number. Try to guess!\n\n";
-    setColor(15); // Set color back to white
+    setColor(15); 
 
     do {
         do {
-            setColor(11); // Set color to light cyan
-            cout << "Enter number: ";
-            setColor(15); // Set color back to white
+            setColor(11); 
+            cout << "enter number: ";
+            setColor(15);
             cin >> user_number;
 
             if (!is_valid_input(user_number)) {
-                setColor(12); // Set color to red
-                cout << "\nError!\n";
-                setColor(15); // Set color back to white
+                setColor(12); 
+                cout << "\nerror!\n";
+                setColor(15);
             }
         } while (!is_valid_input(user_number));
 
         check_guess(secret_number, user_number, pluses, minuses);
 
-        setColor(13); // Set color to purple
-        cout << "\nResult: " << pluses << " pluses and " << minuses << " minuses! \n";
-        setColor(15); // Set color back to white
+        setColor(13); 
+        cout << "\nresult: " << pluses << " pluses and " << minuses << " minuses! \n";
+        setColor(15);
 
         ++attempts;
     } while (pluses < 4);
 
-    setColor(10); // Set color to light green
-    cout << "\nCongratulations! You guessed the number " << secret_number << " in " << attempts << " attempts!\n";
-    setColor(15); // Set color back to white
+    setColor(10); 
+    cout << "\ncongratulations! U guessed the number " << secret_number << " in " << attempts << " attempts!\n";
+    setColor(15);
 
     return 0;
 }
