@@ -600,42 +600,209 @@ namespace TaskRows {
 }
 
 namespace TaskFiles {
-	void task_four() {
+	void merge(int arr[], int left, int right, int middle);
+	void merge_sort(int arr[], int left, int right);
+
+	void printArray(int arr[], int size) {  //отображение элементов массива до и после сортировки слиянием
+		for (int i = 0; i < size; i++) {
+			cout << arr[i] << " ";
+		}
+		cout << endl;
+	}
+
+	void input_and_verification() { //функция для ввода и проверки элементов массива
+		int n;
+		while (true) {
+			cout << "enter the number of elements: ";
+			if (!(cin >> n)) {
+				cin.clear(); //очищаем буфер ввода
+				cin.ignore(); //игнорируем введенные данные
+				cout << "error! you need to enter the data type integer! " << endl;
+				continue; //повторяем цикл
+			}
+			break; //прерываем цикл
+		}
+
+		const int X = n; //задаем константу X - равную введенному значению n
+		int* integer_array = new int[X]; //создаем массив целых чисел размером X
+
+		cout << "enter array elements: " << endl;
+		for (int i = 0; i < X; i++) { //цикл для ввода элементов массива
+			while (true) {
+				if (!(cin >> integer_array[i])) {
+					cin.clear();
+					cin.ignore();
+					cout << "error! you need to enter the data type integer! " << endl;
+					continue;
+				}
+				break;
+			}
+		}
+		cout << "\n";
+
+		cout << "array elements: " << endl;
+		for (int i = 0; i < X; i++) { //цикл для вывода элементов массива
+			cout << integer_array[i] << " "; //вывод элементов массива на экран
+		}
+		cout << endl;
+		int amount_elements = X; //задаем переменную amount_elements, равную X
+		cout << "number of elements in the array: " << amount_elements << endl << endl; //выводим количество элементов массива
+
+		merge_sort(integer_array, 0, amount_elements - 1); //вызов функции сортировки слиянием  
+
+		cout << "Sorted array: " << endl;
+		printArray(integer_array, X);
+
+		cout << "\n";
+	}
+
+	void merge(int arr[], int left, int right, int middle) { //функция для слияния двух подмассивов arr[left, middle] и arr[middle+1, right]
+		int left_sizes_subarrays = (middle - left + 1); //размер подмассива left_sizes_subarrays
+		int right_sizes_subarrays = (right - middle); //размер подмассива right_sizes_subarrays
+
+		//cоздание временных подмассивов
+		int* Left_subarray = new int[left_sizes_subarrays];
+		int* Right_subarray = new int[right_sizes_subarrays];
+
+		//копирование данных во временные подмассивы Left_subarray[] и Right_subarray[]
+		for (int i = 0; i < left_sizes_subarrays; i++) {
+			Left_subarray[i] = arr[left + i];
+		}
+		for (int j = 0; j < right_sizes_subarrays; j++) {
+			Right_subarray[j] = arr[middle + 1 + j];
+		}
+
+		//ю.объединение временные подмассивы обратно в arr[left...right]
+		int i = 0; //индекс первого подмассива Left_subarray
+		int j = 0; //индекс второго подмассива Right_subarray
+		int k = left; //индекс объединенного подмассива
+
+		while ((i < left_sizes_subarrays) and (j < right_sizes_subarrays)) {
+			if (Left_subarray[i] <= Right_subarray[j]) { //если элемент в Left_subarray[i] меньше или равен элементу в Right_subarray[j] то
+				arr[k] = Left_subarray[i]; //                   присваиваем значение из левого подмассива в общий массив
+				i++; //увеличиваем индекс Left_subarray[i]
+			}
+			else {
+				arr[k] = Right_subarray[j];
+				j++; //увеличиваем индекс Right_subarray[j]
+			}
+			k++; //увеличиваем индекс общего массива
+		}
+
+		//если остались элементы то копируем их в Left_subarray[]
+		while (i < left_sizes_subarrays) {
+			arr[k] = Left_subarray[i];
+			i++; //увеличиваем индекс Left_subarray[i]
+			k++; //увеличиваем индекс общего массива
+		}
+
+		//если остались элементы то копируем их в Right_subarray[]
+		while (j < right_sizes_subarrays) {
+			arr[k] = Right_subarray[j];
+			j++; //увеличиваем индекс Right_subarray[j]
+			k++;
+		}
+
+		delete[] Left_subarray;
+		delete[] Right_subarray;
+
+		cout << "merged pairs: ";
+		printArray(arr + left, right - left + 1);
+		cout << endl;
+	}
+
+	void merge_sort(int arr[], int left, int right) { //функция сортировки слиянием
+		if (left >= right) { //если левая граница больше или равна правой то выходим
+			return;
+		}
+
+		int middle_index = left + (right - left) / 2; //находим середину 
+
+		merge_sort(arr, left, middle_index); //рекурсивно вызываем merge_sort = сортируем левую половину
+		merge_sort(arr, middle_index + 1, right); //рекурсивно вызываем merge_sort = сортируем правую половину
+		merge(arr, left, right, middle_index); //вызываем merge = соединяем - сливаем две отсортированные половины
+	}
+
+
+	void cout_task() {
+		const char* input_file_name = "input_13.txt";
+		const char* output_file_name = "output_13.txt";
+
 		try {
-			const char* fileName = "words.txt";
-
-			ifstream inputFile(fileName);
-
-			if (!inputFile.is_open()) {
-				cerr << "error!" << endl;
+			ifstream input_file(input_file_name);
+			if (!(input_file)) {
+				cerr << "\nerror!\n" << input_file_name << endl;
 				return;
 			}
 
-			string word;
-			inputFile >> word;
-			sort(word.begin(), word.end());
+			int number;
+			input_file >> number;
 
-			ofstream outputFile(fileName);
-
-			if (!outputFile.is_open()) {
-				cerr << "error" << endl;
-				return;
+			int* numbers = new int[number];
+			for (int i = 0; i < number; i++) {
+				input_file >> numbers[i];
 			}
 
-			outputFile << word;
+			input_file.close();
 
-			string newWord = "apple";
-			word += newWord;
-			sort(word.begin(), word.end());
+			//нахождение чисел с макс частотой
+			int max_count = 0;
+			for (int i = 0; i < number; i++) {
+				int count = 1;
+				for (int j = 0; j < number; j++) {
+					if (numbers[i] == numbers[j]) {
+						count++;
+					}
+				}
 
-			outputFile << "\n" << word;
+				if (count > max_count) {
+					max_count = count;
+				}
+			}
 
-			outputFile.close();
+			//запись чисел с макс частотой в отдельный файл
+			ofstream output_file(output_file_name);
+			if (!(output_file)) {
+				cerr << "\nerror!\n" << output_file_name << endl;
+				return;
+			}
+			
+			for (int i = 0; i < number; i++) {
+				int count = 1;
+				for (int j = i + 1; j < number; j++) {
+					if (numbers[i] == numbers[j]) {
+						count++;
+					}
+				}
 
-			cout << "file " << endl;
+				if (count == max_count) {
+					output_file << numbers[i] << endl;
+				}
+			}
+
+			output_file.close();
+
+			//сортировка методом слияния
+			merge_sort(numbers, 0, number - 1);
+
+			//вывод исходного массива
+			cout << "original numbers: ";
+			for (int i = 0; i < number; i++) {
+				cout << numbers[i] << " ";
+			}
+			cout << endl;
+
+			//вывод отсортированного массива
+			cout << "\nsorted numbers: ";
+			for (int i = 0; i < number; i++) {
+				cout << numbers[i] << " ";
+			}
+			cout << endl;
+
+			delete[] numbers;
 		}
 		catch (const exception& err) {
-			cerr << "error!" << err.what();
+			cerr << "error : " << err.what() << endl;
 		}
 	}
 }
@@ -821,7 +988,7 @@ void launcher() {
 			break;
 		case 5:
 			cout << endl;
-			TaskFiles::task_four();
+			TaskFiles::cout_task();
 			break;
 		default:
 			cerr << "error!\n";
