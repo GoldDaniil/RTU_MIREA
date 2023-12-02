@@ -64,15 +64,15 @@ int main() {
 
     do {
         do {
-            setColor(11); 
+            setColor(11);
             cout << "enter number: ";
             setColor(15);
             cin >> user_number;
 
             if (!is_valid_input(user_number)) {
-                setColor(12); 
+                setColor(12);
                 cout << "\nerror!\n";
-                setColor(15);
+                setColor(15); 
             }
         } while (!is_valid_input(user_number));
 
@@ -80,14 +80,14 @@ int main() {
 
         setColor(13); 
         cout << "\nresult: " << pluses << " pluses and " << minuses << " minuses! \n";
-        setColor(15);
+        setColor(15); 
 
         ++attempts;
     } while (pluses < 4);
 
-    setColor(10); 
+    setColor(10);
     cout << "\ncongratulations! U guessed the number " << secret_number << " in " << attempts << " attempts!\n";
-    setColor(15);
+    setColor(15); 
 
     return 0;
 }
