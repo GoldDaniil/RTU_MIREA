@@ -80,7 +80,7 @@ int main() {
 	catch (const exception& err) {
 		cerr << "error: " << err.what() << endl;
 	}
-	
+
 	// генерация случайного порядка уникальных символов
 	char symbols[MAX_SIZE];
 	generate_random_order(symbols, num_symbols);
@@ -93,8 +93,29 @@ int main() {
 	cout << endl;
 
 	// создание матрицы и заполнение случайными символами 
+	char matrix[MAX_SIZE][MAX_SIZE] = { '0' };
+	fill_matrix_randomly(matrix, symbols, num_rows, num_cols, num_symbols);
 
+	// вывод начальной матрицы 
+	cout << "\ndynamic two-dimensional array (matrix): \n";
+	for (int i = 0; i < num_rows; ++i) {
+		for (int j = 0; j < num_rows; ++j) {
+			cout << matrix[i][j] << " ";
+		}
+		cout << endl;
+	}
 
+	// ввод макс числа поколений
+	while (true) {
+		cout << "\nenter max generations: ";
+		if (!(cin >> max_generations)) {
+			cin.clear();
+			cin.ignore();
+			cout << "error!";
+			continue;
+		}
+		break;
+	}
 
 }
 
