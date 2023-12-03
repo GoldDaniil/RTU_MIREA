@@ -27,7 +27,12 @@ void fill_matrix_randomly(char matrix[MAX_SIZE][MAX_SIZE], char symbols[], int o
 void adapt_matrix(char matrix[MAX_SIZE][MAX_SIZE], int order, char selected_symbol) {
     for (int i = 0; i < order; ++i) {
         for (int j = 0; j < order; ++j) {
-            matrix[i][j] = (matrix[i][j] == selected_symbol) ? '1' : '0';
+            if (matrix[i][j] == selected_symbol) {
+                matrix[i][j] = '1';
+            }
+            else {
+                matrix[i][j] = '0';
+            }
         }
     }
 }
@@ -37,54 +42,54 @@ int main() {
 
     try {
         while (true) {
-            cout << "\nEnter the order of the matrix (2, 3, or 4): ";
+            cout << "enter the order of the matrix (2, 3, or 4): ";
             if (!(cin >> order) || (order < 2 || order > 4)) {
                 cin.clear();
                 cin.ignore();
-                cout << "Invalid input. Please enter 2, 3, or 4.\n";
+                cout << "error\n";
                 continue;
             }
             break;
         }
         while (true) {
-            cout << "\nEnter the number of unique characters: ";
+            cout << "\nenter the number of unique characters: ";
             if (!(cin >> num_symbols) || num_symbols > 26) {
                 cin.clear();
                 cin.ignore();
-                cout << "Invalid input. Please enter a valid number of characters (up to 26).\n";
+                cout << "error\n";
                 continue;
             }
             break;
         }
         while (true) {
-            cout << "\nEnter the maximum number of generations: ";
+            cout << "\nenter the maximum number of generations: ";
             if (!(cin >> max_generations)) {
                 cin.clear();
                 cin.ignore();
-                cout << "Error!\n";
+                cout << "rror!\n";
                 continue;
             }
             break;
         }
     }
     catch (const exception& err) {
-        cerr << "Error: " << err.what() << endl;
-        return 1; // Exit with an error code
+        cerr << "error: " << err.what() << endl;
+        return 1;
     }
 
     char symbols[MAX_SIZE];
     generate_unique_symbols(symbols, num_symbols);
 
-    cout << "\nUnique characters: \n";
+    cout << "\nunique characters: \n";
     for (int i = 0; i < num_symbols; ++i) {
         cout << symbols[i] << " ";
     }
     cout << endl;
 
-    char matrix[MAX_SIZE][MAX_SIZE] = { 0 }; // Initialize matrix with 0
+    char matrix[MAX_SIZE][MAX_SIZE] = { 0 };
     fill_matrix_randomly(matrix, symbols, order, num_symbols);
 
-    cout << "\nDynamic two-dimensional array (matrix): \n";
+    cout << "\ndynamic two-dimensional array (matrix): \n";
     for (int i = 0; i < order; ++i) {
         for (int j = 0; j < order; ++j) {
             cout << matrix[i][j] << " ";
@@ -95,11 +100,11 @@ int main() {
     // Randomly select a symbol from the generated unique symbols
     char selected_symbol = symbols[rand() % num_symbols];
 
-    cout << "\nSelected Symbol for Adaptation: " << selected_symbol << endl;
+    cout << "\selected symbol for adaptation: " << selected_symbol << endl;
 
     adapt_matrix(matrix, order, selected_symbol);
 
-    cout << "\nAdapted dynamic two-dimensional array (matrix):\n";
+    cout << "\nadapted dynamic two-dimensional array (matrix):\n";
     for (int i = 0; i < order; ++i) {
         for (int j = 0; j < order; ++j) {
             cout << matrix[i][j] << " ";
