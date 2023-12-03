@@ -1,7 +1,6 @@
 // The code uses the snake_case naming style for functions and variables.
 // CamelCase is used for classes and namespace.
 
-
 #include<iostream>
 #include<algorithm>
 #include<cstdlib>
@@ -18,18 +17,18 @@ void generate_random_order(char symbols[], int num_symbols) {
     random_shuffle(symbols, symbols + num_symbols);
 }
 
-void fill_matrix_randomly(char matrix[MAX_SIZE][MAX_SIZE], char symbols[], int num_rows, int num_cols, int num_symbols) {
+void fill_matrix_randomly(char matrix[MAX_SIZE][MAX_SIZE], char symbols[], int order, int num_symbols) {
     for (int i = 0; i < num_symbols; ++i) {
-        int row = rand() % num_rows;
-        int col = rand() % num_cols;
+        int row = rand() % order;
+        int col = rand() % order;
 
         matrix[row][col] = symbols[i];
     }
 }
 
-void adapt_matrix(char matrix[MAX_SIZE][MAX_SIZE], int num_rows, int num_cols) {
-    for (int i = 0; i < num_rows; ++i) {
-        for (int j = 0; j < num_cols; ++j) {
+void adapt_matrix(char matrix[MAX_SIZE][MAX_SIZE], int order) {
+    for (int i = 0; i < order; ++i) {
+        for (int j = 0; j < order; ++j) {
             if (matrix[i][j] == 'a') {
                 matrix[i][j] = 1;
             }
@@ -41,31 +40,21 @@ void adapt_matrix(char matrix[MAX_SIZE][MAX_SIZE], int num_rows, int num_cols) {
 }
 
 int main() {
-    int num_rows, num_cols, num_symbols, max_generations;
+    int order, num_symbols, max_generations;
 
     try {
         while (true) {
-            cout << "\nenter the number of matrix rows: ";
-            if (!(cin >> num_rows)) {
+            cout << "\nEnter the order of the matrix (2, 3, or 4): ";
+            if (!(cin >> order) || (order < 2 || order > 4)) {
                 cin.clear();
                 cin.ignore();
-                cout << "error!\n";
+                cout << "Invalid input. Please enter 2, 3, or 4.\n";
                 continue;
             }
             break;
         }
         while (true) {
-            cout << "\nenter the number of matrix columns: ";
-            if (!(cin >> num_cols)) {
-                cin.clear();
-                cin.ignore();
-                cout << "Error!\n";
-                continue;
-            }
-            break;
-        }
-        while (true) {
-            cout << "\nenter the number of unique characters: ";
+            cout << "\nEnter the number of unique characters: ";
             if (!(cin >> num_symbols)) {
                 cin.clear();
                 cin.ignore();
@@ -75,45 +64,45 @@ int main() {
             break;
         }
         while (true) {
-            cout << "\nenter the maximum number of generations: ";
+            cout << "\nEnter the maximum number of generations: ";
             if (!(cin >> max_generations)) {
                 cin.clear();
                 cin.ignore();
-                cout << "error!\n";
+                cout << "Error!\n";
                 continue;
             }
             break;
         }
     }
     catch (const exception& err) {
-        cerr << "error: " << err.what() << endl;
+        cerr << "Error: " << err.what() << endl;
     }
 
     char symbols[MAX_SIZE];
     generate_random_order(symbols, num_symbols);
 
-    cout << "\nunique characters: \n";
+    cout << "\nUnique characters: \n";
     for (int i = 0; i < num_symbols; ++i) {
         cout << symbols[i] << " ";
     }
     cout << endl;
 
     char matrix[MAX_SIZE][MAX_SIZE] = { '0' };
-    fill_matrix_randomly(matrix, symbols, num_rows, num_cols, num_symbols);
+    fill_matrix_randomly(matrix, symbols, order, num_symbols);
 
-    cout << "\ndynamic two-dimensional array (matrix): \n";
-    for (int i = 0; i < num_rows; ++i) {
-        for (int j = 0; j < num_cols; ++j) {
+    cout << "\nDynamic two-dimensional array (matrix): \n";
+    for (int i = 0; i < order; ++i) {
+        for (int j = 0; j < order; ++j) {
             cout << matrix[i][j] << " ";
         }
         cout << endl;
     }
 
-    adapt_matrix(matrix, num_rows, num_cols);
+    adapt_matrix(matrix, order);
 
-    cout << "\nadapted dynamic two-dimensional array (matrix):\n";
-    for (int i = 0; i < num_rows; ++i) {
-        for (int j = 0; j < num_cols; ++j) {
+    cout << "\nAdapted dynamic two-dimensional array (matrix):\n";
+    for (int i = 0; i < order; ++i) {
+        for (int j = 0; j < order; ++j) {
             cout << matrix[i][j] << " ";
         }
         cout << endl;
