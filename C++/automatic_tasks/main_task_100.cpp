@@ -25,15 +25,45 @@ void fill_matrix_randomly(char matrix[MAX_SIZE][MAX_SIZE], char symbols[], int o
 }
 
 void adapt_matrix(char matrix[MAX_SIZE][MAX_SIZE], int order, char selected_symbol) {
+    int neighbors[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+    char new_matrix[MAX_SIZE][MAX_SIZE] = { 0 }; 
+
     for (int i = 0; i < order; ++i) {
         for (int j = 0; j < order; ++j) {
+            int live_neighbors = 0;
+
+            // проверяем соседей
+            for (int k = 0; k < 12; ++k) {
+                int ni = (i + (k % 3) - 1 + order) % order; // соседний индекс по строкам 
+                int nj = (j + (k / 3) - 1 + order) % order; // соседний индекс по столбцам 
+
+                live_neighbors += (matrix[ni][nj] == selected_symbol) ? 1 : 0;
+            }
+
+            // вносим правила игры про жизнь клетки
             if (matrix[i][j] == selected_symbol) {
-                matrix[i][j] = '1';
+                new_matrix[i][j] = (live_neighbors == 2 || live_neighbors == 3) ? selected_symbol : '0';
             }
             else {
-                matrix[i][j] = '0';
+                new_matrix[i][j] = (live_neighbors == 3) ? selected_symbol : '0';
             }
         }
+    }
+
+    // копируем
+    for (int i = 0; i < order; ++i) {
+        for (int j = 0; j < order; ++j) {
+            matrix[i][j] = new_matrix[i][j];
+        }
+    }
+}
+
+void print_matrix(char matrix[MAX_SIZE][MAX_SIZE], int order) {
+    for (int i = 0; i < order; ++i) {
+        for (int j = 0; j < order; ++j) {
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
     }
 }
 
@@ -42,11 +72,11 @@ int main() {
 
     try {
         while (true) {
-            cout << "enter the order of the matrix (2, 3, or 4): ";
+            cout << "\nenter the order of the matrix (2, 3, or 4): ";
             if (!(cin >> order) || (order < 2 || order > 4)) {
                 cin.clear();
                 cin.ignore();
-                cout << "error\n";
+                cout << "error!\n";
                 continue;
             }
             break;
@@ -56,7 +86,7 @@ int main() {
             if (!(cin >> num_symbols) || num_symbols > 26) {
                 cin.clear();
                 cin.ignore();
-                cout << "error\n";
+                cout << "error!\n";
                 continue;
             }
             break;
@@ -66,7 +96,7 @@ int main() {
             if (!(cin >> max_generations)) {
                 cin.clear();
                 cin.ignore();
-                cout << "rror!\n";
+                cout << "error!\n";
                 continue;
             }
             break;
@@ -74,7 +104,7 @@ int main() {
     }
     catch (const exception& err) {
         cerr << "error: " << err.what() << endl;
-        return 1;
+        return 1; // Exit with an error code
     }
 
     char symbols[MAX_SIZE];
@@ -86,34 +116,27 @@ int main() {
     }
     cout << endl;
 
-    char matrix[MAX_SIZE][MAX_SIZE] = { 0 };
+    char matrix[MAX_SIZE][MAX_SIZE] = { 0 }; 
     fill_matrix_randomly(matrix, symbols, order, num_symbols);
 
-    cout << "\ndynamic two-dimensional array (matrix): \n";
-    for (int i = 0; i < order; ++i) {
-        for (int j = 0; j < order; ++j) {
-            cout << matrix[i][j] << " ";
-        }
-        cout << endl;
-    }
+    cout << "\ninitial two-dimensional array (matrix): \n";
+    print_matrix(matrix, order);
 
-    // Randomly select a symbol from the generated unique symbols
+    // рандомно выбираем уникальный символ для генерации
     char selected_symbol = symbols[rand() % num_symbols];
 
-    cout << "\selected symbol for adaptation: " << selected_symbol << endl;
+    cout << "\nselected Symbol for Adaptation: " << selected_symbol << endl;
 
-    adapt_matrix(matrix, order, selected_symbol);
+    for (int generation = 1; generation <= max_generations; ++generation) {
+        adapt_matrix(matrix, order, selected_symbol);
 
-    cout << "\nadapted dynamic two-dimensional array (matrix):\n";
-    for (int i = 0; i < order; ++i) {
-        for (int j = 0; j < order; ++j) {
-            cout << matrix[i][j] << " ";
-        }
-        cout << endl;
+        cout << "\ngeneration " << generation << ":\n";
+        print_matrix(matrix, order);
     }
 
     return 0;
 }
+
 
 
 //#include<iostream>
