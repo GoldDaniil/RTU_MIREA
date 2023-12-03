@@ -3,7 +3,7 @@
 // CamelCase is used for classes.
 
 
-//ОШИБКИ : 17 = 3 БЛОК - КОДА НЕТ (не срочно)\ 20 = 4 БЛОК - ОШИБКА В КОДЕ (не срочно)
+//ОШИБКИ : 17 = 3 БЛОК - КОДА НЕТ (не срочно)\ 20 = 4 БЛОК - ОШИБКА В КОДЕ (не срочно)\ 4 номер = 4 блок - ошибка
 
 #include<iostream>
 #include<string>
@@ -959,7 +959,7 @@ void launcher() {
 			}
 			break;
 		case 5:
-			cout << endl;
+			cout << "\ntask 13: Create a file of N integers. Find the number that repeats the maximum number of times.\nIf there are several such numbers, then all of them.Save these numbers to another file and sort. \nAll files Print before and after processing.\n\n\n";
 			TaskFiles::cout_task();
 			break;
 		default:
