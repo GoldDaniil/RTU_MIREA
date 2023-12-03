@@ -1,3 +1,6 @@
+// The code uses the snake_case naming style for functions and variables.
+// CamelCase is used for classes and namespace.
+
 #include<iostream>
 #include<algorithm>
 #include<cstdlib> // для использования rand()
@@ -6,7 +9,16 @@ using namespace std;
 
 const int MAX_SIZE = 100;
 
+// функция для генерации случайного порядка уникальных символов
+void generate_random_order(char symbols[], int num_symbols) {
+	for (int i = 0; i < num_symbols; ++i) {
+		symbols[i] = 'a' + i;
+	}
 
+	random_shuffle(symbols, symbols + num_symbols);
+}
+
+ // функция для заполнения матрицы случайными символами
 
 
 //первый вариант
