@@ -117,6 +117,18 @@ int main() {
 		break;
 	}
 
+	// адаптация матрицы к виду 0 и 1
+	adapt_matrix(matrix, num_rows, num_cols);
+
+	// вывод адапт матрицы
+	cout << "\nAdapted dynamic two-dimensional array (matrix):\n";
+	for (int i = 0; i < num_rows; ++i) {
+		for (int j = 0; j < num_cols; ++j) {
+			cout << matrix[i][j] << " ";
+		}
+		cout << endl;
+	}
+
 }
 
 //первый вариант
