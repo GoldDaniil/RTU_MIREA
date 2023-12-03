@@ -633,8 +633,8 @@ namespace TaskFiles {
 
 		delete[] frequency_array;
 
-	}	
-	
+	}
+
 	void cout_task() {
 		const char* input_file_name = "input_13.txt";
 		const char* output_file_name = "output_13.txt";
@@ -679,6 +679,8 @@ namespace TaskFiles {
 				output_file << result_numbers[i] << endl;
 			}
 
+
+
 			output_file.close();
 
 			cout << "original numbers: ";
@@ -688,6 +690,10 @@ namespace TaskFiles {
 			cout << "\nsorted numbers: ";
 			printArray(sorted_numbers, number);
 			cout << endl;
+
+			for (int i = 0; i < 1; i++) {  // Print only the first element of result_numbers
+				cout << "Most frequently occurring number: " << result_numbers[i] << endl;
+			}
 
 			delete[] numbers;
 			delete[] result_numbers;
