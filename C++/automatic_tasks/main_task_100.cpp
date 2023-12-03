@@ -81,6 +81,19 @@ int main() {
 		cerr << "error: " << err.what() << endl;
 	}
 	
+	// генерация случайного порядка уникальных символов
+	char symbols[MAX_SIZE];
+	generate_random_order(symbols, num_symbols);
+
+	// вывод уникальных символов
+	cout << "\nunique characters: \n";
+	for (int i = 0; i < num_symbols; ++i) {
+		cout << symbols[i] << " ";
+	}
+	cout << endl;
+
+	// создание матрицы и заполнение случайными символами 
+
 
 
 }
