@@ -27,7 +27,7 @@ void fill_matrix_randomly(char matrix[MAX_SIZE][MAX_SIZE], char symbols[], int o
 void adapt_matrix(char matrix[MAX_SIZE][MAX_SIZE], int order, char selected_symbol) {
     for (int i = 0; i < order; ++i) {
         for (int j = 0; j < order; ++j) {
-            matrix[i][j] = (matrix[i][j] == selected_symbol) ? 1 : 0;
+            matrix[i][j] = (matrix[i][j] == selected_symbol) ? '1' : '0';
         }
     }
 }
