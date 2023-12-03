@@ -1,11 +1,7 @@
 // Homework 4 blocks of Procedural programming.
 // The code uses the snake_case naming style for functions and variables.
 // CamelCase is used for classes.
-
-
-///             проверить в какой конкретно ///момент ошибка
-
-
+///             проверить в какой конкретно момент ошибка
 
 #include<iostream>
 #include<fstream>
@@ -149,7 +145,7 @@ void file_task() {  //правильно
 
         }
         else {
-            cout << "error!\n"; 
+            cout << "error!\n";
         }
 
     }
@@ -475,14 +471,6 @@ void static_dimensional_arrays() {
         return;
     }
 
-    cout << "result two-dimensional array: \ntable C: \n";
-    for (int i = 0; i < seller_string; i++) {
-        for (int j = 0; j < commission_column; j++) {
-            cout << multiplication_result[i][j] << " ";
-        }
-        cout << "\n";
-    }
-    cout << endl;
 
     double total_sales = 0;
     double total_commission = 0;
@@ -565,7 +553,7 @@ namespace ConvertBase {
         for (char digit_char : number) {
             int digit = char_to_digit(digit_char);
             if ((digit == -1) || (digit >= old_base)) {
-                throw invalid_argument("Invalid digit for the specified old_base");
+                throw invalid_argument("invalid digit for the specified old_base");
             }
 
             decimal_number = decimal_number * old_base + digit;
@@ -702,8 +690,8 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x07);
 
 
-           
-            
+
+
             for (float x = 0; x < 1000; x += 0.05) {
                 yoff = sin(x / 54) * 50;
                 y = 400 + yoff - sin(x / 3) * ampl * scl;
