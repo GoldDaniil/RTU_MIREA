@@ -134,6 +134,122 @@ int main() {
 }
 
 
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+
+//#include <iostream>
+//#include <vector>
+//#include <cstdlib>
+//#include <ctime>
+//
+//class GameOfLife {
+//public:
+//    GameOfLife(int size, int maxYears) : size(size), maxYears(maxYears) {
+//        // Инициализация матрицы случайными значениями 0 и 1
+//        srand(time(0));
+//        grid.resize(size, std::vector<int>(size, 0));
+//        for (int i = 0; i < size; ++i) {
+//            for (int j = 0; j < size; ++j) {
+//                grid[i][j] = rand() % 2;
+//            }
+//        }
+//    }
+//
+//    void printGrid() const {
+//        for (int i = 0; i < size; ++i) {
+//            for (int j = 0; j < size; ++j) {
+//                std::cout << grid[i][j] << " ";
+//            }
+//            std::cout << std::endl;
+//        }
+//    }
+//
+//    void simulateLife() {
+//        for (int year = 1; year <= maxYears; ++year) {
+//            std::cout << year << " год:" << std::endl;
+//            printGrid();
+//            std::cout << std::endl;
+//
+//            evolve();
+//        }
+//    }
+//
+//private:
+//    void evolve() {
+//        std::vector<std::vector<int>> newGrid(size, std::vector<int>(size, 0));
+//
+//        for (int i = 0; i < size; ++i) {
+//            for (int j = 0; j < size; ++j) {
+//                int liveNeighbors = countLiveNeighbors(i, j);
+//
+//                if (grid[i][j] == 1) {
+//                    // Живая клетка
+//                    if (liveNeighbors == 2 || liveNeighbors == 3) {
+//                        newGrid[i][j] = 1;
+//                    }
+//                    else {
+//                        newGrid[i][j] = 0;
+//                    }
+//                }
+//                else {
+//                    // Мертвая клетка
+//                    if (liveNeighbors == 3) {
+//                        newGrid[i][j] = 1;
+//                    }
+//                }
+//            }
+//        }
+//
+//        grid = newGrid;
+//    }
+//
+//    int countLiveNeighbors(int x, int y) const {
+//        int liveNeighbors = 0;
+//
+//        for (int i = -1; i <= 1; ++i) {
+//            for (int j = -1; j <= 1; ++j) {
+//                int newX = x + i;
+//                int newY = y + j;
+//
+//                if (newX >= 0 && newX < size && newY >= 0 && newY < size) {
+//                    liveNeighbors += grid[newX][newY];
+//                }
+//            }
+//        }
+//
+//        // Исключаем текущую клетку
+//        liveNeighbors -= grid[x][y];
+//
+//        return liveNeighbors;
+//    }
+//
+//    int size;
+//    int maxYears;
+//    std::vector<std::vector<int>> grid;
+//};
+//
+//int main() {
+//    int size, maxYears;
+//
+//    std::cout << "enter size matrix ";
+//    std::cin >> size;
+//
+//    std::cout << "enter years: ";
+//    std::cin >> maxYears;
+//
+//    GameOfLife game(size, maxYears);
+//    game.simulateLife();
+//
+//    return 0;
+//}
+
+
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+
 
 //
 //
