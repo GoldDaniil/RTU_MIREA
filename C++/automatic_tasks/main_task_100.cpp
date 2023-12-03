@@ -19,6 +19,15 @@ void generate_random_order(char symbols[], int num_symbols) {
 }
 
  // функция для заполнения матрицы случайными символами
+void fill_matrix_randomly(char matrix[MAX_SIZE][MAX_SIZE], char symbols[], int num_rows, int num_cols, int num_symbols) {
+	for (int i = 0; i < num_symbols; ++i) {
+		int row = rand() % num_rows;
+		int col = rand() % num_cols;
+
+		matrix[row][col] = symbols[i];
+	}
+
+}
 
 
 //первый вариант
