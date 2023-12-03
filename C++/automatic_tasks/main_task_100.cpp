@@ -26,9 +26,64 @@ void fill_matrix_randomly(char matrix[MAX_SIZE][MAX_SIZE], char symbols[], int n
 
 		matrix[row][col] = symbols[i];
 	}
-
 }
 
+ // функция для адаптации матрицы к виду 0 и 1
+void adapt_matrix(char matrix[MAX_SIZE][MAX_SIZE], int num_rows, int num_cols) {
+	for (int i = 0; i < num_rows; ++i) {
+		for (int j = 0; j < num_cols; ++j) {
+			if (matrix[i][j] == 'a') {
+				matrix[i][j] = 1;
+			}
+			else {
+				matrix[i][j] = 0;
+			}
+		}
+	}
+}
+
+int main() {
+	int num_rows, int num_cols, num_symbols, max_generations;
+
+	try {
+		while (true) {
+			cout << "\nenter the number of matrix rows: ";
+			if (!(cin >> num_rows)) {
+				cin.clear();
+				cin.ignore();
+				cout << "error!\n";
+				continue;
+			}
+			break;
+		}
+		while (true) {
+			cout << "\nenter the number of matrix columns: ";
+			if (!(cin >> num_cols)) {
+				cin.clear();
+				cin.ignore();
+				cout << "error!\n";
+				continue;
+			}
+			break;
+		}
+		while (true) {
+			cout << "\nenter number of unique characters : ";
+			if (!(cin >> num_symbols)) {
+				cin.clear();
+				cin.ignore();
+				cout << "error!\n";
+				continue;
+			}
+			break;
+		}
+	}
+	catch (const exception& err) {
+		cerr << "error: " << err.what() << endl;
+	}
+	
+
+
+}
 
 //первый вариант
 //#include <iostream>
