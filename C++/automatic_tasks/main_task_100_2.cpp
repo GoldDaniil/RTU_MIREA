@@ -20,11 +20,30 @@ public:
     void printGrid() const {
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
+                if (grid[i][j] == 0) {
+                    //cout << "\033[47;90m  \033[0m"; // gray 
+                    cout << "\033[42m  \033[0m"; // green 
+
+                    //cout << "\033[47m  \033[0m"; // white
+                }
+                else {
+                    //cout << "\033[41m  \033[0m"; // red 
+                    cout << "\033[47m  \033[0m"; // white
+                }
+            }
+            cout << endl;
+        }
+        cout << endl;
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
                 cout << grid[i][j] << " ";
             }
             cout << endl;
         }
+
+        cout << endl << endl;
     }
+
 
     void simulateLife() {
         for (int year = 1; year <= maxYears; ++year) {
