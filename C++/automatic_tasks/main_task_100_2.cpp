@@ -49,20 +49,22 @@ private:
             for (int j = 0; j < size; ++j) {
                 int liveNeighbors = countLiveNeighbors(i, j);
 
-                if (grid[i][j] == 1) {
-                    // живая клетка
+                if (grid[i][j] > 0 && grid[i][j] < 12) {
+                    // Microbe with life level 1 to 11
                     if (liveNeighbors == 2 || liveNeighbors == 3) {
-                        newGrid[i][j] = 1;
+                        newGrid[i][j] = grid[i][j] + 1;
                     }
                     else {
-                        newGrid[i][j] = 0;
+                        newGrid[i][j] = 0; // Microbe dies
                     }
                 }
-                else {
-                    // мертвая клетка
-                    if (liveNeighbors == 3) {
-                        newGrid[i][j] = 1;
-                    }
+                else if (grid[i][j] == 0) {
+                    // New microbe is born
+                    newGrid[i][j] = 1;
+                }
+                else if (grid[i][j] == 12) {
+                    // Microbe dies from old age
+                    newGrid[i][j] = 0;
                 }
             }
         }
@@ -84,7 +86,7 @@ private:
             }
         }
 
-        // исключаем текущую клетку
+        // Exclude the current cell
         liveNeighbors -= grid[x][y];
 
         return liveNeighbors;
@@ -93,8 +95,8 @@ private:
     bool isGameOver() const {
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                if (grid[i][j] == 1) {
-                    return false; 
+                if (grid[i][j] > 0) {
+                    return false;
                 }
             }
         }
@@ -112,7 +114,7 @@ int main() {
     cout << "Enter matrix size: ";
     cin >> size;
 
-    cout << "enter years : ";
+    cout << "Enter years: ";
     cin >> maxYears;
 
     GameOfLife game(size, maxYears);
