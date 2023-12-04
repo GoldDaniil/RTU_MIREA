@@ -3,10 +3,11 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
-#include <stdlib.h>
-#include <stdio.h>
+#include <Windows.h>
 
 using namespace std;
+
+HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
 enum CellState { DEAD = 0, ALIVE = 1, MAX_AGE = 12 };
 
@@ -78,7 +79,7 @@ public:
             for (int j = 0; j < size; ++j) {
                 cout << grid[i][j] << "  ";
             }
-            
+
             cout << endl;
         }
         cout << endl;
@@ -178,6 +179,14 @@ vector<char> generate_alphabet_symbols(int count) {
 }
 
 int main() {
+    const WORD textColor = 0xE;
+    const WORD bgColor = 0x70;
+    SetConsoleTextAttribute(console, textColor | (bgColor << 4));
+    cout << "Welcome to the game of 'LIFE'!\n\n";
+    SetConsoleTextAttribute(console, textColor);
+    cout << "Once upon a time there were microbes. They lived happily ever after,\nbut there was one problem: after life there was always death comes.\nWe have the opportunity to look at the development of microbes with our own eyes!\n\n";
+    SetConsoleTextAttribute(console, 15);
+
     int size, max_years;
     cout << "Enter matrix size: ";
     while (true) {
