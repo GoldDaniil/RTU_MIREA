@@ -38,7 +38,7 @@ namespace TaskOneVarTwo {
 			}
 			catch (const exception& err) {
 				cerr << "error: " << err.what() << endl;
-				return -0; //возвращаем минус 0 в случае ошибки
+				return 0;
 			}
 		}
 
