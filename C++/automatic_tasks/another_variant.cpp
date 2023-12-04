@@ -1,3 +1,6 @@
+// The code uses the snake_case naming style for functions and variables.
+// CamelCase is used for classes and namespace.
+
 #include<iostream>
 #include<cstdlib>
 #include<ctime>
