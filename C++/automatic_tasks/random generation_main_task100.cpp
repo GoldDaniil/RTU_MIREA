@@ -16,7 +16,7 @@ const int rows = 20;
 const int cols = 60;
 
 void initialize_board(bool board[rows][cols]) {
-    // инициализация доски случайным образом
+    // инициализация  случайным образом
    
     srand(time(nullptr));
     for (int i = 0; i < rows; ++i) {
