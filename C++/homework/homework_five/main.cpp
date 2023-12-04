@@ -91,7 +91,7 @@ namespace TaskOneVarTwo {
 			}
 			catch (const exception& err) {
 				cerr << "error! " << err.what() << endl;
-				return -0;
+				return 0;
 			}
 		}
 
@@ -568,12 +568,11 @@ namespace TaskRows {
 				break;
 			}
 
-			// Create vectors for storing binary and quaternary numbers
 			vector<string> binary_array(n);
 			vector<string> quaternary_array(n);
 
 			for (int i = 0; i < n; ++i) {
-				cout << "Enter binary number " << i + 1 << ": ";
+				cout << "enter binary number " << i + 1 << ": ";
 				cin >> binary_array[i];
 			}
 
@@ -582,16 +581,16 @@ namespace TaskRows {
 					quaternary_array[j] = binary_to_quaternary(binary_array[j]);
 				}
 				catch (const exception& e) {
-					cerr << e.what() << " (Binary number " << j + 1 << ")\n";
+					cerr << e.what() << " (binary number " << j + 1 << ")\n";
 				}
 			}
 
-			cout << "\nSource array in binary system:\n";
+			cout << "\nsource array in binary system:\n";
 			for (const auto& binary : binary_array) {
 				cout << binary << " ";
 			}
 
-			cout << "\n\nResult of the translation into the quaternary system:\n";
+			cout << "\n\nresult of the translation into the quaternary system:\n";
 			for (const auto& quaternary : quaternary_array) {
 				cout << quaternary << " ";
 			}
@@ -679,8 +678,6 @@ namespace TaskFiles {
 				output_file << result_numbers[i] << endl;
 			}
 
-
-
 			output_file.close();
 
 			cout << "original numbers: ";
@@ -691,7 +688,7 @@ namespace TaskFiles {
 			printArray(sorted_numbers, number);
 			cout << endl;
 
-			for (int i = 0; i < 1; i++) {  // Print only the first element of result_numbers
+			for (int i = 0; i < 1; i++) { 
 				cout << "Most frequently occurring number: " << result_numbers[i] << endl;
 			}
 
