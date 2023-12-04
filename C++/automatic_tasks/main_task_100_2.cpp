@@ -2,66 +2,87 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 
 using namespace std;
 
 class GameOfLife {
 public:
-    GameOfLife(int size, int maxYears) : size(size), maxYears(maxYears) {
+    GameOfLife(int size, int maxYears, const vector<char>& symbols) : size(size), maxYears(maxYears), symbols(symbols) {
         srand(time(0));
         grid.resize(size, vector<int>(size, 0));
         initializeGridManually();
     }
 
     void initializeGridManually() {
-        cout << "Enter the initial state (0 for dead, 1 for alive):" << endl;
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                cout << "Cell (" << i + 1 << "," << j + 1 << "): ";
-                cin >> grid[i][j];
+        cout << "\nenter the initial state:" << endl;
 
-                // Ensure the input is either 0 or 1
-                while (grid[i][j] != 0 && grid[i][j] != 1) {
-                    cout << "Invalid input! Please enter 0 or 1: ";
-                    cin >> grid[i][j];
-                }
-            }
+        // cоздаем массив в котором все строки состоят из уникальных символов
+        vector<vector<char>> uniqueGrid(size, vector<char>(size, 0));
+        for (int i = 0; i < size; ++i) {
+            random_shuffle(symbols.begin(), symbols.end());
+            uniqueGrid[i] = symbols;
         }
-    }
 
-    void printGrid() const {
+        // выводим массив для удобства пользователя
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                if (grid[i][j] == 0) {
-                    //cout << "\033[47;90m  \033[0m"; // gray 
-                    cout << "\033[42m  \033[0m"; // green 
-
-                    //cout << "\033[47m  \033[0m"; // white
-                }
-                else {
-                    //cout << "\033[41m  \033[0m"; // red 
-                    cout << "\033[47m  \033[0m"; // white
-                }
+                cout << uniqueGrid[i][j] << " ";
             }
             cout << endl;
         }
-        cout << endl;
+
+        // случайным образом выбираем один из уникальных символов и обновляем основную матрицу
+        int randomRowIndex = rand() % size;
+        selectedSymbol = uniqueGrid[randomRowIndex][0];
+
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                grid[i][j] = (uniqueGrid[i][j] == selectedSymbol) ? 1 : 0;
+            }
+        }
+
+        cout << "\nselected symbol for adaptation: " << selectedSymbol << endl << endl;
+    }
+
+    /*void printGrid() const {
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
                 cout << grid[i][j] << " ";
             }
             cout << endl;
         }
+        cout << endl;
+    }*/
 
-        cout << endl << endl;
+    void printGrid() const {
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                if (grid[i][j] > 0) {
+                    // Зеленый цвет для живых клеток
+                    cout << "\033[42m  \033[0m";
+                }
+                else {
+                    cout << "\033[47;90m  \033[0m"; // gray 
+                }
+            }
+            cout << endl;
+        }
+        cout << endl;
+
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                cout << grid[i][j] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
     }
-
 
     void simulateLife() {
         for (int year = 1; year <= maxYears; ++year) {
-            cout << year << " year:" << endl;
+            cout << "generation " << year << ":" << endl;
             printGrid();
-            cout << endl;
 
             evolve();
 
@@ -70,10 +91,6 @@ public:
                 break;
             }
         }
-    }
-
-    const vector<vector<int>>& getGrid() const {
-        return grid;
     }
 
 private:
@@ -98,7 +115,7 @@ private:
                     newGrid[i][j] = 1;
                 }
                 else if (grid[i][j] == 12) {
-                    // Microbe dies from old age
+                    // Microbe dies from old age, no regeneration
                     newGrid[i][j] = 0;
                 }
             }
@@ -141,18 +158,33 @@ private:
     int size;
     int maxYears;
     vector<vector<int>> grid;
+    vector<char> symbols;
+    char selectedSymbol;
 };
+
+vector<char> generateAlphabetSymbols(int count) {
+    vector<char> symbols;
+    for (char ch = 'a'; ch < 'a' + count; ++ch) {
+        symbols.push_back(ch);
+    }
+    return symbols;
+}
 
 int main() {
     int size, maxYears;
-
     cout << "Enter matrix size: ";
     cin >> size;
 
-    cout << "Enter years: ";
+    int uniqueSymbolCount;
+    cout << "Enter the number of unique symbols: ";
+    cin >> uniqueSymbolCount;
+
+    vector<char> symbols = generateAlphabetSymbols(uniqueSymbolCount);
+
+    cout << "Enter the maximum number of generations: ";
     cin >> maxYears;
 
-    GameOfLife game(size, maxYears);
+    GameOfLife game(size, maxYears, symbols);
     game.simulateLife();
 
     return 0;
