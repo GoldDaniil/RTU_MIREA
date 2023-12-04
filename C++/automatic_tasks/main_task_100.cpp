@@ -106,19 +106,23 @@ private:
                 int neighbors = count_live_neighbors(i, j);
 
                 if (grid[i][j] == 1) {
-                    if (neighbors < 2 || neighbors > 3) {
-                        new_grid[i][j] = 0;
+                    // жива
+                    if (neighbors == 2 || neighbors == 3) {
+                        // продолжает жить и возрастает на 1
+                        new_grid[i][j] = min(grid[i][j] + 1, static_cast<int>(MAX_AGE));
                     }
                     else {
-
-                        new_grid[i][j] = min(grid[i][j] + 1, static_cast<int>(MAX_AGE));
+                        // умирает от одиночества
+                        new_grid[i][j] = 0;
                     }
                 }
                 else {
-
-                    if (neighbors == 3) {
-                        new_grid[i][j] = 1;
-                    }
+                    // мертва
+                    new_grid[i][j] = 0;
+                    //if (neighbors == 3) {
+                    //    // Воскрешение из трех соседей
+                    //    new_grid[i][j] = 1;
+                    //}
                 }
             }
         }
