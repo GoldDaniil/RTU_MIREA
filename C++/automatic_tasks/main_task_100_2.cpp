@@ -10,9 +10,21 @@ public:
     GameOfLife(int size, int maxYears) : size(size), maxYears(maxYears) {
         srand(time(0));
         grid.resize(size, vector<int>(size, 0));
+        initializeGridManually();
+    }
+
+    void initializeGridManually() {
+        cout << "Enter the initial state (0 for dead, 1 for alive):" << endl;
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                grid[i][j] = rand() % 2;
+                cout << "Cell (" << i + 1 << "," << j + 1 << "): ";
+                cin >> grid[i][j];
+
+                // Ensure the input is either 0 or 1
+                while (grid[i][j] != 0 && grid[i][j] != 1) {
+                    cout << "Invalid input! Please enter 0 or 1: ";
+                    cin >> grid[i][j];
+                }
             }
         }
     }
@@ -58,6 +70,10 @@ public:
                 break;
             }
         }
+    }
+
+    const vector<vector<int>>& getGrid() const {
+        return grid;
     }
 
 private:
