@@ -3,8 +3,12 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
+#include <stdlib.h>
+#include <stdio.h>
 
 using namespace std;
+
+enum CellState { DEAD = 0, ALIVE = 1, MAX_AGE = 12 };
 
 class GameOfLife {
 public:
@@ -99,24 +103,26 @@ private:
 
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                int live_neighbors = count_live_neighbors(i, j);
+                int neighbors = count_live_neighbors(i, j);
 
-                if (grid[i][j] > 0 && grid[i][j] < 12) {
-                    if (live_neighbors == 2 || live_neighbors == 3) {
-                        new_grid[i][j] = grid[i][j] + 1;
-                    }
-                    else {
+                if (grid[i][j] == 1) {
+                    if (neighbors < 2 || neighbors > 3) {
                         new_grid[i][j] = 0;
                     }
+                    else {
+
+                        new_grid[i][j] = min(grid[i][j] + 1, static_cast<int>(MAX_AGE));
+                    }
                 }
-                else if (grid[i][j] == 0) {
-                    new_grid[i][j] = 1;
-                }
-                else if (grid[i][j] == 12) {
-                    new_grid[i][j] = 0;
+                else {
+
+                    if (neighbors == 3) {
+                        new_grid[i][j] = 1;
+                    }
                 }
             }
         }
+
 
         grid = new_grid;
     }
@@ -209,5 +215,4 @@ int main() {
 
     return 0;
 }
-
 
