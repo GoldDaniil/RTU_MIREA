@@ -139,7 +139,7 @@ private:
                 int newX = x + i;
                 int newY = y + j;
 
-                if (newX >= 0 && newX < size && newY >= 0 && newY < size) {
+                if ((newX >= 0) && (newX < size) && (newY >= 0) && (newY < size)) {
                     live_neighbors += grid[newX][newY];
                 }
             }
