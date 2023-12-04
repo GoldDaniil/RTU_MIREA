@@ -595,7 +595,7 @@ namespace ConvertBase {
             if (!(cin >> old_base) || old_base <= 1 || old_base > 36) {
                 cin.clear();
                 cin.ignore();
-                cerr << "error: Invalid old foundation\n";
+                cerr << "error: invalid old foundation\n";
                 continue;
             }
             break;
@@ -606,7 +606,7 @@ namespace ConvertBase {
             if (!(cin >> new_base) || new_base <= 1 || new_base > 36) {
                 cin.clear();
                 cin.ignore();
-                cerr << "error: Invalid new foundation\n";
+                cerr << "error: invalid new foundation\n";
                 continue;
             }
             break;
@@ -616,7 +616,7 @@ namespace ConvertBase {
             for (char digit_char : number) {
                 int digit = char_to_digit(digit_char);
                 if ((digit == -1) || (digit >= old_base)) {
-                    throw invalid_argument("Invalid digit for the specified old_base");
+                    throw invalid_argument("invalid digit for the specified old_base");
                 }
             }
 
