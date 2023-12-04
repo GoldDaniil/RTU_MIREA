@@ -31,7 +31,7 @@ public:
         // выводим массив для удобства пользователя
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                cout << unique_grid[i][j] << " ";
+                cout << unique_grid[i][j] << "  ";
             }
             cout << endl;
         }
@@ -76,8 +76,9 @@ public:
 
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                cout << grid[i][j] << " ";
+                cout << grid[i][j] << "  ";
             }
+            
             cout << endl;
         }
         cout << endl;
@@ -91,7 +92,7 @@ public:
             evolve();
 
             if (is_game_over()) {
-                cout << "\nGame over" << endl;
+                cout << "\nGame over!\nAll germs are dead!\n" << endl;
                 break;
             }
         }
@@ -219,4 +220,3 @@ int main() {
 
     return 0;
 }
-
