@@ -1,5 +1,6 @@
 // Homework 3 blocks of Procedural programmin.
 // The code uses the snake_case naming style!
+// CamelCase is used for classes!
 
 #include <iostream>
 #include <limits>
