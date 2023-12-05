@@ -37,17 +37,52 @@ double calculate_distance(const Animal& animal1, const Animal& animal2) {
 
 }
 
-void death_by_starvation(Animal population[], int& population_size) {
-    auto newEnd = remove_if(population, population + population_size, [](const Animal& animal) {
-        return animal.hunger > max_hunger;
-        });
+//void death_by_starvation(Animal population[], int& population_size) {
+//    auto newEnd = remove_if(population, population + population_size, [](const Animal& animal) {
+//        return animal.hunger > max_hunger;
+//        });
+//
+//    population_size = distance(population, newEnd);
+//}
 
-    population_size = distance(population, newEnd);
+void deathByStarvation(Animal population[], int& populationSize) {
+    int newSize = 0;
+
+    for (int i = 0; i < populationSize; ++i) {
+        if (population[i].hunger <= max_hunger) {
+            population[newSize++] = population[i];
+        }
+    }
+
+    populationSize = newSize;
+}
+
+void reproduce(Animal population[], int& populationSize) {
+    Animal newGeneration[max_new_generation];
+    int newGenerationSize = 0;
+
+    for (int i = 0; i < populationSize; ++i) {
+        const auto& parent = population[i];
+
+        if (parent.age >= reproduction_age) {
+            // логика рождения нового потомства
+            Animal child;
+            child.age = 0; // рождение 
+            child.hunger = 0; // начальный уровень 
+
+            newGeneration[newGenerationSize++] = child;
+        }
+    }
+
+    // Добавляем новых потомков в основную популяцию
+    for (int i = 0; i < newGenerationSize; ++i) {
+        population[populationSize++] = newGeneration[i];
+    }
 }
 
 
 //начало основной цикл моделирования//
-const int max_populations_size = 1000;
+//const int max_populations_size = 1000;
 
 void simulate_one_time_step(Animal herbivores[], int& herbivoreCount, Animal predators[], int& predatorCount, Environment& environment) {
 
@@ -95,6 +130,16 @@ void simulate_one_time_step(Animal herbivores[], int& herbivoreCount, Animal pre
 
     // восстановление травы
     environment.initial_grass += static_cast<int>(environment.initial_grass * environment.grass_regrowth_rate);
+
+
+    // Логика гибели от голода
+    death_by_starvation(herbivores);
+    death_by_starvation(predators);
+
+    // Логика репродукции
+    reproduce(herbivores);
+    reproduce(predators);
+
 }
 //конец  Основной цикл моделирования
 
