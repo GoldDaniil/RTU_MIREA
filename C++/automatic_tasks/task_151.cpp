@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstdlib>
 
+using namespace std;
+
 const int MAX_ANIMALS = 1000; // максимальное количество животных
 
 struct Animal {
@@ -34,6 +36,66 @@ double calculate_distance(const Animal& animal1, const Animal& animal2) {
 
 }
 
+//начало основной цикл моделирования//
+
+const int max_populations_size = 1000;
+
+void simulate_one_time_step(Animal herbivores[], int& herbivoreCount, Animal predators[], int& predatorCount, Environment& environment) {
+
+    //передвижение травоядных и хишинков
+    for (int i = 0; i < herbivoreCount; ++i) {
+        herbivores[i].x += rand() % 3 - 1; // случайное число от -1 до 1
+        herbivores[i].y += rand() % 3 - 1;
+    }
+    for (int i = 0; i < predatorCount; ++i) {
+        predators[i].x += rand() % 3 - 1;
+        predators[i].y += rand() % 3 - 1;
+    }
+
+    //логика старения
+    for (int i = 0; i < herbivoreCount; ++i) {
+        herbivores[i].age++;
+    }
+    for (int i = 0; i < predatorCount; ++i) {
+        predators[i].age++;
+    }
+
+
+    // провера репродуктивного возраста - 
+    // вариант 1: просто удаляем особей старше максимального возраста - написано 
+    // вариант 2: удаляем после конкретной возраста(гугл) - не написано
+    herbivoreCount = remove_if(herbivores, herbivores + herbivoreCount, [](const Animal& herbivore) {
+        return herbivore.age > max_age;
+        }) - herbivores;
+
+    predatorCount = remove_if(predators, predators + predatorCount, [](const Animal& predator) { 
+        return predator.age > max_age; 
+    }) - predators;
+
+    // проверка взаимодействия хищников и травоядных
+    for (int i = 0; i < herbivoreCount; ++i) {
+        for (int j = 0; j < predatorCount; ++j) {
+            double distance = calculate_distance(herbivores[i], predators[j]);
+            if (distance < 1.0) {
+                // особь сьедена хищником
+                cout << "\nThe predator ate the herbivore!\n";
+                // дополнительная взаимодействия - разработать
+            }
+        }
+    }
+
+    // восстановление травы
+    environment.initial_grass += static_cast<int>(environment.initial_grass * environment.grass_regrowth_rate);
+}
+
+
+
+//конец  Основной цикл моделирования
+
+
+
+
+
 
 
 void initialize_herbivore_population(Animal herbivores[], int initial_population, int max_age, int reproductive_age_min, int reproductive_age_max, double reproduction_rate) {
@@ -56,12 +118,6 @@ void initialize_predator_population(Animal predators[], int initial_population, 
     }
 }
 
-//начало Основной цикл моделирования//
-
-
-
-
-//конец  Основной цикл моделирования
 
 int main() {
     using namespace std;
