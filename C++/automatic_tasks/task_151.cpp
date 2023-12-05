@@ -28,6 +28,14 @@ struct Environment {
 const int max_age = 20; //максимальный возрастной уровень
 const int max_hunger = 5; //уровень голода для гибели
 
+double calculate_distance(const Animal& animal1, const Animal& animal2) {
+    // использую расчет Евклидова расстояния между двумя точками(особями)
+    return sqrt(pow(animal1.x - animal2.x, 2) + pow(animal1.y - animal2.y, 2));
+
+}
+
+
+
 void initialize_herbivore_population(Animal herbivores[], int initial_population, int max_age, int reproductive_age_min, int reproductive_age_max, double reproduction_rate) {
     for (int i = 0; i < initial_population; ++i) {
         herbivores[i].age = rand() % (max_age + 1);
