@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <cmath> // Include cmath for sqrt function
+#include <cmath> 
 
 using namespace std;
 
