@@ -5,11 +5,11 @@
 using namespace std;
 
 const int MAX_ANIMALS = 1000; // максимальное количество животных
-const int max_new_generation = 1000; // добавлено для репродукции
+const int max_new_generation = 1000; // для репродукции
 
 struct Animal {
     int age;
-    int hunger; 
+    int hunger;
     int reproductive_age_min;
     int reproductive_age_max;
     int max_age;
@@ -33,9 +33,16 @@ struct Environment {
 const int max_age = 20; //максимальный возрастной уровень
 const int max_hunger = 5; //уровень голода для гибели
 const int reproduction_age = 3; //возраст для репродукции
+const int max_population_size = 1000; // максимальную численность населения
 
 double calculate_distance(const Animal& animal1, const Animal& animal2) {
     return sqrt(pow(animal1.x - animal2.x, 2) + pow(animal1.y - animal2.y, 2));
+}
+
+void death_by_starvation(Animal population[], int& population_size) {
+    population_size = remove_if(population, population + population_size, [](const Animal& animal) {
+        return animal.hunger > max_hunger;
+        }) - population;
 }
 
 //void death_by_starvation(Animal population[], int& population_size) {
@@ -46,36 +53,55 @@ double calculate_distance(const Animal& animal1, const Animal& animal2) {
 //    population_size = distance(population, newEnd);
 //}
 
-void death_by_starvation(Animal population[], int& population_size) {
-    auto newEnd = remove_if(population, population + population_size, [](const Animal& animal) {
-        return animal.hunger > max_hunger;
-        });
-
-    population_size = distance(population, newEnd);
-}
+//void death_by_starvation(Animal population[], int& population_size) {
+//    auto newEnd = remove_if(population, population + population_size, [](const Animal& animal) {
+//        return animal.hunger > max_hunger;
+//        });
+//
+//    population_size = distance(population, newEnd);
+//}
 
 void reproduce(Animal population[], int& populationSize) {
-    Animal newGeneration[max_new_generation];
-    int newGenerationSize = 0;
+    Animal new_generation[max_population_size];
+    int new_population_size = 0;
 
     for (int i = 0; i < populationSize; ++i) {
-        const auto& parent = population[i];
-
-        if (parent.age >= reproduction_age) {
-            // логика рождения нового потомства
+        if (population[i].age >= reproduction_age) {
+            //            // логика рождения нового потомства
             Animal child;
-            child.age = 0; // рождение 
-            child.hunger = 0; // начальный уровень
+            child.age = 0;     // рождение
+            child.hunger = 0;  // начальный уровень
 
-            newGeneration[newGenerationSize++] = child;
+            new_generation[new_population_size++] = child;
         }
     }
 
-    // добавляем новых потомков в основную популяцию
-    for (int i = 0; i < newGenerationSize; ++i) {
-        population[populationSize++] = newGeneration[i];
-    }
+    copy(new_generation, new_generation + new_population_size, population + populationSize);
+    populationSize += new_population_size;
 }
+
+//void reproduce(Animal population[], int& populationSize) {
+//    Animal newGeneration[max_new_generation];
+//    int newGenerationSize = 0;
+//
+//    for (int i = 0; i < populationSize; ++i) {
+//        const auto& parent = population[i];
+//
+//        if (parent.age >= reproduction_age) {
+//            // логика рождения нового потомства
+//            Animal child;
+//            child.age = 0; // рождение 
+//            child.hunger = 0; // начальный уровень
+//
+//            newGeneration[newGenerationSize++] = child;
+//        }
+//    }
+//
+//    // добавляем новых потомков в основную популяцию
+//    for (int i = 0; i < newGenerationSize; ++i) {
+//        population[populationSize++] = newGeneration[i];
+//    }
+//}
 
 
 //начало основной цикл моделирования//
@@ -109,9 +135,9 @@ void simulate_one_time_step(Animal herbivores[], int& herbivore_сount, Animal p
         return herbivore.age > max_age;
         }) - herbivores;
 
-    predator_сount = remove_if(predators, predators + predator_сount, [](const Animal& predator) { 
-        return predator.age > max_age; 
-    }) - predators;
+    predator_сount = remove_if(predators, predators + predator_сount, [](const Animal& predator) {
+        return predator.age > max_age;
+        }) - predators;
 
     // проверка взаимодействия хищников и травоядных
     for (int i = 0; i < herbivore_сount; ++i) {
@@ -142,7 +168,7 @@ void simulate_one_time_step(Animal herbivores[], int& herbivore_сount, Animal p
 
 
 
-    
+
 
 
 void initialize_herbivore_population(Animal herbivores[], int initial_population, int max_age, int reproductive_age_min, int reproductive_age_max, double reproduction_rate) {
