@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <cmath> 
+#include <cmath>
 
 using namespace std;
 
