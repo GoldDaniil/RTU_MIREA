@@ -29,6 +29,7 @@ struct Environment {
 
 const int max_age = 20; //максимальный возрастной уровень
 const int max_hunger = 5; //уровень голода для гибели
+const int reproduction_age = 3; //возраст для репродукции
 
 double calculate_distance(const Animal& animal1, const Animal& animal2) {
     // использую расчет Евклидова расстояния между двумя точками(особями)
@@ -36,8 +37,16 @@ double calculate_distance(const Animal& animal1, const Animal& animal2) {
 
 }
 
-//начало основной цикл моделирования//
+void death_by_starvation(Animal population[], int& population_size) {
+    auto newEnd = remove_if(population, population + population_size, [](const Animal& animal) {
+        return animal.hunger > max_hunger;
+        });
 
+    population_size = distance(population, newEnd);
+}
+
+
+//начало основной цикл моделирования//
 const int max_populations_size = 1000;
 
 void simulate_one_time_step(Animal herbivores[], int& herbivoreCount, Animal predators[], int& predatorCount, Environment& environment) {
@@ -87,9 +96,6 @@ void simulate_one_time_step(Animal herbivores[], int& herbivoreCount, Animal pre
     // восстановление травы
     environment.initial_grass += static_cast<int>(environment.initial_grass * environment.grass_regrowth_rate);
 }
-
-
-
 //конец  Основной цикл моделирования
 
 
