@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <cmath> 
+#include <cmath> // Include cmath for sqrt function
 
 using namespace std;
 
@@ -9,7 +9,7 @@ const int max_new_generation = 1000; // добавлено для репроду
 
 struct Animal {
     int age;
-    int hunger; // Добавлено уровень голода
+    int hunger; 
     int reproductive_age_min;
     int reproductive_age_max;
     int max_age;
@@ -129,26 +129,26 @@ void simulate_one_time_step(Animal herbivores[], int& herbivore_сount, Animal p
     environment.initial_grass += static_cast<int>(environment.initial_grass * environment.grass_regrowth_rate);
 
 
-    // Логика гибели от голода
+    // гибель от голода
     death_by_starvation(herbivores, herbivore_сount);
     death_by_starvation(predators, predator_сount);
 
-    // Логика репродукции
+    // репродукция
     reproduce(herbivores, herbivore_сount);
     reproduce(predators, predator_сount);
-
 }
 //конец  Основной цикл моделирования
 
 
 
 
-
+    
 
 
 void initialize_herbivore_population(Animal herbivores[], int initial_population, int max_age, int reproductive_age_min, int reproductive_age_max, double reproduction_rate) {
     for (int i = 0; i < initial_population; ++i) {
         herbivores[i].age = rand() % (max_age + 1);
+        herbivores[i].hunger = 0; // начальное значение голода
         herbivores[i].reproductive_age_min = reproductive_age_min;
         herbivores[i].reproductive_age_max = reproductive_age_max;
         herbivores[i].max_age = max_age;
@@ -159,6 +159,7 @@ void initialize_herbivore_population(Animal herbivores[], int initial_population
 void initialize_predator_population(Animal predators[], int initial_population, int max_age, int reproductive_age_min, int reproductive_age_max, double reproduction_rate) {
     for (int i = 0; i < initial_population; ++i) {
         predators[i].age = rand() % (max_age + 1);
+        predators[i].hunger = 0; // начальное значение голода
         predators[i].reproductive_age_min = reproductive_age_min;
         predators[i].reproductive_age_max = reproductive_age_max;
         predators[i].max_age = max_age;
@@ -170,7 +171,7 @@ void initialize_predator_population(Animal predators[], int initial_population, 
 int main() {
     using namespace std;
 
-    // Инициализация параметров окружающей среды
+    // инициализация параметров окружающей среды
     Environment environment;
     cout << "Enter environmental parameters:\n";
     cout << "screen width: ";
@@ -192,7 +193,7 @@ int main() {
     cout << "amount of herbivore food recovered per year: ";
     cin >> environment.herbivore_food_recovery;
 
-    // Ввод данных о популяции травоядных и хищников
+    // ввод данных о популяции травоядных и хищников
     int initial_herbivore_population, initial_predator_population;
     int max_herbivore_age, max_predator_age;
     int reproductive_age_min_herbivore, reproductive_age_max_herbivore, reproductive_age_min_predator, reproductive_age_max_predator;
