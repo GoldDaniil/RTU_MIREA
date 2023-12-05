@@ -131,7 +131,7 @@ void display_total_population(const vector<Animal>& herbivores, const vector<Ani
 //const int max_populations_size = 1000;
 
 
-void simulateOneTimeStep(vector<Animal>& herbivores, vector<Animal>& predators, Environment& environment) {
+void simulateOneTimeStep(vector<Animal>& herbivores, vector<Animal>& predators, Environment& environment, int time_step) {
     //передвижение травоядных и хишинков
     for (auto& herbivore : herbivores) {
         herbivore.x += rand() % 3 - 1; // случайное число от -1 до 1
@@ -182,7 +182,7 @@ void simulateOneTimeStep(vector<Animal>& herbivores, vector<Animal>& predators, 
     // вывод информации о текущем состоянии
 
     cout << "Number of herbivores: " << herbivores.size() << ", Predators: " << predators.size() << std::endl;
-    cout << "Time step: " << time_step + 1 << endl;
+    cout << "Time step: " << time_step << endl;
     display_population_size(herbivores, predators);
     cout << "Amount of grass: " << environment.initial_grass << endl;
     cout << "---------------------------" << endl;
@@ -371,7 +371,7 @@ int main() {
     int totalSimulationSteps = 10;
 
     // Основной цикл моделирования
-    for (int timeStep = 0; timeStep < totalSimulationSteps; ++timeStep) {
+    for (int time_step = 0; time_step < totalSimulationSteps; ++time_step) {
         simulateOneTimeStep(herbivores, predators, environment);
     }
 
