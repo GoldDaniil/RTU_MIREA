@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 
-const int MAX_ANIMALS = 1000; // макс колво животных
+const int MAX_ANIMALS = 1000; // максимальное количество животных
 
 struct Animal {
     int age;
@@ -9,6 +9,8 @@ struct Animal {
     int reproductive_age_max;
     int max_age;
     double reproduction_rate;
+
+    int x, y; // координаты на экране 
 };
 
 struct Environment {
@@ -22,6 +24,9 @@ struct Environment {
     double grass_recovery_rate;
     double herbivore_food_recovery;
 };
+
+const int max_age = 20; //максимальный возрастной уровень
+const int max_hunger = 5; //уровень голода для гибели
 
 void initialize_herbivore_population(Animal herbivores[], int initial_population, int max_age, int reproductive_age_min, int reproductive_age_max, double reproduction_rate) {
     for (int i = 0; i < initial_population; ++i) {
@@ -43,10 +48,17 @@ void initialize_predator_population(Animal predators[], int initial_population, 
     }
 }
 
+//начало Основной цикл моделирования//
+
+
+
+
+//конец  Основной цикл моделирования
+
 int main() {
     using namespace std;
 
-    // инициализация параметров окружающей среды
+    // Инициализация параметров окружающей среды
     Environment environment;
     cout << "Enter environmental parameters:\n";
     cout << "screen width: ";
@@ -68,7 +80,7 @@ int main() {
     cout << "amount of herbivore food recovered per year: ";
     cin >> environment.herbivore_food_recovery;
 
-    // ввод данных о популяции травоядных и хищников
+    // Ввод данных о популяции травоядных и хищников
     int initial_herbivore_population, initial_predator_population;
     int max_herbivore_age, max_predator_age;
     int reproductive_age_min_herbivore, reproductive_age_max_herbivore, reproductive_age_min_predator, reproductive_age_max_predator;
