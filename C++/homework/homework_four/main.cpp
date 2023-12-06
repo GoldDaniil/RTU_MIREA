@@ -1,7 +1,6 @@
 // Homework 4 blocks of Procedural programming.
 // The code uses the snake_case naming style for functions and variables.
 // CamelCase is used for classes.
-///             проверить в какой конкретно момент ошибка
 
 #include<iostream>
 #include<fstream>
@@ -18,6 +17,7 @@ using namespace std;
 
 HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
 
+//не нужное
 void dynamic_matrix_multiplication() {
     //другой файл
     int rows;
@@ -80,11 +80,13 @@ void dynamic_matrix_multiplication() {
 
     delete matrix;
 }
-
+//не нужное
 void long_operation() {
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(150ms);
 } //для врремени 
+//не нужное
+
 
 void comment_output() {
     SetConsoleTextAttribute(back_color, 0x0a);
@@ -160,54 +162,6 @@ void file_task() {  //правильно
         }
         cerr << "new file created successfully!\n";
     }
-}
-
-void past_glory() {
-    clock_t start_time = clock();
-
-    cout << "Past Glory 1912 " << endl;
-    for (int i = 0; i < 6; i++) {
-        SetConsoleTextAttribute(back_color, 0x1f);
-        for (int j = 0; j < 8; j++) {
-            cout << "* ";
-        }
-        if ((i % 2) == 0) {
-            SetConsoleTextAttribute(back_color, 0x44);
-        }
-        else {
-            SetConsoleTextAttribute(back_color, 0xff);
-        }
-
-        for (int j = 0; j < 15; j++) {
-            cout << "- ";
-        }
-        SetConsoleTextAttribute(back_color, 0x00);
-
-        cout << endl;
-    }
-
-    for (int i = 0; i < 6; i++) {
-        if ((i % 2) == 0) {
-            SetConsoleTextAttribute(back_color, 0x44);
-        }
-        else {
-            SetConsoleTextAttribute(back_color, 0xff);
-        }
-        for (int j = 0; j < 23; j++) {
-            cout << "- ";
-        }
-        SetConsoleTextAttribute(back_color, 0x00);
-
-        cout << endl;
-    }
-    SetConsoleTextAttribute(back_color, 0x07);
-    cout << endl << endl;
-
-    clock_t end_time = clock();
-    double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
-    SetConsoleTextAttribute(back_color, 0x0b); //бирюзовый
-    cout << "function execution time in milliseconds: " << spent_time << " ml \n\n";
-    SetConsoleTextAttribute(back_color, 0x07);
 }
 
 void number_sign() {    //правильно
@@ -314,6 +268,88 @@ void geometric_figures() {  //правильно
         double area_of_circle = PI * pow(radius_circle, 2);
         cout << "the area of the circle = " << area_of_circle << endl << "\n";
     }
+}
+
+void past_glory() {
+    clock_t start_time = clock();
+
+    cout << "Past Glory 1912 " << endl;
+    for (int i = 0; i < 6; i++) {
+        SetConsoleTextAttribute(back_color, 0x1f);
+        for (int j = 0; j < 8; j++) {
+            cout << "* ";
+        }
+        if ((i % 2) == 0) {
+            SetConsoleTextAttribute(back_color, 0x44);
+        }
+        else {
+            SetConsoleTextAttribute(back_color, 0xff);
+        }
+
+        for (int j = 0; j < 15; j++) {
+            cout << "- ";
+        }
+        SetConsoleTextAttribute(back_color, 0x00);
+
+        cout << endl;
+    }
+
+    for (int i = 0; i < 6; i++) {
+        if ((i % 2) == 0) {
+            SetConsoleTextAttribute(back_color, 0x44);
+        }
+        else {
+            SetConsoleTextAttribute(back_color, 0xff);
+        }
+        for (int j = 0; j < 23; j++) {
+            cout << "- ";
+        }
+        SetConsoleTextAttribute(back_color, 0x00);
+
+        cout << endl;
+    }
+    SetConsoleTextAttribute(back_color, 0x07);
+    cout << endl << endl;
+
+    clock_t end_time = clock();
+    double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    SetConsoleTextAttribute(back_color, 0x0b); //бирюзовый
+    cout << "function execution time in milliseconds: " << spent_time << " ml \n\n";
+    SetConsoleTextAttribute(back_color, 0x07);
+}
+
+void sine_wave() {
+    const int width = 80;
+    const int height = 20;
+    const double amplitude = height / 2.0;
+    const double frequency = 0.1;
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            double value = amplitude * sin(frequency * x);
+
+            if (y == height / 2) {
+                cout << '-';
+            }
+            else if (x == 0 || x == width - 1) {
+                cout << '+';
+            }
+            else if (x % static_cast<int>(1 / frequency) == 0) {
+                cout << '|';
+            }
+            else {
+                if (abs(y - amplitude + value) < 0.5) {
+                    cout << '*';
+                }
+                else {
+                    cout << ' ';
+                }
+            }
+        }
+        cout << endl;
+    }
+
+    cout << endl << endl;
 }
 
 void automatic_recognizer() {  //проверить  //
@@ -688,17 +724,16 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "fifth task - 'Sine wave' \n";
             SetConsoleTextAttribute(back_color, 0x07);
+            sine_wave();
 
-
-
-
+            /*
             for (float x = 0; x < 1000; x += 0.05) {
                 yoff = sin(x / 54) * 50;
                 y = 400 + yoff - sin(x / 3) * ampl * scl;
                 SetPixel(dc, (int)x, (int)y, RGB(155 + yoff * 2, 0, 155 - yoff * 2));
 
             }
-            return;
+            return;*/
             break;
         case 6:
             cout << "\n";
