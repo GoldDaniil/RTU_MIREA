@@ -52,7 +52,7 @@ void check_guess(int secret_number, int user_number, int& pluses, int& minuses) 
     }
 }
 
-void setColor(int color) {
+void set_color(int color) {
     SetConsoleTextAttribute(console, color);
 }
 
@@ -60,7 +60,7 @@ int main() {
     int secret_number = generate_number();
     int user_number, pluses, minuses, attempts = 0;
 
-    //setColor(14);
+    //set_color(14);
     const WORD textColor = 0xE;
     const WORD bgColor = 0x70;
 
@@ -69,44 +69,52 @@ int main() {
     cout << "Welcome to the game 'Bulls and Cows!'\n\n";
     cout << "The computer guessed a four-digit number. Try to guess!\n\n";
     SetConsoleTextAttribute(console, 15);
-    setColor(15);
+    set_color(15);
+
+
+
+    set_color(14);
+    cout << "number: " << secret_number << "\n\n";
+    set_color(15);
+
+
 
     do {
         do {
             while (true) {
-                setColor(11);
+                set_color(11);
                 cout << "enter number: ";
-                setColor(15);
+                set_color(15);
                 if (!(cin >> user_number)) {
                     cin.clear();
                     cin.ignore();
-                    setColor(12);
+                    set_color(12);
                     cout << "error!\n";
-                    setColor(15);
+                    set_color(15);
                     continue;
                 }
                 break;
             }
 
             if (!is_valid_input(user_number)) {
-                setColor(12);
+                set_color(12);
                 cout << "\nerror!\n";
-                setColor(15);
+                set_color(15);
             }
         } while (!is_valid_input(user_number));
 
         check_guess(secret_number, user_number, pluses, minuses);
 
-        setColor(13);
+        set_color(13);
         cout << "\nresult: " << pluses << " pluses and " << minuses << " minuses! \n";
-        setColor(15);
+        set_color(15);
 
         ++attempts;
     } while (pluses < 4);
 
-    setColor(10);
+    set_color(10);
     cout << "\ncongratulations! U guessed the number " << secret_number << " in " << attempts << " attempts!\n";
-    setColor(15);
+    set_color(15);
 
     return 0;
 }
