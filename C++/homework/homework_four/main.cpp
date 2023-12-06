@@ -318,35 +318,45 @@ void past_glory() {
     SetConsoleTextAttribute(back_color, 0x07);
 }
 
+void move_сursor(int x, int y) {
+    cout << "\033[" << y << ";" << x << "H"; 
+}
+
 void sine_wave() {
     const int width = 100;
     const int height = 25;
     const double amplitude = height / 2.0;
     const double frequency = 0.1;
 
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            double value = amplitude * sin(frequency * x);
+    for (int frame = 0; frame < 40; frame++) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                double value = amplitude * sin(frequency * (x + frame));
 
-            if (y == height / 2) {
-                cout << '-';
-            }
-            else if (x == 0 || x == width - 1) {
-                cout << '+';
-            }
-            else if (x % static_cast<int>(1 / frequency) == 0) {
-                cout << '|';
-            }
-            else {
-                if (abs(y - amplitude + value) < 0.5 || (y == height - 1 && abs(y - amplitude + value) <= 0.5)) {
-                    cout << '*';
+                if (y == height / 2) {
+                    cout << '-';
+                }
+                else if (x == 0 || x == width - 1) {
+                    cout << '+';
+                }
+                else if (x % static_cast<int>(1 / frequency) == 0) {
+                    cout << '|';
                 }
                 else {
-                    cout << ' ';
+                    if (abs(y - amplitude + value) < 0.5 || (y == height - 1 && abs(y - amplitude + value) <= 0.5)) {
+                        cout << '*';
+                    }
+                    else {
+                        cout << ' ';
+                    }
                 }
             }
+            cout << endl;
         }
-        cout << endl;
+
+        move_сursor(1, 1);
+
+        this_thread::sleep_for(chrono::milliseconds(100));
     }
 
     cout << endl << endl;
