@@ -3,6 +3,10 @@
 #include <cmath>        //последняя версия
 #include <vector>
 
+//07.12.23 - задаю логику выбора статистики по необходимости
+// предоставление возможности выбора пользователя
+
+
 using namespace std;
 
 const int MAX_ANIMALS = 1000; // максимальное количество животных
@@ -46,17 +50,7 @@ void death_by_starvation(vector<Animal>& population) {
         return animal.hunger > max_hunger;
         }), population.end());
 }
-//void death_by_starvation(Animal population[], int& population_size) {
-//    int new_population_size = 0;
-//
-//    for (int i = 0; i < population_size; ++i) {
-//        if (population[i].hunger <= max_hunger) {
-//            population[new_population_size++] = population[i];
-//        }
-//    }
-//
-//    population_size = new_population_size;
-//}
+
 
 void reproduce(vector<Animal>& population) {
     vector<Animal> newGeneration;
@@ -74,52 +68,25 @@ void reproduce(vector<Animal>& population) {
     // добавляем новых потомков в основную популяцию
     population.insert(population.end(), newGeneration.begin(), newGeneration.end());
 }
-//вариант с массивом
-//void reproduce(Animal population[], int& population_size) {
-//    Animal new_generation[max_population_size];
-//    int new_population_size = 0;
-//
-//    for (int i = 0; i < population_size; ++i) {
-//        if (population[i].age >= reproduction_age) {
-//            //            // логика рождения нового потомства
-//            Animal child;
-//            child.age = 0;     // рождение
-//            child.hunger = 0;  // начальный уровень
-//
-//            new_generation[new_population_size++] = child;
-//        }
-//    }
-//
-//    copy(new_generation, new_generation + new_population_size, population + population_size);
-//    population_size += new_population_size;
-//}
+
 
 
 void display_population_size(const vector<Animal>& herbivores, const vector<Animal>& predators) {
     cout << "Herbivores: " << herbivores.size() << ", Predators: " << predators.size() << endl;
 }
-// вариант с массивом
-//void display_population_size(int herbivores_count, int predators_count) {
-//    cout << "Herbivores: " << herbivores_count << ", Predators: " << predators_count << endl;
-//}
+
 
 
 void display_interaction(const Animal& herbivore, const Animal& predator) {
     cout << "display_interaction!" << endl;
 }
-// вариант с массивом
-//void display_interaction(const Animal& herbivore, const Animal& predator) {
-//    cout << "Herbivore encountered a predator!" << endl;
-//}
+
 
 
 void visualizeInteraction(const vector<Animal>& herbivores, const vector<Animal>& predators) {
     //код визуализации
 }
-// вариант с массивом
-//void visualize_interaction(const Animal herbivores[], int herbivores_count, const Animal predators[], int predators_count) {
-//    //код визуализации
-//}
+
 
 
 void display_total_population(const vector<Animal>& herbivores, const vector<Animal>& predators) {
@@ -127,12 +94,9 @@ void display_total_population(const vector<Animal>& herbivores, const vector<Ani
     cout << "Total number of predators: " << predators.size() << endl;
 }
 
-//начало основной цикл моделирования//
-//const int max_populations_size = 1000;
 
-
-void simulateOneTimeStep(vector<Animal>& herbivores, vector<Animal>& predators, Environment& environment, int time_step) {
-    //передвижение травоядных и хишинков
+//передвижение травоядных и хишинков
+void simulate_one_time_step(vector<Animal>& herbivores, vector<Animal>& predators, Environment& environment, int time_step, int total_simulation_steps) { 
     for (auto& herbivore : herbivores) {
         herbivore.x += rand() % 3 - 1; // случайное число от -1 до 1
         herbivore.y += rand() % 3 - 1;
@@ -181,88 +145,13 @@ void simulateOneTimeStep(vector<Animal>& herbivores, vector<Animal>& predators, 
 
     // вывод информации о текущем состоянии
 
-    cout << "Number of herbivores: " << herbivores.size() << ", Predators: " << predators.size() << std::endl;
-    cout << "Time step: " << time_step << endl;
+    cout << "Number of herbivores: " << herbivores.size() << ", Predators: " << predators.size() << endl;
+    cout << "Time step: " << time_step << "/" << total_simulation_steps << endl;
     display_population_size(herbivores, predators);
     cout << "Amount of grass: " << environment.initial_grass << endl;
     cout << "---------------------------" << endl;
-
 }
 
-//вариант с массивом
-//void simulate_one_time_step(Animal herbivores[], int& herbivore_count, Animal predators[], int& predator_count, Environment& environment) {
-//
-//    //передвижение травоядных и хишинков
-//    for (int i = 0; i < herbivore_count; ++i) {
-//        herbivores[i].x += rand() % 3 - 1; // случайное число от -1 до 1
-//        herbivores[i].y += rand() % 3 - 1;
-//    }
-//    for (int i = 0; i < predator_count; ++i) {
-//        predators[i].x += rand() % 3 - 1;
-//        predators[i].y += rand() % 3 - 1;
-//    }
-//
-//    //логика старения
-//    for (int i = 0; i < herbivore_count; ++i) {
-//        herbivores[i].age++;
-//    }
-//    for (int i = 0; i < predator_count; ++i) {
-//        predators[i].age++;
-//    }
-//
-//
-//    // провера репродуктивного возраста - 
-//    // вариант 1: просто удаляем особей старше максимального возраста - написано 
-//    // вариант 2: удаляем после конкретной возраста(гугл) - не написано
-//    herbivore_count = remove_if(herbivores, herbivores + herbivore_count, [](const Animal& herbivore) {
-//        return herbivore.age > max_age;
-//        }) - herbivores;
-//
-//    predator_count = remove_if(predators, predators + predator_count, [](const Animal& predator) {
-//        return predator.age > max_age;
-//        }) - predators;
-//
-//    // проверка взаимодействия хищников и травоядных
-//    for (int i = 0; i < herbivore_count; ++i) {
-//        for (int j = 0; j < predator_count; ++j) {
-//            double distance = calculate_distance(herbivores[i], predators[j]);
-//            if (distance < 1.0) {
-//                // особь сьедена хищником
-//                cout << "\nThe predator ate the herbivore!\n";
-//                // дополнительная взаимодействия - разработать
-//            }
-//        }
-//    }
-//
-//    // восстановление травы
-//    environment.initial_grass += static_cast<int>(environment.initial_grass * environment.grass_regrowth_rate);
-//
-//
-//    // гибель от голода
-//    death_by_starvation(herbivores, herbivore_count);
-//    death_by_starvation(predators, predator_count);
-//
-//
-//    // репродукция
-//    reproduce(herbivores, herbivore_count);
-//    reproduce(predators, predator_count);
-//
-//    // взаимодействие хищников и травоядных
-//    for (int i = 0; i < herbivore_count; ++i) {
-//        for (int j = 0; j < predator_count; ++j) {
-//            double distance = calculate_distance(herbivores[i], predators[j]);
-//            if (distance < 1.0) {
-//                // травоядное животное съедено хищником
-//                display_interaction(herbivores[i], predators[j]);
-//            }
-//        }
-//    }
-//
-//    visualize_interaction(herbivores, herbivore_count, predators, predator_count);
-//
-//
-//}
-//конец  Основной цикл моделирования
 
 
 void initialize_herbivore_population(Animal herbivores[], int initial_population, int max_age, int reproductive_age_min, int reproductive_age_max, double reproduction_rate) {
@@ -285,6 +174,45 @@ void initialize_predator_population(Animal predators[], int initial_population, 
         predators[i].max_age = max_age;
         predators[i].reproduction_rate = reproduction_rate;
     }
+}
+
+
+
+
+
+
+int count_dead_herbivores(const vector<Animal>& herbivores) {
+    return count_if(herbivores.begin(), herbivores.end(), [](const Animal& herbivore) {
+        return herbivore.age >= herbivore.max_age; // предполагаем что умирают от старости
+    });
+}
+
+
+int count_dead_predators(const std::vector<Animal>& predators) {
+    return count_if(predators.begin(), predators.end(), [](const Animal& predator) {
+        return predator.age >= predator.max_age; // предполагаем что умирают от старости
+        });
+}
+
+
+void display_statistics_andexit(const vector<Animal>& herbivores, const vector<Animal>& predators, int herbivores_died, int predators_died) {
+    display_total_population(herbivores, predators);
+
+    cout << "herbivores died: " << herbivores_died << endl;
+    cout << "predators died: " << predators_died << endl;
+    
+    // подумать над выводом другой статистики
+
+    // предоставление возможности выбора пользователя
+    char choice;
+    cout << "do u want to run another simulation? (yes/no): ";
+    cin >> choice;
+
+    if (choice == 'no' || choice == 'No' || choice == 'NO' || choice == 'nO') {
+        cout << "exiting the program.Goodbye!\n";
+        exit(0);
+    }
+
 }
 
 
@@ -369,42 +297,21 @@ int main() {
     }
 
     int totalSimulationSteps = 10;
+    int herbivores_died = 0; // счетчик умерших травоядных
+    int predators_died = 0; // счетчик умерших хищников
+
+
 
     // Основной цикл моделирования
-    for (int time_step = 0; time_step < totalSimulationSteps; ++time_step) {
-        simulateOneTimeStep(herbivores, predators, environment);
+    for (int time_step = 0; time_step < total_simulation_steps; ++time_step) {
+        simulate_one_time_step(herbivores, predators, environment, time_step, total_simulation_steps);
+
+        // Обновление счетчиков умерших травоядных и хищников
+        herbivores_died += count_dead_herbivores(herbivores);
+        predators_died += count_dead_predators(predators);
     }
 
-    display_total_population(herbivores, predators);
+    display_statistics_andexit(herbivores, predators, herbivores_died, predators_died);
 
     return 0;
-
-    //// инициализация популяции травоядных и хищников
-    //Animal herbivores[MAX_ANIMALS];
-    //initialize_herbivore_population(herbivores, initial_herbivore_population, max_herbivore_age, reproductive_age_min_herbivore, reproductive_age_max_herbivore, reproduction_rate_herbivore);
-
-    //Animal predators[MAX_ANIMALS];
-    //initialize_predator_population(predators, initial_predator_population, max_predator_age, reproductive_age_min_predator, reproductive_age_max_predator, reproduction_rate_predator);
-
-    //initial_herbivore_population = min(initial_herbivore_population, MAX_ANIMALS);
-    //initial_predator_population = min(initial_predator_population, MAX_ANIMALS);
-
-    //int herbivore_count = initial_herbivore_population;
-    //int predator_count = initial_predator_population;
-
-    //int simulation_duration = 100;
-
-    //for (int time_step = 0; time_step < simulation_duration; ++time_step) {
-    //    simulate_one_time_step(herbivores, herbivore_count, predators, predator_count, environment);
-
-
-    //    //Отображение размера популяции на каждом временном шаге
-    //    display_population_size(herbivore_count, predator_count);
-    //}
-
-    //// Вывод общего поголовья
-
-    //display_total_population(herbivores, predators);
-
-    //return 0;
 }
