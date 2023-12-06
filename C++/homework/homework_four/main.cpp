@@ -319,8 +319,8 @@ void past_glory() {
 }
 
 void sine_wave() {
-    const int width = 80;
-    const int height = 20;
+    const int width = 100;
+    const int height = 25;
     const double amplitude = height / 2.0;
     const double frequency = 0.1;
 
@@ -338,7 +338,7 @@ void sine_wave() {
                 cout << '|';
             }
             else {
-                if (abs(y - amplitude + value) < 0.5) {
+                if (abs(y - amplitude + value) < 0.5 || (y == height - 1 && abs(y - amplitude + value) <= 0.5)) {
                     cout << '*';
                 }
                 else {
