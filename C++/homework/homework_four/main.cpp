@@ -318,17 +318,27 @@ void past_glory() {
     SetConsoleTextAttribute(back_color, 0x07);
 }
 
+
+//синусоида
 void move_сursor(int x, int y) {
-    cout << "\033[" << y << ";" << x << "H"; 
+    cout << "\033[" << y << ";" << x << "H";
+}
+
+void clear_сonsole(int height) {
+    for (int i = 1; i <= height; i++) {
+        move_сursor(1, i);
+        cout << string(100, ' '); 
+    }
 }
 
 void sine_wave() {
     const int width = 100;
-    const int height = 25;
+    const int height = 29;
     const double amplitude = height / 2.0;
     const double frequency = 0.1;
+    const int num_frames = 40; 
 
-    for (int frame = 0; frame < 40; frame++) {
+    for (int frame = 0; frame <= num_frames; frame++) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 double value = amplitude * sin(frequency * (x + frame));
@@ -356,13 +366,17 @@ void sine_wave() {
 
         move_сursor(1, 1);
 
+        if (frame == num_frames) {
+            clear_сonsole(height);
+        }
+
         this_thread::sleep_for(chrono::milliseconds(100));
     }
 
     cout << endl << endl;
 }
 
-void automatic_recognizer() {  //проверить  //
+void automatic_recognizer() { 
     string roman_numeral;
     int decoded_number = 0;
 
