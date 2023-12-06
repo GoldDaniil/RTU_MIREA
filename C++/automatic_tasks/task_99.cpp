@@ -61,11 +61,11 @@ int main() {
     int user_number, pluses, minuses, attempts = 0;
 
     //setColor(14);
-    const WORD textColor = 0xE; 
-    const WORD bgColor = 0x70;   
+    const WORD textColor = 0xE;
+    const WORD bgColor = 0x70;
 
     SetConsoleTextAttribute(console, textColor | (bgColor << 4));
-    
+
     cout << "Welcome to the game 'Bulls and Cows!'\n\n";
     cout << "The computer guessed a four-digit number. Try to guess!\n\n";
     SetConsoleTextAttribute(console, 15);
@@ -73,10 +73,20 @@ int main() {
 
     do {
         do {
-            setColor(11);
-            cout << "enter number: ";
-            setColor(15);
-            cin >> user_number;
+            while (true) {
+                setColor(11);
+                cout << "enter number: ";
+                setColor(15);
+                if (!(cin >> user_number)) {
+                    cin.clear();
+                    cin.ignore();
+                    setColor(12);
+                    cout << "error!\n";
+                    setColor(15);
+                    continue;
+                }
+                break;
+            }
 
             if (!is_valid_input(user_number)) {
                 setColor(12);
