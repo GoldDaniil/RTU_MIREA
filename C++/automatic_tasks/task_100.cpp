@@ -1,3 +1,6 @@
+// The code uses the snake_case naming style for functions and variables.
+// CamelCase is used for classes, enum, struct.
+
 #include <iostream>
 #include <vector>
 #include <cstdlib>
