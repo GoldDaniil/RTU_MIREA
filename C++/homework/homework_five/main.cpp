@@ -688,8 +688,8 @@ namespace TaskFiles {
 			printArray(sorted_numbers, number);
 			cout << endl;
 
-			for (int i = 0; i < 1; i++) { 
-				cout << "Most frequently occurring number: " << result_numbers[i] << endl;
+			for (int i = 0; i < 1; i++) {
+				cout << "most frequently occurring number: " << result_numbers[i] << endl << endl;
 			}
 
 			delete[] numbers;
