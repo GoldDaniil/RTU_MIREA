@@ -75,6 +75,7 @@ public:
     //}
 
     void print_grid() const {
+        // Print matrix without age
         cout << endl;
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
@@ -89,6 +90,7 @@ public:
         }
         cout << endl;
 
+        // Print matrix with age
         cout << "age:" << endl;
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
