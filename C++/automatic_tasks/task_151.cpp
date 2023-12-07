@@ -2,8 +2,8 @@
 #include <cstdlib>
 #include <ctime>
 
-const int screenWidth = 50;
-const int screenHeight = 20;
+const int screenWidth = 180;
+const int screenHeight = 22;
 const int numHerbivores = 50;
 const int numPredators = 30;
 const int movementRange = 1;
@@ -71,13 +71,13 @@ int main() {
     initializePopulation(herbivores, numHerbivores);
     initializePopulation(predators, numPredators);
 
-    for (int i = 0; i < 20; ++i) {
-        system("clear");  // For Linux/Mac
-        // system("cls");  // For Windows
+    for (int i = 0; i < 100; ++i) {
+        //system("clear");  // For Linux/Mac
+        system("cls");  // For Windows
 
         simulateInteraction(herbivores, predators);
-        printPopulation(herbivores, numHerbivores, 'H');
-        printPopulation(predators, numPredators, 'P');
+        printPopulation(herbivores, numHerbivores, '0');
+        printPopulation(predators, numPredators, '1');
 
         movePopulation(herbivores, numHerbivores);
         movePopulation(predators, numPredators);
