@@ -107,7 +107,10 @@ private:
                 int neighbors = count_neighbors(grid, i, j);
 
                 if (grid[i][j].state == ALIVE) {
-                    if (neighbors == 2 || neighbors == 3) {
+                    if (neighbors < 2 || neighbors > 3) {
+                        new_grid[i][j].state = DEAD;
+                    }
+                    else {
                         new_grid[i][j].state = ALIVE;
                         new_grid[i][j].age = min(MAX_AGE, grid[i][j].age + 1);
                     }
@@ -121,7 +124,7 @@ private:
             }
         }
 
-        grid = new_grid;
+        grid.swap(new_grid); 
     }
 
     int count_neighbors(const vector<vector<Cell>>& board, int x, int y) const {
