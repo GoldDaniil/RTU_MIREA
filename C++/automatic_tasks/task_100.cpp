@@ -18,15 +18,9 @@ public:
         grid.resize(size, vector<int>(size, 0));
         initialize_grid_manually();
     }
-
+   
     void initialize_grid_manually() {
         cout << "\nenter the initial state:" << endl;
-
-        //// Создаем строку символов, отсортированную по английскому алфавиту
-        //vector<char> symbols;
-        //for (char ch = 'a'; ch <= 'z'; ++ch) {
-        //    symbols.push_back(ch);
-        //}
 
         // Выводим строку символов для удобства пользователя
         for (char ch : symbols) {
@@ -47,26 +41,39 @@ public:
         cout << "\nselected symbol for adaptation: " << selected_symbol << endl << endl;
     }
 
+    //void print_grid() const {
+    //    for (int i = 0; i < size; ++i) {
+    //        for (int j = 0; j < size; ++j) {
+    //            if (grid[i][j] > 0) {
+    //                // Зеленый цвет для живых клеток
+    //                cout << "\033[42m  \033[0m";
+    //            }
+    //            else {
+    //                cout << "\033[47;90m  \033[0m"; // gray 
+    //            }
+    //        }
+    //        cout << endl;
+    //    }
+    //    cout << endl;
 
-    /*void printGrid() const {
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                cout << grid[i][j] << " ";
-            }
-            cout << endl;
-        }
-        cout << endl;
-    }*/
+    //    for (int i = 0; i < size; ++i) {
+    //        for (int j = 0; j < size; ++j) {
+    //            cout << grid[i][j] << "  ";
+    //        }
+
+    //        cout << endl;
+    //    }
+    //    cout << endl;
+    //}
 
     void print_grid() const {
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
                 if (grid[i][j] > 0) {
-                    // Зеленый цвет для живых клеток
-                    cout << "\033[42m  \033[0m";
+                    cout << "\033[42m  \033[0m"; // Green for alive cells
                 }
                 else {
-                    cout << "\033[47;90m  \033[0m"; // gray 
+                    cout << "\033[47;90m  \033[0m"; // Gray for dead cells
                 }
             }
             cout << endl;
@@ -83,7 +90,21 @@ public:
         cout << endl;
     }
 
+    
+
     void simulate_life() {
+        for (int year = 1; year <= max_years; ++year) {
+            cout << "generation " << year << ":" << endl;
+            print_grid();
+            evolve();
+
+            if (is_game_over()) {
+                cout << "\nGame over!\nAll microbes are dead!\n" << endl;
+                break;
+            }
+        }
+    }
+    /*void simulate_life() {
         for (int year = 1; year <= max_years; ++year) {
             cout << "generation " << year << ":" << endl;
             print_grid();
@@ -95,7 +116,7 @@ public:
                 break;
             }
         }
-    }
+    }*/
 
 
 private:
@@ -107,25 +128,13 @@ private:
                 int neighbors = count_neighbors(grid, i, j);
 
                 if (grid[i][j] == ALIVE) {
-                    // Живая клетка
                     if (neighbors == 2 || neighbors == 3) {
-                        // Продолжает жить
                         new_grid[i][j] = ALIVE;
-                    }
-                    else {
-                        // Умирает от одиночества или перенаселения
-                        new_grid[i][j] = DEAD;
                     }
                 }
                 else {
-                    // Мертвая клетка
                     if (neighbors == 3) {
-                        // Рождается новая клетка от трёх соседей
                         new_grid[i][j] = ALIVE;
-                    }
-                    else {
-                        // Остаётся мертвой
-                        new_grid[i][j] = DEAD;
                     }
                 }
             }
