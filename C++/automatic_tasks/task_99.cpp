@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <Windows.h>
+#include <Windows.h>          // готово 
 
 using namespace std;
 
