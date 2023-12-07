@@ -91,11 +91,12 @@ public:
             evolve();
 
             if (is_game_over()) {
-                cout << "\nGame over!\nAll germs are dead!\n" << endl;
+                cout << "\nGame over!\nAll microbes are dead!\n" << endl;
                 break;
             }
         }
     }
+
 
 private:
     void evolve() {
@@ -103,35 +104,37 @@ private:
 
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                int neighbors = count_live_neighbors(i, j);
+                int neighbors = count_neighbors(grid, i, j);
 
-                if (grid[i][j] == 1) {
-                    // жива
+                if (grid[i][j] == ALIVE) {
+                    // Живая клетка
                     if (neighbors == 2 || neighbors == 3) {
-                        // продолжает жить и возрастает на 1
-                        new_grid[i][j] = min(grid[i][j] + 1, static_cast<int>(MAX_AGE));
+                        // Продолжает жить
+                        new_grid[i][j] = ALIVE;
                     }
                     else {
-                        // умирает от одиночества
-                        new_grid[i][j] = 0;
+                        // Умирает от одиночества или перенаселения
+                        new_grid[i][j] = DEAD;
                     }
                 }
                 else {
-                    // мертва
-                    new_grid[i][j] = 0;
-                    //if (neighbors == 3) {
-                    //    // Воскрешение из трех соседей
-                    //    new_grid[i][j] = 1;
-                    //}
+                    // Мертвая клетка
+                    if (neighbors == 3) {
+                        // Рождается новая клетка от трёх соседей
+                        new_grid[i][j] = ALIVE;
+                    }
+                    else {
+                        // Остаётся мертвой
+                        new_grid[i][j] = DEAD;
+                    }
                 }
             }
         }
 
-
         grid = new_grid;
     }
 
-    int count_live_neighbors(int x, int y) const {
+    int count_neighbors(const vector<vector<int>>& board, int x, int y) const {
         int live_neighbors = 0;
 
         for (int i = -1; i <= 1; ++i) {
@@ -139,13 +142,11 @@ private:
                 int newX = x + i;
                 int newY = y + j;
 
-                if ((newX >= 0) && (newX < size) && (newY >= 0) && (newY < size)) {
-                    live_neighbors += grid[newX][newY];
+                if ((i != 0 || j != 0) && (newX >= 0) && (newX < size) && (newY >= 0) && (newY < size)) {
+                    live_neighbors += board[newX][newY];
                 }
             }
         }
-
-        live_neighbors -= grid[x][y];
 
         return live_neighbors;
     }
