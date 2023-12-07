@@ -75,8 +75,7 @@ public:
     //}
 
     void print_grid() const {
-        // Print matrix without age
-        cout << "Matrix without age:" << endl;
+        cout << endl;
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
                 if (grid[i][j].state == ALIVE) {
@@ -90,8 +89,7 @@ public:
         }
         cout << endl;
 
-        // Print matrix with age
-        cout << "Matrix with age:" << endl;
+        cout << "age:" << endl;
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
                 if (grid[i][j].state == ALIVE) {
@@ -103,7 +101,7 @@ public:
                     /*else {
                         cout << "\033[42m  \033[0m";
                     }*/
-                    
+
                 }
                 else {
                     cout << " 0 ";
