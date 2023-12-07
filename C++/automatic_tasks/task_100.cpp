@@ -2,7 +2,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
-#include <algorithm>            //улучшить evolve()
+#include <algorithm>            //готово - малясь доработать
 #include <Windows.h>
 
 using namespace std;
@@ -112,9 +112,14 @@ private:
                     }
                     else {
                         new_grid[i][j].state = ALIVE;
-                        new_grid[i][j].age = min(MAX_AGE, grid[i][j].age + 1);
 
-                        // Check if the age is 12, set state to DEAD
+                        if (grid[i][j].age == 12) {
+                            new_grid[i][j].age = 0;
+                        }
+                        else {
+                            new_grid[i][j].age = min(MAX_AGE, grid[i][j].age + 1);
+                        }
+
                         if (new_grid[i][j].age == 13) {
                             new_grid[i][j].state = DEAD;
                             new_grid[i][j].age = 0;
@@ -129,7 +134,6 @@ private:
                 }
             }
         }
-
         grid.swap(new_grid);
     }
 
