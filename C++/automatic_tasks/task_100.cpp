@@ -2,7 +2,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
-#include <algorithm>
+#include <algorithm>            //улучшить evolve()
 #include <Windows.h>
 
 using namespace std;
@@ -72,11 +72,11 @@ public:
                         cout << " " << grid[i][j].age << " ";
                     }
                     else {
-                        cout << " 1 "; 
+                        cout << " 1 ";
                     }
                 }
                 else {
-                    cout << " 0 "; 
+                    cout << " 0 ";
                 }
             }
             cout << endl;
