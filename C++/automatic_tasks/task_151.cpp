@@ -4,14 +4,19 @@
 
 const int screenWidth = 180;
 const int screenHeight = 22;
-const int numHerbivores = 50;
-const int numPredators = 30;
+const int numHerbivores = 70;
+const int numPredators = 40;
 const int movementRange = 1;
 
 void initializePopulation(int population[][2], int size) {
     for (int i = 0; i < size; ++i) {
         population[i][0] = rand() % screenWidth;
         population[i][1] = rand() % screenHeight;
+
+        // Рандомно определите направление по вертикали (вверх/вниз)
+        int direction = rand() % 2 == 0 ? 1 : -1;
+        population[i][1] += direction * (screenHeight / 2);
+        population[i][1] = (population[i][1] + screenHeight) % screenHeight;
     }
 }
 
