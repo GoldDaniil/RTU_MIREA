@@ -1,9 +1,17 @@
 #include <iostream>
 #include <cstdlib>
+#include <cmath>
+#include <algorithm>
+#include<windows.h>
+#include <thread>
+#include <chrono>
+#include<time.h>
 
 using namespace std;
 
-const int MAX_ANIMALS = 1000; // максимальное количество животных
+const int MAX_ANIMALS = 1000;
+const int max_new_generation = 500;
+
 
 struct Animal {
     int age;
@@ -11,8 +19,9 @@ struct Animal {
     int reproductive_age_max;
     int max_age;
     double reproduction_rate;
-
-    int x, y; // координаты на экране 
+    int x, y;
+    int hunger;
+    bool isAlive;
 };
 
 struct Environment {
@@ -32,18 +41,9 @@ const int max_hunger = 5; //уровень голода для гибели
 const int reproduction_age = 3; //возраст для репродукции
 
 double calculate_distance(const Animal& animal1, const Animal& animal2) {
-    // использую расчет Евклидова расстояния между двумя точками(особями)
     return sqrt(pow(animal1.x - animal2.x, 2) + pow(animal1.y - animal2.y, 2));
-
 }
 
-//void death_by_starvation(Animal population[], int& population_size) {
-//    auto newEnd = remove_if(population, population + population_size, [](const Animal& animal) {
-//        return animal.hunger > max_hunger;
-//        });
-//
-//    population_size = distance(population, newEnd);
-//}
 
 void deathByStarvation(Animal population[], int& populationSize) {
     int newSize = 0;
@@ -81,8 +81,57 @@ void reproduce(Animal population[], int& populationSize) {
 }
 
 
-//начало основной цикл моделирования//
-//const int max_populations_size = 1000;
+// Function to print an animal based on its state
+void printAnimal(const Animal& animal) {
+    if (!animal.isAlive) {
+        // Print red "xo" for dead herbivore
+        cout << "\033[1;31m" << "xo" << "\033[0m";
+    }
+    else {
+        if (animal.hunger > 5) {
+            // Print red "xl" for dead predator
+            cout << "\033[1;31m" << "xl" << "\033[0m";
+        }
+        else {
+            // Print "0" for herbivore and "1" for predator
+            cout << (animal.reproduction_rate < 0.5 ? "0" : "1");
+        }
+    }
+}
+
+void printSimulationState(Animal herbivores[], int herbivoreCount, Animal predators[], int predatorCount, Environment& environment) {
+    // Print the simulation state (grid of animals)
+    for (int i = 0; i < environment.screen_height; ++i) {
+        for (int j = 0; j < environment.screen_width; ++j) {
+            bool foundAnimal = false;
+
+            // Check for herbivores at (i, j)
+            for (int h = 0; h < herbivoreCount; ++h) {
+                if (herbivores[h].x == j && herbivores[h].y == i) {
+                    printAnimal(herbivores[h]);
+                    foundAnimal = true;
+                    break;
+                }
+            }
+
+            // Check for predators at (i, j)
+            for (int p = 0; p < predatorCount; ++p) {
+                if (predators[p].x == j && predators[p].y == i) {
+                    printAnimal(predators[p]);
+                    foundAnimal = true;
+                    break;
+                }
+            }
+
+            // If no animal found, print grass or empty space
+            if (!foundAnimal) {
+                cout << ".";
+            }
+        }
+        cout << endl;
+    }
+    cout << "---------------------\n";
+}
 
 void simulate_one_time_step(Animal herbivores[], int& herbivoreCount, Animal predators[], int& predatorCount, Environment& environment) {
 
@@ -112,9 +161,9 @@ void simulate_one_time_step(Animal herbivores[], int& herbivoreCount, Animal pre
         return herbivore.age > max_age;
         }) - herbivores;
 
-    predatorCount = remove_if(predators, predators + predatorCount, [](const Animal& predator) { 
-        return predator.age > max_age; 
-    }) - predators;
+    predatorCount = remove_if(predators, predators + predatorCount, [](const Animal& predator) {
+        return predator.age > max_age;
+        }) - predators;
 
     // проверка взаимодействия хищников и травоядных
     for (int i = 0; i < herbivoreCount; ++i) {
@@ -132,22 +181,18 @@ void simulate_one_time_step(Animal herbivores[], int& herbivoreCount, Animal pre
     environment.initial_grass += static_cast<int>(environment.initial_grass * environment.grass_regrowth_rate);
 
 
-    // Логика гибели от голода
-    death_by_starvation(herbivores);
-    death_by_starvation(predators);
+    deathByStarvation(herbivores, herbivoreCount);
+    deathByStarvation(predators, predatorCount);
 
     // Логика репродукции
-    reproduce(herbivores);
-    reproduce(predators);
+    reproduce(herbivores, herbivoreCount);
+    reproduce(predators, predatorCount);
+
+    printSimulationState(herbivores, herbivoreCount, predators, predatorCount, environment);
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));  // Sleep for 500 milliseconds (adjust as needed)
+
 
 }
-//конец  Основной цикл моделирования
-
-
-
-
-
-
 
 void initialize_herbivore_population(Animal herbivores[], int initial_population, int max_age, int reproductive_age_min, int reproductive_age_max, double reproduction_rate) {
     for (int i = 0; i < initial_population; ++i) {
@@ -156,6 +201,7 @@ void initialize_herbivore_population(Animal herbivores[], int initial_population
         herbivores[i].reproductive_age_max = reproductive_age_max;
         herbivores[i].max_age = max_age;
         herbivores[i].reproduction_rate = reproduction_rate;
+        herbivores[i].isAlive = true; // Initialize the isAlive flag
     }
 }
 
@@ -166,6 +212,7 @@ void initialize_predator_population(Animal predators[], int initial_population, 
         predators[i].reproductive_age_max = reproductive_age_max;
         predators[i].max_age = max_age;
         predators[i].reproduction_rate = reproduction_rate;
+        predators[i].isAlive = true; // Initialize the isAlive flag
     }
 }
 
@@ -235,6 +282,18 @@ int main() {
 
     Animal predators[MAX_ANIMALS];
     initialize_predator_population(predators, initial_predator_population, max_predator_age, reproductive_age_min_predator, reproductive_age_max_predator, reproduction_rate_predator);
+
+    while (true) {
+        // Simulate one time step
+        simulate_one_time_step(herbivores, initial_herbivore_population, predators, initial_predator_population, environment);
+
+        // Add exit condition if needed
+        // For example, exit the loop after a certain number of iterations
+        static int iteration = 0;
+        if (++iteration >= 100) {
+            break;
+        }
+    }
 
     return 0;
 }
