@@ -22,33 +22,31 @@ public:
     void initialize_grid_manually() {
         cout << "\nenter the initial state:" << endl;
 
-        // cоздаем массив в котором все строки состоят из уникальных символов
-        vector<vector<char>> unique_grid(size, vector<char>(size, 0));
-        for (int i = 0; i < size; ++i) {
-            random_shuffle(symbols.begin(), symbols.end());
-            unique_grid[i] = symbols;
-        }
+        //// Создаем строку символов, отсортированную по английскому алфавиту
+        //vector<char> symbols;
+        //for (char ch = 'a'; ch <= 'z'; ++ch) {
+        //    symbols.push_back(ch);
+        //}
 
-        // выводим массив для удобства пользователя
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                cout << unique_grid[i][j] << "  ";
-            }
-            cout << endl;
+        // Выводим строку символов для удобства пользователя
+        for (char ch : symbols) {
+            cout << ch << " ";
         }
+        cout << endl;
 
-        // случайным образом выбираем один из уникальных символов и обновляем основную матрицу
-        int random_row_index = rand() % size;
-        selected_symbol = unique_grid[random_row_index][0];
+        // Случайным образом выбираем один из символов и обновляем основную матрицу
+        int random_symbol_index = rand() % symbols.size();
+        selected_symbol = symbols[random_symbol_index];
 
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                grid[i][j] = (unique_grid[i][j] == selected_symbol) ? 1 : 0;
+                grid[i][j] = (symbols[j] == selected_symbol) ? 1 : 0;
             }
         }
 
         cout << "\nselected symbol for adaptation: " << selected_symbol << endl << endl;
     }
+
 
     /*void printGrid() const {
         for (int i = 0; i < size; ++i) {
