@@ -28,7 +28,7 @@ public:
     }
 
     void initialize_grid_manually() {
-        cout << "\nenter the initial state:" << endl;
+        cout << "\nunique symbols:\n";
 
         // выводим строку символов для удобства 
         for (char ch : symbols) {
@@ -49,33 +49,7 @@ public:
         cout << "\nselected symbol for adaptation: " << selected_symbol << endl << endl;
     }
 
-    //void print_grid() const {
-    //    for (int i = 0; i < size; ++i) {
-    //        for (int j = 0; j < size; ++j) {
-    //            if (grid[i][j] > 0) {
-    //                // Зеленый цвет для живых клеток
-    //                cout << "\033[42m  \033[0m";
-    //            }
-    //            else {
-    //                cout << "\033[47;90m  \033[0m"; // gray 
-    //            }
-    //        }
-    //        cout << endl;
-    //    }
-    //    cout << endl;
-
-    //    for (int i = 0; i < size; ++i) {
-    //        for (int j = 0; j < size; ++j) {
-    //            cout << grid[i][j] << "  ";
-    //        }
-
-    //        cout << endl;
-    //    }
-    //    cout << endl;
-    //}
-
     void print_grid() const {
-        // Print matrix without age
         cout << endl;
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
@@ -83,37 +57,33 @@ public:
                     cout << "\033[42m    \033[0m";
                 }
                 else {
-                    cout << "\033[47;90m    \033[0m"; // Gray for dead cells
+                    cout << "\033[47;90m    \033[0m"; // gray - dead cells
                 }
             }
             cout << endl;
         }
         cout << endl;
 
-        // Print matrix with age
-        cout << "age:" << endl;
+        cout << endl << "age:" << endl;
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
                 if (grid[i][j].state == ALIVE) {
-                    int age = grid[i][j].age;
-                    if (age > 0) {
-                        //cout << " 1 ";
-                        cout << " " << age << " ";
+                    if (grid[i][j].age > 0) {
+                        cout << " " << grid[i][j].age << " ";
                     }
-                    /*else {
-                        cout << "\033[42m  \033[0m";
-                    }*/
-
+                    else {
+                        cout << " 1 "; 
+                    }
                 }
                 else {
-                    cout << " 0 ";
-                    //cout << "\033[47;90m  \033[0m"; // Gray for dead cells
+                    cout << " 0 "; 
                 }
             }
             cout << endl;
         }
         cout << endl;
     }
+
 
     void simulate_life() {
         for (int year = 1; year <= max_years; ++year) {
