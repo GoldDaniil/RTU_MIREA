@@ -113,6 +113,12 @@ private:
                     else {
                         new_grid[i][j].state = ALIVE;
                         new_grid[i][j].age = min(MAX_AGE, grid[i][j].age + 1);
+
+                        // Check if the age is 12, set state to DEAD
+                        if (new_grid[i][j].age == 13) {
+                            new_grid[i][j].state = DEAD;
+                            new_grid[i][j].age = 0;
+                        }
                     }
                 }
                 else {
@@ -124,7 +130,7 @@ private:
             }
         }
 
-        grid.swap(new_grid); 
+        grid.swap(new_grid);
     }
 
     int count_neighbors(const vector<vector<Cell>>& board, int x, int y) const {
