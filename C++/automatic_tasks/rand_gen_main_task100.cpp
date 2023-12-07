@@ -30,7 +30,7 @@ void initialize_board(bool board[rows][cols]) {
 
 void print_board(bool board[rows][cols]) {
     SetConsoleTextAttribute(console, 0x0f);
-    // вывод текущего состояния доски
+    // вывод массива
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             if (board[i][j]) {
@@ -63,7 +63,7 @@ int count_neighbors(bool board[rows][cols], int x, int y) {
 }
 
 void update_board(bool board[rows][cols]) {
-    // обновление доски в соответствии с правилами
+    // обновление массива
     bool newBoard[rows][cols];
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
@@ -71,7 +71,7 @@ void update_board(bool board[rows][cols]) {
             newBoard[i][j] = (board[i][j] && (neighbors == 2 || neighbors == 3)) || (!board[i][j] && neighbors == 3);
         }
     }
-    // копирование нового состояния обратно в оригинальную доску
+    // копирование обновленного массива в оригинальный массив
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             board[i][j] = newBoard[i][j];
