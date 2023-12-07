@@ -11,30 +11,38 @@ HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
 enum CellState { DEAD = 0, ALIVE = 1, MAX_AGE = 12 };
 
+struct Cell {
+    int state;
+    int age;
+
+    Cell() : state(DEAD), age(0) {}
+};
+
 class GameOfLife {
 public:
-    GameOfLife(int size, int max_years, const vector<char>& symbols) : size(size), max_years(max_years), symbols(symbols) {
+    GameOfLife(int size, int max_years, const vector<char>& symbols)
+        : size(size), max_years(max_years), symbols(symbols) {
         srand(time(0));
-        grid.resize(size, vector<int>(size, 0));
+        grid.resize(size, vector<Cell>(size, Cell()));
         initialize_grid_manually();
     }
-   
+
     void initialize_grid_manually() {
         cout << "\nenter the initial state:" << endl;
 
-        // Выводим строку символов для удобства пользователя
+        // выводим строку символов для удобства 
         for (char ch : symbols) {
             cout << ch << " ";
         }
         cout << endl;
 
-        // Случайным образом выбираем один из символов и обновляем основную матрицу
+        // случайным образом выбираем один из символов и обновляем основную матрицу
         int random_symbol_index = rand() % symbols.size();
         selected_symbol = symbols[random_symbol_index];
 
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                grid[i][j] = (symbols[j] == selected_symbol) ? 1 : 0;
+                grid[i][j].state = (symbols[j] == selected_symbol) ? ALIVE : DEAD;
             }
         }
 
@@ -67,30 +75,45 @@ public:
     //}
 
     void print_grid() const {
+        // Print matrix without age
+        cout << "Matrix without age:" << endl;
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                if (grid[i][j] > 0) {
-                    cout << "\033[42m  \033[0m"; // Green for alive cells
+                if (grid[i][j].state == ALIVE) {
+                    cout << "\033[42m    \033[0m";
                 }
                 else {
-                    cout << "\033[47;90m  \033[0m"; // Gray for dead cells
+                    cout << "\033[47;90m    \033[0m"; // Gray for dead cells
                 }
             }
             cout << endl;
         }
         cout << endl;
 
+        // Print matrix with age
+        cout << "Matrix with age:" << endl;
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                cout << grid[i][j] << "  ";
+                if (grid[i][j].state == ALIVE) {
+                    int age = grid[i][j].age;
+                    if (age > 0) {
+                        //cout << " 1 ";
+                        cout << " " << age << " ";
+                    }
+                    /*else {
+                        cout << "\033[42m  \033[0m";
+                    }*/
+                    
+                }
+                else {
+                    cout << " 0 ";
+                    //cout << "\033[47;90m  \033[0m"; // Gray for dead cells
+                }
             }
-
             cout << endl;
         }
         cout << endl;
     }
-
-    
 
     void simulate_life() {
         for (int year = 1; year <= max_years; ++year) {
@@ -104,37 +127,25 @@ public:
             }
         }
     }
-    /*void simulate_life() {
-        for (int year = 1; year <= max_years; ++year) {
-            cout << "generation " << year << ":" << endl;
-            print_grid();
-
-            evolve();
-
-            if (is_game_over()) {
-                cout << "\nGame over!\nAll microbes are dead!\n" << endl;
-                break;
-            }
-        }
-    }*/
-
 
 private:
     void evolve() {
-        vector<vector<int>> new_grid(size, vector<int>(size, 0));
+        vector<vector<Cell>> new_grid(size, vector<Cell>(size, Cell()));
 
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
                 int neighbors = count_neighbors(grid, i, j);
 
-                if (grid[i][j] == ALIVE) {
+                if (grid[i][j].state == ALIVE) {
                     if (neighbors == 2 || neighbors == 3) {
-                        new_grid[i][j] = ALIVE;
+                        new_grid[i][j].state = ALIVE;
+                        new_grid[i][j].age = min(MAX_AGE, grid[i][j].age + 1);
                     }
                 }
                 else {
                     if (neighbors == 3) {
-                        new_grid[i][j] = ALIVE;
+                        new_grid[i][j].state = ALIVE;
+                        new_grid[i][j].age = 1;
                     }
                 }
             }
@@ -143,7 +154,7 @@ private:
         grid = new_grid;
     }
 
-    int count_neighbors(const vector<vector<int>>& board, int x, int y) const {
+    int count_neighbors(const vector<vector<Cell>>& board, int x, int y) const {
         int live_neighbors = 0;
 
         for (int i = -1; i <= 1; ++i) {
@@ -152,7 +163,7 @@ private:
                 int newY = y + j;
 
                 if ((i != 0 || j != 0) && (newX >= 0) && (newX < size) && (newY >= 0) && (newY < size)) {
-                    live_neighbors += board[newX][newY];
+                    live_neighbors += board[newX][newY].state;
                 }
             }
         }
@@ -163,7 +174,7 @@ private:
     bool is_game_over() const {
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                if (grid[i][j] > 0) {
+                if (grid[i][j].state == ALIVE) {
                     return false;
                 }
             }
@@ -173,7 +184,7 @@ private:
 
     int size;
     int max_years;
-    vector<vector<int>> grid;
+    vector<vector<Cell>> grid;
     vector<char> symbols;
     char selected_symbol;
 };
