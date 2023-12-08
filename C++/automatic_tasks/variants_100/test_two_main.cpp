@@ -1,710 +1,256 @@
-//#include <iostream>
-//#include <vector>
-//#include <cstdlib>
-//#include <ctime>
-//#include <algorithm>
-//
-//using namespace std;
-//
-//class GameOfLife {
-//public:
-//    GameOfLife(int size, int maxYears, const vector<char>& symbols) : size(size), maxYears(maxYears), symbols(symbols) {
-//        srand(time(0));
-//        grid.resize(size, vector<int>(size, 0));
-//        initializeGridManually();
-//    }
-//
-//    void initializeGridManually() {
-//        cout << "\nenter the initial state:" << endl;
-//
-//        // cоздаем массив в котором все строки состоят из уникальных символов
-//        vector<vector<char>> uniqueGrid(size, vector<char>(size, 0));
-//        for (int i = 0; i < size; ++i) {
-//            random_shuffle(symbols.begin(), symbols.end());
-//            uniqueGrid[i] = symbols;
-//        }
-//
-//        // выводим массив для удобства пользователя
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                cout << uniqueGrid[i][j] << " ";
-//            }
-//            cout << endl;
-//        }
-//
-//        // случайным образом выбираем один из уникальных символов и обновляем основную матрицу
-//        int randomRowIndex = rand() % size;
-//        selectedSymbol = uniqueGrid[randomRowIndex][0];
-//
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                grid[i][j] = (uniqueGrid[i][j] == selectedSymbol) ? 1 : 0;
-//            }
-//        }
-//
-//        cout << "\nselected symbol for adaptation: " << selectedSymbol << endl << endl;
-//    }
-//
-//    void printGrid() const {
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                cout << grid[i][j] << " ";
-//            }
-//            cout << endl;
-//        }
-//        cout << endl;
-//    }
-//
-//    void simulateLife() {
-//        for (int year = 1; year <= maxYears; ++year) {
-//            cout << "generation " << year << ":" << endl;
-//            printGrid();
-//
-//            evolve();
-//
-//            if (isGameOver()) {
-//                cout << "\nGame over" << endl;
-//                break;
-//            }
-//        }
-//    }
-//
-//private:
-//    void evolve() {
-//        vector<vector<int>> newGrid(size, vector<int>(size, 0));
-//
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                int liveNeighbors = countLiveNeighbors(i, j);
-//
-//                if (grid[i][j] > 0 && grid[i][j] < 12) {
-//                    // Microbe with life level 1 to 11
-//                    if (liveNeighbors == 2 || liveNeighbors == 3) {
-//                        newGrid[i][j] = grid[i][j] + 1;
-//                    }
-//                    else {
-//                        newGrid[i][j] = 0; // Microbe dies
-//                    }
-//                }
-//                else if (grid[i][j] == 0) {
-//                    // New microbe is born
-//                    newGrid[i][j] = 1;
-//                }
-//                else if (grid[i][j] == 12) {
-//                    // Microbe dies from old age
-//                    newGrid[i][j] = 0;
-//                }
-//            }
-//        }
-//
-//        grid = newGrid;
-//    }
-//
-//    int countLiveNeighbors(int x, int y) const {
-//        int liveNeighbors = 0;
-//
-//        for (int i = -1; i <= 1; ++i) {
-//            for (int j = -1; j <= 1; ++j) {
-//                int newX = x + i;
-//                int newY = y + j;
-//
-//                if (newX >= 0 && newX < size && newY >= 0 && newY < size) {
-//                    liveNeighbors += grid[newX][newY];
-//                }
-//            }
-//        }
-//
-//        // Exclude the current cell
-//        liveNeighbors -= grid[x][y];
-//
-//        return liveNeighbors;
-//    }
-//
-//    bool isGameOver() const {
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                if (grid[i][j] > 0) {
-//                    return false;
-//                }
-//            }
-//        }
-//        return true;
-//    }
-//
-//    int size;
-//    int maxYears;
-//    vector<vector<int>> grid;
-//    vector<char> symbols;
-//    char selectedSymbol;
-//};
-//
-//vector<char> generateAlphabetSymbols(int count) {
-//    vector<char> symbols;
-//    for (char ch = 'a'; ch < 'a' + count; ++ch) {
-//        symbols.push_back(ch);
-//    }
-//    return symbols;
-//}
-//
-//int main() {
-//    int size, maxYears;
-//    cout << "Enter matrix size: ";
-//    cin >> size;
-//
-//    int uniqueSymbolCount;
-//    cout << "Enter the number of unique symbols: ";
-//    cin >> uniqueSymbolCount;
-//
-//    vector<char> symbols = generateAlphabetSymbols(uniqueSymbolCount);
-//
-//    cout << "Enter the maximum number of generations: ";
-//    cin >> maxYears;
-//
-//    GameOfLife game(size, maxYears, symbols);
-//    game.simulateLife();
-//
-//    return 0;
-//}
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//#include <iostream>
-//#include <vector>
-//#include <cstdlib>
-//#include <ctime>
-//#include <set>
-//#include<algorithm>
-//
-//using namespace std;
-//
-//class GameOfLife {
-//public:
-//    GameOfLife(int size, int maxYears) : size(size), maxYears(maxYears) {
-//        srand(time(0));
-//
-//        int numUniqueSymbols;
-//        cout << "Enter the number of unique symbols (English lowercase letters): ";
-//        cin >> numUniqueSymbols;
-//
-//        generateUniqueSymbols(numUniqueSymbols);
-//
-//        grid.resize(size, vector<int>(size, 0));
-//
-//        fillMatrixRandomly();
-//    }
-//
-//    void printGrid() const {
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                cout << grid[i][j] << " ";
-//            }
-//            cout << endl;
-//        }
-//    }
-//
-//    void simulateLife() {
-//        for (int year = 1; year <= maxYears; ++year) {
-//            cout << year << " year:" << endl;
-//            printGrid();
-//            cout << endl;
-//
-//            evolve();
-//
-//            if (isGameOver()) {
-//                cout << "\nGame over" << endl;
-//                break;
-//            }
-//        }
-//    }
-//
-//private:
-//    void generateUniqueSymbols(int numSymbols) {
-//        uniqueSymbols.clear();
-//        for (char ch = 'a'; ch <= 'z'; ++ch) {
-//            uniqueSymbols.insert(ch);
-//            if (uniqueSymbols.size() >= numSymbols) {
-//                break;
-//            }
-//        }
-//    }
-//
-//    void fillMatrixRandomly() {
-//        // преобразование уникальных символов в вектор для удобства перемешивания
-//        vector<char> symbolsVector(uniqueSymbols.begin(), uniqueSymbols.end());
-//
-//        // перемешивание символов случайным образом
-//        random_shuffle(symbolsVector.begin(), symbolsVector.end());
-//
-//        // заполнение матрицы уникальными символами
-//        int symbolIndex = 0;
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                grid[i][j] = (symbolsVector[symbolIndex % symbolsVector.size()] == 'b') ? 1 : 0;
-//                ++symbolIndex;
-//            }
-//        }
-//    }
-//
-//    void evolve() {
-//        vector<vector<int>> newGrid(size, vector<int>(size, 0));
-//
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                int liveNeighbors = countLiveNeighbors(i, j);
-//
-//                if (grid[i][j] == 1) {
-//                    // живая клетка
-//                    if (liveNeighbors == 2 || liveNeighbors == 3) {
-//                        newGrid[i][j] = 1;
-//                    }
-//                    // else - клетка умирает
-//                }
-//                else {
-//                    // мертвая клетка
-//                    if (liveNeighbors == 3) {
-//                        newGrid[i][j] = 1;
-//                    }
-//                    // else - клетка остается мертвой
-//                }
-//            }
-//        }
-//
-//        grid = newGrid;
-//    }
-//
-//    int countLiveNeighbors(int x, int y) const {
-//        int liveNeighbors = 0;
-//
-//        for (int i = -1; i <= 1; ++i) {
-//            for (int j = -1; j <= 1; ++j) {
-//                int newX = x + i;
-//                int newY = y + j;
-//
-//                if (newX >= 0 && newX < size && newY >= 0 && newY < size) {
-//                    liveNeighbors += grid[newX][newY];
-//                }
-//            }
-//        }
-//
-//        // исключаем текущую клетку
-//        liveNeighbors -= grid[x][y];
-//
-//        return liveNeighbors;
-//    }
-//
-//    bool isGameOver() const {
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                if (grid[i][j] == 1) {
-//                    return false;
-//                }
-//            }
-//        }
-//        return true;
-//    }
-//
-//    int size;
-//    int maxYears;
-//    vector<vector<int>> grid;
-//    set<char> uniqueSymbols;
-//};
-//
-//int main() {
-//    int size, maxYears;
-//
-//    cout << "Enter matrix size: ";
-//    cin >> size;
-//
-//    cout << "Enter years: ";
-//    cin >> maxYears;
-//
-//    GameOfLife game(size, maxYears);
-//    game.simulateLife();
-//
-//    return 0;
-//}
-//
-//
-//
-//
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <algorithm>
+#include <Windows.h>
+#include <random>     
 
 
+using namespace std;
 
+HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
-//
-//#include <iostream>
-//#include <vector>
-//#include <cstdlib>
-//#include <ctime>
-//#include <algorithm>
-//
-//using namespace std;
-//
-//class GameOfLife {
-//public:
-//    GameOfLife(int size, int maxYears, const vector<char>& symbols) : size(size), maxYears(maxYears), symbols(symbols) {
-//        srand(time(0));
-//        grid.resize(size, vector<int>(size, 0));
-//        initializeGridManually();
-//    }
-//
-//    void initializeGridManually() {
-//        cout << "\nenter the initial state:" << endl;
-//
-//        // cоздаем массив в котором все строки состоят из уникальных символов
-//        vector<vector<char>> uniqueGrid(size, vector<char>(size, 0));
-//        for (int i = 0; i < size; ++i) {
-//            random_shuffle(symbols.begin(), symbols.end());
-//            uniqueGrid[i] = symbols;
-//        }
-//
-//        // выводим массив для удобства пользователя
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                cout << uniqueGrid[i][j] << " ";
-//            }
-//            cout << endl;
-//        }
-//
-//        // случайным образом выбираем один из уникальных символов и обновляем основную матрицу
-//        int randomRowIndex = rand() % size;
-//        selectedSymbol = uniqueGrid[randomRowIndex][0];
-//
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                grid[i][j] = (uniqueGrid[i][j] == selectedSymbol) ? 1 : 0;
-//            }
-//        }
-//
-//        cout << "\nselected symbol for adaptation: " << selectedSymbol << endl << endl;
-//    }
-//
-//    /*void printGrid() const {
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                cout << grid[i][j] << " ";
-//            }
-//            cout << endl;
-//        }
-//        cout << endl;
-//    }*/
-//
-//    void printGrid() const {
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                if (grid[i][j] > 0) {
-//                    // Зеленый цвет для живых клеток
-//                    cout << "\033[42m  \033[0m";
-//                }
-//                else {
-//                    cout << "\033[47;90m  \033[0m"; // gray 
-//                }
-//            }
-//            cout << endl;
-//        }
-//        cout << endl;
-//
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                cout << grid[i][j] << " ";
-//            }
-//            cout << endl;
-//        }
-//        cout << endl;
-//    }
-//
-//    void simulateLife() {
-//        for (int year = 1; year <= maxYears; ++year) {
-//            cout << "generation " << year << ":" << endl;
-//            printGrid();
-//
-//            evolve();
-//
-//            if (isGameOver()) {
-//                cout << "\nGame over" << endl;
-//                break;
-//            }
-//        }
-//    }
-//
-//private:
-//    void evolve() {
-//        vector<vector<int>> newGrid(size, vector<int>(size, 0));
-//
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                int liveNeighbors = countLiveNeighbors(i, j);
-//
-//                if (grid[i][j] > 0 && grid[i][j] < 12) {
-//                    // Microbe with life level 1 to 11
-//                    if (liveNeighbors == 2 || liveNeighbors == 3) {
-//                        newGrid[i][j] = grid[i][j] + 1;
-//                    }
-//                    else {
-//                        newGrid[i][j] = 0; // Microbe dies
-//                    }
-//                }
-//                else if (grid[i][j] == 0) {
-//                    // New microbe is born
-//                    newGrid[i][j] = 1;
-//                }
-//                else if (grid[i][j] == 12) {
-//                    // Microbe dies from old age, no regeneration
-//                    newGrid[i][j] = 0;
-//                }
-//            }
-//        }
-//
-//        grid = newGrid;
-//    }
-//
-//    int countLiveNeighbors(int x, int y) const {
-//        int liveNeighbors = 0;
-//
-//        for (int i = -1; i <= 1; ++i) {
-//            for (int j = -1; j <= 1; ++j) {
-//                int newX = x + i;
-//                int newY = y + j;
-//
-//                if (newX >= 0 && newX < size && newY >= 0 && newY < size) {
-//                    liveNeighbors += grid[newX][newY];
-//                }
-//            }
-//        }
-//
-//        // Exclude the current cell
-//        liveNeighbors -= grid[x][y];
-//
-//        return liveNeighbors;
-//    }
-//
-//    bool isGameOver() const {
-//        for (int i = 0; i < size; ++i) {
-//            for (int j = 0; j < size; ++j) {
-//                if (grid[i][j] > 0) {
-//                    return false;
-//                }
-//            }
-//        }
-//        return true;
-//    }
-//
-//    int size;
-//    int maxYears;
-//    vector<vector<int>> grid;
-//    vector<char> symbols;
-//    char selectedSymbol;
-//};
-//
-//vector<char> generateAlphabetSymbols(int count) {
-//    vector<char> symbols;
-//    for (char ch = 'a'; ch < 'a' + count; ++ch) {
-//        symbols.push_back(ch);
-//    }
-//    return symbols;
-//}
-//
-//int main() {
-//    int size, maxYears;
-//    cout << "Enter matrix size: ";
-//    cin >> size;
-//
-//    int uniqueSymbolCount;
-//    cout << "Enter the number of unique symbols: ";
-//    cin >> uniqueSymbolCount;
-//
-//    vector<char> symbols = generateAlphabetSymbols(uniqueSymbolCount);
-//
-//    cout << "Enter the maximum number of generations: ";
-//    cin >> maxYears;
-//
-//    GameOfLife game(size, maxYears, symbols);
-//    game.simulateLife();
-//
-//    return 0;
-//}
+// Forward declaration of generate_alphabet_symbols
+vector<char> generate_alphabet_symbols(int count);
 
-//#include <iostream>
-//#include <algorithm>
-//#include <cstdlib>
-//#include <vector>
-//
-//using namespace std;
-//
-//const int MAX_SIZE = 100;
-//
-//void generate_unique_symbols(char symbols[], int num_symbols) {
-//    for (int i = 0; i < num_symbols; ++i) {
-//        symbols[i] = 'a' + i;
-//    }
-//}
-//
-//void fill_matrix_randomly(char matrix[MAX_SIZE][MAX_SIZE], char symbols[], int order, int num_symbols) {
-//    random_shuffle(symbols, symbols + num_symbols);
-//    for (int i = 0; i < order; ++i) {
-//        for (int j = 0; j < order; ++j) {
-//            matrix[i][j] = symbols[j];
-//        }
-//    }
-//}
-//
-//void adapt_matrix(char matrix[MAX_SIZE][MAX_SIZE], int order, char selected_symbol) {
-//    char new_matrix[MAX_SIZE][MAX_SIZE] = { 0 };
-//
-//    for (int i = 0; i < order; ++i) {
-//        for (int j = 0; j < order; ++j) {
-//            int live_neighbors = 0;
-//
-//            for (int ni = i - 1; ni <= i + 1; ++ni) {
-//                for (int nj = j - 1; nj <= j + 1; ++nj) {
-//                    if (ni >= 0 && ni < order && nj >= 0 && nj < order && !(ni == i && nj == j)) {
-//                        live_neighbors += (matrix[ni][nj] == selected_symbol) ? 1 : 0;
-//                    }
-//                }
-//            }
-//
-//            if (matrix[i][j] == selected_symbol) {
-//                new_matrix[i][j] = (live_neighbors == 2 || live_neighbors == 3) ? selected_symbol : '0';
-//            }
-//            else {
-//                new_matrix[i][j] = (live_neighbors == 3) ? selected_symbol : '0';
-//            }
-//        }
-//    }
-//
-//    for (int i = 0; i < order; ++i) {
-//        for (int j = 0; j < order; ++j) {
-//            matrix[i][j] = new_matrix[i][j];
-//        }
-//    }
-//}
-//
-//void print_matrix(char matrix[MAX_SIZE][MAX_SIZE], int order) {
-//    for (int i = 0; i < order; ++i) {
-//        for (int j = 0; j < order; ++j) {
-//            cout << matrix[i][j] << " ";
-//        }
-//        cout << endl;
-//    }
-//}
-//
-//void evolve(char matrix[MAX_SIZE][MAX_SIZE], int order) {
-//    char new_matrix[MAX_SIZE][MAX_SIZE] = { 0 };
-//
-//    for (int i = 0; i < order; ++i) {
-//        for (int j = 0; j < order; ++j) {
-//            int live_neighbors = 0;
-//
-//            for (int ni = i - 1; ni <= i + 1; ++ni) {
-//                for (int nj = j - 1; nj <= j + 1; ++nj) {
-//                    if (ni >= 0 && ni < order && nj >= 0 && nj < order && !(ni == i && nj == j)) {
-//                        live_neighbors += (matrix[ni][nj] > '0') ? 1 : 0;
-//                    }
-//                }
-//            }
-//
-//            if (matrix[i][j] > '0' && matrix[i][j] < '9') {
-//                if (live_neighbors == 2 || live_neighbors == 3) {
-//                    new_matrix[i][j] = matrix[i][j] + 1;
-//                }
-//                else {
-//                    new_matrix[i][j] = '0';
-//                }
-//            }
-//            else if (matrix[i][j] == '0') {
-//                new_matrix[i][j] = '1';
-//            }
-//            else if (matrix[i][j] == '9') {
-//                new_matrix[i][j] = '0';
-//            }
-//        }
-//    }
-//
-//    for (int i = 0; i < order; ++i) {
-//        for (int j = 0; j < order; ++j) {
-//            matrix[i][j] = new_matrix[i][j];
-//        }
-//    }
-//}
-//
-//int main() {
-//    int order, num_symbols, max_generations;
-//
-//    try {
-//        while (true) {
-//            cout << "\nenter the order of the matrix (2, 3, or 4): ";
-//            if (!(cin >> order) || (order < 2 || order > 4)) {
-//                cin.clear();
-//                cin.ignore();
-//                cout << "error!\n";
-//                continue;
-//            }
-//            break;
-//        }
-//        while (true) {
-//            cout << "\nenter the number of unique characters: ";
-//            if (!(cin >> num_symbols) || num_symbols > 26) {
-//                cin.clear();
-//                cin.ignore();
-//                cout << "error!\n";
-//                continue;
-//            }
-//            break;
-//        }
-//        while (true) {
-//            cout << "\nenter the maximum number of generations: ";
-//            if (!(cin >> max_generations)) {
-//                cin.clear();
-//                cin.ignore();
-//                cout << "error!\n";
-//                continue;
-//            }
-//            break;
-//        }
-//    }
-//    catch (const exception& err) {
-//        cerr << "error: " << err.what() << endl;
-//        return 1;
-//    }
-//
-//    char symbols[MAX_SIZE];
-//    generate_unique_symbols(symbols, num_symbols);
-//
-//    cout << "\nunique characters: \n";
-//    for (int i = 0; i < num_symbols; ++i) {
-//        cout << symbols[i] << " ";
-//    }
-//    cout << endl;
-//
-//    char matrix[MAX_SIZE][MAX_SIZE] = { 0 };
-//    fill_matrix_randomly(matrix, symbols, order, num_symbols);
-//
-//    cout << "\ninitial two-dimensional array (matrix): \n";
-//    print_matrix(matrix, order);
-//
-//    char selected_symbol = symbols[rand() % num_symbols];
-//
-//    cout << "\nselected Symbol for Adaptation: " << selected_symbol << endl;
-//
-//    for (int generation = 1; generation <= max_generations; ++generation) {
-//        adapt_matrix(matrix, order, selected_symbol);
-//        evolve(matrix, order);
-//
-//        cout << "\ngeneration " << generation << ":\n";
-//        print_matrix(matrix, order);
-//    }
-//
-//    return 0;
-//}
+enum CellState { DEAD = 0, ALIVE = 1, MAX_AGE = 12 };
 
+struct Cell {
+    int state;
+    int age;
+    char symbol;
+
+    Cell() : state(DEAD), age(0) {}
+};
+
+class GameOfLife {
+public:
+    GameOfLife(int size, int max_years, int unique_symbols)
+        : size(size), max_years(max_years), unique_symbols(unique_symbols) {
+        srand(time(0));
+        symbols = generate_alphabet_symbols(unique_symbols);
+        grid.resize(size, vector<Cell>(size, Cell()));
+        initialize_grid_manually();
+    }
+
+    void initialize_grid_manually() {
+        cout << "\nunique symbols:\n";
+
+        for (char ch : symbols) {
+            cout << ch << " ";
+        }
+        cout << endl;
+
+        std::random_device rd;
+        std::mt19937 g(rd());
+        std::shuffle(symbols.begin(), symbols.end(), g);
+
+        cout << "\nselected symbol for adaptation: " << symbols[0] << endl << endl;
+
+        int symbolIndex = 0;
+
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                grid[i][j].state = (rand() % 2 == 0) ? ALIVE : DEAD;
+                grid[i][j].symbol = symbols[symbolIndex];
+
+                symbolIndex = (symbolIndex + 1) % symbols.size();
+            }
+        }
+    }
+    void print_grid() const {
+        cout << endl;
+
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                if (grid[i][j].state == ALIVE) {
+                    cout << "\033[42m    \033[0m";
+                }
+                else {
+                    cout << "\033[47;90m    \033[0m";
+                }
+            }
+            cout << endl;
+        }
+        cout << endl;
+
+        cout << endl << "age:" << endl;
+
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                if (grid[i][j].state == ALIVE) {
+                    if (grid[i][j].age > 0) {
+                        cout << " " << grid[i][j].age << " ";
+                    }
+                    else {
+                        cout << " 1 ";
+                    }
+                }
+                else {
+                    cout << " . ";
+                }
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+
+    void simulate_life() {
+        for (int year = 1; year <= max_years; ++year) {
+            cout << "generation " << year << ":" << endl;
+            print_grid();
+            evolve();
+
+            if (is_game_over()) {
+                cout << "\nGame over!\nAll microbes are dead!\n" << endl;
+                break;
+            }
+        }
+    }
+
+private:
+    void evolve() {
+        vector<vector<Cell>> new_grid(size, vector<Cell>(size, Cell()));
+
+        for (int i = 0; size_t(i) < size; ++i) {
+            for (int j = 0; size_t(j) < size; ++j) {
+                int neighbors = count_neighbors(i, j);
+
+                if (grid[i][j].state == 1) {
+                    if (neighbors == 2 || neighbors == 3) {
+                        new_grid[i][j].state = 1;
+                        new_grid[i][j].age = grid[i][j].age + 1;
+
+                        if (new_grid[i][j].age >= 12) {
+                            new_grid[i][j].state = 0;
+                            new_grid[i][j].age = 0;
+                        }
+                    }
+                }
+                else {
+                    if (neighbors == 3) {
+                        new_grid[i][j].state = 1;
+                        new_grid[i][j].age = 1;
+                    }
+                }
+            }
+        }
+
+        grid = new_grid;
+    }
+
+    int count_neighbors(int x, int y) const {
+        int count = 0;
+
+        for (int i = -1; i <= 1; ++i) {
+            for (int j = -1; j <= 1; ++j) {
+                int newX = x + i;
+                int newY = y + j;
+
+                if ((i == 0) && (j == 0)) {
+                    continue;
+                }
+
+                if ((newX >= 0) && (newX < size) && (newY >= 0) && (newY < size)) {
+                    count += grid[newX][newY].state == ALIVE ? 1 : 0;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    bool is_game_over() const {
+        for (int i = 0; size_t(i) < size; ++i) {
+            for (int j = 0; size_t(j) < size; ++j) {
+                if (grid[i][j].state == ALIVE) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    int size;
+    int max_years;
+    int unique_symbols;
+    vector<vector<Cell>> grid;
+    vector<char> symbols;
+    char selected_symbol;
+};
+
+// Definition of generate_alphabet_symbols
+vector<char> generate_alphabet_symbols(int count) {
+    vector<char> symbols;
+    for (char ch = 'a'; size_t(symbols.size()) < count; ++ch) {
+        symbols.push_back(ch);
+    }
+    return symbols;
+}
+
+int main() {
+    const WORD textColor = 0xE;
+    const WORD bgColor = 0x70;
+    SetConsoleTextAttribute(console, textColor | (bgColor << 4));
+    cout << "Welcome to the game of 'LIFE'!\n\n";
+    SetConsoleTextAttribute(console, textColor);
+    cout << "Once upon a time there were microbes. They lived happily ever after,\nbut there was one problem: after life there was always death comes.\nWe have the opportunity to look at the development of microbes with our own eyes!\n\n";
+    SetConsoleTextAttribute(console, 15);
+
+    int size, max_years, unique_symbols;
+
+    while (true) {
+        // ввод размера матрицы
+        cout << "Enter matrix size: ";
+        while (true) {
+            if (!(cin >> size)) {
+                cin.clear();
+                cin.ignore();
+                cout << "\nerror! Invalid input. Please enter a valid number.\n\n";
+                continue;
+            }
+            break;
+        }
+
+        // ввод количества уникальных символов
+        cout << "Enter the number of unique symbols: ";
+        while (true) {
+            if (!(cin >> unique_symbols)) {
+                cin.clear();
+                cin.ignore();
+                cout << "\nerror! Invalid input. Please enter a valid number.\n\n";
+                continue;
+            }
+            break;
+        }
+
+        // ввод максимального числа поколений
+        cout << "Enter the maximum number of generations: ";
+        while (true) {
+            if (!(cin >> max_years)) {
+                cin.clear();
+                cin.ignore();
+                cout << "\nerror! Invalid input. Please enter a valid number.\n\n";
+                continue;
+            }
+            break;
+        }
+
+        GameOfLife game(size, max_years, unique_symbols);
+        game.simulate_life();
+
+        // создается объект игры и затем запускают симуляцию "Жизнь микроба(бактерий)" - 
+        // выводя информацию о состоянии игры на каждом поколении
+
+        char playAgain;
+        cout << "do you want to play again? (y/n): ";
+        cin >> playAgain;
+
+        if (playAgain != 'y' && playAgain != 'Y') {
+            break; // Exit the loop if the user doesn't want to play again
+        }
+    }
+
+    return 0;
+}
