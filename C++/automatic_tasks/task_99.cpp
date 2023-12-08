@@ -1,37 +1,54 @@
-// The code uses the snake_case naming style for functions and variables.
-// CamelCase is used for classes and namespace.
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <Windows.h>          // готово 
+#include <algorithm>  
+#include <cmath>      
+#include <Windows.h>
 
 using namespace std;
 
 HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
-
-// генерация случайного четырехзначного числа без повторяющихся цифр
 int generate_number() {
+    srand(static_cast<unsigned>(time(0)));
 
-    srand(time(0));
-    
     int number;
-    // массив для отслеживания использованных цифр
     bool digits[10] = { false };
 
+    int temp;  // Declare temp outside the do-while loop
+
     do {
-        // генерация случайного четырехзначного числа
-        number = rand() % 9000 + 1000;  //  в диапазоне от 1000 до 9999
-    } while (digits[number % 10] || digits[(number / 10) % 10] || digits[(number / 100) % 10] || digits[number / 1000]);
-       // проверка - что все цифры числа различны - если хотя бы одна цифра уже использована цикл повторяется
+        number = rand() % 9000 + 1000;
+
+        temp = number;  // Move this line inside the loop
+
+        while (temp > 0) {
+            if (digits[temp % 10]) {
+                break;
+            }
+            digits[temp % 10] = true;
+            temp /= 10;
+        }
+
+        fill(begin(digits), end(digits), false);
+
+    } while (temp > 0);
 
     return number;
 }
 
 bool is_valid_input(int number) {
     if (number < 1000 || number > 9999) {
-        return false; // не четырехзначное число
+        return false;
+    }
+
+    bool digits[10] = { false };
+    while (number > 0) {
+        if (digits[number % 10]) {
+            return false;
+        }
+        digits[number % 10] = true;
+        number /= 10;
     }
 
     return true;
@@ -40,26 +57,17 @@ bool is_valid_input(int number) {
 void check_guess(int secret_number, int user_number, int& pluses, int& minuses) {
     pluses = minuses = 0;
 
-    // сравнение цифр загаданного числа и числа пользователя
     for (int i = 0; i < 4; ++i) {
-        // извлечение i-той цифры из загаданного числа
         int secret_digit = (secret_number / static_cast<int>(pow(10, 3 - i))) % 10;
-        // извлечение i-той цифры из загаданного числа
         int user_digit = (user_number / static_cast<int>(pow(10, 3 - i))) % 10;
 
-        // сравнение цифр загаданного числа и числа пользователя
         if (secret_digit == user_digit) {
-            // если цифры совпадают - увеличиваем количество плюсов
             ++pluses;
         }
         else {
-            // если цифры не совпадают - начинаем вложенный цикл для поиска минусов
-
             for (int j = 0; j < 4; ++j) {
-                // извлечение j-той цифры из загаданного числа для сравнения с цифрой пользователя
                 int temp_secret_digit = (secret_number / static_cast<int>(pow(10, 3 - j))) % 10;
-                
-                // если цифры совпадают и не находятся на одной и той же позиции - увеличиваем количество минусов
+
                 if (temp_secret_digit == user_digit && i != j) {
                     ++minuses;
                     break;
@@ -77,7 +85,6 @@ int main() {
     int secret_number = generate_number();
     int user_number, pluses, minuses, attempts = 0;
 
-    //set_color(14);
     const WORD textColor = 0xE;
     const WORD bgColor = 0x70;
 
@@ -86,27 +93,20 @@ int main() {
     cout << "Welcome to the game 'Bulls and Cows!'\n\n";
     cout << "The computer guessed a four-digit number. Try to guess!\n\n";
     SetConsoleTextAttribute(console, 15);
-    set_color(15);
 
-
-
-    set_color(14);
-    cout << "number: " << secret_number << "\n\n";
-    set_color(15);
-
-
+    cout << secret_number << endl << endl;
 
     do {
         do {
             while (true) {
                 set_color(11);
-                cout << "enter number: ";
+                cout << "Enter a four-digit number: ";
                 set_color(15);
                 if (!(cin >> user_number)) {
                     cin.clear();
                     cin.ignore();
                     set_color(12);
-                    cout << "error!\n";
+                    cout << "Error! Please enter a valid number.\n";
                     set_color(15);
                     continue;
                 }
@@ -115,7 +115,7 @@ int main() {
 
             if (!is_valid_input(user_number)) {
                 set_color(12);
-                cout << "\nerror!\n";
+                cout << "\nError! Please enter a valid four-digit number with no repeated digits.\n";
                 set_color(15);
             }
         } while (!is_valid_input(user_number));
@@ -123,14 +123,14 @@ int main() {
         check_guess(secret_number, user_number, pluses, minuses);
 
         set_color(13);
-        cout << "\nresult: " << pluses << " pluses and " << minuses << " minuses! \n";
+        cout << "\nResult: " << pluses << " pluses and " << minuses << " minuses! \n";
         set_color(15);
 
         ++attempts;
     } while (pluses < 4);
 
     set_color(10);
-    cout << "\ncongratulations! U guessed the number " << secret_number << " in " << attempts << " attempts!\n";
+    cout << "\nCongratulations! You guessed the number " << secret_number << " in " << attempts << " attempts!\n";
     set_color(15);
 
     return 0;
