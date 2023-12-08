@@ -237,7 +237,7 @@ int main() {
         cin >> playAgain;
 
         if (playAgain != 'y' && playAgain != 'Y') {
-            break; // Exit the loop if the user doesn't want to play again
+            break; 
         }
     }
 
