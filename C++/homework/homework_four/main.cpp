@@ -17,77 +17,6 @@ using namespace std;
 
 HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
 
-//не нужное
-void dynamic_matrix_multiplication() {
-    //другой файл
-    int rows;
-    while (true) {
-        cout << "enter amount rows: \n";
-        if (!(cin >> rows)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error \n";
-            continue;
-        }
-        break;
-
-    }
-    //if (rows == "end") {
-
-    //}
-
-    int cols;
-    while (true) {
-        cout << "enter amount column: \n";
-        if (!(cin >> cols)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error \n" << endl;
-            continue;
-        }
-        break;
-    }
-
-    int** matrix = new int* [rows];
-    for (int i = 0; i < rows; i++) {
-        matrix[i] = new int[cols];
-    }
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            cout << "enter amout elements " << i << " and " << j << "\n" << endl;
-            while (true) {
-                if (!(cin >> matrix[i][j])) {
-                    cin.clear();
-                    cin.ignore();
-                    cout << "error \n";
-                    continue;
-                }
-                break;
-            }
-        }
-
-    }
-    cout << "table A \n";
-    SetConsoleTextAttribute(back_color, 0x0f);
-    cout << "enter two-dimensional array - matrix :\n" << endl;
-    SetConsoleTextAttribute(back_color, 0x07);
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            cout << matrix[i][j] << " ";
-        }
-        cout << endl << endl;
-    }
-
-    delete matrix;
-}
-//не нужное
-void long_operation() {
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(150ms);
-} //для врремени 
-//не нужное
-
-
 void comment_output() {
     SetConsoleTextAttribute(back_color, 0x0a);
     cout << "-------------------------------------------------\n TASK NUMBER:  \n 1 task - 'File' \n 2 task - 'Number sign' \n 3 task - 'Geometric shapes' \n 4 task - 'Past glory' \n 5 task - 'Sine wave' \n 6 task - 'Automatic recognizer' \n 7 task - 'Pseudorandom number generator' \n 8 task - 'Matrix multiplication' \n 9 task - 'Number systems' " << endl;
@@ -95,6 +24,7 @@ void comment_output() {
 
 }  //обьявление функции
 
+// Задача «Файл».
 void file_task() {  //правильно
     try {
         ofstream file("numbers.txt");
@@ -164,6 +94,7 @@ void file_task() {  //правильно
     }
 }
 
+// Задача «Знак числа»
 void number_sign() {    //правильно
     double variable_x;
     while (true) {
@@ -197,6 +128,7 @@ void number_sign() {    //правильно
 
 }
 
+// Задача «Геометрические фигуры»
 void geometric_figures() {  //правильно
     double length_rectangle, width_rectangle;
     while (true) {
@@ -270,6 +202,7 @@ void geometric_figures() {  //правильно
     }
 }
 
+// Задача «Былая слава»
 void past_glory() {
     clock_t start_time = clock();
 
@@ -318,25 +251,22 @@ void past_glory() {
     SetConsoleTextAttribute(back_color, 0x07);
 }
 
-
-//синусоида
+// начало задачи синусоида
 void move_сursor(int x, int y) {
     cout << "\033[" << y << ";" << x << "H";
 }
-
 void clear_сonsole(int height) {
     for (int i = 1; i <= height; i++) {
         move_сursor(1, i);
-        cout << string(100, ' '); 
+        cout << string(100, ' ');
     }
 }
-
 void sine_wave() {
     const int width = 100;
     const int height = 29;
     const double amplitude = height / 2.0;
     const double frequency = 0.1;
-    const int num_frames = 40; 
+    const int num_frames = 40;
 
     for (int frame = 0; frame <= num_frames; frame++) {
         for (int y = 0; y < height; y++) {
@@ -375,8 +305,10 @@ void sine_wave() {
 
     cout << endl << endl;
 }
+// конец задачи синусоида
 
-void automatic_recognizer() { 
+// Задача «Автоматный распознаватель»
+void automatic_recognizer() {
     string roman_numeral;
     int decoded_number = 0;
 
@@ -431,64 +363,66 @@ void automatic_recognizer() {
 
 }
 
-void random_number_generator() {    //правильно   ТОЛЬКО ЦЕЛЫЕ И ПОЛОЖИТЕЛЬНЫЕ ЗНАЧНИЕЯ
-    int variable_m, variable_b, variable_c, variable_n, variable_s = 0, option;
+// Задача «Генератор псевдослучайных чисел»
+void random_number_generator() {    //правильно
     while (true) {
-        cout << "select parameter option: (1 / 2) " << endl;
+        int variable_n, option;
+
+        cout << "select parameter option: (1 / 2) \n";
         if (!(cin >> option)) {
             cin.clear();
             cin.ignore();
-            cout << "error" << endl;
+            cout << "error\n";
             continue;
         }
-        break;
-    }
-    switch (option) {
-    case 1:
-        variable_m = 37;
-        variable_b = 3;
-        variable_c = 64;
-        break;
-    case 2:
-        variable_m = 25173;
-        variable_b = 13849;
-        variable_c = 65537;
-        break;
-    default:
-        cout << "error !" << endl;
-        return;
-    }
 
-    while (true) {
-        cout << "amount of elements: " << endl;
-        if (!(cin >> variable_n)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error!" << endl << endl;
-            continue;
+        clock_t start_time = clock();
+        srand(static_cast<unsigned>(time(0))); 
+
+        int variable_m, variable_b, variable_c;
+        switch (option) {
+        case 1:
+            variable_m = rand() % 100 + 1;  // задание диапазона для variable_m в пределах [1, 100]
+            variable_b = rand() % 10 + 1;   // задание диапазона для variable_b в пределах [1, 10]
+            variable_c = rand() % 901 + 100;  // задание диапазона для variable_c в пределах [100, 1000]
+            break;
+        case 2:
+            variable_m = rand() % 40001 + 10000;  // задание диапазона для variable_m в пределах [10000, 50000]
+            variable_b = rand() % 15001 + 5000;   // задание диапазона для variable_b в пределах [5000, 20000]
+            variable_c = rand() % 50001 + 50000;  // задание диапазона для variable_c в пределах [50000, 100000]
+            break;
+        default:
+            cout << "error!\n";
+            return;
         }
-        if (variable_n == 0) {
-            cin.clear();
-            cin.ignore();
-            cout << "error!" << endl << endl;
-            continue;
+
+        while (true) {
+            cout << "amount of elements: \n";
+            if (!(cin >> variable_n) || variable_n <= 1) {
+                cin.clear();
+                cin.ignore();
+                cout << "error\n";
+                continue;
+            }
+            break;
         }
+
+        for (int i = 0; i < variable_n; i++) {
+            int variable_s = (variable_m * i + variable_b) % variable_c;
+            cout << variable_s << " ";
+        }
+
+        cout << endl << endl;
+        clock_t end_time = clock();
+        double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+        SetConsoleTextAttribute(back_color, 0x0b); //бирюзовый
+        cout << "function execution time in milliseconds: " << spent_time << " ml \n\n";
+        SetConsoleTextAttribute(back_color, 0x07);
         break;
     }
-    clock_t start_time = clock();
-
-    for (int i = 0; i < variable_n; i++) {
-        variable_s = (variable_m * variable_s + variable_b) % variable_c;
-        cout << variable_s << " ";
-    }
-    cout << endl << endl;
-    clock_t end_time = clock();
-    double spent_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
-    SetConsoleTextAttribute(back_color, 0x0b); //бирюзовый
-    cout << "function execution time in milliseconds: " << spent_time << " ml \n\n";
-    SetConsoleTextAttribute(back_color, 0x07);
 }
 
+// Задача «Умножение матриц»
 void static_dimensional_arrays() {
     clock_t start_time = clock();
 
@@ -591,6 +525,7 @@ void static_dimensional_arrays() {
 
 }
 
+// Задача «Системы счисления»
 namespace ConvertBase {
     int char_to_digit(char symbol) {
         if ((symbol >= '0') && (symbol <= '9')) {
@@ -689,7 +624,7 @@ namespace ConvertBase {
     }
 }
 
-
+// лаунчер заданий
 void task_launcher() {
     int task_number;
 
@@ -720,6 +655,8 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "first task - 'File task' \n";
             SetConsoleTextAttribute(back_color, 0x07);
+
+            // Задача «Файл».
             file_task();
             break;
         case 2:
@@ -727,6 +664,8 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "second task - 'Problem Number sign' \n";
             SetConsoleTextAttribute(back_color, 0x07);
+            
+            // Задача «Знак числа»
             number_sign();
             break;
         case 3:
@@ -734,6 +673,8 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "third task - 'Geometric figures' \n";
             SetConsoleTextAttribute(back_color, 0x07);
+
+            // Задача «Геометрические фигуры»
             geometric_figures();
             break;
         case 4:
@@ -741,6 +682,8 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "fourth task - 'Past Glory' \n";
             SetConsoleTextAttribute(back_color, 0x07);
+
+            // Задача «Былая слава»
             past_glory();
             break;
         case 5:
@@ -748,8 +691,10 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "fifth task - 'Sine wave' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            sine_wave();
 
+            // Задача «Синусоида»
+            sine_wave();
+            
             /*
             for (float x = 0; x < 1000; x += 0.05) {
                 yoff = sin(x / 54) * 50;
@@ -764,6 +709,8 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "sixth task - 'Automatic recognizer' \n";
             SetConsoleTextAttribute(back_color, 0x07);
+
+            // Задача «Автоматный распознаватель»
             automatic_recognizer();
             break;
         case 7:
@@ -771,6 +718,8 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "seventh task - 'Pseudo-random number generator' \n";
             SetConsoleTextAttribute(back_color, 0x07);
+
+            // Задача «Генератор псевдослучайных чисел»
             random_number_generator();
             break;
         case 8:
@@ -778,6 +727,8 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "eighth task - 'Matrix multiplication' \n";
             SetConsoleTextAttribute(back_color, 0x07);
+            
+            // Задача «Умножение матриц»
             static_dimensional_arrays();
             break;
         case 9:
@@ -785,8 +736,9 @@ void task_launcher() {
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "ninth task - 'Number systems' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            ConvertBase::cout_convert_base();
 
+            // Задача «Системы счисления»
+            ConvertBase::cout_convert_base();
             break;
         default:
             cout << "\nerror! \n";
