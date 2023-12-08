@@ -3,7 +3,7 @@
 
 #include <iostream>            
 #include <vector>              
-#include <cstdlib>             // 17-50 версия с равными колвами уникальных символов
+#include <cstdlib>             
 #include <ctime>               
 #include <algorithm>           
 #include <Windows.h>           
@@ -83,7 +83,7 @@ public:
                     }
                 }
                 else {
-                    cout << " 0 ";
+                    cout << " . ";
                 }
             }
             cout << endl;
