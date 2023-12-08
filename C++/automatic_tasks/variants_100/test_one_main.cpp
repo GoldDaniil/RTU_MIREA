@@ -45,7 +45,9 @@ public:
 
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                grid[i][j].state = (symbols[j] == selected_symbol) ? ALIVE : DEAD;
+                // использование остатка от деления для выбора символа из списка
+                int symbol_index = (i + j) % symbols.size();
+                grid[i][j].state = (symbols[symbol_index] == selected_symbol) ? ALIVE : DEAD;
             }
         }
 
@@ -215,11 +217,10 @@ private:
 
 vector<char> generate_alphabet_symbols(int count) {
     vector<char> symbols;
-    for (char ch = 'a'; ch < 'a' + count; ++ch) { //цикл - в котором переменная ch принимает 
-        // значения от 'a' до 'a' + count - 1.
-        symbols.push_back(ch); // добавление текущего символа в вектор
+    for (char ch = 'a'; ch < 'a' + count; ++ch) {
+        symbols.push_back(ch);
     }
-    return symbols; // возврат вектора уникальных символов
+    return symbols;
 }
 
 int main() {
@@ -237,7 +238,7 @@ int main() {
         // ввод размера матрицы
         cout << "Enter matrix size: ";
         while (true) {
-            if (!(cin >> size)) {
+            if (!(cin >> size) || size <= 0) {
                 cin.clear();
                 cin.ignore();
                 cout << "\nerror!\n\n";
@@ -251,7 +252,7 @@ int main() {
         // ввод количества уникальных символов
         cout << "Enter the number of unique symbols: ";
         while (true) {
-            if (!(cin >> unique_symbol_count)) {
+            if (!(cin >> unique_symbol_count) || unique_symbol_count <= 0 || unique_symbol_count > size) {
                 cin.clear();
                 cin.ignore();
                 cout << "\nerror!\n\n";
@@ -269,7 +270,7 @@ int main() {
         // ввод максимального числа поколений
         cout << "Enter the maximum number of generations: ";
         while (true) {
-            if (!(cin >> max_years)) {
+            if (!(cin >> max_years) || max_years <= 0) {
                 cin.clear();
                 cin.ignore();
                 cout << "\nerror!\n\n";
