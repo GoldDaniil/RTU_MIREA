@@ -16,13 +16,17 @@
 #include <vector>
 
 using namespace std;
+
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
+
 void comment_output() {
 	SetConsoleTextAttribute(back_col, 0x0a);
 	cout << "----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Euclid's algorithm' \n 2 task - 'Sieve of Eratosthenes' \n 3 task - Task 'Processing text files' \n 4 task - Task 'Rows'\n 5 task - Task 'Files'\n" << endl;
 	SetConsoleTextAttribute(back_col, 0x07);
 }
 
+
+// Задание «Алгоритм Евклида»
 namespace TaskOneVarTwo {
 	//метод деления
 	class FindTheGDBDivisionByDivision {
@@ -129,6 +133,8 @@ namespace TaskOneVarTwo {
 	};
 }
 
+
+// Задание «Решето Эратосфена» 
 namespace SieveOfEratosthenes {
 	bool is_prime(int num) {
 		if (num < 2) {
@@ -172,6 +178,8 @@ namespace SieveOfEratosthenes {
 	}
 }
 
+
+// Задания «Обработка текстовых файлов» : 
 namespace ProcessingTextFiles {
 	void converting_delimiters_spaces() {
 		string input_string;
@@ -448,6 +456,7 @@ namespace ProcessingTextFiles {
 		}
 	};
 }
+
 
 namespace TaskRows {
 	void task_one() {
@@ -823,12 +832,18 @@ void launcher() {
 			SetConsoleTextAttribute(back_col, 0x0a);
 			cout << "Task 'Euclidean Algorithm'. Give 2 numbers and find their most common divisor methods : division and subtraction.\n";
 			SetConsoleTextAttribute(back_col, 0x07);
-			cout << "division method: \n";
+
+				// Задание «Алгоритм Евклида». Задать 2 числа и найти их наибольший общий делитель двумя
+				// способами: делением и вычитанием.
+
+			cout << "division method: \n";			// 1 задание методом делением
 			TaskOneVarTwo::FindTheGDBDivisionByDivision gcdCalculator_one;
 			gcdCalculator_one.euclidean_algorithm_division();
-			cout << "\n\nsubtraction method: \n";
+			
+			cout << "\n\nsubtraction method: \n";     // 1 задание методом вычитанием
 			TaskOneVarTwo::FindTheGDBDivisionBySubtraction gcdCalculator_two;
 			gcdCalculator_two.euclidean_algorithm_subtraction();
+
 			cout << "\n";
 			break;
 		case 2:
@@ -836,7 +851,12 @@ void launcher() {
 			SetConsoleTextAttribute(back_col, 0x0a);
 			cout << "'The Sieve of Eratosthenes' task. Find all prime numbers in the range from 2 to the number you enter natural number\n";
 			SetConsoleTextAttribute(back_col, 0x07);
-			SieveOfEratosthenes::find_primes();
+
+				// Задание «Решето Эратосфена». Найти все простые числа в диапазоне от 2 до введенного вами
+				// натурального числа
+
+			SieveOfEratosthenes::find_primes();  // Задание «Решето Эратосфена» 
+			
 			cout << "\n";
 			break;
 		case 3:
@@ -876,19 +896,29 @@ void launcher() {
 
 			switch (local_switch_tree) {
 			case 1:
+
+				// задача  1. Преобразование разделителей: замена пробелов на другие(определенные) символы. 
 				ProcessingTextFiles::converting_delimiters_spaces();
 				break;
 			case 2:
+
+				// задача 2. Преобразование разделителей: превращение строк в столбцы слов
 				ProcessingTextFiles::convert_rows_columns();
 				break;
 			case 4:
+
+				// задача 4. Поиск в тексте слова максимальной длины.
 				ProcessingTextFiles::max_word_length();
 				break;
 			case 15:
+
+				// задача 15. Поиск определенного слова в текстовом файле.
 				ProcessingTextFiles::SearchSpecificWord TestLaunch;
 				TestLaunch.cout_search_specific_word();
 				break;
 			case 17:
+				
+				// нет нихуя 
 				cerr << "poka netu\n"; 		//сложная задача - исправить 
 
 				ProcessingTextFiles::sort_word_text();
@@ -897,6 +927,8 @@ void launcher() {
 				ProcessingTextFiles::most_occurring_character();
 				break;
 			case 38:
+
+				// 38. Проверка баланса скобок в текстовом файле
 				ProcessingTextFiles::CheckingBalance LocalLaunch;
 				LocalLaunch.balance_brackets_cout();
 				break;
@@ -906,7 +938,7 @@ void launcher() {
 			}
 
 			break;
-		case 4:
+		case 4:  // Задание «Ряды». Выполнить два варианта задания
 			SetConsoleTextAttribute(back_col, 0x0a);
 			cout << "\nTask 'Row'\n";
 			SetConsoleTextAttribute(back_col, 0x07);
@@ -942,21 +974,32 @@ void launcher() {
 
 			switch (local_switch_four) {
 			case 1:
+
+				// задача 1) Дано целое число n (вводится с клавиатуры). Вычислить:
 				TaskRows::task_one();
 				break;
 			case 4:
+
+				// задача 4 Дано натуральное число n. Вычислить:
 				TaskRows::TaskSigma TimeFunction;
 				TimeFunction.task_sigma();
 				break;
 			case 20:
+
+				// задача 20 Задан массив F[1:n] из чисел в двоичной системе счисления. В другом массиве организовать перевод
+				// исходного массива в четверичную систему счисления
 				TaskRows::TransferToFour LocalFunction;
 				LocalFunction.cout_binary_to_quaternary();
 			default:
 				cerr << "error!\n\n";
 			}
 			break;
-		case 5:
+		case 5: // Задание «Файлы». Выполнить один вариант задания
 			cout << "\ntask 13: Create a file of N integers. Find the number that repeats the maximum number of times.\nIf there are several such numbers, then all of them.Save these numbers to another file and sort. \nAll files Print before and after processing.\n\n\n";
+			
+			// Создать файл из N целых чисел. Найти число, повторяющееся максимальное количество раз. Если
+			// таких чисел несколько, то все из них.Сохранить эти числа в другой файл и отсортировать.Все файлы
+			// до и после обработки вывести на печать.
 			TaskFiles::cout_task();
 			break;
 		default:
