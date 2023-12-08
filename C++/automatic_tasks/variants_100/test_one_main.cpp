@@ -235,7 +235,7 @@ int main() {
         // выводя информацию о состоянии игры на каждом поколении
 
         char playAgain;
-        cout << "Do you want to play again? (y/n): ";
+        cout << "do you want to play again? (y/n): ";
         cin >> playAgain;
 
         if (playAgain != 'y' && playAgain != 'Y') {
