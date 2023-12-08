@@ -133,7 +133,6 @@ namespace TaskOneVarTwo {
 	};
 }
 
-
 // Задание «Решето Эратосфена» 
 namespace SieveOfEratosthenes {
 	bool is_prime(int num) {
@@ -178,9 +177,10 @@ namespace SieveOfEratosthenes {
 	}
 }
 
-
 // Задания «Обработка текстовых файлов» : 
 namespace ProcessingTextFiles {
+
+	// задача  1. Преобразование разделителей: замена пробелов на другие(определенные) символы
 	void converting_delimiters_spaces() {
 		string input_string;
 		cout << "enter input string: ";
@@ -224,6 +224,7 @@ namespace ProcessingTextFiles {
 
 	}
 
+	// задача 2. Преобразование разделителей: превращение строк в столбцы слов
 	void convert_rows_columns() {
 		string input_string;
 		cout << "enter text: ";
@@ -249,6 +250,7 @@ namespace ProcessingTextFiles {
 		cout << endl;
 	}
 
+	// задача 4. Поиск в тексте слова максимальной длины.
 	void max_word_length() {
 		try {
 			cout << "enter text: ";
@@ -276,6 +278,7 @@ namespace ProcessingTextFiles {
 		}
 	}
 
+	// задача 19. Статистическая обработка текстового файла : поиск наиболее часто встречающегося символа.
 	void most_occurring_character() {
 		cout << "\n";
 		try {
@@ -320,6 +323,7 @@ namespace ProcessingTextFiles {
 		}
 	}
 
+	// задача 15. Поиск определенного слова в текстовом файле.
 	class SearchSpecificWord {
 	public:
 		void display_file_contents(const string& filename) {
@@ -395,11 +399,13 @@ namespace ProcessingTextFiles {
 		}
 	};
 
+	// нету
 	void sort_word_text() {
 
 		//сложная задача - исправить 
 	}
 
+	// 38. Проверка баланса скобок в текстовом файле
 	class CheckingBalance {
 	public:
 		void balance_brackets_cout() {
@@ -457,8 +463,9 @@ namespace ProcessingTextFiles {
 	};
 }
 
-
+// Задание «Ряды». Выполнить два варианта задания
 namespace TaskRows {
+	// задача 1) Дано целое число n (вводится с клавиатуры). Вычислить:
 	void task_one() {
 		int n;
 		while (true) {
@@ -498,6 +505,7 @@ namespace TaskRows {
 		cout << "\n\nresult : " << result_sum << endl << endl;
 	}
 
+	// задача 4 Дано натуральное число n. Вычислить:
 	class TaskSigma {
 	public:
 		int factorial_function(int n) {
@@ -540,6 +548,8 @@ namespace TaskRows {
 		}
 	};
 
+	// задача 20 Задан массив F[1:n] из чисел в двоичной системе счисления. В другом массиве организовать перевод
+	// исходного массива в четверичную систему счисления
 	class TransferToFour {
 	public:
 		string binary_to_quaternary(const string& binary) {
@@ -923,7 +933,9 @@ void launcher() {
 
 				ProcessingTextFiles::sort_word_text();
 				break;
-			case 19: //сложная задача - исправить 
+			case 19: 
+				
+				//19. Статистическая обработка текстового файла: поиск наиболее часто встречающегося символа.
 				ProcessingTextFiles::most_occurring_character();
 				break;
 			case 38:
