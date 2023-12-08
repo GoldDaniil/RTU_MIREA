@@ -246,35 +246,39 @@ void launcher() {
         switch (task_number_int) {
         case 1:
             cout << "\n";
-            //первая задача Задача «Заем»
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "first task - 'Loan' \n";
             SetConsoleTextAttribute(back_color, 0x07);
+
+            //первая задача Задача «Заем»
             loan();
             break;
         case 2:
             cout << "\n";
-            //вторая задача Задача «Ссуда»
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "second task - 'Advance' \n";
             SetConsoleTextAttribute(back_color, 0x07);
             BinarySearch loan_task;
+            
+            //вторая задача Задача «Ссуда»
             loan_task.calculateAndPrintInterestRate();
             break;
         case 3:
             cout << "\n";
-            //3 и 4 задачи в одной функции - Задача «Копирование файла» - Задача «Фильтр».
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "third task - 'Copying a file' \n";
             SetConsoleTextAttribute(back_color, 0x07);
+            
+            //3 и 4 задачи в одной функции - Задача «Копирование файла» - Задача «Фильтр».
             working_w_files();
             break;
         case 4:
             cout << "\n";
-            //5 задача задача «Сортировка букв»
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "fourth task - 'Filter' \n";
             SetConsoleTextAttribute(back_color, 0x07);
+            
+            //5 задача задача «Сортировка букв»
             letter_sorting();
             break;
         default:
