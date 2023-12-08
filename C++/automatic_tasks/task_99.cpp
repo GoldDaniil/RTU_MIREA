@@ -10,14 +10,21 @@ using namespace std;
 
 HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
+
+// генерация случайного четырехзначного числа без повторяющихся цифр
 int generate_number() {
+
     srand(time(0));
+    
     int number;
+    // массив для отслеживания использованных цифр
     bool digits[10] = { false };
 
     do {
-        number = rand() % 9000 + 1000;
+        // генерация случайного четырехзначного числа
+        number = rand() % 9000 + 1000;  //  в диапазоне от 1000 до 9999
     } while (digits[number % 10] || digits[(number / 10) % 10] || digits[(number / 100) % 10] || digits[number / 1000]);
+       // проверка - что все цифры числа различны - если хотя бы одна цифра уже использована цикл повторяется
 
     return number;
 }
@@ -33,16 +40,26 @@ bool is_valid_input(int number) {
 void check_guess(int secret_number, int user_number, int& pluses, int& minuses) {
     pluses = minuses = 0;
 
+    // сравнение цифр загаданного числа и числа пользователя
     for (int i = 0; i < 4; ++i) {
+        // извлечение i-той цифры из загаданного числа
         int secret_digit = (secret_number / static_cast<int>(pow(10, 3 - i))) % 10;
+        // извлечение i-той цифры из загаданного числа
         int user_digit = (user_number / static_cast<int>(pow(10, 3 - i))) % 10;
 
+        // сравнение цифр загаданного числа и числа пользователя
         if (secret_digit == user_digit) {
+            // если цифры совпадают - увеличиваем количество плюсов
             ++pluses;
         }
         else {
+            // если цифры не совпадают - начинаем вложенный цикл для поиска минусов
+
             for (int j = 0; j < 4; ++j) {
+                // извлечение j-той цифры из загаданного числа для сравнения с цифрой пользователя
                 int temp_secret_digit = (secret_number / static_cast<int>(pow(10, 3 - j))) % 10;
+                
+                // если цифры совпадают и не находятся на одной и той же позиции - увеличиваем количество минусов
                 if (temp_secret_digit == user_digit && i != j) {
                     ++minuses;
                     break;
