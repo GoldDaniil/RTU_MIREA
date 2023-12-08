@@ -11,7 +11,6 @@ using namespace std;
 
 HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
-// Forward declaration of generate_alphabet_symbols
 vector<char> generate_alphabet_symbols(int count);
 
 enum CellState { DEAD = 0, ALIVE = 1, MAX_AGE = 12 };
@@ -180,7 +179,6 @@ private:
     char selected_symbol;
 };
 
-// Definition of generate_alphabet_symbols
 vector<char> generate_alphabet_symbols(int count) {
     vector<char> symbols;
     for (char ch = 'a'; size_t(symbols.size()) < count; ++ch) {
@@ -248,7 +246,7 @@ int main() {
         cin >> playAgain;
 
         if (playAgain != 'y' && playAgain != 'Y') {
-            break; // Exit the loop if the user doesn't want to play again
+            break;
         }
     }
 
