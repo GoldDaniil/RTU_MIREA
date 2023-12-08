@@ -127,19 +127,65 @@ private:
                 else {
                     // правила для мертвой клетки:
                     //// 2. если у мертвой клетки ровно 3 соседа, она оживает
-                    //if (neighbors == 3) {
-                    //    new_grid[i][j].state = ALIVE;
-                    //    new_grid[i][j].age = 1; // устанавливаем возраст в 1 для новой живой клетки
-                    //}
+                    if (neighbors == 3) {
+                        new_grid[i][j].state = ALIVE;
+                        new_grid[i][j].age = 1; // устанавливаем возраст в 1 для новой живой клетки
+                    }
 
-    
 
-                }        
+
+                }
             }
         }
 
-        grid = new_grid;    // Обновление текущей игровой сетки
+        grid = new_grid;    // обновление 
     }
+
+
+//private:
+//    void evolve() {
+//        vector<vector<Cell>> new_grid(size, vector<Cell>(size, Cell()));
+//
+//        // процесс эволюции игры
+//        for (int i = 0; i < size; ++i) {
+//            for (int j = 0; j < size; ++j) {
+//                int neighbors = count_neighbors(grid, i, j);
+//
+//                // проверка состояния текущей клетки (живая или мертвая)
+//                if (grid[i][j].state == ALIVE) {
+//                    // правила для живой клетки:
+//                    // 1. если у клетки 2 или 3 соседа, она остается живой, иначе она умирает
+//                    new_grid[i][j].state = (neighbors == 2 || neighbors == 3) ? ALIVE : DEAD;
+//
+//                    // если клетка осталась живой, увеличиваем её возраст на 1
+//                    if (new_grid[i][j].state == ALIVE) {
+//                        if (grid[i][j].age < MAX_AGE) {
+//                            new_grid[i][j].age = grid[i][j].age + 1;
+//                        }
+//                        else {
+//                            // если возраст достиг максимального уровня, микроб погибает
+//                            new_grid[i][j].state = DEAD;
+//                            new_grid[i][j].age = 0;  // возраст сбрасывается
+//                        }
+//                    }
+//                }
+//                else {
+//                    // правила для мертвой клетки:
+//                    // мертвая клетка всегда имеет возраст 0
+//                    new_grid[i][j].state = DEAD;
+//                    new_grid[i][j].age = 0;
+//                }
+//                //else {
+//                //    // правила для мертвой клетки:
+//                //    // мертвая клетка всегда имеет возраст 0
+//                //    new_grid[i][j].state = DEAD;
+//                //    new_grid[i][j].age = 0;
+//                //}
+//            }
+//        }
+//
+//        grid = new_grid;    // обновление
+//    }
 
     int count_neighbors(const vector<vector<Cell>>& board, int x, int y) const {
         int count = 0;
