@@ -9,7 +9,6 @@ using namespace std;
 
 HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
-// Forward declaration of generate_alphabet_symbols
 vector<char> generate_alphabet_symbols(int count);
 
 enum CellState { DEAD = 0, ALIVE = 1, MAX_AGE = 12 };
@@ -39,7 +38,7 @@ public:
         }
         cout << endl;
 
-        selected_symbol = symbols[0]; // Let the computer choose the first symbol
+        selected_symbol = symbols[0];
 
         cout << "\nselected symbol for adaptation: " << selected_symbol << endl << endl;
 
@@ -171,7 +170,6 @@ private:
     char selected_symbol;
 };
 
-// Definition of generate_alphabet_symbols
 vector<char> generate_alphabet_symbols(int count) {
     vector<char> symbols;
     for (char ch = 'a'; size_t(symbols.size()) < count; ++ch) {
