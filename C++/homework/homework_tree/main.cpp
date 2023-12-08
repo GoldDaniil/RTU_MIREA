@@ -25,6 +25,55 @@ void comment_output() {
     SetConsoleTextAttribute(back_color, 0x07);
 }
 
+// void loan - 1 задача «Заем»
+void loan() { // правильно
+    double loan_S, monthly_payment_m, date_n, procent_p, object_r;
+    while (true) {
+        cout << "enter procent_p : " << endl;
+        if (!(cin >> procent_p)) {
+            cin.clear();
+            cin.ignore();
+            cout << "Error, you entered a non-numeric value!" << endl;
+            continue;
+        }
+        break;
+    }
+
+    object_r = procent_p / 100;
+    cout << "object_r : " << object_r << endl;
+
+    while (true) {
+        cout << "enter loan_S in rubles : " << endl;
+        if (!(cin >> loan_S)) {
+            cin.clear();
+            cin.ignore(INT_MAX, '\n');
+            cout << "Error, you entered a non-numeric value!" << endl;
+            continue;
+        }
+        break;
+    }
+    while (true) {
+        cout << "enter date_n : " << endl;
+        if (!(cin >> date_n)) {
+            cin.clear();
+            cin.ignore(INT_MAX, '\n');
+            cout << "Error, you entered a non-numeric value!" << endl;
+            continue;
+        }
+        break;
+    }
+
+    if ((12 * (pow((1 + object_r), object_r) - 1)) != 0 and (loan_S > 0 and object_r > 0 and date_n > 0)) {
+        monthly_payment_m = (loan_S * object_r * pow((1 + object_r), date_n)) / (12 * (pow((1 + object_r), date_n) - 1));
+        cout << "monthly_payment_m : " << monthly_payment_m << " in rubles for " << date_n << " months" << endl << endl;
+    }
+    else {
+        cout << "function m cannot be calculated" << endl << endl;
+    }
+}
+
+
+// class BinarySearch - 2 задача «Ссуда» - метод бинарного поиска
 class BinarySearch {
 public:
     double calculateMonthlyPayment(double loan_S, double object_r, int date_n) {
@@ -91,101 +140,12 @@ public:
     }
 };
 
-void loan() { // правильно
-    double loan_S, monthly_payment_m, date_n, procent_p, object_r;
-    while (true) {
-        cout << "enter procent_p : " << endl;
-        if (!(cin >> procent_p)) {
-            cin.clear();
-            cin.ignore();
-            cout << "Error, you entered a non-numeric value!" << endl;
-            continue;
-        }
-        break;
-    }
 
-    object_r = procent_p / 100;
-    cout << "object_r : " << object_r << endl;
-
-    while (true) {
-        cout << "enter loan_S in rubles : " << endl;
-        if (!(cin >> loan_S)) {
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
-            cout << "Error, you entered a non-numeric value!" << endl;
-            continue;
-        }
-        break;
-    }
-    while (true) {
-        cout << "enter date_n : " << endl;
-        if (!(cin >> date_n)) {
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
-            cout << "Error, you entered a non-numeric value!" << endl;
-            continue;
-        }
-        break;
-    }
-
-    if ((12 * (pow((1 + object_r), object_r) - 1)) != 0 and (loan_S > 0 and object_r > 0 and date_n > 0)) {
-        monthly_payment_m = (loan_S * object_r * pow((1 + object_r), date_n)) / (12 * (pow((1 + object_r), date_n) - 1));
-        cout << "monthly_payment_m : " << monthly_payment_m << " in rubles for " << date_n << " months" << endl << endl;
-    }
-    else {
-        cout << "function m cannot be calculated" << endl << endl;
-    }
-}
-//предыдущий вариант 2 задания
-int advance() {
-    double monthly_payment_mf, procent_p, t, object_r, monthly_payment_m, loan_S, date_n;;
-    bool f1 = false;
-    while (!f1) {
-        cout << "enter S:\n";
-        if (!(cin >> loan_S)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error\n";
-        }
-        cout << "enter m:\n";
-        if (!(cin >> monthly_payment_m)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error\n";
-        }
-        cout << "enter n:\n";
-        if (!(cin >> date_n)) {
-            cin.clear();
-            cin.ignore();
-            cout << "error\n";
-        }
-        else if (loan_S < 0 || monthly_payment_m < 0 || date_n < 0) {
-            cout << "error\n";
-        }
-        else {
-            f1 = true;
-        }
-    } //динамический шаг
-    //бинарный поиск - сравнение по колвам шагам
-    //подобрать начальный шаг
-
-    for (procent_p = 0; procent_p <= 300; procent_p += 0.01) {
-
-        object_r = procent_p / 100;
-        monthly_payment_mf = (loan_S * object_r * pow((1 + object_r), date_n)) / (12 * (pow((1 + object_r), date_n) - 1));
-
-        if (abs(monthly_payment_m - monthly_payment_mf) < 1) {
-            break;
-        }
-    }
-
-    cout << "\n" << procent_p << "%" << endl;
-    return 0;
-}
-//предыдущий вариант 2 задания
+// 3 и 4 задачи в одной функции - Задача «Копирование файла» - Задача «Фильтр».
 void working_w_files() { //правильно
     string line, line_two, out_two;
 
+    cout << "\nЗадача «Копирование файла»\n";
     ofstream out_file("text.txt");
     out_file << "asdkasodkaoskdpaskdoakspdkasodkpaosdkaposdkapsodkaopskd";
 
@@ -197,6 +157,7 @@ void working_w_files() { //правильно
     }
     myText.close();
 
+    cout << "\nЗадача «Фильтр»\n";
     ofstream out("text.txt");
     out << "34a43a34atf3gfd";
     out.close();
@@ -215,6 +176,7 @@ void working_w_files() { //правильно
     cout << endl << endl;
 }
 
+// 5 задача задача «Сортировка букв»
 void letter_sorting() {
 #ifdef _WIN32
     SetConsoleCP(65001);
@@ -239,6 +201,8 @@ void letter_sorting() {
     cout << lum << endl;
 }
 
+
+// лаунчер заданий
 void launcher() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     char task_number_char;
@@ -275,7 +239,6 @@ void launcher() {
             }
             else {
                 stringstream(task_number_str) >> task_number_int;
-                // cout << "u enter : " << task_number_int  << endl;
                 break;
             }
         }
@@ -283,6 +246,7 @@ void launcher() {
         switch (task_number_int) {
         case 1:
             cout << "\n";
+            //первая задача Задача «Заем»
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "first task - 'Loan' \n";
             SetConsoleTextAttribute(back_color, 0x07);
@@ -290,15 +254,16 @@ void launcher() {
             break;
         case 2:
             cout << "\n";
+            //вторая задача Задача «Ссуда»
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "second task - 'Advance' \n";
             SetConsoleTextAttribute(back_color, 0x07);
             BinarySearch loan_task;
             loan_task.calculateAndPrintInterestRate();
-            //advance();
             break;
         case 3:
             cout << "\n";
+            //3 и 4 задачи в одной функции - Задача «Копирование файла» - Задача «Фильтр».
             SetConsoleTextAttribute(back_color, 0x0a);
             cout << "third task - 'Copying a file' \n";
             SetConsoleTextAttribute(back_color, 0x07);
@@ -306,8 +271,9 @@ void launcher() {
             break;
         case 4:
             cout << "\n";
+            //5 задача задача «Сортировка букв»
             SetConsoleTextAttribute(back_color, 0x0a);
-            cout << "fourth task - 'Filter' \n' \n";
+            cout << "fourth task - 'Filter' \n";
             SetConsoleTextAttribute(back_color, 0x07);
             letter_sorting();
             break;
