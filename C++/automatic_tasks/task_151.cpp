@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <ctime>
 
+using namespace std;
+
 const int screenWidth = 180;
 const int screenHeight = 22;
 const int numHerbivores = 70;
@@ -13,6 +15,7 @@ void initializePopulation(int population[][2], int size) {
         population[i][0] = rand() % screenWidth;
         population[i][1] = rand() % screenHeight;
 
+        // Рандомно определите направление по вертикали (вверх/вниз)
         int direction = rand() % 2 == 0 ? 1 : -1;
         population[i][1] += direction * (screenHeight / 2);
         population[i][1] = (population[i][1] + screenHeight) % screenHeight;
@@ -66,36 +69,16 @@ void simulateInteraction(int herbivores[][2], int predators[][2]) {
     }
 }
 
-void applyNaturalDisaster(int herbivores[][2], int predators[][2], double disasterProbability) {
-    if (disasterProbability <= 30.0) {
-        // 0% to 30% probability - 15 herbivores and 5 predators die
-        for (int i = 0; i < 15; ++i) {
+void simulateEnvironmentalEvents(int herbivores[][2], int predators[][2], double probability) {
+    for (int i = 0; i < numHerbivores; ++i) {
+        if (rand() % 100 < probability) {
             herbivores[i][0] = -1;
             herbivores[i][1] = -1;
-        }
-        for (int i = 0; i < 5; ++i) {
-            predators[i][0] = -1;
-            predators[i][1] = -1;
         }
     }
-    else if (disasterProbability <= 60.0) {
-        // 30% to 60% probability - 30 herbivores and 15 predators die
-        for (int i = 0; i < 30; ++i) {
-            herbivores[i][0] = -1;
-            herbivores[i][1] = -1;
-        }
-        for (int i = 0; i < 15; ++i) {
-            predators[i][0] = -1;
-            predators[i][1] = -1;
-        }
-    }
-    else {
-        // 60% to 100% probability - 45 herbivores and 30 predators die
-        for (int i = 0; i < 45; ++i) {
-            herbivores[i][0] = -1;
-            herbivores[i][1] = -1;
-        }
-        for (int i = 0; i < 30; ++i) {
+
+    for (int i = 0; i < numPredators; ++i) {
+        if (rand() % 100 < probability) {
             predators[i][0] = -1;
             predators[i][1] = -1;
         }
@@ -103,6 +86,8 @@ void applyNaturalDisaster(int herbivores[][2], int predators[][2], double disast
 }
 
 int main() {
+    cout << "time\n";
+
     srand(static_cast<unsigned>(time(0)));
 
     int herbivores[numHerbivores][2];
@@ -111,21 +96,20 @@ int main() {
     initializePopulation(herbivores, numHerbivores);
     initializePopulation(predators, numPredators);
 
-    double disasterProbability;
-    std::cout << "Enter the probability of natural disasters (0 to 100): ";
-    std::cin >> disasterProbability;
-
     for (int i = 0; i < 100; ++i) {
-        system("cls");
+        //system("clear");  // For Linux/Mac
+        system("cls");  // For Windows
 
         simulateInteraction(herbivores, predators);
-        applyNaturalDisaster(herbivores, predators, disasterProbability);
-
         printPopulation(herbivores, numHerbivores, '0');
         printPopulation(predators, numPredators, '1');
 
         movePopulation(herbivores, numHerbivores);
         movePopulation(predators, numPredators);
+
+        // Simulate environmental events with a probability of 70% to 100%
+        double environmentalEventProbability = 70 + rand() % 31;
+        simulateEnvironmentalEvents(herbivores, predators, environmentalEventProbability);
 
         std::cout << "Press Enter to continue...";
         std::cin.ignore();
