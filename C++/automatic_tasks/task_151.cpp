@@ -1,9 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <windows.h>
-HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-using namespace std;
+#include <cmath>
 
 #ifdef _WIN32
 #define CLEAR_SCREEN "cls"
@@ -13,10 +11,9 @@ using namespace std;
 
 const char predatorSymbol = 'P';
 const char herbivoreSymbol = 'H';
-
-const char grassSymbol = '#'; 
+const char grassSymbol = '#';
 const int screenWidth = 180;
-const int screenHeight = 22;
+const int screenHeight = 40;
 
 void initializeGrid(char grid[][screenWidth]) {
     for (int i = 0; i < screenHeight; ++i) {
@@ -106,13 +103,19 @@ void herbivoreEatGrass(char grid[][screenWidth], int herbivoreX, int herbivoreY)
     }
 }
 
+void predatorEatHerbivore(char grid[][screenWidth], int predatorX, int predatorY, int herbivoreX, int herbivoreY) {
+    if (isAdjacent(predatorX, predatorY, herbivoreX, herbivoreY)) {
+        grid[herbivoreX][herbivoreY] = ' '; // Clear herbivore
+    }
+}
+
 int main() {
     srand(static_cast<unsigned>(time(0)));
 
     char grid[screenHeight][screenWidth];
     initializeGrid(grid);
 
-    int predatorPopulation = 40;
+    int predatorPopulation = 60;
     int herbivorePopulation = 40;
     int grassPopulation = 100;
 
@@ -130,6 +133,20 @@ int main() {
         moveRandomly(grid, predatorSymbol);
         moveRandomly(grid, herbivoreSymbol);
         herbivoreEatGrass(grid, 0, 0); // Assuming there is only one herbivore at position (0, 0)
+
+        for (int i = 0; i < screenHeight; ++i) {
+            for (int j = 0; j < screenWidth; ++j) {
+                if (grid[i][j] == predatorSymbol) {
+                    for (int k = 0; k < screenHeight; ++k) {
+                        for (int l = 0; l < screenWidth; ++l) {
+                            if (grid[k][l] == herbivoreSymbol) {
+                                predatorEatHerbivore(grid, i, j, k, l);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     return 0;
