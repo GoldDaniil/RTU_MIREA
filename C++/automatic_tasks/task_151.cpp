@@ -42,11 +42,13 @@ void printGrid(const char grid[][screenWidth], int herbivoreCount, int predatorC
         std::cout << "Summer";
         break;
     case 1:
-    case 2:
         std::cout << "Autumn";
         break;
-    case 3:
+    case 2:
         std::cout << "Winter";
+        break;
+    case 3:
+        std::cout << "Spring";
         break;
     default:
         std::cout << "Spring";
