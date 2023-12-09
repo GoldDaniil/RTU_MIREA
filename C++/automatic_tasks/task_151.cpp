@@ -23,7 +23,12 @@ void initializeGrid(char grid[][screenWidth]) {
     }
 }
 
-void printGrid(const char grid[][screenWidth]) {
+void printGrid(const char grid[][screenWidth], int herbivoreCount, int predatorCount, int deadHerbivoreCount, int remainingGrassCount) {
+    std::cout << "Herbivores: " << herbivoreCount
+        << " | Predators: " << predatorCount
+        << " | Dead Herbivores: " << deadHerbivoreCount
+        << " | Remaining Grass: " << remainingGrassCount << std::endl << std::endl << std::endl << std::endl;
+
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             std::cout << grid[i][j];
@@ -85,27 +90,29 @@ void moveRandomly(char grid[][screenWidth], char animalSymbol) {
     }
 }
 
-void eatGrass(char grid[][screenWidth], int x, int y) {
+void eatGrass(char grid[][screenWidth], int x, int y, int& remainingGrassCount) {
     grid[x][y] = ' '; // Clear grass
+    --remainingGrassCount;
 }
 
 bool isAdjacent(int x1, int y1, int x2, int y2) {
     return abs(x1 - x2) <= 1 && abs(y1 - y2) <= 1;
 }
 
-void herbivoreEatGrass(char grid[][screenWidth], int herbivoreX, int herbivoreY) {
+void herbivoreEatGrass(char grid[][screenWidth], int herbivoreX, int herbivoreY, int& remainingGrassCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j] == grassSymbol && isAdjacent(i, j, herbivoreX, herbivoreY)) {
-                eatGrass(grid, i, j);
+                eatGrass(grid, i, j, remainingGrassCount);
             }
         }
     }
 }
 
-void predatorEatHerbivore(char grid[][screenWidth], int predatorX, int predatorY, int herbivoreX, int herbivoreY) {
+void predatorEatHerbivore(char grid[][screenWidth], int predatorX, int predatorY, int herbivoreX, int herbivoreY, int& deadHerbivoreCount) {
     if (isAdjacent(predatorX, predatorY, herbivoreX, herbivoreY)) {
         grid[herbivoreX][herbivoreY] = ' '; // Clear herbivore
+        ++deadHerbivoreCount;
     }
 }
 
@@ -117,22 +124,27 @@ int main() {
 
     int predatorPopulation = 60;
     int herbivorePopulation = 40;
-    int grassPopulation = 100;
+    int grassPopulation = 200;
 
     placeRandomAnimals(grid, predatorSymbol, predatorPopulation);
     placeRandomAnimals(grid, herbivoreSymbol, herbivorePopulation);
     placeRandomGrass(grid, grassPopulation);
 
+    int herbivoreCount = herbivorePopulation;
+    int predatorCount = predatorPopulation;
+    int deadHerbivoreCount = 0;
+    int remainingGrassCount = grassPopulation;
+
     while (true) {
         system(CLEAR_SCREEN);
-        printGrid(grid);
+        printGrid(grid, herbivoreCount, predatorCount, deadHerbivoreCount, remainingGrassCount);
 
         std::cout << "Press Enter to move animals...";
         std::cin.ignore(); // Wait for Enter key
 
         moveRandomly(grid, predatorSymbol);
         moveRandomly(grid, herbivoreSymbol);
-        herbivoreEatGrass(grid, 0, 0); // Assuming there is only one herbivore at position (0, 0)
+        herbivoreEatGrass(grid, 0, 0, remainingGrassCount); // Assuming there is only one herbivore at position (0, 0)
 
         for (int i = 0; i < screenHeight; ++i) {
             for (int j = 0; j < screenWidth; ++j) {
@@ -140,13 +152,17 @@ int main() {
                     for (int k = 0; k < screenHeight; ++k) {
                         for (int l = 0; l < screenWidth; ++l) {
                             if (grid[k][l] == herbivoreSymbol) {
-                                predatorEatHerbivore(grid, i, j, k, l);
+                                predatorEatHerbivore(grid, i, j, k, l, deadHerbivoreCount);
                             }
                         }
                     }
                 }
             }
         }
+
+        // Recalculate counts
+        herbivoreCount = herbivorePopulation - deadHerbivoreCount;
+        predatorCount = predatorPopulation;
     }
 
     return 0;
