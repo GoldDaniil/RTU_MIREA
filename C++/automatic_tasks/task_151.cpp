@@ -15,7 +15,7 @@ const char grassSymbol = '#';
 const int screenWidth = 180;
 const int screenHeight = 40;
 int predatorPopulation = 100;
-int herbivorePopulation = 100;
+int herbivorePopulation = 200;
 int grassPopulation = 400;
 
 void initializeGrid(char grid[][screenWidth]) {
@@ -125,6 +125,7 @@ void herbivoreEatGrass(char grid[][screenWidth], int herbivoreX, int herbivoreY,
         }
     }
 }
+
 
 void predatorEatHerbivore(char grid[][screenWidth], int predatorX, int predatorY, int herbivoreX, int herbivoreY, int& deadHerbivoreCount) {
     if (isAdjacent(predatorX, predatorY, herbivoreX, herbivoreY)) {
