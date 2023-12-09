@@ -69,30 +69,39 @@ void moveRandomly(char grid[][screenWidth], char animalSymbol) {
 
                 // Move in a random direction
                 int direction = rand() % 4;
+                int newI = i;
+                int newJ = j;
+
                 switch (direction) {
                 case 0: // Move up
                     if (i > 0) {
-                        --i;
+                        newI = i - 1;
                     }
                     break;
                 case 1: // Move down
                     if (i < screenHeight - 1) {
-                        ++i;
+                        newI = i + 1;
                     }
                     break;
                 case 2: // Move left
                     if (j > 0) {
-                        --j;
+                        newJ = j - 1;
                     }
                     break;
                 case 3: // Move right
                     if (j < screenWidth - 1) {
-                        ++j;
+                        newJ = j + 1;
                     }
                     break;
                 }
 
-                grid[i][j] = animalSymbol; // Update position
+                // Check if the new position is grass, and if so, revert the changes
+                if (grid[newI][newJ] == grassSymbol) {
+                    newI = i;
+                    newJ = j;
+                }
+
+                grid[newI][newJ] = animalSymbol; // Update position
             }
         }
     }
