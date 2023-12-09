@@ -17,6 +17,8 @@ const int screenHeight = 40;
 int predatorPopulation = 100;
 int herbivorePopulation = 200;
 int grassPopulation = 400;
+const double grassRegrowthRate = 0.01; // Например, 20%
+
 
 void initializeGrid(char grid[][screenWidth]) {
     for (int i = 0; i < screenHeight; ++i) {
@@ -182,10 +184,14 @@ int main() {
             }
         }
 
+        // Calculate regrowth of grass
+        int regrowthAmount = static_cast<int>(grassPopulation * grassRegrowthRate);
+        placeRandomGrass(grid, regrowthAmount);
+
         // Recalculate counts
         herbivoreCount = herbivorePopulation - deadHerbivoreCount;
         predatorCount = predatorPopulation;
+        remainingGrassCount += regrowthAmount;
     }
-
     return 0;
 }
