@@ -15,9 +15,9 @@ const char grassSymbol = '#';
 const int screenWidth = 180;
 const int screenHeight = 40;
 int predatorPopulation = 100;
-int herbivorePopulation = 200;
+int herbivorePopulation = 300;
 int grassPopulation = 400;
-const double grassRegrowthRate = 0.01; // Например, 20%
+const double grassRegrowthRate = 0.031; // Например, 20%
 
 
 void initializeGrid(char grid[][screenWidth]) {
