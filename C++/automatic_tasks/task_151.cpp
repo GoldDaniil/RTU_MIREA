@@ -17,8 +17,9 @@ const int screenHeight = 40;
 int predatorPopulation = 100;
 int herbivorePopulation = 300;
 int grassPopulation = 400;
-const double grassRegrowthRate = 0.031; // Например, 20%
-
+const double grassRegrowthRateSummer = 0.031; // Summer regrowth rate, e.g., 20%
+const double grassRegrowthRateSpringFall = 0.0155; // Spring and fall regrowth rate, half of summer
+const double grassRegrowthRateWinter = 0.0; // Winter regrowth rate, no regrowth
 
 void initializeGrid(char grid[][screenWidth]) {
     for (int i = 0; i < screenHeight; ++i) {
@@ -28,11 +29,31 @@ void initializeGrid(char grid[][screenWidth]) {
     }
 }
 
-void printGrid(const char grid[][screenWidth], int herbivoreCount, int predatorCount, int deadHerbivoreCount, int remainingGrassCount) {
+void printGrid(const char grid[][screenWidth], int herbivoreCount, int predatorCount, int deadHerbivoreCount, int remainingGrassCount, int currentStep, int currentSeason) {
     std::cout << "Herbivores: " << herbivoreCount
         << " | Predators: " << predatorCount
         << " | Dead Herbivores: " << deadHerbivoreCount
-        << " | Remaining Grass: " << remainingGrassCount << std::endl << std::endl << std::endl << std::endl;
+        << " | Remaining Grass: " << remainingGrassCount
+        << " | Step: " << currentStep + 1
+        << " | Season: ";
+
+    switch (currentSeason) {
+    case 0:
+        std::cout << "Summer";
+        break;
+    case 1:
+    case 2:
+        std::cout << "Autumn";
+        break;
+    case 3:
+        std::cout << "Winter";
+        break;
+    default:
+        std::cout << "Spring";
+        break;
+    }
+
+    std::cout << std::endl << std::endl << std::endl;
 
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
@@ -150,9 +171,12 @@ int main() {
     int deadHerbivoreCount = 0;
     int remainingGrassCount = grassPopulation;
 
-    while (true) {
+    int steps = 0;
+    int currentSeason = 0; // 0: Summer, 1: Spring, 2: Fall, 3: Winter
+
+    while (steps < 24) {
         system(CLEAR_SCREEN);
-        printGrid(grid, herbivoreCount, predatorCount, deadHerbivoreCount, remainingGrassCount);
+        printGrid(grid, herbivoreCount, predatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason);
 
         std::cout << "Press Enter to move animals...";
         std::cin.ignore(); // Wait for Enter key
@@ -184,14 +208,39 @@ int main() {
             }
         }
 
-        // Calculate regrowth of grass
-        int regrowthAmount = static_cast<int>(grassPopulation * grassRegrowthRate);
+        // Calculate regrowth of grass based on the current season
+        double currentRegrowthRate;
+        switch (currentSeason) {
+        case 0: // Summer
+            currentRegrowthRate = grassRegrowthRateSummer;
+            break;
+        case 1:
+            currentRegrowthRate = grassRegrowthRateSpringFall;
+            break;
+        case 2:
+            currentRegrowthRate = grassRegrowthRateSpringFall;
+            break;
+        case 3: // Winter
+            currentRegrowthRate = grassRegrowthRateWinter;
+            break;
+        }
+
+        int regrowthAmount = static_cast<int>(grassPopulation * currentRegrowthRate);
         placeRandomGrass(grid, regrowthAmount);
 
         // Recalculate counts
         herbivoreCount = herbivorePopulation - deadHerbivoreCount;
         predatorCount = predatorPopulation;
         remainingGrassCount += regrowthAmount;
+
+        // Update season every 6 steps
+        if ((steps + 1) % 6 == 0) {
+            currentSeason = (currentSeason + 1) % 4;
+        }
+
+        ++steps;
     }
+
+
     return 0;
 }
