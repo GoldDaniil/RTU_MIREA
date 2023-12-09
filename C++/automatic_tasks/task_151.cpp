@@ -14,6 +14,9 @@ const char herbivoreSymbol = 'H';
 const char grassSymbol = '#';
 const int screenWidth = 180;
 const int screenHeight = 40;
+int predatorPopulation = 60;
+int herbivorePopulation = 40;
+int grassPopulation = 200;
 
 void initializeGrid(char grid[][screenWidth]) {
     for (int i = 0; i < screenHeight; ++i) {
