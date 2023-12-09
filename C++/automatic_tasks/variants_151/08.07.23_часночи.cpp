@@ -1,115 +1,268 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
 
+#ifdef _WIN32
+#define CLEAR_SCREEN "cls"
+#else
+#define CLEAR_SCREEN "clear"
+#endif
+
+const char predatorSymbol = 'P';
+const char herbivoreSymbol = 'H';
+const char grassSymbol = '#';
 const int screenWidth = 180;
-const int screenHeight = 22;
-const int numHerbivores = 70;
-const int numPredators = 40;
-const int movementRange = 1;
+const int screenHeight = 40;
+int predatorPopulation = 100;
+int herbivorePopulation = 30;
+int grassPopulation = 400;
+//const double grassRegrowthRate = 0.031; // Например, 20%
 
-void initializePopulation(int population[][2], int size) {
-    for (int i = 0; i < size; ++i) {
-        population[i][0] = rand() % screenWidth;
-        population[i][1] = rand() % screenHeight;
+const int DAYS_IN_STEP = 15;
+const int STEPS_IN_SEASON = 6;
+const int MONTHS_IN_SEASON = STEPS_IN_SEASON / 2;
+const int MONTHS_IN_YEAR = 12;
+const int SUMMER = 0;
+const int FALL = 1;
+const int WINTER = 2;
+const int SPRING = 3;
 
-        // Рандомно определите направление по вертикали (вверх/вниз)
-        int direction = rand() % 2 == 0 ? 1 : -1;
-        population[i][1] += direction * (screenHeight / 2);
-        population[i][1] = (population[i][1] + screenHeight) % screenHeight;
+int currentMonth = 0;
+int currentSeason = SUMMER;
+
+
+void initializeGrid(char grid[][screenWidth]) {
+    for (int i = 0; i < screenHeight; ++i) {
+        for (int j = 0; j < screenWidth; ++j) {
+            grid[i][j] = ' ';
+        }
     }
 }
 
-void printPopulation(const int population[][2], int size, char symbol) {
-    char screen[screenHeight][screenWidth];
-    for (int i = 0; i < screenHeight; ++i) {
-        for (int j = 0; j < screenWidth; ++j) {
-            screen[i][j] = ' ';
-        }
-    }
-
-    for (int i = 0; i < size; ++i) {
-        int x = population[i][0];
-        int y = population[i][1];
-        screen[y][x] = symbol;
-    }
+void printGrid(const char grid[][screenWidth], int herbivoreCount, int predatorCount, int deadHerbivoreCount, int remainingGrassCount) {
+    std::cout << "Herbivores: " << herbivoreCount
+        << " | Predators: " << predatorCount
+        << " | Dead Herbivores: " << deadHerbivoreCount
+        << " | Remaining Grass: " << remainingGrassCount << std::endl << std::endl << std::endl << std::endl;
 
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
-            std::cout << screen[i][j];
+            if (grid[i][j] == grassSymbol) {
+                std::cout << "\033[1;32m" << grid[i][j] << "\033[0m"; // Set color to green for grass
+            }
+            else {
+                std::cout << grid[i][j];
+            }
         }
         std::cout << std::endl;
     }
 }
 
-void movePopulation(int population[][2], int size) {
-    for (int i = 0; i < size; ++i) {
-        int deltaX = rand() % (2 * movementRange + 1) - movementRange;
-        int deltaY = rand() % (2 * movementRange + 1) - movementRange;
-
-        population[i][0] = (population[i][0] + deltaX + screenWidth) % screenWidth;
-        population[i][1] = (population[i][1] + deltaY + screenHeight) % screenHeight;
+void placeRandomAnimals(char grid[][screenWidth], char animalSymbol, int population) {
+    for (int i = 0; i < population; ++i) {
+        int x = rand() % screenHeight;
+        int y = rand() % screenWidth;
+        grid[x][y] = animalSymbol;
     }
 }
 
-void simulateInteraction(int herbivores[][2], int predators[][2]) {
-    for (int i = 0; i < numHerbivores; ++i) {
-        for (int j = 0; j < numPredators; ++j) {
-            int distanceX = abs(herbivores[i][0] - predators[j][0]);
-            int distanceY = abs(herbivores[i][1] - predators[j][1]);
+void placeRandomGrass(char grid[][screenWidth], int population) {
+    for (int i = 0; i < population; ++i) {
+        int x = rand() % screenHeight;
+        int y = rand() % screenWidth;
+        grid[x][y] = grassSymbol;
+    }
+}
 
-            if (distanceX <= 1 && distanceY <= 1) {
-                // Herbivore eaten by predator
-                herbivores[i][0] = -1;
-                herbivores[i][1] = -1;
+void moveRandomly(char grid[][screenWidth], char animalSymbol) {
+    for (int i = 0; i < screenHeight; ++i) {
+        for (int j = 0; j < screenWidth; ++j) {
+            if (grid[i][j] == animalSymbol) {
+                grid[i][j] = ' '; // Clear current position
+
+                // Move in a random direction
+                int direction = rand() % 4;
+                int newI = i;
+                int newJ = j;
+
+                switch (direction) {
+                case 0: // Move up
+                    if (i > 0) {
+                        newI = i - 1;
+                    }
+                    break;
+                case 1: // Move down
+                    if (i < screenHeight - 1) {
+                        newI = i + 1;
+                    }
+                    break;
+                case 2: // Move left
+                    if (j > 0) {
+                        newJ = j - 1;
+                    }
+                    break;
+                case 3: // Move right
+                    if (j < screenWidth - 1) {
+                        newJ = j + 1;
+                    }
+                    break;
+                }
+
+                // Check if the new position is grass, and if so, revert the changes
+                if (grid[newI][newJ] == grassSymbol) {
+                    newI = i;
+                    newJ = j;
+                }
+
+                grid[newI][newJ] = animalSymbol; // Update position
             }
         }
     }
 }
 
-void simulateEnvironmentalEvents(int herbivores[][2], int predators[][2], double probability) {
-    for (int i = 0; i < numHerbivores; ++i) {
-        if (rand() % 100 < probability) {
-            herbivores[i][0] = -1;
-            herbivores[i][1] = -1;
-        }
-    }
+void eatGrass(char grid[][screenWidth], int x, int y, int& remainingGrassCount) {
+    grid[x][y] = ' '; // Clear grass
+    --remainingGrassCount;
+}
 
-    for (int i = 0; i < numPredators; ++i) {
-        if (rand() % 100 < probability) {
-            predators[i][0] = -1;
-            predators[i][1] = -1;
+bool isAdjacent(int x1, int y1, int x2, int y2) {
+    return abs(x1 - x2) <= 1 && abs(y1 - y2) <= 1;
+}
+
+void herbivoreEatGrass(char grid[][screenWidth], int herbivoreX, int herbivoreY, int& remainingGrassCount) {
+    for (int i = std::max(0, herbivoreX - 1); i < std::min(screenHeight, herbivoreX + 2); ++i) {
+        for (int j = std::max(0, herbivoreY - 1); j < std::min(screenWidth, herbivoreY + 2); ++j) {
+            if (grid[i][j] == grassSymbol && (i != herbivoreX || j != herbivoreY)) {
+                eatGrass(grid, i, j, remainingGrassCount);
+            }
         }
     }
+}
+
+void predatorEatHerbivore(char grid[][screenWidth], int predatorX, int predatorY, int herbivoreX, int herbivoreY, int& deadHerbivoreCount) {
+    if (isAdjacent(predatorX, predatorY, herbivoreX, herbivoreY)) {
+        grid[herbivoreX][herbivoreY] = ' '; // Clear herbivore
+        ++deadHerbivoreCount;
+    }
+}
+
+void updateSeasonAndMonth() {
+    static int daysCounter = 0;
+
+    if (daysCounter == 45) {  // Change season every 45 days (3 months)
+        currentMonth = (currentMonth + 1) % MONTHS_IN_YEAR;
+        if (currentMonth % MONTHS_IN_SEASON == 0) {
+            currentSeason = (currentSeason + 1) % 4;
+        }
+        daysCounter = 0;
+    }
+    else {
+        ++daysCounter;
+    }
+}
+
+void displayDayAndSeason() {
+    std::cout << "\033[1;37m";  // Set color to white
+    std::cout << "Day " << currentMonth * MONTHS_IN_SEASON + 1 << " - Season: ";
+    switch (currentSeason) {
+    case SUMMER:
+        std::cout << "Summer  ";
+        break;
+    case FALL:
+        std::cout << "Fall   ";
+        break;
+    case WINTER:
+        std::cout << "Winter   ";
+        break;
+    case SPRING:
+        std::cout << "Spring   ";
+        break;
+    }
+    std::cout << "\033[0m";  // Reset color
 }
 
 int main() {
     srand(static_cast<unsigned>(time(0)));
 
-    int herbivores[numHerbivores][2];
-    int predators[numPredators][2];
+    char grid[screenHeight][screenWidth];
+    initializeGrid(grid);
 
-    initializePopulation(herbivores, numHerbivores);
-    initializePopulation(predators, numPredators);
+    placeRandomAnimals(grid, predatorSymbol, predatorPopulation);
+    placeRandomAnimals(grid, herbivoreSymbol, herbivorePopulation);
+    placeRandomGrass(grid, grassPopulation);
 
-    for (int i = 0; i < 100; ++i) {
-        //system("clear");  // For Linux/Mac
-        system("cls");  // For Windows
+    int herbivoreCount = herbivorePopulation;
+    int predatorCount = predatorPopulation;
+    int deadHerbivoreCount = 0;
+    int remainingGrassCount = grassPopulation;
 
-        simulateInteraction(herbivores, predators);
-        printPopulation(herbivores, numHerbivores, '0');
-        printPopulation(predators, numPredators, '1');
+    while (true) {
+        system(CLEAR_SCREEN);
+        displayDayAndSeason();
+        printGrid(grid, herbivoreCount, predatorCount, deadHerbivoreCount, remainingGrassCount);
 
-        movePopulation(herbivores, numHerbivores);
-        movePopulation(predators, numPredators);
+        std::cout << "Press Enter to move animals and advance 15 days...";
+        std::cin.get(); // Wait for Enter key
 
-        // Simulate environmental events with a probability of 70% to 100%
-        double environmentalEventProbability = 70 + rand() % 31;
-        simulateEnvironmentalEvents(herbivores, predators, environmentalEventProbability);
+        for (int step = 0; step < STEPS_IN_SEASON; ++step) {
 
-        std::cout << "Press Enter to continue...";
-        std::cin.ignore();
+            for (int day = 0; day < DAYS_IN_STEP; ++day) {
+
+                moveRandomly(grid, predatorSymbol);
+                moveRandomly(grid, herbivoreSymbol);
+
+                // Herbivores eat grass after moving
+                for (int i = 0; i < screenHeight; ++i) {
+                    for (int j = 0; j < screenWidth; ++j) {
+                        if (grid[i][j] == herbivoreSymbol) {
+                            herbivoreEatGrass(grid, i, j, remainingGrassCount);
+                        }
+                    }
+                }
+
+                // Predators eat herbivores
+                for (int i = 0; i < screenHeight; ++i) {
+                    for (int j = 0; j < screenWidth; ++j) {
+                        if (grid[i][j] == predatorSymbol) {
+                            for (int k = 0; k < screenHeight; ++k) {
+                                for (int l = 0; l < screenWidth; ++l) {
+                                    if (grid[k][l] == herbivoreSymbol) {
+                                        predatorEatHerbivore(grid, i, j, k, l, deadHerbivoreCount);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Calculate regrowth of grass based on the current season
+                double regrowthRate = 0.0;
+                switch (currentSeason) {
+                case SUMMER:
+                    regrowthRate = 0.005;
+                    break;
+                case FALL:
+                case SPRING:
+                    regrowthRate = 0.0025; // Reduced by half
+                    break;
+                case WINTER:
+                    regrowthRate = 0.0; // No regrowth
+                    break;
+                }
+
+                int regrowthAmount = static_cast<int>(remainingGrassCount * regrowthRate);
+                placeRandomGrass(grid, regrowthAmount);
+                remainingGrassCount += regrowthAmount;
+
+                // Update the season and month after each day
+                updateSeasonAndMonth();
+            }
+        }
+
+        // Recalculate counts
+        herbivoreCount = herbivorePopulation - deadHerbivoreCount;
+        predatorCount = predatorPopulation;
     }
-
     return 0;
 }
