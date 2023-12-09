@@ -119,13 +119,12 @@ bool isAdjacent(int x1, int y1, int x2, int y2) {
 void herbivoreEatGrass(char grid[][screenWidth], int herbivoreX, int herbivoreY, int& remainingGrassCount) {
     for (int i = std::max(0, herbivoreX - 1); i < std::min(screenHeight, herbivoreX + 2); ++i) {
         for (int j = std::max(0, herbivoreY - 1); j < std::min(screenWidth, herbivoreY + 2); ++j) {
-            if (grid[i][j] == grassSymbol) {
+            if (grid[i][j] == grassSymbol && (i != herbivoreX || j != herbivoreY)) {
                 eatGrass(grid, i, j, remainingGrassCount);
             }
         }
     }
 }
-
 
 void predatorEatHerbivore(char grid[][screenWidth], int predatorX, int predatorY, int herbivoreX, int herbivoreY, int& deadHerbivoreCount) {
     if (isAdjacent(predatorX, predatorY, herbivoreX, herbivoreY)) {
