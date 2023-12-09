@@ -14,9 +14,9 @@ const char herbivoreSymbol = 'H';
 const char grassSymbol = '#';
 const int screenWidth = 180;
 const int screenHeight = 40;
-int predatorPopulation = 60;
-int herbivorePopulation = 40;
-int grassPopulation = 200;
+int predatorPopulation = 100;
+int herbivorePopulation = 100;
+int grassPopulation = 400;
 
 void initializeGrid(char grid[][screenWidth]) {
     for (int i = 0; i < screenHeight; ++i) {
@@ -34,7 +34,12 @@ void printGrid(const char grid[][screenWidth], int herbivoreCount, int predatorC
 
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
-            std::cout << grid[i][j];
+            if (grid[i][j] == grassSymbol) {
+                std::cout << "\033[1;32m" << grid[i][j] << "\033[0m"; // Set color to green for grass
+            }
+            else {
+                std::cout << grid[i][j];
+            }
         }
         std::cout << std::endl;
     }
@@ -103,9 +108,9 @@ bool isAdjacent(int x1, int y1, int x2, int y2) {
 }
 
 void herbivoreEatGrass(char grid[][screenWidth], int herbivoreX, int herbivoreY, int& remainingGrassCount) {
-    for (int i = 0; i < screenHeight; ++i) {
-        for (int j = 0; j < screenWidth; ++j) {
-            if (grid[i][j] == grassSymbol && isAdjacent(i, j, herbivoreX, herbivoreY)) {
+    for (int i = std::max(0, herbivoreX - 1); i < std::min(screenHeight, herbivoreX + 2); ++i) {
+        for (int j = std::max(0, herbivoreY - 1); j < std::min(screenWidth, herbivoreY + 2); ++j) {
+            if (grid[i][j] == grassSymbol) {
                 eatGrass(grid, i, j, remainingGrassCount);
             }
         }
@@ -125,10 +130,6 @@ int main() {
     char grid[screenHeight][screenWidth];
     initializeGrid(grid);
 
-    int predatorPopulation = 60;
-    int herbivorePopulation = 40;
-    int grassPopulation = 200;
-
     placeRandomAnimals(grid, predatorSymbol, predatorPopulation);
     placeRandomAnimals(grid, herbivoreSymbol, herbivorePopulation);
     placeRandomGrass(grid, grassPopulation);
@@ -147,8 +148,17 @@ int main() {
 
         moveRandomly(grid, predatorSymbol);
         moveRandomly(grid, herbivoreSymbol);
-        herbivoreEatGrass(grid, 0, 0, remainingGrassCount); // Assuming there is only one herbivore at position (0, 0)
 
+        // Herbivores eat grass after moving
+        for (int i = 0; i < screenHeight; ++i) {
+            for (int j = 0; j < screenWidth; ++j) {
+                if (grid[i][j] == herbivoreSymbol) {
+                    herbivoreEatGrass(grid, i, j, remainingGrassCount);
+                }
+            }
+        }
+
+        // Predators eat herbivores
         for (int i = 0; i < screenHeight; ++i) {
             for (int j = 0; j < screenWidth; ++j) {
                 if (grid[i][j] == predatorSymbol) {
