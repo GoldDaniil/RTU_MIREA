@@ -15,22 +15,11 @@ const char grassSymbol = '#';
 const int screenWidth = 180;
 const int screenHeight = 40;
 int predatorPopulation = 100;
-int herbivorePopulation = 30;
+int herbivorePopulation = 300;
 int grassPopulation = 400;
-//const double grassRegrowthRate = 0.031; // Например, 20%
-
-const int DAYS_IN_STEP = 15;
-const int STEPS_IN_SEASON = 6;
-const int MONTHS_IN_SEASON = STEPS_IN_SEASON / 2;
-const int MONTHS_IN_YEAR = 12;
-const int SUMMER = 0;
-const int FALL = 1;
-const int WINTER = 2;
-const int SPRING = 3;
-
-int currentMonth = 0;
-int currentSeason = SUMMER;
-
+const double grassRegrowthRateSummer = 0.031; // Summer regrowth rate, e.g., 20%
+const double grassRegrowthRateSpringFall = 0.0155; // Spring and fall regrowth rate, half of summer
+const double grassRegrowthRateWinter = 0.0; // Winter regrowth rate, no regrowth
 
 void initializeGrid(char grid[][screenWidth]) {
     for (int i = 0; i < screenHeight; ++i) {
@@ -147,41 +136,6 @@ void predatorEatHerbivore(char grid[][screenWidth], int predatorX, int predatorY
     }
 }
 
-void updateSeasonAndMonth() {
-    static int daysCounter = 0;
-
-    if (daysCounter == 45) {  // Change season every 45 days (3 months)
-        currentMonth = (currentMonth + 1) % MONTHS_IN_YEAR;
-        if (currentMonth % MONTHS_IN_SEASON == 0) {
-            currentSeason = (currentSeason + 1) % 4;
-        }
-        daysCounter = 0;
-    }
-    else {
-        ++daysCounter;
-    }
-}
-
-void displayDayAndSeason() {
-    std::cout << "\033[1;37m";  // Set color to white
-    std::cout << "Day " << currentMonth * MONTHS_IN_SEASON + 1 << " - Season: ";
-    switch (currentSeason) {
-    case SUMMER:
-        std::cout << "Summer  ";
-        break;
-    case FALL:
-        std::cout << "Fall   ";
-        break;
-    case WINTER:
-        std::cout << "Winter   ";
-        break;
-    case SPRING:
-        std::cout << "Spring   ";
-        break;
-    }
-    std::cout << "\033[0m";  // Reset color
-}
-
 int main() {
     srand(static_cast<unsigned>(time(0)));
 
@@ -197,72 +151,76 @@ int main() {
     int deadHerbivoreCount = 0;
     int remainingGrassCount = grassPopulation;
 
-    while (true) {
+    int steps = 0;
+    int currentSeason = 0; // 0: Summer, 1: Spring, 2: Fall, 3: Winter
+
+    while (steps < 24) {
         system(CLEAR_SCREEN);
-        displayDayAndSeason();
         printGrid(grid, herbivoreCount, predatorCount, deadHerbivoreCount, remainingGrassCount);
 
-        std::cout << "Press Enter to move animals and advance 15 days...";
-        std::cin.get(); // Wait for Enter key
+        std::cout << "Step: " << steps + 1 << "/24 (Enter to continue)...";
+        std::cin.ignore(); // Wait for Enter key
 
-        for (int step = 0; step < STEPS_IN_SEASON; ++step) {
+        moveRandomly(grid, predatorSymbol);
+        moveRandomly(grid, herbivoreSymbol);
 
-            for (int day = 0; day < DAYS_IN_STEP; ++day) {
-
-                moveRandomly(grid, predatorSymbol);
-                moveRandomly(grid, herbivoreSymbol);
-
-                // Herbivores eat grass after moving
-                for (int i = 0; i < screenHeight; ++i) {
-                    for (int j = 0; j < screenWidth; ++j) {
-                        if (grid[i][j] == herbivoreSymbol) {
-                            herbivoreEatGrass(grid, i, j, remainingGrassCount);
-                        }
-                    }
+        // Herbivores eat grass after moving
+        for (int i = 0; i < screenHeight; ++i) {
+            for (int j = 0; j < screenWidth; ++j) {
+                if (grid[i][j] == herbivoreSymbol) {
+                    herbivoreEatGrass(grid, i, j, remainingGrassCount);
                 }
+            }
+        }
 
-                // Predators eat herbivores
-                for (int i = 0; i < screenHeight; ++i) {
-                    for (int j = 0; j < screenWidth; ++j) {
-                        if (grid[i][j] == predatorSymbol) {
-                            for (int k = 0; k < screenHeight; ++k) {
-                                for (int l = 0; l < screenWidth; ++l) {
-                                    if (grid[k][l] == herbivoreSymbol) {
-                                        predatorEatHerbivore(grid, i, j, k, l, deadHerbivoreCount);
-                                    }
-                                }
+        // Predators eat herbivores
+        for (int i = 0; i < screenHeight; ++i) {
+            for (int j = 0; j < screenWidth; ++j) {
+                if (grid[i][j] == predatorSymbol) {
+                    for (int k = 0; k < screenHeight; ++k) {
+                        for (int l = 0; l < screenWidth; ++l) {
+                            if (grid[k][l] == herbivoreSymbol) {
+                                predatorEatHerbivore(grid, i, j, k, l, deadHerbivoreCount);
                             }
                         }
                     }
                 }
-
-                // Calculate regrowth of grass based on the current season
-                double regrowthRate = 0.0;
-                switch (currentSeason) {
-                case SUMMER:
-                    regrowthRate = 0.005;
-                    break;
-                case FALL:
-                case SPRING:
-                    regrowthRate = 0.0025; // Reduced by half
-                    break;
-                case WINTER:
-                    regrowthRate = 0.0; // No regrowth
-                    break;
-                }
-
-                int regrowthAmount = static_cast<int>(remainingGrassCount * regrowthRate);
-                placeRandomGrass(grid, regrowthAmount);
-                remainingGrassCount += regrowthAmount;
-
-                // Update the season and month after each day
-                updateSeasonAndMonth();
             }
         }
+
+        // Calculate regrowth of grass based on the current season
+        double currentRegrowthRate;
+        switch (currentSeason) {
+        case 0: // Summer
+            currentRegrowthRate = grassRegrowthRateSummer;
+            break;
+        case 1:
+            currentRegrowthRate = grassRegrowthRateSpringFall;
+            break;
+        case 2:
+            currentRegrowthRate = grassRegrowthRateSpringFall;
+            break;
+        case 3: // Winter
+            currentRegrowthRate = grassRegrowthRateWinter;
+            break;
+        }
+
+        int regrowthAmount = static_cast<int>(grassPopulation * currentRegrowthRate);
+        placeRandomGrass(grid, regrowthAmount);
 
         // Recalculate counts
         herbivoreCount = herbivorePopulation - deadHerbivoreCount;
         predatorCount = predatorPopulation;
+        remainingGrassCount += regrowthAmount;
+
+        // Update season every 6 steps
+        if ((steps + 1) % 6 == 0) {
+            currentSeason = (currentSeason + 1) % 4;
+        }
+
+        ++steps;
     }
+
+
     return 0;
 }
