@@ -24,7 +24,6 @@ const double grassRegrowthRateSpringFall = 0.0155; // Spring and fall regrowth r
 const double grassRegrowthRateWinter = 0.0; // Winter regrowth rate, no regrowth
 const double deathProbabilityPerStep = 0.1; // Adjust the probability as needed
 
-
 struct Animal {
     char symbol;
     int age;
@@ -351,7 +350,48 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
     }
 }
 
+void checkStarvationHerbivores(Animal grid[][screenWidth], int& herbivoreCount, int& deadHerbivoreCount, int& remainingGrassCount) {
+    for (int i = 0; i < screenHeight; ++i) {
+        for (int j = 0; j < screenWidth; ++j) {
+            if (grid[i][j].symbol == herbivoreSymbolYoung || grid[i][j].symbol == herbivoreSymbolOld) {
+                int hungerThreshold = (grid[i][j].symbol == herbivoreSymbolYoung) ? youngHerbivoreHungerThreshold : oldHerbivoreHungerThreshold;
 
+                if (grid[i][j].stepsWithoutEating >= hungerThreshold) {
+                    // Herbivore died of starvation
+                    --herbivoreCount;
+                    ++deadHerbivoreCount;
+                    grid[i][j].symbol = ' ';
+                    grid[i][j].stepsWithoutEating = 0;
+                }
+                else {
+                    // Check if the herbivore has successfully eaten grass in the last month
+                    bool hasEaten = false;
+
+                    for (int k = std::max(0, i - 1); k < std::min(screenHeight, i + 2); ++k) {
+                        for (int l = std::max(0, j - 1); l < std::min(screenWidth, j + 2); ++l) {
+                            if (grid[k][l].symbol == grassSymbol && (k != i || l != j)) {
+                                // Herbivore successfully ate grass
+                                hasEaten = true;
+                                grid[i][j].stepsWithoutEating = 0; // Reset hunger counter
+                                eatGrass(grid, k, l, remainingGrassCount);
+                                break;
+                            }
+                        }
+                        if (hasEaten) {
+                            break;
+                        }
+                    }
+
+                    // If the herbivore hasn't eaten, increase the starvation counter
+                    if (!hasEaten) {
+                        grid[i][j].stepsWithoutEating++;
+                    }
+                }
+            }
+            // ... (rest of the existing code remains unchanged)
+        }
+    }
+}
 
 int main() {
     srand(static_cast<unsigned>(time(0)));
@@ -387,7 +427,6 @@ int main() {
         moveRandomly(grid, herbivoreSymbolYoung);
         moveRandomly(grid, herbivoreSymbolOld);
 
-
         // Check for starvation before eating
         checkStarvation(grid, herbivoreCount, predatorCount, deadHerbivoreCount);
 
@@ -409,7 +448,6 @@ int main() {
                             if (grid[k][l].symbol == herbivoreSymbolYoung || grid[k][l].symbol == herbivoreSymbolOld) {
                                 // Call predatorEatHerbivore with predatorCount as a parameter
                                 predatorEatHerbivore(grid, i, j, k, l, deadHerbivoreCount, predatorCount);
-
                             }
                         }
                     }
@@ -420,12 +458,15 @@ int main() {
         // Age animals every 24 steps
         ageAnimals(grid, herbivoreCount, predatorCount, deadHerbivoreCount, steps);
 
-        // Count animals
-        countAnimals(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount);
+        // Count young animals
+        countYoungAnimals(grid, youngHerbivoreCount, youngPredatorCount);
+
+        // Check herbivores for starvation
+        checkStarvationHerbivores(grid, herbivoreCount, deadHerbivoreCount, remainingGrassCount);
 
         // Calculate regrowth of grass based on the current season
         double currentRegrowthRate;
-        switch (currentSeason) {
+        switch (currentSeason) {    
         case 0: // Summer
             currentRegrowthRate = grassRegrowthRateSummer;
             break;
