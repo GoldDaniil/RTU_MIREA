@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <ctime>
+#include <ctime>            // последний вариант с рождением - алгоритм рождения работает не правильно
 #include <cmath>
 
 #ifdef _WIN32
@@ -14,15 +14,23 @@ const char predatorSymbolOld = 'P';
 const char herbivoreSymbolYoung = 'h';
 const char herbivoreSymbolOld = 'H';
 const char grassSymbol = '#';
+const char newbornPredatorSymbol = 'p';  // Обозначение новорожденных хищников
+const char newbornSymbol = 'h';  // Обозначение новорожденных животных
+
 const int screenWidth = 180;
 const int screenHeight = 40;
-int predatorPopulation = 10;
-int herbivorePopulation = 10;
+int predatorPopulation = 1600;
+int herbivorePopulation = 1600;
 int grassPopulation = 800;
 const double grassRegrowthRateSummer = 0.031; // Summer regrowth rate, e.g., 20%
 const double grassRegrowthRateSpringFall = 0.0155; // Spring and fall regrowth rate, half of summer
 const double grassRegrowthRateWinter = 0.0; // Winter regrowth rate, no regrowth
 const double deathProbabilityPerStep = 0.1; // Adjust the probability as needed
+int naturalDeathPredatorCount = 0;
+
+const int reproductiveAgeLowerBound = 11;
+const int reproductiveAgeUpperBound = 16;
+const int reproductiveAge = 11;  // Возраст, при котором родитель считается готовым к размножению
 
 
 struct Animal {
@@ -42,14 +50,15 @@ void initializeGrid(Animal grid[][screenWidth]) {
 }
 
 
-void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predatorCount, int youngHerbivoreCount, int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount, int deadHerbivoreCount, int remainingGrassCount, int currentStep, int currentSeason) {
-    std::cout << "Herbivores: " << herbivoreCount
-        << " | Predators: " << predatorCount
+void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predatorCount, int youngHerbivoreCount, int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount, int deadHerbivoreCount, int remainingGrassCount, int currentStep, int currentSeason, int naturalDeathPredatorCount) {
+    std::cout << "Herbivores: " << std::max(0, herbivoreCount)
+        << " | Predators: " << std::max(0, predatorCount)
         << " | Young Herbivores (< 10 years): " << youngHerbivoreCount
         << " | Young Predators (< 10 years): " << youngPredatorCount
         << " | Old Herbivores (>= 10 years): " << oldHerbivoreCount
         << " | Old Predators (>= 10 years): " << oldPredatorCount
         << " | Dead Herbivores: " << deadHerbivoreCount
+        << " | Natural Deaths (Predators): " << naturalDeathPredatorCount
         << " | Remaining Grass: " << remainingGrassCount
         << " | Step: " << currentStep + 1
         << " | Season: ";
@@ -143,47 +152,81 @@ void placeRandomGrass(Animal grid[][screenWidth], int population) {
     }
 }
 
-void moveRandomly(Animal grid[][screenWidth], char animalSymbol) {
+bool isAdjacent(int x1, int y1, int x2, int y2) {
+    return abs(x1 - x2) <= 1 && abs(y1 - y2) <= 1;
+}
+
+void moveRandomly(Animal grid[][screenWidth], char animalSymbol, int& youngHerbivoreCount, int& youngPredatorCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == animalSymbol) {
-                grid[i][j].symbol = ' '; // Clear current position
+                grid[i][j].symbol = ' '; 
 
-                // Move in a random direction
                 int direction = rand() % 4;
                 int newI = i;
                 int newJ = j;
 
                 switch (direction) {
-                case 0: // Move up
+                case 0: 
                     if (i > 0) {
                         newI = i - 1;
                     }
                     break;
-                case 1: // Move down
+                case 1: 
                     if (i < screenHeight - 1) {
                         newI = i + 1;
                     }
                     break;
-                case 2: // Move left
+                case 2: 
                     if (j > 0) {
                         newJ = j - 1;
                     }
                     break;
-                case 3: // Move right
+                case 3:
                     if (j < screenWidth - 1) {
                         newJ = j + 1;
                     }
                     break;
                 }
 
-                // Check if the new position is grass, and if so, revert the changes
+
                 if (grid[newI][newJ].symbol == grassSymbol) {
                     grid[newI][newJ].stepsWithoutEating = 0;
                 }
 
-                grid[newI][newJ].symbol = animalSymbol; // Update position
-                grid[newI][newJ].age = grid[i][j].age + 1; // Increment age
+                grid[newI][newJ].symbol = animalSymbol; 
+                grid[newI][newJ].age = grid[i][j].age + 1;
+
+                // Check for reproductive conditions
+                if (grid[i][j].age >= reproductiveAge) {
+                    // Check for nearby same-species and not hungry individuals
+                    for (int k = std::max(0, i - 2); k < std::min(screenHeight, i + 3); ++k) {
+                        for (int l = std::max(0, j - 2); l < std::min(screenWidth, j + 3); ++l) {
+                            if (grid[k][l].symbol == animalSymbol && !isAdjacent(i, j, k, l) &&
+                                grid[k][l].stepsWithoutEating == 0) {
+                                // Reproduction occurs, create a young individual
+                                int newX = rand() % 3 - 1 + i;
+                                int newY = rand() % 3 - 1 + j;
+
+
+                                if (newX >= 0 && newX < screenHeight && newY >= 0 && newY < screenWidth &&
+                                    grid[newX][newY].symbol == ' ') {
+                                    if (animalSymbol == predatorSymbolYoung) {
+                                        grid[newX][newY].symbol = newbornPredatorSymbol;  // Установка символа новорожденного хищника
+                                        ++youngPredatorCount;
+                                    }
+                                    else if (animalSymbol == herbivoreSymbolYoung) {
+                                        grid[newX][newY].symbol = newbornSymbol;  // Установка символа новорожденного травоядного
+                                        ++youngHerbivoreCount;
+                                    }
+
+                                    grid[newX][newY].age = 1;  // Новорожденное животное
+                                    grid[newX][newY].stepsWithoutEating = 0; // Сброс счетчика голода
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -192,10 +235,6 @@ void moveRandomly(Animal grid[][screenWidth], char animalSymbol) {
 void eatGrass(Animal grid[][screenWidth], int x, int y, int& remainingGrassCount) {
     grid[x][y].symbol = ' '; // Clear grass
     --remainingGrassCount;
-}
-
-bool isAdjacent(int x1, int y1, int x2, int y2) {
-    return abs(x1 - x2) <= 1 && abs(y1 - y2) <= 1;
 }
 
 void herbivoreEatGrass(Animal grid[][screenWidth], int herbivoreX, int herbivoreY, int& remainingGrassCount) {
@@ -298,21 +337,66 @@ const int youngPredatorHungerThreshold = 1; // Number of steps a young predator 
 const int oldHerbivoreHungerThreshold = 6; // Number of steps an old herbivore can go without eating
 const int oldPredatorHungerThreshold = 2; // Number of steps an old predator can go without eating
 int predatorCount = 0;
+const int predatorStarvationThreshold = 2; // Number of steps a predator can go without successfully hunting
 
-void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount) {
+
+void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int& naturalDeathPredatorCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == predatorSymbolOld) {
                 int hungerThreshold = (grid[i][j].symbol == predatorSymbolYoung) ? youngPredatorHungerThreshold : oldPredatorHungerThreshold;
+                int starvationCounter = (grid[i][j].symbol == predatorSymbolYoung) ? predatorStarvationThreshold : predatorStarvationThreshold * 2;
+
                 if (grid[i][j].stepsWithoutEating >= hungerThreshold) {
                     // Predator died of starvation
+                    --predatorCount;
+                    ++naturalDeathPredatorCount;  // Increment the new counter
+                    grid[i][j].symbol = ' ';
+                    grid[i][j].stepsWithoutEating = 0;
+                }
+                else if (grid[i][j].stepsWithoutEating >= starvationCounter) {
+                    // Predator died of starvation without successful predation
                     --predatorCount;
                     grid[i][j].symbol = ' ';
                     grid[i][j].stepsWithoutEating = 0;
                 }
+                else {
+                    // Check if the predator has successfully hunted in the last month
+                    bool hasHunted = false;
+
+                    for (int k = 0; k < screenHeight; ++k) {
+                        for (int l = 0; l < screenWidth; ++l) {
+                            if (grid[k][l].symbol == herbivoreSymbolYoung || grid[k][l].symbol == herbivoreSymbolOld) {
+                                if (isAdjacent(i, j, k, l)) {
+                                    // Predator successfully hunted a herbivore
+                                    hasHunted = true;
+                                    grid[i][j].stepsWithoutEating = 0; // Reset hunger counter
+                                    break;
+                                }
+                            }
+                        }
+                        if (hasHunted) {
+                            break;
+                        }
+                    }
+
+                    // If the predator hasn't hunted, increase the starvation counter
+                    if (!hasHunted) {
+                        grid[i][j].stepsWithoutEating++;
+                    }
+                }
             }
-            else if (grid[i][j].symbol == herbivoreSymbolYoung || grid[i][j].symbol == herbivoreSymbolOld) {
+            // ... (rest of the existing code remains unchanged)
+        }
+    }
+}
+
+void checkStarvationHerbivores(Animal grid[][screenWidth], int& herbivoreCount, int& deadHerbivoreCount, int& remainingGrassCount) {
+    for (int i = 0; i < screenHeight; ++i) {
+        for (int j = 0; j < screenWidth; ++j) {
+            if (grid[i][j].symbol == herbivoreSymbolYoung || grid[i][j].symbol == herbivoreSymbolOld) {
                 int hungerThreshold = (grid[i][j].symbol == herbivoreSymbolYoung) ? youngHerbivoreHungerThreshold : oldHerbivoreHungerThreshold;
+
                 if (grid[i][j].stepsWithoutEating >= hungerThreshold) {
                     // Herbivore died of starvation
                     --herbivoreCount;
@@ -320,11 +404,35 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
                     grid[i][j].symbol = ' ';
                     grid[i][j].stepsWithoutEating = 0;
                 }
+                else {
+                    // Check if the herbivore has successfully eaten grass in the last month
+                    bool hasEaten = false;
+
+                    for (int k = std::max(0, i - 1); k < std::min(screenHeight, i + 2); ++k) {
+                        for (int l = std::max(0, j - 1); l < std::min(screenWidth, j + 2); ++l) {
+                            if (grid[k][l].symbol == grassSymbol && (k != i || l != j)) {
+                                // Herbivore successfully ate grass
+                                hasEaten = true;
+                                grid[i][j].stepsWithoutEating = 0; // Reset hunger counter
+                                eatGrass(grid, k, l, remainingGrassCount);
+                                break;
+                            }
+                        }
+                        if (hasEaten) {
+                            break;
+                        }
+                    }
+
+                    // If the herbivore hasn't eaten, increase the starvation counter
+                    if (!hasEaten) {
+                        grid[i][j].stepsWithoutEating++;
+                    }
+                }
             }
+            // ... (rest of the existing code remains unchanged)
         }
     }
 }
-
 
 int main() {
     srand(static_cast<unsigned>(time(0)));
@@ -337,7 +445,7 @@ int main() {
     placeRandomGrass(grid, grassPopulation);
 
     int herbivoreCount = 0;
-    int predatorCount = 0;  // Add this line
+    //int predatorCount = 0;  // Add this line
     int youngHerbivoreCount = 0;
     int youngPredatorCount = 0;
     int oldHerbivoreCount = 0;
@@ -348,21 +456,22 @@ int main() {
     int steps = 0;
     int currentSeason = 0; // 0: Summer, 1: Spring, 2: Fall, 3: Winter
 
+
     while (steps < 576) { // Run for 576 steps (288 months)
+
         system(CLEAR_SCREEN);
-        printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason);
+        printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason, naturalDeathPredatorCount);
 
         std::cout << "Press Enter to move animals...";
         std::cin.ignore(); // Wait for Enter key
 
-        moveRandomly(grid, predatorSymbolYoung);
-        moveRandomly(grid, predatorSymbolOld);
-        moveRandomly(grid, herbivoreSymbolYoung);
-        moveRandomly(grid, herbivoreSymbolOld);
-
+        moveRandomly(grid, predatorSymbolYoung, youngHerbivoreCount, youngPredatorCount);
+        moveRandomly(grid, predatorSymbolOld, youngHerbivoreCount, youngPredatorCount);
+        moveRandomly(grid, herbivoreSymbolYoung, youngHerbivoreCount, youngPredatorCount);
+        moveRandomly(grid, herbivoreSymbolOld, youngHerbivoreCount, youngPredatorCount);
 
         // Check for starvation before eating
-        checkStarvation(grid, herbivoreCount, predatorCount, deadHerbivoreCount);
+        checkStarvation(grid, herbivoreCount, predatorCount, deadHerbivoreCount, naturalDeathPredatorCount);
 
         // Herbivores eat grass after moving
         for (int i = 0; i < screenHeight; ++i) {
@@ -382,7 +491,6 @@ int main() {
                             if (grid[k][l].symbol == herbivoreSymbolYoung || grid[k][l].symbol == herbivoreSymbolOld) {
                                 // Call predatorEatHerbivore with predatorCount as a parameter
                                 predatorEatHerbivore(grid, i, j, k, l, deadHerbivoreCount, predatorCount);
-
                             }
                         }
                     }
@@ -393,8 +501,11 @@ int main() {
         // Age animals every 24 steps
         ageAnimals(grid, herbivoreCount, predatorCount, deadHerbivoreCount, steps);
 
-        // Count animals
-        countAnimals(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount);
+        // Count young animals
+        countYoungAnimals(grid, youngHerbivoreCount, youngPredatorCount);
+
+        // Check herbivores for starvation
+        checkStarvationHerbivores(grid, herbivoreCount, deadHerbivoreCount, remainingGrassCount);
 
         // Calculate regrowth of grass based on the current season
         double currentRegrowthRate;
@@ -423,6 +534,9 @@ int main() {
         if ((steps + 1) % 6 == 0) {
             currentSeason = (currentSeason + 1) % 4;
         }
+
+        // Call countAnimals to update the counts
+        countAnimals(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount);
 
         ++steps;
     }
