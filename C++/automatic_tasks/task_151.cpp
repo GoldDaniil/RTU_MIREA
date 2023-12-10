@@ -407,7 +407,7 @@ int main() {
     placeRandomGrass(grid, grassPopulation);
 
     int herbivoreCount = 0;
-    int predatorCount = 0;  // Add this line
+    //int predatorCount = 0;  // Add this line
     int youngHerbivoreCount = 0;
     int youngPredatorCount = 0;
     int oldHerbivoreCount = 0;
@@ -496,6 +496,9 @@ int main() {
         if ((steps + 1) % 6 == 0) {
             currentSeason = (currentSeason + 1) % 4;
         }
+
+        // Call countAnimals to update the counts
+        countAnimals(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount);
 
         ++steps;
     }
