@@ -43,8 +43,8 @@ void initializeGrid(Animal grid[][screenWidth]) {
 
 
 void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predatorCount, int youngHerbivoreCount, int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount, int deadHerbivoreCount, int remainingGrassCount, int currentStep, int currentSeason, int naturalDeathPredatorCount) {
-    std::cout << "Herbivores: " << herbivoreCount
-        << " | Predators: " << predatorCount
+    std::cout << "Herbivores: " << std::max(0, herbivoreCount)
+        << " | Predators: " << std::max(0, predatorCount)
         << " | Young Herbivores (< 10 years): " << youngHerbivoreCount
         << " | Young Predators (< 10 years): " << youngPredatorCount
         << " | Old Herbivores (>= 10 years): " << oldHerbivoreCount
