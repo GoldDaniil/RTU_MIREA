@@ -206,12 +206,28 @@ void herbivoreEatGrass(Animal grid[][screenWidth], int herbivoreX, int herbivore
     }
 }
 
-void predatorEatHerbivore(Animal grid[][screenWidth], int predatorX, int predatorY, int herbivoreX, int herbivoreY, int& deadHerbivoreCount) {
+
+void predatorEatHerbivore(Animal grid[][screenWidth], int predatorX, int predatorY, int herbivoreX, int herbivoreY, int& deadHerbivoreCount, int& predatorCount) {
     if (isAdjacent(predatorX, predatorY, herbivoreX, herbivoreY)) {
-        grid[herbivoreX][herbivoreY].symbol = ' '; // Clear herbivore
-        ++deadHerbivoreCount;
+        // Check the age of the predator and herbivore
+        bool isYoungPredator = (grid[predatorX][predatorY].symbol == predatorSymbolYoung);
+        bool isYoungHerbivore = (grid[herbivoreX][herbivoreY].symbol == herbivoreSymbolYoung);
+
+        if ((isYoungPredator && isYoungHerbivore) || (!isYoungPredator && !isYoungHerbivore)) {
+            // Predator and herbivore have the same age group, predator eats herbivore
+            grid[herbivoreX][herbivoreY].symbol = ' '; // Clear herbivore
+            ++deadHerbivoreCount;
+        }
+        else {
+            // Predator and herbivore have different age groups, predator dies
+            --predatorCount;  // Use the parameter passed from the main function
+            grid[predatorX][predatorY].symbol = ' '; // Clear predator
+            grid[predatorX][predatorY].stepsWithoutEating = 0;
+        }
     }
 }
+
+
 
 void ageAnimals(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int currentStep) {
     for (int i = 0; i < screenHeight; ++i) {
@@ -266,16 +282,20 @@ void countYoungAnimals(const Animal grid[][screenWidth], int& youngHerbivoreCoun
     }
 }
 
+// Update hunger thresholds
 const int youngHerbivoreHungerThreshold = 3; // Number of steps a young herbivore can go without eating
 const int youngPredatorHungerThreshold = 1; // Number of steps a young predator can go without eating
 const int oldHerbivoreHungerThreshold = 6; // Number of steps an old herbivore can go without eating
 const int oldPredatorHungerThreshold = 2; // Number of steps an old predator can go without eating
+int predatorCount = 0;
+
 
 void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == predatorSymbolOld) {
-                if (grid[i][j].stepsWithoutEating >= (grid[i][j].symbol == predatorSymbolYoung ? youngPredatorHungerThreshold : oldPredatorHungerThreshold)) {
+                int hungerThreshold = (grid[i][j].symbol == predatorSymbolYoung) ? youngPredatorHungerThreshold : oldPredatorHungerThreshold;
+                if (grid[i][j].stepsWithoutEating >= hungerThreshold) {
                     // Predator died of starvation
                     --predatorCount;
                     grid[i][j].symbol = ' ';
@@ -283,7 +303,8 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
                 }
             }
             else if (grid[i][j].symbol == herbivoreSymbolYoung || grid[i][j].symbol == herbivoreSymbolOld) {
-                if (grid[i][j].stepsWithoutEating >= (grid[i][j].symbol == herbivoreSymbolYoung ? youngHerbivoreHungerThreshold : oldHerbivoreHungerThreshold)) {
+                int hungerThreshold = (grid[i][j].symbol == herbivoreSymbolYoung) ? youngHerbivoreHungerThreshold : oldHerbivoreHungerThreshold;
+                if (grid[i][j].stepsWithoutEating >= hungerThreshold) {
                     // Herbivore died of starvation
                     --herbivoreCount;
                     ++deadHerbivoreCount;
@@ -294,6 +315,7 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
         }
     }
 }
+
 
 int main() {
     srand(static_cast<unsigned>(time(0)));
@@ -306,7 +328,7 @@ int main() {
     placeRandomGrass(grid, grassPopulation);
 
     int herbivoreCount = 0;
-    int predatorCount = 0;
+    int predatorCount = 0;  // Add this line
     int youngHerbivoreCount = 0;
     int youngPredatorCount = 0;
     int oldHerbivoreCount = 0;
@@ -349,7 +371,9 @@ int main() {
                     for (int k = 0; k < screenHeight; ++k) {
                         for (int l = 0; l < screenWidth; ++l) {
                             if (grid[k][l].symbol == herbivoreSymbolYoung || grid[k][l].symbol == herbivoreSymbolOld) {
-                                predatorEatHerbivore(grid, i, j, k, l, deadHerbivoreCount);
+                                // Call predatorEatHerbivore with predatorCount as a parameter
+                                predatorEatHerbivore(grid, i, j, k, l, deadHerbivoreCount, predatorCount);
+
                             }
                         }
                     }
