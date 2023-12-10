@@ -471,7 +471,7 @@ int main() {
 
         // Calculate regrowth of grass based on the current season
         double currentRegrowthRate;
-        switch (currentSeason) {    
+        switch (currentSeason) {
         case 0: // Summer
             currentRegrowthRate = grassRegrowthRateSummer;
             break;
