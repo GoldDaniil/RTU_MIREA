@@ -16,8 +16,8 @@ const char herbivoreSymbolOld = 'H';
 const char grassSymbol = '#';
 const int screenWidth = 180;
 const int screenHeight = 40;
-int predatorPopulation = 350;
-int herbivorePopulation = 450;
+int predatorPopulation = 10;
+int herbivorePopulation = 10;
 int grassPopulation = 800;
 const double grassRegrowthRateSummer = 0.031; // Summer regrowth rate, e.g., 20%
 const double grassRegrowthRateSpringFall = 0.0155; // Spring and fall regrowth rate, half of summer
@@ -219,16 +219,24 @@ void predatorEatHerbivore(Animal grid[][screenWidth], int predatorX, int predato
             // Predator and herbivore have the same age group, predator eats herbivore
             grid[herbivoreX][herbivoreY].symbol = ' '; // Clear herbivore
             ++deadHerbivoreCount;
+            grid[predatorX][predatorY].stepsWithoutEating = 0; // Reset hunger counter
         }
         else {
-            // Predator and herbivore have different age groups, predator dies
-            --predatorCount;  // Use the parameter passed from the main function
-            grid[predatorX][predatorY].symbol = ' '; // Clear predator
-            grid[predatorX][predatorY].stepsWithoutEating = 0;
+            // Predator and herbivore have different age groups
+            if (grid[predatorX][predatorY].stepsWithoutEating >= 2) {
+                // Predator dies if not enough prey
+                --predatorCount;  // Use the parameter passed from the main function
+                grid[predatorX][predatorY].symbol = ' '; // Clear predator
+                grid[predatorX][predatorY].stepsWithoutEating = 0; // Reset hunger counter
+            }
+            else {
+                // Predator eats herbivore and resets hunger counter
+                grid[predatorX][predatorY].symbol = ' '; // Clear predator
+                grid[predatorX][predatorY].stepsWithoutEating = 0; // Reset hunger counter
+            }
         }
     }
 }
-
 
 
 void ageAnimals(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int currentStep) {
@@ -290,32 +298,60 @@ const int youngPredatorHungerThreshold = 1; // Number of steps a young predator 
 const int oldHerbivoreHungerThreshold = 6; // Number of steps an old herbivore can go without eating
 const int oldPredatorHungerThreshold = 2; // Number of steps an old predator can go without eating
 int predatorCount = 0;
+const int predatorStarvationThreshold = 2; // Number of steps a predator can go without successfully hunting
+
 
 void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == predatorSymbolOld) {
-                double deathProbability = deathProbabilityPerStep * grid[i][j].stepsWithoutEating;
-                if (rand() / static_cast<double>(RAND_MAX) < deathProbability) {
+                int hungerThreshold = (grid[i][j].symbol == predatorSymbolYoung) ? youngPredatorHungerThreshold : oldPredatorHungerThreshold;
+                int starvationCounter = (grid[i][j].symbol == predatorSymbolYoung) ? predatorStarvationThreshold : predatorStarvationThreshold * 2;
+
+                if (grid[i][j].stepsWithoutEating >= hungerThreshold) {
                     // Predator died of starvation
                     --predatorCount;
                     grid[i][j].symbol = ' ';
                     grid[i][j].stepsWithoutEating = 0;
                 }
-            }
-            else if (grid[i][j].symbol == herbivoreSymbolYoung || grid[i][j].symbol == herbivoreSymbolOld) {
-                double deathProbability = deathProbabilityPerStep * grid[i][j].stepsWithoutEating;
-                if (rand() / static_cast<double>(RAND_MAX) < deathProbability) {
-                    // Herbivore died of starvation
-                    --herbivoreCount;
-                    ++deadHerbivoreCount;
+                else if (grid[i][j].stepsWithoutEating >= starvationCounter) {
+                    // Predator died of starvation without successful predation
+                    --predatorCount;
                     grid[i][j].symbol = ' ';
                     grid[i][j].stepsWithoutEating = 0;
                 }
+                else {
+                    // Check if the predator has successfully hunted in the last month
+                    bool hasHunted = false;
+
+                    for (int k = 0; k < screenHeight; ++k) {
+                        for (int l = 0; l < screenWidth; ++l) {
+                            if (grid[k][l].symbol == herbivoreSymbolYoung || grid[k][l].symbol == herbivoreSymbolOld) {
+                                if (isAdjacent(i, j, k, l)) {
+                                    // Predator successfully hunted a herbivore
+                                    hasHunted = true;
+                                    grid[i][j].stepsWithoutEating = 0; // Reset hunger counter
+                                    break;
+                                }
+                            }
+                        }
+                        if (hasHunted) {
+                            break;
+                        }
+                    }
+
+                    // If the predator hasn't hunted, increase the starvation counter
+                    if (!hasHunted) {
+                        grid[i][j].stepsWithoutEating++;
+                    }
+                }
             }
+            // ... (rest of the existing code remains unchanged)
         }
     }
 }
+
+
 
 int main() {
     srand(static_cast<unsigned>(time(0)));
