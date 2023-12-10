@@ -23,6 +23,7 @@ const double grassRegrowthRateSummer = 0.031; // Summer regrowth rate, e.g., 20%
 const double grassRegrowthRateSpringFall = 0.0155; // Spring and fall regrowth rate, half of summer
 const double grassRegrowthRateWinter = 0.0; // Winter regrowth rate, no regrowth
 const double deathProbabilityPerStep = 0.1; // Adjust the probability as needed
+int naturalDeathPredatorCount = 0;
 
 struct Animal {
     char symbol;
@@ -41,7 +42,7 @@ void initializeGrid(Animal grid[][screenWidth]) {
 }
 
 
-void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predatorCount, int youngHerbivoreCount, int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount, int deadHerbivoreCount, int remainingGrassCount, int currentStep, int currentSeason) {
+void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predatorCount, int youngHerbivoreCount, int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount, int deadHerbivoreCount, int remainingGrassCount, int currentStep, int currentSeason, int naturalDeathPredatorCount) {
     std::cout << "Herbivores: " << herbivoreCount
         << " | Predators: " << predatorCount
         << " | Young Herbivores (< 10 years): " << youngHerbivoreCount
@@ -49,6 +50,7 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
         << " | Old Herbivores (>= 10 years): " << oldHerbivoreCount
         << " | Old Predators (>= 10 years): " << oldPredatorCount
         << " | Dead Herbivores: " << deadHerbivoreCount
+        << " | Natural Deaths (Predators): " << naturalDeathPredatorCount
         << " | Remaining Grass: " << remainingGrassCount
         << " | Step: " << currentStep + 1
         << " | Season: ";
@@ -300,7 +302,7 @@ int predatorCount = 0;
 const int predatorStarvationThreshold = 2; // Number of steps a predator can go without successfully hunting
 
 
-void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount) {
+void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int& naturalDeathPredatorCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == predatorSymbolOld) {
@@ -310,6 +312,7 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
                 if (grid[i][j].stepsWithoutEating >= hungerThreshold) {
                     // Predator died of starvation
                     --predatorCount;
+                    ++naturalDeathPredatorCount;  // Increment the new counter
                     grid[i][j].symbol = ' ';
                     grid[i][j].stepsWithoutEating = 0;
                 }
@@ -415,9 +418,11 @@ int main() {
     int steps = 0;
     int currentSeason = 0; // 0: Summer, 1: Spring, 2: Fall, 3: Winter
 
+
     while (steps < 576) { // Run for 576 steps (288 months)
+
         system(CLEAR_SCREEN);
-        printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason);
+        printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason, naturalDeathPredatorCount);
 
         std::cout << "Press Enter to move animals...";
         std::cin.ignore(); // Wait for Enter key
@@ -428,7 +433,7 @@ int main() {
         moveRandomly(grid, herbivoreSymbolOld);
 
         // Check for starvation before eating
-        checkStarvation(grid, herbivoreCount, predatorCount, deadHerbivoreCount);
+        checkStarvation(grid, herbivoreCount, predatorCount, deadHerbivoreCount, naturalDeathPredatorCount);
 
         // Herbivores eat grass after moving
         for (int i = 0; i < screenHeight; ++i) {
