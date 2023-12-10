@@ -275,7 +275,9 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == predatorSymbolOld) {
-                if (grid[i][j].stepsWithoutEating >= (grid[i][j].symbol == predatorSymbolYoung ? youngPredatorHungerThreshold : oldPredatorHungerThreshold)) {
+                int hungerThreshold = (grid[i][j].symbol == predatorSymbolYoung) ? (grid[i][j].age < 10 ? 1 : 2) : (grid[i][j].age < 10 ? 2 : 4);
+
+                if (grid[i][j].stepsWithoutEating >= hungerThreshold) {
                     // Predator died of starvation
                     --predatorCount;
                     grid[i][j].symbol = ' ';
@@ -283,7 +285,9 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
                 }
             }
             else if (grid[i][j].symbol == herbivoreSymbolYoung || grid[i][j].symbol == herbivoreSymbolOld) {
-                if (grid[i][j].stepsWithoutEating >= (grid[i][j].symbol == herbivoreSymbolYoung ? youngHerbivoreHungerThreshold : oldHerbivoreHungerThreshold)) {
+                int hungerThreshold = (grid[i][j].symbol == herbivoreSymbolYoung) ? 1 : 2;
+
+                if (grid[i][j].stepsWithoutEating >= hungerThreshold) {
                     // Herbivore died of starvation
                     --herbivoreCount;
                     ++deadHerbivoreCount;
@@ -294,6 +298,7 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
         }
     }
 }
+
 
 int main() {
     srand(static_cast<unsigned>(time(0)));
@@ -317,18 +322,18 @@ int main() {
     int steps = 0;
     int currentSeason = 0; // 0: Summer, 1: Spring, 2: Fall, 3: Winter
 
-    while (steps < 576) { // Run for 576 steps (288 months)
+    while (steps < 576) {
         system(CLEAR_SCREEN);
         printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason);
 
         std::cout << "Press Enter to move animals...";
         std::cin.ignore(); // Wait for Enter key
 
-        moveRandomly(grid, predatorSymbolYoung);
-        moveRandomly(grid, herbivoreSymbolYoung);
-
         // Check for starvation before eating
         checkStarvation(grid, herbivoreCount, predatorCount, deadHerbivoreCount);
+
+        moveRandomly(grid, predatorSymbolYoung);
+        moveRandomly(grid, herbivoreSymbolYoung);
 
         // Herbivores eat grass after moving
         for (int i = 0; i < screenHeight; ++i) {
