@@ -22,6 +22,8 @@ int grassPopulation = 800;
 const double grassRegrowthRateSummer = 0.031; // Summer regrowth rate, e.g., 20%
 const double grassRegrowthRateSpringFall = 0.0155; // Spring and fall regrowth rate, half of summer
 const double grassRegrowthRateWinter = 0.0; // Winter regrowth rate, no regrowth
+const double deathProbabilityPerStep = 0.1; // Adjust the probability as needed
+
 
 struct Animal {
     char symbol;
@@ -289,13 +291,12 @@ const int oldHerbivoreHungerThreshold = 6; // Number of steps an old herbivore c
 const int oldPredatorHungerThreshold = 2; // Number of steps an old predator can go without eating
 int predatorCount = 0;
 
-
 void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == predatorSymbolOld) {
-                int hungerThreshold = (grid[i][j].symbol == predatorSymbolYoung) ? youngPredatorHungerThreshold : oldPredatorHungerThreshold;
-                if (grid[i][j].stepsWithoutEating >= hungerThreshold) {
+                double deathProbability = deathProbabilityPerStep * grid[i][j].stepsWithoutEating;
+                if (rand() / static_cast<double>(RAND_MAX) < deathProbability) {
                     // Predator died of starvation
                     --predatorCount;
                     grid[i][j].symbol = ' ';
@@ -303,8 +304,8 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
                 }
             }
             else if (grid[i][j].symbol == herbivoreSymbolYoung || grid[i][j].symbol == herbivoreSymbolOld) {
-                int hungerThreshold = (grid[i][j].symbol == herbivoreSymbolYoung) ? youngHerbivoreHungerThreshold : oldHerbivoreHungerThreshold;
-                if (grid[i][j].stepsWithoutEating >= hungerThreshold) {
+                double deathProbability = deathProbabilityPerStep * grid[i][j].stepsWithoutEating;
+                if (rand() / static_cast<double>(RAND_MAX) < deathProbability) {
                     // Herbivore died of starvation
                     --herbivoreCount;
                     ++deadHerbivoreCount;
@@ -315,7 +316,6 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
         }
     }
 }
-
 
 int main() {
     srand(static_cast<unsigned>(time(0)));
