@@ -15,12 +15,12 @@ int generate_number() {
     int number;
     bool digits[10] = { false };
 
-    int temp;  // Declare temp outside the do-while loop
+    int temp; 
 
     do {
         number = rand() % 9000 + 1000;
 
-        temp = number;  // Move this line inside the loop
+        temp = number; 
 
         while (temp > 0) {
             if (digits[temp % 10]) {
