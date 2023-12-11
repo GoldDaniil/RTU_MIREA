@@ -14,8 +14,6 @@ const char predatorSymbolOld = 'P';
 const char herbivoreSymbolYoung = 'h';
 const char herbivoreSymbolOld = 'H';
 const char grassSymbol = '#';
-const char newbornPredatorSymbol = 'p';  // Обозначение новорожденных хищников
-const char newbornSymbol = 'h';  // Обозначение новорожденных животных
 
 const int screenWidth = 180;
 const int screenHeight = 40;
@@ -28,9 +26,8 @@ const double grassRegrowthRateWinter = 0.0; // Winter regrowth rate, no regrowth
 const double deathProbabilityPerStep = 0.1; // Adjust the probability as needed
 int naturalDeathPredatorCount = 0;
 
-const int reproductiveAgeLowerBound = 11;
-const int reproductiveAgeUpperBound = 16;
-const int reproductiveAge = 11;  // Возраст, при котором родитель считается готовым к размножению
+const char newbornPredatorSymbol = 'p'; // Обозначение новорожденных хищников
+const char newbornHerbivoreSymbol = 'h'; // Обозначение новорожденных травоядных
 
 
 struct Animal {
@@ -87,6 +84,12 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == grassSymbol) {
                 std::cout << "\033[1;32m" << grid[i][j].symbol << "\033[0m"; // Set color to green for grass
+            }
+            else if (grid[i][j].symbol == newbornPredatorSymbol) {
+                std::cout << "\033[1;33m" << grid[i][j].symbol << "\033[0m"; // Set color to orange for newborn predators
+            }
+            else if (grid[i][j].symbol == newbornHerbivoreSymbol) {
+                std::cout << "\033[1;33m" << grid[i][j].symbol << "\033[0m"; // Set color to orange for newborn herbivores
             }
             else {
                 std::cout << grid[i][j].symbol;
@@ -156,28 +159,32 @@ bool isAdjacent(int x1, int y1, int x2, int y2) {
     return abs(x1 - x2) <= 1 && abs(y1 - y2) <= 1;
 }
 
+bool reproductive() {
+    return rand() % 100 < 20; // 20% chance of reproduction
+}
+
 void moveRandomly(Animal grid[][screenWidth], char animalSymbol, int& youngHerbivoreCount, int& youngPredatorCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == animalSymbol) {
-                grid[i][j].symbol = ' '; 
+                grid[i][j].symbol = ' ';
 
                 int direction = rand() % 4;
                 int newI = i;
                 int newJ = j;
 
                 switch (direction) {
-                case 0: 
+                case 0:
                     if (i > 0) {
                         newI = i - 1;
                     }
                     break;
-                case 1: 
+                case 1:
                     if (i < screenHeight - 1) {
                         newI = i + 1;
                     }
                     break;
-                case 2: 
+                case 2:
                     if (j > 0) {
                         newJ = j - 1;
                     }
@@ -189,48 +196,27 @@ void moveRandomly(Animal grid[][screenWidth], char animalSymbol, int& youngHerbi
                     break;
                 }
 
-
                 if (grid[newI][newJ].symbol == grassSymbol) {
                     grid[newI][newJ].stepsWithoutEating = 0;
                 }
 
-                grid[newI][newJ].symbol = animalSymbol; 
-                grid[newI][newJ].age = grid[i][j].age + 1;
+                if (reproductive() && isAdjacent(i, j, newI, newJ) && grid[newI][newJ].symbol == ' ') {
+                    // Reproduction: create a new young animal at the neighboring position
+                    char newbornSymbol = (animalSymbol == predatorSymbolYoung) ? newbornPredatorSymbol : newbornHerbivoreSymbol;
+                    grid[newI][newJ].symbol = newbornSymbol;
+                    grid[newI][newJ].age = 0;
+                }
+                else {
+                    // Move the current animal to the new position
+                    grid[newI][newJ].symbol = animalSymbol;
+                    grid[newI][newJ].age = grid[i][j].age + 1;
 
-                // Check for reproductive conditions
-                if (grid[i][j].age >= reproductiveAge) {
-                    // Check for nearby same-species and not hungry individuals
-                    for (int k = std::max(0, i - 2); k < std::min(screenHeight, i + 3); ++k) {
-                        for (int l = std::max(0, j - 2); l < std::min(screenWidth, j + 3); ++l) {
-                            if (grid[k][l].symbol == animalSymbol && !isAdjacent(i, j, k, l) &&
-                                grid[k][l].stepsWithoutEating == 0) {
-                                // Reproduction occurs, create a young individual
-                                int newX = rand() % 3 - 1 + i;
-                                int newY = rand() % 3 - 1 + j;
-
-
-                                if (newX >= 0 && newX < screenHeight && newY >= 0 && newY < screenWidth &&
-                                    grid[newX][newY].symbol == ' ') {
-                                    if (animalSymbol == predatorSymbolYoung) {
-                                        grid[newX][newY].symbol = newbornPredatorSymbol;  // Установка символа новорожденного хищника
-                                        ++youngPredatorCount;
-                                    }
-                                    else if (animalSymbol == herbivoreSymbolYoung) {
-                                        grid[newX][newY].symbol = newbornSymbol;  // Установка символа новорожденного травоядного
-                                        ++youngHerbivoreCount;
-                                    }
-
-                                    grid[newX][newY].age = 1;  // Новорожденное животное
-                                    grid[newX][newY].stepsWithoutEating = 0; // Сброс счетчика голода
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
     }
 }
+
 
 void eatGrass(Animal grid[][screenWidth], int x, int y, int& remainingGrassCount) {
     grid[x][y].symbol = ' '; // Clear grass
