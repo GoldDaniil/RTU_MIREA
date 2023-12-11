@@ -2,9 +2,9 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
-                        // катаклизм есть - размножения нет
+     //катаклизм есть - животных новых (рад = 1 пиксель) нет
 #ifdef _WIN32
-#define CLEAR_SCREEN "cls"    
+#define CLEAR_SCREEN "cls"
 #else
 #define CLEAR_SCREEN "clear"
 #endif
@@ -415,12 +415,13 @@ int main() {
     int steps = 0;
     int currentSeason = 0;
     bool isTsunami = false;
+    bool gameEnded = false;
 
-    while (steps < 576) {
+    while (steps < 576 && !gameEnded) {
         system(CLEAR_SCREEN);
 
         // Check for natural disaster (tsunami) with a 1% probability
-        if (rand() % 100 < 1) {
+        if (rand() % 100 < 40) {
             isTsunami = true;
         }
 
@@ -448,8 +449,18 @@ int main() {
             std::cout << "Press Enter to continue...";
             std::cin.ignore();
 
-            // Reset the tsunami flag
-            isTsunami = false;
+            // Remove all living animals from the grid
+            for (int i = 0; i < screenHeight; ++i) {
+                for (int j = 0; j < screenWidth; ++j) {
+                    if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == predatorSymbolOld ||
+                        grid[i][j].symbol == herbivoreSymbolYoung || grid[i][j].symbol == herbivoreSymbolOld) {
+                        grid[i][j].symbol = ' ';
+                    }
+                }
+            }
+
+            // Set the flag to end the game
+            gameEnded = true;
         }
         else {
             // Continue with the regular simulation steps
