@@ -9,17 +9,17 @@
 #else
 #define CLEAR_SCREEN "clear"
 #endif
-                                            // косяк с хищниками - быстро умирают
+// косяк с хищниками - быстро умирают
 const char predatorSymbolYoung = 'p';
 const char predatorSymbolOld = 'P';
 const char herbivoreSymbolYoung = 'h';
 const char herbivoreSymbolOld = 'H';
 const char grassSymbol = '#';
 const char riverSymbol = '~';
-const int screenWidth = 180;
+const int screenWidth = 40;
 const int screenHeight = 40;
-int predatorPopulation = 1000;
-int herbivorePopulation = 1000;
+int predatorPopulation = 50;
+int herbivorePopulation = 50;
 int grassPopulation = 800;
 const double grassRegrowthRateSummer = 0.031;
 const double grassRegrowthRateSpringFall = 0.0155;
@@ -447,7 +447,7 @@ int main() {
         system(CLEAR_SCREEN);
 
         // Check for natural disaster (tsunami) with a 5% probability
-        if (rand() % 100 < 0.5) {
+        if (rand() % 100 < 0.1) {
             isTsunami = true;
         }
 
