@@ -3,7 +3,7 @@
 #include <ctime>
 #include <cmath>
 #include <string>
-                            // сделать так чтобы никто не мог есть реку - и река не исчезала
+
 #ifdef _WIN32
 #define CLEAR_SCREEN "cls"
 #else
@@ -182,22 +182,22 @@ void moveRandomly(Animal grid[][screenWidth], char animalSymbol) {
 
                 switch (direction) {
                 case 0: // Move up
-                    if (i > 0) {
+                    if (i > 0 && grid[i - 1][j].symbol != riverSymbol) {
                         newI = i - 1;
                     }
                     break;
                 case 1: // Move down
-                    if (i < screenHeight - 1) {
+                    if (i < screenHeight - 1 && grid[i + 1][j].symbol != riverSymbol) {
                         newI = i + 1;
                     }
                     break;
                 case 2: // Move left
-                    if (j > 0) {
+                    if (j > 0 && grid[i][j - 1].symbol != riverSymbol) {
                         newJ = j - 1;
                     }
                     break;
                 case 3: // Move right
-                    if (j < screenWidth - 1) {
+                    if (j < screenWidth - 1 && grid[i][j + 1].symbol != riverSymbol) {
                         newJ = j + 1;
                     }
                     break;
@@ -214,7 +214,6 @@ void moveRandomly(Animal grid[][screenWidth], char animalSymbol) {
         }
     }
 }
-
 void eatGrass(Animal grid[][screenWidth], int x, int y, int& remainingGrassCount) {
     grid[x][y].symbol = ' '; // Clear grass
     --remainingGrassCount;
@@ -227,7 +226,7 @@ bool isAdjacent(int x1, int y1, int x2, int y2) {
 void herbivoreEatGrass(Animal grid[][screenWidth], int herbivoreX, int herbivoreY, int& remainingGrassCount) {
     for (int i = std::max(0, herbivoreX - 1); i < std::min(screenHeight, herbivoreX + 2); ++i) {
         for (int j = std::max(0, herbivoreY - 1); j < std::min(screenWidth, herbivoreY + 2); ++j) {
-            if (grid[i][j].symbol == grassSymbol && (i != herbivoreX || j != herbivoreY)) {
+            if (grid[i][j].symbol == grassSymbol && (i != herbivoreX || j != herbivoreY) && grid[i][j].symbol != riverSymbol) {
                 eatGrass(grid, i, j, remainingGrassCount);
             }
         }
