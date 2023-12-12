@@ -9,7 +9,7 @@
 #else
 #define CLEAR_SCREEN "clear"
 #endif
-
+                                            // косяк с хищниками - быстро умирают
 const char predatorSymbolYoung = 'p';
 const char predatorSymbolOld = 'P';
 const char herbivoreSymbolYoung = 'h';
@@ -18,8 +18,8 @@ const char grassSymbol = '#';
 const char riverSymbol = '~';
 const int screenWidth = 180;
 const int screenHeight = 40;
-int predatorPopulation = 300;
-int herbivorePopulation = 300;
+int predatorPopulation = 1000;
+int herbivorePopulation = 1000;
 int grassPopulation = 800;
 const double grassRegrowthRateSummer = 0.031;
 const double grassRegrowthRateSpringFall = 0.0155;
@@ -217,6 +217,7 @@ void moveRandomly(Animal grid[][screenWidth], char animalSymbol) {
         }
     }
 }
+
 void eatGrass(Animal grid[][screenWidth], int x, int y, int& remainingGrassCount) {
     grid[x][y].symbol = ' '; // Clear grass
     --remainingGrassCount;
@@ -265,31 +266,26 @@ void predatorEatHerbivore(Animal grid[][screenWidth], int predatorX, int predato
     }
 }
 
-
 void ageAnimals(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int currentStep) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == herbivoreSymbolYoung) {
                 // Increment age and hunger counters every 24 steps (1 year)
                 if ((currentStep + 1) % 24 == 0) {
-                    grid[i][j].age += 1;
+                    grid[i][j].age += 2;  // Увеличьте возраст на 2 вместо 1
                     grid[i][j].stepsWithoutEating += 1;
 
                     if (grid[i][j].age >= 480) {
-                        // If the individual reaches the age of 20, it dies
-                        if (grid[i][j].symbol == predatorSymbolYoung) {
+                        // Если хищник достиг возраста 20, он не обязательно должен умереть, уменьшим вероятность
+                        if (rand() % 100 < 10) {  // Уменьшим вероятность смерти
                             --predatorCount;
+                            grid[i][j].symbol = ' ';
+                            grid[i][j].age = 0;
                         }
-                        else {
-                            --herbivoreCount;
-                            ++deadHerbivoreCount;
-                        }
-
-                        grid[i][j].symbol = ' '; // Clear the position
-                        grid[i][j].age = 0; // Reset age
                     }
-                    else if (grid[i][j].age >= 230) {
-                        // If the individual reaches the age of 10, it becomes old
+
+                    else if (grid[i][j].age >= 350) {  // Увеличьте возраст на 20
+                        // Если хищник достиг возраста 10, он становится старым
                         if (grid[i][j].symbol == predatorSymbolYoung) {
                             grid[i][j].symbol = predatorSymbolOld;
                         }
@@ -319,14 +315,12 @@ void countYoungAnimals(const Animal grid[][screenWidth], int& youngHerbivoreCoun
     }
 }
 
-// Update hunger thresholds
-const int youngHerbivoreHungerThreshold = 3; // Number of steps a young herbivore can go without eating
-const int youngPredatorHungerThreshold = 1; // Number of steps a young predator can go without eating
-const int oldHerbivoreHungerThreshold = 6; // Number of steps an old herbivore can go without eating
-const int oldPredatorHungerThreshold = 2; // Number of steps an old predator can go without eating
+const int youngHerbivoreHungerThreshold = 3; // Сколько шагов молодое травоядное животное может пройти без еды
+const int youngPredatorHungerThreshold = 3; // Сколько шагов молодой хищник может пройти без еды
+const int oldHerbivoreHungerThreshold = 6; // Сколько шагов старое травоядное животное может пройти без еды
+const int oldPredatorHungerThreshold = 6; // Сколько шагов старый хищник может пройти без еды
 int predatorCount = 0;
-const int predatorStarvationThreshold = 2; // Number of steps a predator can go without successfully hunting
-
+const int predatorStarvationThreshold = 4; // Number of steps a predator can go without successfully hunting
 
 void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int& naturalDeathPredatorCount) {
     for (int i = 0; i < screenHeight; ++i) {
