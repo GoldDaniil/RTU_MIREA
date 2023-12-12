@@ -443,13 +443,14 @@ int main() {
     int remainingGrassCount = grassPopulation;
     int steps = 0;
     int currentSeason = 0;
+    double currentRegrowthRate = 0.0; // Default to no regrowth
+
     bool isTsunami = false;
     bool gameEnded = false;
     std::string userInput;  // Variable to store user input
 
     while (steps < 576 && !gameEnded) {
         system(CLEAR_SCREEN);
-
 
         // Check for natural disaster (tsunami) with a 5% probability
         if (rand() % 100 < 0.5) {
@@ -476,8 +477,6 @@ int main() {
             // Reset the terminal color
             std::cout << "\033[0m";
 
-
-
             // Remove all living animals from the grid
             for (int i = 0; i < screenHeight; ++i) {
                 for (int j = 0; j < screenWidth; ++j) {
@@ -500,7 +499,6 @@ int main() {
                 std::cout << "Exiting the game.\n";
                 break;  // Exit the loop and end the game
             }
-
 
             moveRandomly(grid, predatorSymbolYoung);
             moveRandomly(grid, predatorSymbolOld);
@@ -526,7 +524,6 @@ int main() {
                         for (int k = 0; k < screenHeight; ++k) {
                             for (int l = 0; l < screenWidth; ++l) {
                                 if (grid[k][l].symbol == herbivoreSymbolYoung || grid[k][l].symbol == herbivoreSymbolOld) {
-                                    // Call predatorEatHerbivore with predatorCount as a parameter
                                     predatorEatHerbivore(grid, i, j, k, l, deadHerbivoreCount, predatorCount);
                                 }
                             }
@@ -545,28 +542,31 @@ int main() {
             checkStarvationHerbivores(grid, herbivoreCount, deadHerbivoreCount, remainingGrassCount);
 
             // Calculate regrowth of grass based on the current season
-            double currentRegrowthRate;
+            double currentRegrowthRate = 0.0; // Default to no regrowth
+
             switch (currentSeason) {
             case 0: // Summer
                 currentRegrowthRate = grassRegrowthRateSummer;
                 break;
-            case 1:
+            case 1: // Autumn
                 currentRegrowthRate = grassRegrowthRateSpringFall;
                 break;
-            case 2:
-                currentRegrowthRate = grassRegrowthRateSpringFall;
-                break;
-            case 3: // Winter
+            case 2: // Winter
                 currentRegrowthRate = grassRegrowthRateWinter;
+                break;
+            case 3: // Spring
+                currentRegrowthRate = grassRegrowthRateSpringFall;
                 break;
             }
 
+            // Only place random grass if the regrowth rate is greater than 0
+            if (currentRegrowthRate > 0.0) {
+                int regrowthAmount = static_cast<int>(grassPopulation * currentRegrowthRate);
+                placeRandomGrass(grid, regrowthAmount);
 
-            int regrowthAmount = static_cast<int>(grassPopulation * currentRegrowthRate);
-            placeRandomGrass(grid, regrowthAmount);
-
-            // Recalculate counts
-            remainingGrassCount += regrowthAmount;
+                // Recalculate counts
+                remainingGrassCount += regrowthAmount;
+            }
 
             // Update season every 6 steps
             if ((steps + 1) % 6 == 0) {
