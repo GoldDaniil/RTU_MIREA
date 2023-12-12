@@ -3,7 +3,7 @@
 #include <ctime>
 #include <cmath>
 #include <string>
-//катаклизм есть - животных новых (рад = 1 пиксель) нет
+
 #ifdef _WIN32
 #define CLEAR_SCREEN "cls"
 #else
@@ -15,6 +15,7 @@ const char predatorSymbolOld = 'P';
 const char herbivoreSymbolYoung = 'h';
 const char herbivoreSymbolOld = 'H';
 const char grassSymbol = '#';
+const char riverSymbol = '~';
 const int screenWidth = 180;
 const int screenHeight = 40;
 int predatorPopulation = 300;
@@ -38,6 +39,21 @@ void initializeGrid(Animal grid[][screenWidth]) {
             grid[i][j].symbol = ' ';
             grid[i][j].age = 0;
             grid[i][j].stepsWithoutEating = 0;
+        }
+    }
+}
+
+void placeRandomRivers(Animal grid[][screenWidth], int riverCount) {
+    for (int i = 0; i < riverCount; ++i) {
+        int riverSize = rand() % 4 + 6; // Random river size between 2x2 and 5x5
+
+        int riverX = rand() % (screenHeight - riverSize);
+        int riverY = rand() % (screenWidth - riverSize);
+
+        for (int x = riverX; x < riverX + riverSize; ++x) {
+            for (int y = riverY; y < riverY + riverSize; ++y) {
+                grid[x][y].symbol = riverSymbol;
+            }
         }
     }
 }
@@ -85,6 +101,9 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
                 else {
                     std::cout << "\033[1;32m" << grid[i][j].symbol << "\033[0m"; // Set color to green for grass
                 }
+            }
+            else if (grid[i][j].symbol == riverSymbol) {
+                std::cout << "\033[1;34m" << grid[i][j].symbol << "\033[0m"; // Set color to blue for rivers
             }
             else {
                 std::cout << grid[i][j].symbol;
@@ -214,7 +233,6 @@ void herbivoreEatGrass(Animal grid[][screenWidth], int herbivoreX, int herbivore
         }
     }
 }
-
 
 void predatorEatHerbivore(Animal grid[][screenWidth], int predatorX, int predatorY, int herbivoreX, int herbivoreY, int& deadHerbivoreCount, int& predatorCount) {
     if (isAdjacent(predatorX, predatorY, herbivoreX, herbivoreY)) {
@@ -407,9 +425,12 @@ int main() {
     Animal grid[screenHeight][screenWidth];
     initializeGrid(grid);
 
+    // Place animals, grass, and rivers
     placeRandomAnimals(grid, predatorSymbolYoung, predatorSymbolOld, predatorPopulation);
     placeRandomAnimals(grid, herbivoreSymbolYoung, herbivoreSymbolOld, herbivorePopulation);
     placeRandomGrass(grid, grassPopulation);
+    placeRandomRivers(grid, 5); // Adjust the river count as needed
+
 
     int herbivoreCount = 0;
     int youngHerbivoreCount = 0;
