@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
-     //катаклизм есть - животных новых (рад = 1 пиксель) нет
+//катаклизм есть - животных новых (рад = 1 пиксель) нет
 #ifdef _WIN32
 #define CLEAR_SCREEN "cls"
 #else
@@ -16,8 +16,8 @@ const char herbivoreSymbolOld = 'H';
 const char grassSymbol = '#';
 const int screenWidth = 180;
 const int screenHeight = 40;
-int predatorPopulation = 10;
-int herbivorePopulation = 10;
+int predatorPopulation = 100;
+int herbivorePopulation = 3000;
 int grassPopulation = 800;
 const double grassRegrowthRateSummer = 0.031;
 const double grassRegrowthRateSpringFall = 0.0155;
@@ -72,7 +72,7 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
         break;
     }
 
-    std::cout << std::endl << std::endl << std::endl;
+    std::cout << std::endl << std::endl ;
 
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
@@ -390,7 +390,6 @@ void checkStarvationHerbivores(Animal grid[][screenWidth], int& herbivoreCount, 
                     }
                 }
             }
-            // ... (rest of the existing code remains unchanged)
         }
     }
 }
@@ -420,8 +419,8 @@ int main() {
     while (steps < 576 && !gameEnded) {
         system(CLEAR_SCREEN);
 
-        // Check for natural disaster (tsunami) with a 1% probability
-        if (rand() % 100 < 40) {
+        // Check for natural disaster (tsunami) with a 5% probability
+        if (rand() % 100 < 0.5) {
             isTsunami = true;
         }
 
@@ -459,11 +458,9 @@ int main() {
                 }
             }
 
-            // Set the flag to end the game
             gameEnded = true;
         }
         else {
-            // Continue with the regular simulation steps
             printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason, naturalDeathPredatorCount);
 
             std::cout << "Press Enter to move animals...";
