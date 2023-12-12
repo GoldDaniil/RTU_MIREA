@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include <string>
 //катаклизм есть - животных новых (рад = 1 пиксель) нет
 #ifdef _WIN32
 #define CLEAR_SCREEN "cls"
@@ -415,10 +416,12 @@ int main() {
     int currentSeason = 0;
     bool isTsunami = false;
     bool gameEnded = false;
+    std::string userInput;  // Variable to store user input
 
     while (steps < 576 && !gameEnded) {
         system(CLEAR_SCREEN);
 
+        
         // Check for natural disaster (tsunami) with a 5% probability
         if (rand() % 100 < 0.5) {
             isTsunami = true;
@@ -444,9 +447,7 @@ int main() {
             // Reset the terminal color
             std::cout << "\033[0m";
 
-            // Wait for Enter key to continue
-            std::cout << "Press Enter to continue...";
-            std::cin.ignore();
+            
 
             // Remove all living animals from the grid
             for (int i = 0; i < screenHeight; ++i) {
@@ -463,8 +464,14 @@ int main() {
         else {
             printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason, naturalDeathPredatorCount);
 
-            std::cout << "Press Enter to move animals...";
-            std::cin.ignore(); // Wait for Enter key
+            std::cout << "\nEnter 'exit' to exit the game, or press Enter move animals...\n";
+            std::getline(std::cin, userInput);
+
+            if (userInput == "exit") {
+                std::cout << "Exiting the game.\n";
+                break;  // Exit the loop and end the game
+            }
+
 
             moveRandomly(grid, predatorSymbolYoung);
             moveRandomly(grid, predatorSymbolOld);
