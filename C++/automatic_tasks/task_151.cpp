@@ -3,7 +3,7 @@
 #include <ctime>
 #include <cmath>
 #include <string>
-
+                            // сделать так чтобы никто не мог есть реку - и река не исчезала
 #ifdef _WIN32
 #define CLEAR_SCREEN "cls"
 #else
