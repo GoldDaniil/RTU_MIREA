@@ -73,12 +73,18 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
         break;
     }
 
-    std::cout << std::endl << std::endl ;
+    std::cout << std::endl << std::endl;
 
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == grassSymbol) {
-                std::cout << "\033[1;32m" << grid[i][j].symbol << "\033[0m"; // Set color to green for grass
+                // Check if it's winter and color the grass white
+                if (currentSeason == 2) {
+                    std::cout << "\033[1;37m" << grid[i][j].symbol << "\033[0m"; // Set color to white for grass in winter
+                }
+                else {
+                    std::cout << "\033[1;32m" << grid[i][j].symbol << "\033[0m"; // Set color to green for grass
+                }
             }
             else {
                 std::cout << grid[i][j].symbol;
@@ -531,7 +537,8 @@ int main() {
                 currentRegrowthRate = grassRegrowthRateWinter;
                 break;
             }
-
+                            
+                                            
             int regrowthAmount = static_cast<int>(grassPopulation * currentRegrowthRate);
             placeRandomGrass(grid, regrowthAmount);
 
