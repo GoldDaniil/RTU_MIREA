@@ -17,8 +17,8 @@ const char herbivoreSymbolOld = 'H';
 const char grassSymbol = '#';
 const int screenWidth = 180;
 const int screenHeight = 40;
-int predatorPopulation = 100;
-int herbivorePopulation = 3000;
+int predatorPopulation = 300;
+int herbivorePopulation = 300;
 int grassPopulation = 800;
 const double grassRegrowthRateSummer = 0.031;
 const double grassRegrowthRateSpringFall = 0.0155;
@@ -427,7 +427,7 @@ int main() {
     while (steps < 576 && !gameEnded) {
         system(CLEAR_SCREEN);
 
-        
+
         // Check for natural disaster (tsunami) with a 5% probability
         if (rand() % 100 < 0.5) {
             isTsunami = true;
@@ -453,7 +453,7 @@ int main() {
             // Reset the terminal color
             std::cout << "\033[0m";
 
-            
+
 
             // Remove all living animals from the grid
             for (int i = 0; i < screenHeight; ++i) {
@@ -537,8 +537,8 @@ int main() {
                 currentRegrowthRate = grassRegrowthRateWinter;
                 break;
             }
-                            
-                                            
+
+
             int regrowthAmount = static_cast<int>(grassPopulation * currentRegrowthRate);
             placeRandomGrass(grid, regrowthAmount);
 
