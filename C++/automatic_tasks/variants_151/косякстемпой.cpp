@@ -17,7 +17,7 @@ const char herbivoreSymbolOld = 'H';
 const char grassSymbol = '#';
 const char riverSymbol = '~';
 const int screenWidth = 200;
-const int screenHeight = 50;
+const int screenHeight = 30;
 int predatorPopulation = 1200;
 int herbivorePopulation = 1200;
 int grassPopulation = 4000;
@@ -60,7 +60,7 @@ void placeRandomRivers(Animal grid[][screenWidth], int riverCount) {
 }
 
 void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predatorCount, int youngHerbivoreCount,
-    int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount, int deadHerbivoreCount, 
+    int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount, int deadHerbivoreCount,
     int remainingGrassCount, int currentStep, int currentSeason, int naturalDeathPredatorCount, double currentTemperature) {
     std::cout << "Herbivores: " << std::max(0, herbivoreCount)
         << " | Predators: " << std::max(0, predatorCount)
@@ -72,8 +72,8 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
         << " | Natural Deaths (Predators): " << naturalDeathPredatorCount
         << " | Remaining Grass: " << remainingGrassCount
         << " | Step: " << currentStep + 1
-        << " | Season: "
-        << " | Current Temperature: " << currentTemperature << "°C";
+        << " | Current Temperature: " << currentTemperature << "^C"
+        << " | Season: ";
 
     switch (currentSeason) {
     case 0:
@@ -237,54 +237,36 @@ void updateTemperature(double& currentTemperature, int steps, int currentSeason)
     int randomTemperatureChange = 0;
 
     switch (currentSeason) {
-    case 0: // лето
-        switch ((steps / 3) % 2) {
-        case 0: // Первые три шага
-            randomTemperatureChange = rand() % 13 + 18; // Случайное изменение от 18 до 30
-            break;
-        case 1: // Следующие три шага
-            randomTemperatureChange = rand() % 13 + 18; // Случайное изменение от 18 до 30
-            randomTemperatureChange = 30 - randomTemperatureChange; // Инвертируем, чтобы получить спад от 30 до 18
-            break;
-        }
+    case 0: // Summer
+        randomTemperatureChange = (steps / 3) % 2 == 0 ? rand() % 13 + 18 : -(rand() % 13 + 1);
         break;
 
-    case 1: // осень
-        switch ((steps / 3) % 2) {
-        case 0: // Первые три шага
-            randomTemperatureChange = rand() % 14 + 4; // Случайное изменение от 4 до 17
-            randomTemperatureChange = 17 - randomTemperatureChange; // Инвертируем, чтобы получить спад от 17 до 4
-            break;
-        case 1: // Следующие три шага
-            randomTemperatureChange = rand() % 15 + 4; // Случайное изменение от 4 до 19
-            randomTemperatureChange = 4 - randomTemperatureChange; // Инвертируем, чтобы получить спад от 4 до -10
-            break;
+    case 1: // Autumn
+        randomTemperatureChange = (steps / 3) % 2 == 0 ? std::min(rand() % 11, 10) : -(rand() % 14 + 4);
+
+        // Ensure the temperature change doesn't make the temperature go above 10 degrees Celsius
+        if (currentTemperature + randomTemperatureChange > 10) {
+            randomTemperatureChange = std::max(-10.0, 10.0 - currentTemperature);
         }
         break;
-    case 2: // зима
-        switch ((steps / 3) % 2) {
-        case 0: // Первые три шага
-            randomTemperatureChange = rand() % 21 - 10; // Случайное изменение от -10 до -30
-            break;
-        case 1: // Следующие три шага
-            randomTemperatureChange = rand() % 26 - 25; // Случайное изменение от -25 до 0
-            break;
-        }
+    case 2: // Winter
+        randomTemperatureChange = (steps / 3) % 2 == 0 ? std::max(-(rand() % 21 + 10), -30) : std::min(rand() % 26 - 25, -10);
         break;
-    case 3: // весна
-        switch ((steps / 3) % 2) {
-        case 0: // Первые три шага
-            randomTemperatureChange = rand() % 13; // Случайное изменение от 0 до 12
-            break;
-        case 1: // Следующие три шага
-            randomTemperatureChange = rand() % 5 + 13; // Случайное изменение от 13 до 17
-            break;
+    case 3: // Spring
+        randomTemperatureChange = (steps / 3) % 2 == 0 ? std::min(rand() % 11 + 5, 15) : std::max(-(rand() % 11 + 5), -10);
+
+        // Ensure the temperature change doesn't make the temperature go above 20 degrees Celsius
+        if (currentTemperature + randomTemperatureChange > 20) {
+            randomTemperatureChange = std::max(-10.0, 20.0 - currentTemperature);
         }
         break;
     }
 
-    // Обновление температуры
+    // Update the temperature
     currentTemperature += randomTemperatureChange;
+
+    // Ensure the temperature stays within a reasonable range (e.g., -10 to 30 degrees Celsius)
+    currentTemperature = std::max(-10.0, std::min(30.0, currentTemperature));
 }
 
 bool isAdjacent(int x1, int y1, int x2, int y2) {
@@ -583,11 +565,11 @@ int main() {
                 oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason,
                 naturalDeathPredatorCount, currentTemperature);
 
-            std::cout << "Enter 'exit'/'EXIT' to exit the game. Or press Enter move animals...";
+            std::cout << "\nEnter 'exit'/'EXIT' to exit the game. Or press Enter move animals... ";
             std::getline(std::cin, userInput);
 
             if (userInput == "exit" or userInput == "EXIT") {
-                std::cout << "okay. goodbye :( ";
+                std::cout << "\nokay. goodbye :( \n";
                 break;
             }
 
