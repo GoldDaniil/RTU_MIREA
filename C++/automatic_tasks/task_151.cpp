@@ -565,11 +565,11 @@ int main() {
                 oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason,
                 naturalDeathPredatorCount, currentTemperature);
 
-            std::cout << "Enter 'exit'/'EXIT' to exit the game. Or press Enter move animals...";
+            std::cout << "\nEnter 'exit'/'EXIT' to exit the game. Or press Enter move animals... ";
             std::getline(std::cin, userInput);
 
             if (userInput == "exit" or userInput == "EXIT") {
-                std::cout << "okay. goodbye :( ";
+                std::cout << "\nokay. goodbye :( \n";
                 break;
             }
 
