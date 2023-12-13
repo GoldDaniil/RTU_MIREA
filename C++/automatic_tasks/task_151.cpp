@@ -72,8 +72,8 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
         << " | Natural Deaths (Predators): " << naturalDeathPredatorCount
         << " | Remaining Grass: " << remainingGrassCount
         << " | Step: " << currentStep + 1
-        << " | Season: "
-        << " | Current Temperature: " << currentTemperature << "°C";
+        << " | Current Temperature: " << currentTemperature << "^C"
+        << " | Season: ";
 
     switch (currentSeason) {
     case 0:
@@ -238,8 +238,9 @@ void updateTemperature(double& currentTemperature, int steps, int currentSeason)
 
     switch (currentSeason) {
     case 0: // Summer
-        randomTemperatureChange = rand() % 13 + 18;
+        randomTemperatureChange = (steps / 3) % 2 == 0 ? rand() % 13 + 18 : -(rand() % 13 + 1);
         break;
+
     case 1: // Autumn
         randomTemperatureChange = (steps / 3) % 2 == 0 ? std::min(rand() % 11, 10) : -(rand() % 14 + 4);
 
