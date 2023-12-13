@@ -427,7 +427,6 @@ int main() {
     placeRandomGrass(grid, grassPopulation);
     placeRandomRivers(grid, 5); // Adjust the river count as needed
 
-
     int herbivoreCount = 0;
     int youngHerbivoreCount = 0;
     int youngPredatorCount = 0;
@@ -486,11 +485,11 @@ int main() {
         else {
             printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason, naturalDeathPredatorCount);
 
-            std::cout << "\nEnter 'exit' to exit the game, or press Enter move animals...\n";
+            std::cout << "\nEnter 'exit'/'EXIT' to exit the game. Or press Enter move animals...\n";
             std::getline(std::cin, userInput);
 
-            if (userInput == "exit") {
-                std::cout << "Exiting the game.\n";
+            if (userInput == "exit" or userInput == "EXIT") {
+                std::cout << "\nokay. goodbye :( \n";
                 break;  // Exit the loop and end the game
             }
 
