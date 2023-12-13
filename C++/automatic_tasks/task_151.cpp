@@ -85,7 +85,7 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
         std::cout << "Spring";
         break;
     default:
-        std::cout << "Spring";
+        std::cout << "+";
         break;
     }
 
@@ -368,7 +368,6 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
                     }
                 }
             }
-            // ... (rest of the existing code remains unchanged)
         }
     }
 }
