@@ -9,18 +9,18 @@
 #else
 #define CLEAR_SCREEN "clear"
 #endif
-// косяк с хищниками - быстро умирают    -   есть размножение 
+// косяк с хищниками - быстро умирают - размножение есть - но слишком много детей 
 const char predatorSymbolYoung = 'p';
 const char predatorSymbolOld = 'P';
 const char herbivoreSymbolYoung = 'h';
 const char herbivoreSymbolOld = 'H';
 const char grassSymbol = '#';
 const char riverSymbol = '~';
-const int screenWidth = 60;
-const int screenHeight = 60;
-int predatorPopulation = 800;
-int herbivorePopulation = 800;
-int grassPopulation = 800;
+const int screenWidth = 200;
+const int screenHeight = 50;
+int predatorPopulation = 1200;
+int herbivorePopulation = 1200;
+int grassPopulation = 4000;
 const double grassRegrowthRateSummer = 0.031;
 const double grassRegrowthRateSpringFall = 0.0155;
 const double grassRegrowthRateWinter = 0.0;
@@ -483,8 +483,7 @@ int main() {
     while (steps < 576 && !gameEnded) {
         system(CLEAR_SCREEN);
 
-        // Check for natural disaster (tsunami) with a 5% probability
-        if (rand() % 100 < 0.1) {
+        if (rand() % 100 < 0.3) {
             isTsunami = true;
         }
 
@@ -523,12 +522,12 @@ int main() {
         else {
             printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason, naturalDeathPredatorCount);
 
-            std::cout << "\nEnter 'exit'/'EXIT' to exit the game. Or press Enter move animals...\n";
+            std::cout << "Enter 'exit'/'EXIT' to exit the game. Or press Enter move animals...";
             std::getline(std::cin, userInput);
 
             if (userInput == "exit" or userInput == "EXIT") {
-                std::cout << "\nokay. goodbye :( \n";
-                break;  // Exit the loop and end the game
+                std::cout << "okay. goodbye :( ";
+                break;  
             }
 
             // Move animals
