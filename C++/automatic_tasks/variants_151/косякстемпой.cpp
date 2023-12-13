@@ -9,23 +9,24 @@
 #else
 #define CLEAR_SCREEN "clear"
 #endif
-// косяк с хищниками - быстро умирают
+// косяк с хищниками - быстро умирают - размножение есть - но слишком много детей 
 const char predatorSymbolYoung = 'p';
 const char predatorSymbolOld = 'P';
 const char herbivoreSymbolYoung = 'h';
 const char herbivoreSymbolOld = 'H';
 const char grassSymbol = '#';
 const char riverSymbol = '~';
-const int screenWidth = 60;
-const int screenHeight = 60;
-int predatorPopulation = 800;
-int herbivorePopulation = 800;
-int grassPopulation = 800;
+const int screenWidth = 200;
+const int screenHeight = 50;
+int predatorPopulation = 1200;
+int herbivorePopulation = 1200;
+int grassPopulation = 4000;
 const double grassRegrowthRateSummer = 0.031;
 const double grassRegrowthRateSpringFall = 0.0155;
 const double grassRegrowthRateWinter = 0.0;
 const double deathProbabilityPerStep = 0.1;
 int naturalDeathPredatorCount = 0;
+double currentTemperature = 20.0; // Начальная температура
 
 struct Animal {
     char symbol;
@@ -58,7 +59,9 @@ void placeRandomRivers(Animal grid[][screenWidth], int riverCount) {
     }
 }
 
-void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predatorCount, int youngHerbivoreCount, int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount, int deadHerbivoreCount, int remainingGrassCount, int currentStep, int currentSeason, int naturalDeathPredatorCount) {
+void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predatorCount, int youngHerbivoreCount,
+    int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount, int deadHerbivoreCount, 
+    int remainingGrassCount, int currentStep, int currentSeason, int naturalDeathPredatorCount, double currentTemperature) {
     std::cout << "Herbivores: " << std::max(0, herbivoreCount)
         << " | Predators: " << std::max(0, predatorCount)
         << " | Young Herbivores (< 10 years): " << youngHerbivoreCount
@@ -69,7 +72,8 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
         << " | Natural Deaths (Predators): " << naturalDeathPredatorCount
         << " | Remaining Grass: " << remainingGrassCount
         << " | Step: " << currentStep + 1
-        << " | Season: ";
+        << " | Season: "
+        << " | Current Temperature: " << currentTemperature << "°C";
 
     switch (currentSeason) {
     case 0:
@@ -227,6 +231,60 @@ void moveRandomly(Animal grid[][screenWidth], char animalSymbol) {
 void eatGrass(Animal grid[][screenWidth], int x, int y, int& remainingGrassCount) {
     grid[x][y].symbol = ' '; // Clear grass
     --remainingGrassCount;
+}
+
+void updateTemperature(double& currentTemperature, int steps, int currentSeason) {
+    int randomTemperatureChange = 0;
+
+    switch (currentSeason) {
+    case 0: // лето
+        switch ((steps / 3) % 2) {
+        case 0: // Первые три шага
+            randomTemperatureChange = rand() % 13 + 18; // Случайное изменение от 18 до 30
+            break;
+        case 1: // Следующие три шага
+            randomTemperatureChange = rand() % 13 + 18; // Случайное изменение от 18 до 30
+            randomTemperatureChange = 30 - randomTemperatureChange; // Инвертируем, чтобы получить спад от 30 до 18
+            break;
+        }
+        break;
+
+    case 1: // осень
+        switch ((steps / 3) % 2) {
+        case 0: // Первые три шага
+            randomTemperatureChange = rand() % 14 + 4; // Случайное изменение от 4 до 17
+            randomTemperatureChange = 17 - randomTemperatureChange; // Инвертируем, чтобы получить спад от 17 до 4
+            break;
+        case 1: // Следующие три шага
+            randomTemperatureChange = rand() % 15 + 4; // Случайное изменение от 4 до 19
+            randomTemperatureChange = 4 - randomTemperatureChange; // Инвертируем, чтобы получить спад от 4 до -10
+            break;
+        }
+        break;
+    case 2: // зима
+        switch ((steps / 3) % 2) {
+        case 0: // Первые три шага
+            randomTemperatureChange = rand() % 21 - 10; // Случайное изменение от -10 до -30
+            break;
+        case 1: // Следующие три шага
+            randomTemperatureChange = rand() % 26 - 25; // Случайное изменение от -25 до 0
+            break;
+        }
+        break;
+    case 3: // весна
+        switch ((steps / 3) % 2) {
+        case 0: // Первые три шага
+            randomTemperatureChange = rand() % 13; // Случайное изменение от 0 до 12
+            break;
+        case 1: // Следующие три шага
+            randomTemperatureChange = rand() % 5 + 13; // Случайное изменение от 13 до 17
+            break;
+        }
+        break;
+    }
+
+    // Обновление температуры
+    currentTemperature += randomTemperatureChange;
 }
 
 bool isAdjacent(int x1, int y1, int x2, int y2) {
@@ -483,8 +541,7 @@ int main() {
     while (steps < 576 && !gameEnded) {
         system(CLEAR_SCREEN);
 
-        // Check for natural disaster (tsunami) with a 5% probability
-        if (rand() % 100 < 0.1) {
+        if (rand() % 100 < 0.3) {
             isTsunami = true;
         }
 
@@ -521,17 +578,20 @@ int main() {
             gameEnded = true;
         }
         else {
-            printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason, naturalDeathPredatorCount);
+            // Вывод информации о симуляции
+            printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount,
+                oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason,
+                naturalDeathPredatorCount, currentTemperature);
 
-            std::cout << "\nEnter 'exit'/'EXIT' to exit the game. Or press Enter move animals...\n";
+            std::cout << "Enter 'exit'/'EXIT' to exit the game. Or press Enter move animals...";
             std::getline(std::cin, userInput);
 
             if (userInput == "exit" or userInput == "EXIT") {
-                std::cout << "\nokay. goodbye :( \n";
-                break;  // Exit the loop and end the game
+                std::cout << "okay. goodbye :( ";
+                break;
             }
 
-            // Move animals
+            // Движение животных и размножение
             moveRandomly(grid, predatorSymbolYoung);
             moveRandomly(grid, predatorSymbolOld);
             moveRandomly(grid, herbivoreSymbolYoung);
@@ -561,7 +621,7 @@ int main() {
                 }
             }
 
-            // Check for starvation before eating
+            // Проверка на голод перед тем, как животные поедят
             checkStarvation(grid, herbivoreCount, predatorCount, deadHerbivoreCount, naturalDeathPredatorCount);
 
             // Herbivores eat grass after moving
@@ -631,6 +691,9 @@ int main() {
 
             // Call countAnimals to update the counts
             countAnimals(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount, oldPredatorCount);
+
+            // Обновление температуры
+            updateTemperature(currentTemperature, steps, currentSeason);
 
             ++steps;
         }
