@@ -2,7 +2,6 @@
 // The code uses the snake_case naming style for functions and variables.
 // CamelCase is used for classes.
 
-
 //ОШИБКИ : 17 = 3 БЛОК - КОДА НЕТ (не срочно)\ 20 = 4 БЛОК - ОШИБКА В КОДЕ (не срочно)
 
 #include<iostream>
@@ -13,7 +12,7 @@
 #include<time.h>
 #include<iterator>
 #include<algorithm>
-#include <vector>
+#include<vector>
 
 using namespace std;
 
