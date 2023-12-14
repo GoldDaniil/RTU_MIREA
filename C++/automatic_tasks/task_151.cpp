@@ -25,15 +25,22 @@ const double grassRegrowthRateSummer = 0.031;
 const double grassRegrowthRateSpringFall = 0.0155;
 const double grassRegrowthRateWinter = 0.0;
 const double deathProbabilityPerStep = 0.1;
-int naturalDeathPredatorCount = 0;
 double currentTemperature = 20.0; // Начальная температура
 double tsunami_probability = 0.3;
+const int youngHerbivoreHungerThreshold = 3; // Сколько шагов молодое травоядное животное может пройти без еды
+const int youngPredatorHungerThreshold = 3; // Сколько шагов молодой хищник может пройти без еды
+const int oldHerbivoreHungerThreshold = 6; // Сколько шагов старое травоядное животное может пройти без еды
+const int oldPredatorHungerThreshold = 6; // Сколько шагов старый хищник может пройти без еды
+const int predatorStarvationThreshold = 4; // Number of steps a predator can go without successfully hunting
 
 struct Animal {
     char symbol;
     int age;
     int stepsWithoutEating;
 };
+
+int naturalDeathPredatorCount = 0;
+int predatorCount = 0;
 
 void initializeGrid(Animal grid[][screenWidth]) {
     for (int i = 0; i < screenHeight; ++i) {
@@ -130,7 +137,8 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
     }
 }
 
-void countAnimals(const Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& youngHerbivoreCount, int& youngPredatorCount, int& oldHerbivoreCount, int& oldPredatorCount) {
+void countAnimals(const Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount,
+    int& youngHerbivoreCount, int& youngPredatorCount, int& oldHerbivoreCount, int& oldPredatorCount) {
     herbivoreCount = 0;
     predatorCount = 0;
     youngHerbivoreCount = 0;
@@ -287,7 +295,8 @@ void herbivoreEatGrass(Animal grid[][screenWidth], int herbivoreX, int herbivore
     }
 }
 
-void predatorEatHerbivore(Animal grid[][screenWidth], int predatorX, int predatorY, int herbivoreX, int herbivoreY, int& deadHerbivoreCount, int& predatorCount) {
+void predatorEatHerbivore(Animal grid[][screenWidth], int predatorX, int predatorY, int herbivoreX,
+    int herbivoreY, int& deadHerbivoreCount, int& predatorCount) {
     if (isAdjacent(predatorX, predatorY, herbivoreX, herbivoreY)) {
         // Check the age of the predator and herbivore
         bool isYoungPredator = (grid[predatorX][predatorY].symbol == predatorSymbolYoung);
@@ -316,7 +325,8 @@ void predatorEatHerbivore(Animal grid[][screenWidth], int predatorX, int predato
     }
 }
 
-void ageAnimals(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int& currentStep, int& oldAgeDeathCount) {
+void ageAnimals(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount,
+    int& currentStep, int& oldAgeDeathCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == herbivoreSymbolYoung) {
@@ -366,7 +376,8 @@ void countYoungAnimals(const Animal grid[][screenWidth], int& youngHerbivoreCoun
     }
 }
 
-void reproduce(Animal grid[][screenWidth], int x1, int y1, int x2, int y2, char youngSymbol, char oldSymbol, int& herbivoreCount, int& predatorCount) {
+void reproduce(Animal grid[][screenWidth], int x1, int y1, int x2, int y2, char youngSymbol, char oldSymbol,
+    int& herbivoreCount, int& predatorCount) {
     // Check if the two animals are of the same type and are adjacent
     if ((grid[x1][y1].symbol == grid[x2][y2].symbol) && isAdjacent(x1, y1, x2, y2)) {
         // Check if the reproduction probability is met (1% chance)
@@ -399,14 +410,8 @@ void reproduce(Animal grid[][screenWidth], int x1, int y1, int x2, int y2, char 
     }
 }
 
-const int youngHerbivoreHungerThreshold = 3; // Сколько шагов молодое травоядное животное может пройти без еды
-const int youngPredatorHungerThreshold = 3; // Сколько шагов молодой хищник может пройти без еды
-const int oldHerbivoreHungerThreshold = 6; // Сколько шагов старое травоядное животное может пройти без еды
-const int oldPredatorHungerThreshold = 6; // Сколько шагов старый хищник может пройти без еды
-int predatorCount = 0;
-const int predatorStarvationThreshold = 4; // Number of steps a predator can go without successfully hunting
-
-void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int& naturalDeathPredatorCount) {
+void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount,
+    int& naturalDeathPredatorCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == predatorSymbolOld) {
@@ -456,7 +461,8 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
     }
 }
 
-void checkStarvationHerbivores(Animal grid[][screenWidth], int& herbivoreCount, int& deadHerbivoreCount, int& remainingGrassCount) {
+void checkStarvationHerbivores(Animal grid[][screenWidth], int& herbivoreCount, int& deadHerbivoreCount,
+    int& remainingGrassCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == herbivoreSymbolYoung || grid[i][j].symbol == herbivoreSymbolOld) {
