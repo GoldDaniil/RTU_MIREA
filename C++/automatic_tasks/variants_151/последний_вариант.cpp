@@ -13,27 +13,62 @@
 using namespace std;
 
 // косяк с хищниками - быстро умирают - размножение есть - но слишком много детей - 
-const char predatorSymbolYoung = 'p';
-const char predatorSymbolOld = 'P';
-const char herbivoreSymbolYoung = 'h';
-const char herbivoreSymbolOld = 'H';
-const char grassSymbol = '#';
-const char riverSymbol = '~';
-const int screenWidth; // вводим
-const int screenHeight; // вводим
-int predatorPopulation; // вводим
+double currentTemperature = 20.0; // Начальная температура
+const double grassRegrowthRateSummer = 0.031;
+const double grassRegrowthRateSpringFall = 0.0155;
+const double grassRegrowthRateWinter = 0.0;
+
+int no_predator_population; // вводим
 int herbivorePopulation; // вводим
+int age_predators_herbivores;
 int grassPopulation; // вводим
-const double grassRegrowthRateSummer; // вводим
-const double grassRegrowthRateSpringFall; // вводим
-const double grassRegrowthRateWinter; // вводим
-const double deathProbabilityPerStep; // вводим
-double currentTemperature; // вводим // Начальная температура
+int reproductive_animals_min, reproductive_animals_max; // вводим
+int probability_reproduce; // вводим
 double tsunami_probability; // вводим
+
+int no_screen_width; // вводим
+const int screenWidth;
+
+int no_screen_height; // вводим
+const int screenHeight;
+
+char no_predator_symbol_young;
+const char predatorSymbolYoung = 'p';
+
+char no_predator_symbol_old;
+const char predatorSymbolOld = 'P';
+
+char no_herbivore_symbol_young;
+const char herbivoreSymbolYoung = 'h';
+
+char no_herbivore_symbol_old;
+const char herbivoreSymbolOld = 'H';
+
+char no_grass_symbol;
+const char grassSymbol = '#';
+
+char no_river_symbol;
+const char riverSymbol = '~';
+
+int no_predator_population;
+const int predatorPopulation;
+
+int no_death_probability_per_step;
+const double deathProbabilityPerStep;
+
+int no_young_herbivore_hunger_threshold;
 const int youngHerbivoreHungerThreshold; // вводим // Сколько шагов молодое травоядное животное может пройти без еды
+
+int no_young_predator_hunger_threshold;
 const int youngPredatorHungerThreshold; // вводим // Сколько шагов молодой хищник может пройти без еды
+
+int no_old_herbivore_hunger_threshold;
 const int oldHerbivoreHungerThreshold; // вводим // Сколько шагов старое травоядное животное может пройти без еды
+
+int no_old_predator_hungeg_threshold;
 const int oldPredatorHungerThreshold; // вводим // Сколько шагов старый хищник может пройти без еды
+
+int no_predator_starvation_threshold;
 const int predatorStarvationThreshold; // вводим // Number of steps a predator can go without successfully hunting
 
 struct Animal {
@@ -338,8 +373,8 @@ void ageAnimals(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCo
                     grid[i][j].age += 2;  // Увеличьте возраст на 2 вместо 1
                     grid[i][j].stepsWithoutEating += 1;
 
-                    if (grid[i][j].age >= 480) {
-                        // Если хищник достиг возраста 20, он не обязательно должен умереть, уменьшим вероятность
+                    if (grid[i][j].age >= age_predators_herbivores) {
+                        // Если хищник достиг возраста age_predators_herbivores, он не обязательно должен умереть, уменьшим вероятность
                         if (rand() % 100 < 10) {  // Уменьшим вероятность смерти
                             --predatorCount;
                             grid[i][j].symbol = ' ';
@@ -384,7 +419,7 @@ void reproduce(Animal grid[][screenWidth], int x1, int y1, int x2, int y2, char 
     // Check if the two animals are of the same type and are adjacent
     if ((grid[x1][y1].symbol == grid[x2][y2].symbol) && isAdjacent(x1, y1, x2, y2)) {
         // Check if the reproduction probability is met (1% chance)
-        if (rand() % 100 < 0.0005) {
+        if (rand() % 100 < probability_reproduce) {
             for (int i = std::max(0, x1 - 1); i < std::min(screenHeight, x1 + 2); ++i) {
                 for (int j = std::max(0, y1 - 1); j < std::min(screenWidth, y1 + 2); ++j) {
                     if (grid[i][j].symbol == ' ') {
@@ -521,31 +556,80 @@ int main() {
         // разобраться с соответсвием const и cin
 
         cout << "\nenter the width of the screen, the playing field : ";
-        cin >> screenWidth;
+        cin >> no_screen_width;
+        const int screenWidth = no_screen_width;
 
         cout << "\nenter the height of the screen, the playing field : ";
-        cin >> screenHeight;
+        cin >> no_screen_height;
+        const int screenHeight = no_screen_height;
 
         cout << "\nenter the symbol, the designation on the screen of a young predator : ";
-        cin >> predatorSymbolYoung;
+        cin >> no_predator_symbol_young;
+        const char predatorSymbolYoung = no_predator_symbol_young;
 
         cout << "\nenter the symbol, the designation on the screen of an adult predator : ";
-        cin >> predatorSymbolOld;
+        cin >> no_predator_symbol_old;
+        const char predatorSymbolOld = no_predator_symbol_old;
 
-        cout << "\nenter the symbol, the designation on the screen of a young herbivore : "
-            cin >> herbivoreSymbolYoung;
+        cout << "\nenter the symbol, the designation on the screen of a young herbivore : ";
+        cin >> no_herbivore_symbol_young;
+        const char herbivoreSymbolYoung = no_herbivore_symbol_young;
 
         cout << "\nenter the symbol, the designation on the screen of an adult herbivore :";
-        cin >> herbivoreSymbolOld;
+        cin >> no_herbivore_symbol_old;
+        const char herbivoreSymbolOld = no_herbivore_symbol_old;
 
         cout << "\nenter the symbol, the designation on the grass screen : ";
-        cin >> grassSymbol;
+        cin >> no_grass_symbol;
+        const int grassSymbol = no_grass_symbol;
 
         cout << "\nenter the symbol, the designation on the river screen : ";
-        cin >> riverSymbol;
+        cin >> no_river_symbol;
+        const char riverSymbol = no_river_symbol;
 
+        cout << "\nenter the number of predators : ";
+        cin >> no_predator_population;
+        const int predatorPopulation = no_predator_population;
 
+        cout << "\nenter the number of herbivores : ";
+        cin >> herbivorePopulation;
 
+        cout << "\nenter the amount of grass : ";
+        cin >> grassPopulation;
+
+        cout << "\nenter the probability of accidental death of animals at every step : (norm : 0.1)";
+        cin >> no_death_probability_per_step;
+        const double deathProbabilityPerStep = no_death_probability_per_step;
+
+        cout << "\nenter the number of steps a young herbivore can take without eating food : ";
+        cin >> no_young_herbivore_hunger_threshold;
+        const int youngHerbivoreHungerThreshold = no_young_herbivore_hunger_threshold;
+
+        cout << "\nenter the number of steps an adult herbivore can take without eating food : ";
+        cin >> no_old_herbivore_hunger_threshold;
+        const int oldHerbivoreHungerThreshold = no_old_herbivore_hunger_threshold;
+
+        cout << "\nenter the number of steps a young predator can take without eating food : ";
+        cin >> no_young_predator_hunger_threshold;
+        const int youngPredatorHungerThreshold = no_young_predator_hunger_threshold;
+
+        cout << "\nenter the number of steps an adult predator can take without eating food : ";
+        cin >> no_old_predator_hungeg_threshold;
+        const int oldPredatorHungerThreshold = no_old_predator_hungeg_threshold;
+
+        cout << "\nenter the probability of natural disasters - tsunami : ";
+        cin >> tsunami_probability;
+
+        cout << "\nenter the maximum age of predators and herbivores : ";
+        cin >> age_predators_herbivores;
+
+        cout << "\nenter the minimum and maximum reproductive age of predators and herbivores : ";
+        cin >> reproductive_animals_min;
+        cout << endl;
+        cin >> reproductive_animals_max;
+
+        cout << "\nenter the probability of fertility of predators and herbivores : (norm = 0.0005)";
+        cin >> probability_reproduce;
     }
 
     Animal grid[screenHeight][screenWidth];
