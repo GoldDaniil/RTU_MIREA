@@ -630,7 +630,7 @@ int main() {
 
         cout << "\nenter the probability of fertility of predators and herbivores : (norm = 0.0005)";
         cin >> probability_reproduce;
-    }
+    } 
 
     Animal grid[screenHeight][screenWidth];
     initializeGrid(grid);
