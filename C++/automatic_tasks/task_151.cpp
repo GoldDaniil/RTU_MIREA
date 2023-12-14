@@ -27,6 +27,7 @@ const double grassRegrowthRateWinter = 0.0;
 const double deathProbabilityPerStep = 0.1;
 int naturalDeathPredatorCount = 0;
 double currentTemperature = 20.0; // Начальная температура
+double tsunami_probability = 0.3;
 
 struct Animal {
     char symbol;
@@ -528,7 +529,7 @@ int main() {
     while (steps < 576 && !gameEnded) {
         system(CLEAR_SCREEN);
 
-        if (rand() % 100 < 0.3) {
+        if (rand() % 100 < tsunami_probability) {     // вероятность цунами
             isTsunami = true;
         }
 
