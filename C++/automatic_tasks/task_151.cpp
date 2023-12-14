@@ -9,7 +9,7 @@
 #else
 #define CLEAR_SCREEN "clear"
 #endif
-// косяк с хищниками - быстро умирают - размножение есть - но слишком много детей 
+// косяк с хищниками - быстро умирают - размножение есть - но слишком много детей - 
 const char predatorSymbolYoung = 'p';
 const char predatorSymbolOld = 'P';
 const char herbivoreSymbolYoung = 'h';
@@ -59,9 +59,11 @@ void placeRandomRivers(Animal grid[][screenWidth], int riverCount) {
     }
 }
 
-void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predatorCount, int youngHerbivoreCount,
-    int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount, int deadHerbivoreCount,
-    int remainingGrassCount, int currentStep, int currentSeason, int naturalDeathPredatorCount, double currentTemperature) {
+void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predatorCount,
+    int youngHerbivoreCount, int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount,
+    int deadHerbivoreCount, int remainingGrassCount, int currentStep, int currentSeason,
+    int naturalDeathPredatorCount, double currentTemperature, int& oldAgeDeathCount) {
+
     std::cout << "Herbivores: " << std::max(0, herbivoreCount)
         << " | Predators: " << std::max(0, predatorCount)
         << " | Young Herbivores (< 10 years): " << youngHerbivoreCount
@@ -70,6 +72,7 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
         << " | Old Predators (>= 10 years): " << oldPredatorCount
         << " | Dead Herbivores: " << deadHerbivoreCount
         << " | Natural Deaths (Predators): " << naturalDeathPredatorCount
+        << " | Old Age Deaths: " << oldAgeDeathCount
         << " | Remaining Grass: " << remainingGrassCount
         << " | Step: " << currentStep + 1
         << " | Current Temperature: " << currentTemperature << "^C"
@@ -312,7 +315,7 @@ void predatorEatHerbivore(Animal grid[][screenWidth], int predatorX, int predato
     }
 }
 
-void ageAnimals(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int currentStep) {
+void ageAnimals(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int& currentStep, int& oldAgeDeathCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == herbivoreSymbolYoung) {
@@ -327,6 +330,7 @@ void ageAnimals(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCo
                             --predatorCount;
                             grid[i][j].symbol = ' ';
                             grid[i][j].age = 0;
+                            ++oldAgeDeathCount;
                         }
                     }
 
@@ -515,6 +519,7 @@ int main() {
     int steps = 0;
     int currentSeason = 0;
     double currentRegrowthRate = 0.0; // Default to no regrowth
+    int oldAgeDeathCount = 0;
 
     bool isTsunami = false;
     bool gameEnded = false;
@@ -563,7 +568,8 @@ int main() {
             // Вывод информации о симуляции
             printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount,
                 oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason,
-                naturalDeathPredatorCount, currentTemperature);
+                naturalDeathPredatorCount, currentTemperature, oldAgeDeathCount);
+
 
             std::cout << "\nEnter 'exit'/'EXIT' to exit the game. Or press Enter move animals... ";
             std::getline(std::cin, userInput);
@@ -631,7 +637,7 @@ int main() {
             }
 
             // Age animals every 24 steps
-            ageAnimals(grid, herbivoreCount, predatorCount, deadHerbivoreCount, steps);
+            ageAnimals(grid, herbivoreCount, predatorCount, deadHerbivoreCount, steps, oldAgeDeathCount);
 
             // Count young animals
             countYoungAnimals(grid, youngHerbivoreCount, youngPredatorCount);
