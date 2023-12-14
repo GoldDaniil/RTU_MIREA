@@ -3,7 +3,7 @@
 #include <ctime>
 #include <cmath>
 #include <string>
-
+                                    // косяк с переменными
 #ifdef _WIN32
 #define CLEAR_SCREEN "cls"
 #else
