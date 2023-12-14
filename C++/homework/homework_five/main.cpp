@@ -409,38 +409,38 @@ namespace ProcessingTextFiles {
 	public:
 		void balance_brackets_cout() {
 			try {
-				ifstream inputFile("input_task_38.txt");
-				if (!inputFile.is_open()) {
+				ifstream input_file("input_task_38.txt");
+				if (!input_file.is_open()) {
 					cerr << "\nthe file could not be opened\n" << endl;
 					return;
 				}
 
 				string text;
 				char ch;
-				while (inputFile.get(ch)) {
+				while (input_file.get(ch)) {
 					text += ch;
 				}
 
-				inputFile.close();
+				input_file.close();
 
-				int openCount = 0;
-				int closeCount = 0;
+				int open_count = 0;
+				int close_count = 0;
 
 				for (char c : text) {
 					if (c == '(') {
-						openCount++;
+						open_count++;
 					}
 					else if (c == ')') {
-						closeCount++;
+						close_count++;
 					}
 				}
 
 				cout << "\nsource text: \n" << text << endl << endl;
 
-				cout << "number of opening brackets: " << openCount << endl;
-				cout << "number of closing brackets: " << closeCount << endl << endl;
+				cout << "number of opening brackets: " << open_count << endl;
+				cout << "number of closing brackets: " << close_count << endl << endl;
 
-				int diff = openCount - closeCount;
+				int diff = open_count - close_count;
 
 				if (diff > 0) {
 					for (int i = 0; i < diff; i++) {
@@ -849,13 +849,13 @@ void launcher() {
 			cout << "Task 'Euclidean Algorithm'. Give 2 numbers and find their most common divisor methods : division and subtraction.\n";
 			SetConsoleTextAttribute(back_col, 0x07);
 
-				// Задание «Алгоритм Евклида». Задать 2 числа и найти их наибольший общий делитель двумя
-				// способами: делением и вычитанием.
+			// Задание «Алгоритм Евклида». Задать 2 числа и найти их наибольший общий делитель двумя
+			// способами: делением и вычитанием.
 
 			cout << "division method: \n";			// 1 задание методом делением
 			TaskOneVarTwo::FindTheGDBDivisionByDivision gcdCalculator_one;
 			gcdCalculator_one.euclidean_algorithm_division();
-			
+
 			cout << "\n\nsubtraction method: \n";     // 1 задание методом вычитанием
 			TaskOneVarTwo::FindTheGDBDivisionBySubtraction gcdCalculator_two;
 			gcdCalculator_two.euclidean_algorithm_subtraction();
@@ -868,11 +868,11 @@ void launcher() {
 			cout << "'The Sieve of Eratosthenes' task. Find all prime numbers in the range from 2 to the number you enter natural number\n";
 			SetConsoleTextAttribute(back_col, 0x07);
 
-				// Задание «Решето Эратосфена». Найти все простые числа в диапазоне от 2 до введенного вами
-				// натурального числа
+			// Задание «Решето Эратосфена». Найти все простые числа в диапазоне от 2 до введенного вами
+			// натурального числа
 
 			SieveOfEratosthenes::find_primes();  // Задание «Решето Эратосфена» 
-			
+
 			cout << "\n";
 			break;
 		case 3:
@@ -933,14 +933,14 @@ void launcher() {
 				TestLaunch.cout_search_specific_word();
 				break;
 			case 17:
-				
+
 				// нет нихуя 
 				cerr << "poka netu\n"; 		//сложная задача - исправить 
 
 				ProcessingTextFiles::sort_word_text();
 				break;
-			case 19: 
-				
+			case 19:
+
 				//19. Статистическая обработка текстового файла: поиск наиболее часто встречающегося символа.
 				ProcessingTextFiles::most_occurring_character();
 				break;
@@ -1014,7 +1014,7 @@ void launcher() {
 			break;
 		case 5: // Задание «Файлы». Выполнить один вариант задания
 			cout << "\ntask 13: Create a file of N integers. Find the number that repeats the maximum number of times.\nIf there are several such numbers, then all of them.Save these numbers to another file and sort. \nAll files Print before and after processing.\n\n\n";
-			
+
 			// Создать файл из N целых чисел. Найти число, повторяющееся максимальное количество раз. Если
 			// таких чисел несколько, то все из них.Сохранить эти числа в другой файл и отсортировать.Все файлы
 			// до и после обработки вывести на печать.
