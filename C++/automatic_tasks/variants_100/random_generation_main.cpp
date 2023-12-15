@@ -1,12 +1,12 @@
 // Финальный вариант
 
-#include <iostream>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
-#include <algorithm>
-#include <Windows.h>
-#include <random>     
+#include<iostream>
+#include<vector>
+#include<cstdlib>
+#include<ctime>
+#include<algorithm>
+#include<Windows.h>
+#include<random>     
 
 using namespace std;
 
