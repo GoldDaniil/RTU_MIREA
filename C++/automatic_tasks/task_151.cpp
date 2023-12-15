@@ -1,3 +1,5 @@
+// Финальный вариант
+
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
