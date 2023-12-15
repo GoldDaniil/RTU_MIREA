@@ -549,28 +549,28 @@ int main() {
         // Continue for other variables...
     }
     else if (user_input == "yes" || user_input == "YES" || user_input == "Yes" || user_input == "yeS") {
-        const char predatorSymbolYoung = 'p';
-        const char predatorSymbolOld = 'P';
-        const char herbivoreSymbolYoung = 'h';
-        const char herbivoreSymbolOld = 'H';
-        const char grassSymbol = '#';
-        const char riverSymbol = '~';
-        const int screenWidth = 200;
-        const int screenHeight = 30;
+        char predatorSymbolYoung = 'p';
+        char predatorSymbolOld = 'P';
+        char herbivoreSymbolYoung = 'h';
+        char herbivoreSymbolOld = 'H';
+        char grassSymbol = '#';
+        char riverSymbol = '~';
+        int screenWidth = 200;
+        int screenHeight = 30;
         int predatorPopulation = 1200;
         int herbivorePopulation = 1200;
         int grassPopulation = 4000;
-        const double grassRegrowthRateSummer = 0.031;
-        const double grassRegrowthRateSpringFall = 0.0155;
-        const double grassRegrowthRateWinter = 0.0;
-        const double deathProbabilityPerStep = 0.1;
+        double grassRegrowthRateSummer = 0.031;
+        double grassRegrowthRateSpringFall = 0.0155;
+        double grassRegrowthRateWinter = 0.0;
+        double deathProbabilityPerStep = 0.1;
         double currentTemperature = 20.0; // Начальная температура
         double tsunami_probability = 0.3;
-        const int youngHerbivoreHungerThreshold = 3; // Сколько шагов молодое травоядное животное может пройти без еды
-        const int youngPredatorHungerThreshold = 3; // Сколько шагов молодой хищник может пройти без еды
-        const int oldHerbivoreHungerThreshold = 6; // Сколько шагов старое травоядное животное может пройти без еды
-        const int oldPredatorHungerThreshold = 6; // Сколько шагов старый хищник может пройти без еды
-        const int predatorStarvationThreshold = 4; // Number of steps a predator can go without successfully hunting
+        int youngHerbivoreHungerThreshold = 3; // Сколько шагов молодое травоядное животное может пройти без еды
+        int youngPredatorHungerThreshold = 3; // Сколько шагов молодой хищник может пройти без еды
+        int oldHerbivoreHungerThreshold = 6; // Сколько шагов старое травоядное животное может пройти без еды
+        int oldPredatorHungerThreshold = 6; // Сколько шагов старый хищник может пройти без еды
+        int predatorStarvationThreshold = 4; // Number of steps a predator can go without successfully hunting
     }
 
     Animal** grid;
