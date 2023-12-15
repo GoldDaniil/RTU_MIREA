@@ -580,8 +580,62 @@ int main() {
         cout << "\nenter custom settings: \n";
         cin >> screen_width;
 
-        cout << "\nenter screen width: ";
+        cout << "\nenter screen width: \n";
+        cin >> screen_height;
 
+        cout << "\nenter predator symbol young :\n";
+        cin >> predator_symbol_young;
+
+        cout << "\nenter predator symbol old :\n";
+        cin >> predator_symbol_old;
+
+        cout << "\nenter herbivore symbol young: \n";
+        cin >> herbivore_symbol_young;
+
+        cout << "\nenter herbivore symbol old: \n";
+        cin >> herbivore_symbol_old;
+
+        cout << "\nenter grass symbol: \n";
+        cin >> grass_symbol;
+
+        cout << "\nenter river symbol: \n";
+        cin >> river_symbol;
+
+        cout << "\nenter mountain symbol: \n";
+        cin >> mountain_symbol;
+
+        cout << "\nenter mountain population: \n";
+        cin >> mountain_population;
+
+        cout << "\nenter predator population: \n";
+        cin >> predator_population;
+
+        cout << "\nenter herbivore population: \n";
+        cin >> herbivore_population;
+
+        cout << "\nenter grass populatin: \n";
+        cin >> grass_population;
+
+        cout << "\nenter death probality per step : \n";
+        cin >> death_probability_per_step;
+
+        cout << "\nenter tsunami probality: \n";
+        cin >> tsunami_probability;
+
+        cout << "\nenter young herbivore hunger step:\n";
+        cin >> young_herbivore_hunger_threshold;
+
+        cout << "\nenter young predator hunger step: \n";
+        cin >> young_predator_hunger_threshold;
+        
+        cout << "\nenter old herbivore hunger step: \n";
+        cin >> old_herbivore_hunger_threshold;
+
+        cout << "\nenter old predator hunger step: \n";
+        cin >> old_predator_hunger_threshold;
+
+        cout << "\nenter death:\n";
+        cin >> predator_starvation_threshold;
     }
 
     Animal** grid;
