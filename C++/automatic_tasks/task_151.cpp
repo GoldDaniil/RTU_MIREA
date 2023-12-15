@@ -19,6 +19,8 @@ const char herbivore_symbol_young = 'h';
 const char herbivore_symbol_old = 'H';
 const char grass_symbol = '#';
 const char river_symbol = '~';
+const char mountain_symbol = '^';
+int mountain_population = 100;
 const int screen_width = 200;
 const int screen_height = 30;
 int predator_population = 1200;
@@ -45,6 +47,19 @@ struct Animal {
 int natural_death_predator_count = 0;
 int predator_count = 0;
 
+void placeRandomMountains(Animal grid[][screen_width], int mountainCount) {
+    int count = 0;
+    while (count < mountainCount) {
+        int x = rand() % screen_height;
+        int y = rand() % screen_width;
+
+        if (grid[x][y].symbol == ' ') {
+            grid[x][y].symbol = mountain_symbol;
+            ++count;
+        }
+    }
+}
+
 void initializeGrid(Animal grid[][screen_width]) {
     for (int i = 0; i < screen_height; ++i) {
         for (int j = 0; j < screen_width; ++j) {
@@ -53,7 +68,12 @@ void initializeGrid(Animal grid[][screen_width]) {
             grid[i][j].steps_without_eating = 0;
         }
     }
+
+    // случайное место горы
+    placeRandomMountains(grid, mountain_population);
 }
+
+
 
 void placeRandomRivers(Animal grid[][screen_width], int riverCount) {
     for (int i = 0; i < riverCount; ++i) {
@@ -132,6 +152,9 @@ void printGrid(const Animal grid[][screen_width], int herbivore_count, int preda
             else if (grid[i][j].symbol == predator_symbol_young) {
                 cout << "\033[1;31m" << grid[i][j].symbol << "\033[0m"; // красный цвет для новорожденных особей хищников
             }
+            else if (grid[i][j].symbol == mountain_symbol) {
+                cout << "\033[1;37m" << grid[i][j].symbol << "\033[0m"; // белый цвет для гор
+            }
             else {
                 cout << grid[i][j].symbol;
             }
@@ -201,7 +224,7 @@ void moveRandomly(Animal grid[][screen_width], char animal_symbol) {
     for (int i = 0; i < screen_height; ++i) {
         for (int j = 0; j < screen_width; ++j) {
             if (grid[i][j].symbol == animal_symbol) {
-                grid[i][j].symbol = ' '; 
+                grid[i][j].symbol = ' ';
 
                 // движение в случайном направлении
                 int direction = rand() % 4;
@@ -210,33 +233,33 @@ void moveRandomly(Animal grid[][screen_width], char animal_symbol) {
 
                 switch (direction) {
                 case 0: // двигаться вверх
-                    if ((i > 0) && (grid[i - 1][j].symbol != river_symbol)) {
+                    if ((i > 0) && (grid[i - 1][j].symbol != river_symbol) && (grid[i - 1][j].symbol != mountain_symbol)) {
                         newI = i - 1;
                     }
                     break;
                 case 1: // двигаться вниз
-                    if ((i < screen_height - 1) && (grid[i + 1][j].symbol != river_symbol)) {
+                    if ((i < screen_height - 1) && (grid[i + 1][j].symbol != river_symbol) && (grid[i + 1][j].symbol != mountain_symbol)) {
                         newI = i + 1;
                     }
                     break;
                 case 2: // двигаться влево
-                    if ((j > 0) && (grid[i][j - 1].symbol != river_symbol)) {
+                    if ((j > 0) && (grid[i][j - 1].symbol != river_symbol) && (grid[i][j - 1].symbol != mountain_symbol)) {
                         newJ = j - 1;
                     }
                     break;
                 case 3: // двигаться направо
-                    if ((j < screen_width - 1) && (grid[i][j + 1].symbol != river_symbol)) {
+                    if ((j < screen_width - 1) && (grid[i][j + 1].symbol != river_symbol) && (grid[i][j + 1].symbol != mountain_symbol)) {
                         newJ = j + 1;
                     }
                     break;
                 }
 
-                // если ли новая позиция = трава = отменяем изменения
+                // если новая позиция = трава = отменяем изменения
                 if (grid[newI][newJ].symbol == grass_symbol) {
                     grid[newI][newJ].steps_without_eating = 0;
                 }
 
-                grid[newI][newJ].symbol = animal_symbol; // обновляем позицию 
+                grid[newI][newJ].symbol = animal_symbol; // обновляем позицию
                 grid[newI][newJ].age = grid[i][j].age + 1; // увеличиваем возраст
             }
         }
@@ -244,8 +267,10 @@ void moveRandomly(Animal grid[][screen_width], char animal_symbol) {
 }
 
 void eatGrass(Animal grid[][screen_width], int x, int y, int& remaining_grass_count) {
-    grid[x][y].symbol = ' '; // очищаем блок травы
-    --remaining_grass_count;
+    if (grid[x][y].symbol == grass_symbol && grid[x][y].symbol != mountain_symbol) {
+        grid[x][y].symbol = ' '; // очищаем блок травы
+        --remaining_grass_count;
+    }
 }
 
 void updateTemperature(double& current_temperature, int steps, int current_season) {
@@ -284,14 +309,14 @@ void updateTemperature(double& current_temperature, int steps, int current_seaso
     current_temperature = max(-10.0, min(30.0, current_temperature));
 }
 
-bool isAdjacent(int x1, int y1, int x2, int y2) {   
-    return abs(x1 - x2) <= 1 && abs(y1 - y2) <= 1;
+bool isAdjacent(int x1, int y1, int x2, int y2, const Animal grid[][screen_width]) {
+    return abs(x1 - x2) <= 1 && abs(y1 - y2) <= 1 && grid[x2][y2].symbol != mountain_symbol;
 }
 
 void herbivoreEatGrass(Animal grid[][screen_width], int herbivoreX, int herbivoreY, int& remaining_grass_count) {
     for (int i = max(0, herbivoreX - 1); i < min(screen_height, herbivoreX + 2); ++i) {
         for (int j = max(0, herbivoreY - 1); j < min(screen_width, herbivoreY + 2); ++j) {
-            if (grid[i][j].symbol == grass_symbol && (i != herbivoreX || j != herbivoreY) && grid[i][j].symbol != river_symbol) {
+            if (grid[i][j].symbol == grass_symbol && (i != herbivoreX || j != herbivoreY) && grid[i][j].symbol != river_symbol && grid[i][j].symbol != mountain_symbol) {
                 eatGrass(grid, i, j, remaining_grass_count);
             }
         }
@@ -300,7 +325,7 @@ void herbivoreEatGrass(Animal grid[][screen_width], int herbivoreX, int herbivor
 
 void predatorEatHerbivore(Animal grid[][screen_width], int predatorX, int predatorY, int herbivoreX,
     int herbivoreY, int& dead_herbivore_count, int& predator_count) {
-    if (isAdjacent(predatorX, predatorY, herbivoreX, herbivoreY)) {
+    if (isAdjacent(predatorX, predatorY, herbivoreX, herbivoreY, grid) && grid[herbivoreX][herbivoreY].symbol != mountain_symbol) {
         // проверка на возраст хищника и травоядного животного
         bool is_young_predator = (grid[predatorX][predatorY].symbol == predator_symbol_young);
         bool is_young_herbivore = (grid[herbivoreX][herbivoreY].symbol == herbivore_symbol_young);
@@ -382,7 +407,7 @@ void countYoungAnimals(const Animal grid[][screen_width], int& young_herbivore_c
 void reproduce(Animal grid[][screen_width], int x1, int y1, int x2, int y2, char young_symbol, char old_symbol,
     int& herbivore_count, int& predator_count) {
     // проверка - принадлежат ли два животного к одному типу и находятся ли они рядом
-    if ((grid[x1][y1].symbol == grid[x2][y2].symbol) && isAdjacent(x1, y1, x2, y2)) {
+    if ((grid[x1][y1].symbol == grid[x2][y2].symbol) && isAdjacent(x1, y1, x2, y2, grid)) {
         if (rand() % 100 < 0.0005) {
             for (int i = max(0, x1 - 1); i < min(screen_height, x1 + 2); ++i) {
                 for (int j = max(0, y1 - 1); j < min(screen_width, y1 + 2); ++j) {
@@ -437,7 +462,7 @@ void checkStarvation(Animal grid[][screen_width], int& herbivore_count, int& pre
                     for (int k = 0; k < screen_height; ++k) {
                         for (int l = 0; l < screen_width; ++l) {
                             if (grid[k][l].symbol == herbivore_symbol_young || grid[k][l].symbol == herbivore_symbol_old) {
-                                if (isAdjacent(i, j, k, l)) {
+                                if (isAdjacent(i, j, k, l, grid)) {
                                     // хищник успешно охотился на травоядное животное
                                     has_hunted = true;
                                     grid[i][j].steps_without_eating = 0; // сбрасываем счетчик голода
