@@ -1,3 +1,5 @@
+// Финальный вариант
+
 #include <iostream>
 #include <vector>
 #include <cstdlib>
