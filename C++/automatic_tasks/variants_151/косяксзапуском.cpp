@@ -3,30 +3,44 @@
 #include <ctime>
 #include <cmath>
 #include <string>
-
 #ifdef _WIN32
 #define CLEAR_SCREEN "cls"
 #else
 #define CLEAR_SCREEN "clear"
 #endif
-// косяк с хищниками - быстро умирают - размножение есть - но слишком много детей 
-const char predatorSymbolYoung = 'p';
-const char predatorSymbolOld = 'P';
-const char herbivoreSymbolYoung = 'h';
-const char herbivoreSymbolOld = 'H';
-const char grassSymbol = '#';
-const char riverSymbol = '~';
-const int screenWidth = 200;
-const int screenHeight = 30;
-int predatorPopulation = 1200;
-int herbivorePopulation = 1200;
-int grassPopulation = 4000;
-const double grassRegrowthRateSummer = 0.031;
-const double grassRegrowthRateSpringFall = 0.0155;
-const double grassRegrowthRateWinter = 0.0;
-const double deathProbabilityPerStep = 0.1;
-int naturalDeathPredatorCount = 0;
-double currentTemperature = 20.0; // Начальная температура
+
+using namespace std;
+
+double currentTemperature = 20.0; // не вводим
+const double grassRegrowthRateSummer = 0.031; // не вводим
+const double grassRegrowthRateSpringFall = 0.0155; // не вводим 
+const double grassRegrowthRateWinter = 0.0; // не вводим
+
+int no_predator_population; // вводим
+int herbivorePopulation;    // вводим
+int age_predators_herbivores; // вводим
+int grassPopulation;         // вводим
+int reproductive_animals_min, reproductive_animals_max; // вводим
+int probability_reproduce;   // вводим
+double tsunami_probability; // вводим
+
+int screenWidth; // вводим
+int screenHeight; // вводим
+
+char predatorSymbolYoung; // вводим
+char predatorSymbolOld;   // вводим
+char herbivoreSymbolYoung; // вводим
+char herbivoreSymbolOld;   // вводим
+char grassSymbol;          // вводим
+char riverSymbol;          // вводим
+
+int predatorPopulation;            // вводим
+double deathProbabilityPerStep;   // вводим
+int youngHerbivoreHungerThreshold; // вводим
+int youngPredatorHungerThreshold;  // вводим
+int oldHerbivoreHungerThreshold;   // вводим
+int oldPredatorHungerThreshold;    // вводим
+int predatorStarvationThreshold;   // вводим
 
 struct Animal {
     char symbol;
@@ -34,7 +48,10 @@ struct Animal {
     int stepsWithoutEating;
 };
 
-void initializeGrid(Animal grid[][screenWidth]) {
+int naturalDeathPredatorCount = 0;
+int predatorCount = 0;
+
+void initializeGrid(Animal**& grid, int rows, int cols) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             grid[i][j].symbol = ' ';
@@ -44,7 +61,7 @@ void initializeGrid(Animal grid[][screenWidth]) {
     }
 }
 
-void placeRandomRivers(Animal grid[][screenWidth], int riverCount) {
+void placeRandomRivers(Animal**& grid, int riverCount) {
     for (int i = 0; i < riverCount; ++i) {
         int riverSize = rand() % 4 + 6; // Random river size between 2x2 and 5x5
 
@@ -59,9 +76,11 @@ void placeRandomRivers(Animal grid[][screenWidth], int riverCount) {
     }
 }
 
-void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predatorCount, int youngHerbivoreCount,
-    int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount, int deadHerbivoreCount,
-    int remainingGrassCount, int currentStep, int currentSeason, int naturalDeathPredatorCount, double currentTemperature) {
+void printGrid(Animal**& grid, int herbivoreCount, int predatorCount,
+    int youngHerbivoreCount, int youngPredatorCount, int oldHerbivoreCount, int oldPredatorCount,
+    int deadHerbivoreCount, int remainingGrassCount, int currentStep, int currentSeason,
+    int naturalDeathPredatorCount, double currentTemperature, int& oldAgeDeathCount) {
+
     std::cout << "Herbivores: " << std::max(0, herbivoreCount)
         << " | Predators: " << std::max(0, predatorCount)
         << " | Young Herbivores (< 10 years): " << youngHerbivoreCount
@@ -70,6 +89,7 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
         << " | Old Predators (>= 10 years): " << oldPredatorCount
         << " | Dead Herbivores: " << deadHerbivoreCount
         << " | Natural Deaths (Predators): " << naturalDeathPredatorCount
+        << " | Old Age Deaths: " << oldAgeDeathCount
         << " | Remaining Grass: " << remainingGrassCount
         << " | Step: " << currentStep + 1
         << " | Current Temperature: " << currentTemperature << "^C"
@@ -126,7 +146,8 @@ void printGrid(const Animal grid[][screenWidth], int herbivoreCount, int predato
     }
 }
 
-void countAnimals(const Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& youngHerbivoreCount, int& youngPredatorCount, int& oldHerbivoreCount, int& oldPredatorCount) {
+void countAnimals(Animal**& grid, int& herbivoreCount, int& predatorCount,
+    int& youngHerbivoreCount, int& youngPredatorCount, int& oldHerbivoreCount, int& oldPredatorCount) {
     herbivoreCount = 0;
     predatorCount = 0;
     youngHerbivoreCount = 0;
@@ -156,7 +177,7 @@ void countAnimals(const Animal grid[][screenWidth], int& herbivoreCount, int& pr
     }
 }
 
-void placeRandomAnimals(Animal grid[][screenWidth], char youngSymbol, char oldSymbol, int totalPopulation) {
+void placeRandomAnimals(Animal**& grid, char youngSymbol, char oldSymbol, int totalPopulation) {
     for (int i = 0; i < totalPopulation; ++i) {
         int x = rand() % screenHeight;
         int y = rand() % screenWidth;
@@ -173,7 +194,7 @@ void placeRandomAnimals(Animal grid[][screenWidth], char youngSymbol, char oldSy
     }
 }
 
-void placeRandomGrass(Animal grid[][screenWidth], int population) {
+void placeRandomGrass(Animal**& grid, int population) {
     for (int i = 0; i < population; ++i) {
         int x = rand() % screenHeight;
         int y = rand() % screenWidth;
@@ -182,7 +203,7 @@ void placeRandomGrass(Animal grid[][screenWidth], int population) {
     }
 }
 
-void moveRandomly(Animal grid[][screenWidth], char animalSymbol) {
+void moveRandomly(Animal**& grid, char animalSymbol) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == animalSymbol) {
@@ -228,7 +249,7 @@ void moveRandomly(Animal grid[][screenWidth], char animalSymbol) {
     }
 }
 
-void eatGrass(Animal grid[][screenWidth], int x, int y, int& remainingGrassCount) {
+void eatGrass(Animal**& grid, int x, int y, int& remainingGrassCount) {
     grid[x][y].symbol = ' '; // Clear grass
     --remainingGrassCount;
 }
@@ -273,7 +294,7 @@ bool isAdjacent(int x1, int y1, int x2, int y2) {
     return abs(x1 - x2) <= 1 && abs(y1 - y2) <= 1;
 }
 
-void herbivoreEatGrass(Animal grid[][screenWidth], int herbivoreX, int herbivoreY, int& remainingGrassCount) {
+void herbivoreEatGrass(Animal**& grid, int herbivoreX, int herbivoreY, int& remainingGrassCount) {
     for (int i = std::max(0, herbivoreX - 1); i < std::min(screenHeight, herbivoreX + 2); ++i) {
         for (int j = std::max(0, herbivoreY - 1); j < std::min(screenWidth, herbivoreY + 2); ++j) {
             if (grid[i][j].symbol == grassSymbol && (i != herbivoreX || j != herbivoreY) && grid[i][j].symbol != riverSymbol) {
@@ -283,7 +304,8 @@ void herbivoreEatGrass(Animal grid[][screenWidth], int herbivoreX, int herbivore
     }
 }
 
-void predatorEatHerbivore(Animal grid[][screenWidth], int predatorX, int predatorY, int herbivoreX, int herbivoreY, int& deadHerbivoreCount, int& predatorCount) {
+void predatorEatHerbivore(Animal**& grid, int predatorX, int predatorY, int herbivoreX,
+    int herbivoreY, int& deadHerbivoreCount, int& predatorCount) {
     if (isAdjacent(predatorX, predatorY, herbivoreX, herbivoreY)) {
         // Check the age of the predator and herbivore
         bool isYoungPredator = (grid[predatorX][predatorY].symbol == predatorSymbolYoung);
@@ -312,7 +334,8 @@ void predatorEatHerbivore(Animal grid[][screenWidth], int predatorX, int predato
     }
 }
 
-void ageAnimals(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int currentStep) {
+void ageAnimals(Animal**& grid, int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount,
+    int& currentStep, int& oldAgeDeathCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == herbivoreSymbolYoung) {
@@ -327,6 +350,7 @@ void ageAnimals(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCo
                             --predatorCount;
                             grid[i][j].symbol = ' ';
                             grid[i][j].age = 0;
+                            ++oldAgeDeathCount;
                         }
                     }
 
@@ -345,10 +369,9 @@ void ageAnimals(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCo
     }
 }
 
-void countYoungAnimals(const Animal grid[][screenWidth], int& youngHerbivoreCount, int& youngPredatorCount) {
+void countYoungAnimals(Animal**& grid, int& youngHerbivoreCount, int& youngPredatorCount) {
     youngHerbivoreCount = 0;
     youngPredatorCount = 0;
-
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == herbivoreSymbolYoung && grid[i][j].age < 10) {
@@ -361,7 +384,8 @@ void countYoungAnimals(const Animal grid[][screenWidth], int& youngHerbivoreCoun
     }
 }
 
-void reproduce(Animal grid[][screenWidth], int x1, int y1, int x2, int y2, char youngSymbol, char oldSymbol, int& herbivoreCount, int& predatorCount) {
+void reproduce(Animal**& grid, int x1, int y1, int x2, int y2, char youngSymbol, char oldSymbol,
+    int& herbivoreCount, int& predatorCount) {
     // Check if the two animals are of the same type and are adjacent
     if ((grid[x1][y1].symbol == grid[x2][y2].symbol) && isAdjacent(x1, y1, x2, y2)) {
         // Check if the reproduction probability is met (1% chance)
@@ -394,14 +418,7 @@ void reproduce(Animal grid[][screenWidth], int x1, int y1, int x2, int y2, char 
     }
 }
 
-const int youngHerbivoreHungerThreshold = 3; // Сколько шагов молодое травоядное животное может пройти без еды
-const int youngPredatorHungerThreshold = 3; // Сколько шагов молодой хищник может пройти без еды
-const int oldHerbivoreHungerThreshold = 6; // Сколько шагов старое травоядное животное может пройти без еды
-const int oldPredatorHungerThreshold = 6; // Сколько шагов старый хищник может пройти без еды
-int predatorCount = 0;
-const int predatorStarvationThreshold = 4; // Number of steps a predator can go without successfully hunting
-
-void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int& naturalDeathPredatorCount) {
+void checkStarvation(Animal**& grid, int& herbivoreCount, int& predatorCount, int& deadHerbivoreCount, int& naturalDeathPredatorCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == predatorSymbolYoung || grid[i][j].symbol == predatorSymbolOld) {
@@ -451,7 +468,8 @@ void checkStarvation(Animal grid[][screenWidth], int& herbivoreCount, int& preda
     }
 }
 
-void checkStarvationHerbivores(Animal grid[][screenWidth], int& herbivoreCount, int& deadHerbivoreCount, int& remainingGrassCount) {
+void checkStarvationHerbivores(Animal**& grid, int& herbivoreCount, int& deadHerbivoreCount,
+    int& remainingGrassCount) {
     for (int i = 0; i < screenHeight; ++i) {
         for (int j = 0; j < screenWidth; ++j) {
             if (grid[i][j].symbol == herbivoreSymbolYoung || grid[i][j].symbol == herbivoreSymbolOld) {
@@ -496,8 +514,67 @@ void checkStarvationHerbivores(Animal grid[][screenWidth], int& herbivoreCount, 
 int main() {
     srand(static_cast<unsigned>(time(0)));
 
-    Animal grid[screenHeight][screenWidth];
-    initializeGrid(grid);
+    string user_input;
+    cout << "Start the game with default values and parameters? (yes/no): ";
+    getline(cin, user_input);
+
+    if (user_input == "no" || user_input == "NO" || user_input == "nO" || user_input == "No") {
+        cout << "\nEnter custom settings: \n";
+
+        // Input for no_predator_population
+        cout << "\nEnter the number of predators: ";
+        cin >> no_predator_population;
+
+        // Continue for other variables...
+
+        // Input for screenWidth
+        cout << "\nEnter the screen width: ";
+        cin >> screenWidth;
+
+        // Input for screenHeight
+        cout << "\nEnter the screen height: ";
+        cin >> screenHeight;
+
+        // Continue for other variables...
+
+        // Input for predatorSymbolYoung
+        cout << "\nEnter the symbol for a young predator: ";
+        cin >> predatorSymbolYoung;
+
+        // Input for predatorSymbolOld
+        cout << "\nEnter the symbol for an old predator: ";
+        cin >> predatorSymbolOld;
+
+        cin >> herbivoreSymbolYoung;
+        // Continue for other variables...
+    }
+    else if (user_input == "yes" || user_input == "YES" || user_input == "Yes" || user_input == "yeS") {
+        const char predatorSymbolYoung = 'p';
+        const char predatorSymbolOld = 'P';
+        const char herbivoreSymbolYoung = 'h';
+        const char herbivoreSymbolOld = 'H';
+        const char grassSymbol = '#';
+        const char riverSymbol = '~';
+        const int screenWidth = 200;
+        const int screenHeight = 30;
+        int predatorPopulation = 1200;
+        int herbivorePopulation = 1200;
+        int grassPopulation = 4000;
+        const double grassRegrowthRateSummer = 0.031;
+        const double grassRegrowthRateSpringFall = 0.0155;
+        const double grassRegrowthRateWinter = 0.0;
+        const double deathProbabilityPerStep = 0.1;
+        double currentTemperature = 20.0; // Начальная температура
+        double tsunami_probability = 0.3;
+        const int youngHerbivoreHungerThreshold = 3; // Сколько шагов молодое травоядное животное может пройти без еды
+        const int youngPredatorHungerThreshold = 3; // Сколько шагов молодой хищник может пройти без еды
+        const int oldHerbivoreHungerThreshold = 6; // Сколько шагов старое травоядное животное может пройти без еды
+        const int oldPredatorHungerThreshold = 6; // Сколько шагов старый хищник может пройти без еды
+        const int predatorStarvationThreshold = 4; // Number of steps a predator can go without successfully hunting
+    }
+
+    Animal** grid;
+    initializeGrid(grid, screenHeight, screenWidth);
 
     // Place animals, grass, and rivers
     placeRandomAnimals(grid, predatorSymbolYoung, predatorSymbolOld, predatorPopulation);
@@ -515,6 +592,7 @@ int main() {
     int steps = 0;
     int currentSeason = 0;
     double currentRegrowthRate = 0.0; // Default to no regrowth
+    int oldAgeDeathCount = 0;
 
     bool isTsunami = false;
     bool gameEnded = false;
@@ -523,7 +601,7 @@ int main() {
     while (steps < 576 && !gameEnded) {
         system(CLEAR_SCREEN);
 
-        if (rand() % 100 < 0.3) {
+        if (rand() % 100 < tsunami_probability) {     // вероятность цунами
             isTsunami = true;
         }
 
@@ -563,7 +641,8 @@ int main() {
             // Вывод информации о симуляции
             printGrid(grid, herbivoreCount, predatorCount, youngHerbivoreCount, youngPredatorCount, oldHerbivoreCount,
                 oldPredatorCount, deadHerbivoreCount, remainingGrassCount, steps, currentSeason,
-                naturalDeathPredatorCount, currentTemperature);
+                naturalDeathPredatorCount, currentTemperature, oldAgeDeathCount);
+
 
             std::cout << "\nEnter 'exit'/'EXIT' to exit the game. Or press Enter move animals... ";
             std::getline(std::cin, userInput);
@@ -631,7 +710,7 @@ int main() {
             }
 
             // Age animals every 24 steps
-            ageAnimals(grid, herbivoreCount, predatorCount, deadHerbivoreCount, steps);
+            ageAnimals(grid, herbivoreCount, predatorCount, deadHerbivoreCount, steps, oldAgeDeathCount);
 
             // Count young animals
             countYoungAnimals(grid, youngHerbivoreCount, youngPredatorCount);
