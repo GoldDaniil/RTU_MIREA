@@ -14,7 +14,6 @@
 
 using namespace std;
 
-// косяк с хищниками - быстро умирают - размножение есть - но слишком много детей
 const char predator_symbol_young = 'p';
 const char predator_symbol_old = 'P';
 const char herbivore_symbol_young = 'h';
