@@ -1,9 +1,9 @@
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <algorithm>  
-#include <cmath>      
-#include <Windows.h>
+#include<iostream>
+#include<cstdlib>
+#include<ctime>
+#include<algorithm>  
+#include<cmath>      
+#include<Windows.h>
 
 using namespace std;
 
