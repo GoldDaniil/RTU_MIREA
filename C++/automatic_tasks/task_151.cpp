@@ -1,10 +1,10 @@
 // Финальный вариант
 
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <cmath>
-#include <string>
+#include<iostream>
+#include<cstdlib>
+#include<ctime>
+#include<cmath>
+#include<string>
 
 #ifdef _WIN32
 #define CLEAR_SCREEN "cls"
