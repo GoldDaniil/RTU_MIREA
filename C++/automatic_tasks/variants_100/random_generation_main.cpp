@@ -6,7 +6,6 @@
 #include <Windows.h>
 #include <random>     
 
-
 using namespace std;
 
 HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -20,7 +19,7 @@ struct Cell {
     int age;
     char symbol;
 
-    Cell() : state(DEAD), age(0) {}
+    Cell() = default;
 };
 
 class GameOfLife {
@@ -41,9 +40,8 @@ public:
         }
         cout << endl;
 
-        std::random_device rd;
-        std::mt19937 g(rd());
-        std::shuffle(symbols.begin(), symbols.end(), g);
+        random_device rd;
+        shuffle(symbols.begin(), symbols.end(), mt19937(rd()));
 
         cout << "\nselected symbol for adaptation: " << symbols[0] << endl << endl;
 
@@ -58,6 +56,7 @@ public:
             }
         }
     }
+
     void print_grid() const {
         cout << endl;
 
@@ -245,7 +244,7 @@ int main() {
         cout << "do you want to play again? (y/n): ";
         cin >> playAgain;
 
-        if (playAgain != 'y' && playAgain != 'Y') {
+        if (playAgain != 'yes' && playAgain != 'Yes') {
             break;
         }
     }
