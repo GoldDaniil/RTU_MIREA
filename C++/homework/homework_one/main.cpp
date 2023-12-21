@@ -1,65 +1,99 @@
-// #include<iostream>
-// #include<cstdio>
-// #include<cmath>
+#include<iostream>
+#include <cmath>
 
-// using namespace std;
+using namespace std;
 
-// int main () {
-//     double visota, bolshoy_radius, radius, dlina_obrazueshey, V, S;
-//     while (true) {
-//         cout << "vvedite visotu : " << endl;
+int main() {
+    string my_name = "Daniil";
+    cout << my_name << endl;
+    /////////////////////////
 
-//         if (!(cin >> visota)) {
-//             cin.ignore();
-//             cin.clear();
-//             cout << "Oshibka, vi vveli nechislovoe znachenie!" << endl;
-//             continue;
-//         }
-//         break;
-//     }
-//     while (true) {
-//         cout << "vvedite bolshoy_radius : " << endl;
+    double num1, num2;
 
-//         if (!(cin >> bolshoy_radius)) {
-//             cin.ignore();
-//             cin.clear();
-//             cout << "Oshibka, vi vveli nechislovoe znachenie!" << endl;
-//             continue;
-//         }
-//         break;
-//     }
-//     while (true) {
-//         cout << "vvedite radius : " << endl;
+    cout << "enter the first number: ";
+    cin >> num1;
 
-//         if (!(cin >> radius)) {
-//             cin.ignore();
-//             cin.clear();
-//             cout << "Oshibka, vi vveli nechislovoe znachenie!" << endl;
-//             continue;
-//         }
-//         break;
-//     }
-//     while (true) {
-//         cout << "vvedite dlina_obrazueshey : " << endl;
+    cout << "enter the second number: ";
+    cin >> num2;
 
-//         if (!(cin >> dlina_obrazueshey)) {
-//             cin.ignore();
-//             cin.clear();
-//             cout << "Oshibka, vi vveli nechislovoe znachenie!" << endl;
-//             continue;
-//         }
-//         break;
-//     }
-//     if (visota != 0) {
-//         V = (1/(3 * 3.14159265359 * visota)) * (pow(bolshoy_radius, 2) + bolshoy_radius * radius + (pow(radius, 2)));
-//         cout << V << endl;
-//         S = 3.14159265359*(pow(bolshoy_radius, 2) + (bolshoy_radius + radius)*dlina_obrazueshey + (pow(radius, 2)));
-//         cout << S << endl;
-//     } else {
-//         cout << "delit na nol nelyza! nelyza nayti V" << endl;
-//         S = 3.14159265359*(pow(bolshoy_radius, 2) + (bolshoy_radius + radius)*dlina_obrazueshey + (pow(radius, 2)));
-//         cout << S << endl;
-//     }
+    cout << "sum: " << num1 + num2 << endl;
+    cout << "difference: " << num1 - num2 << endl;
+    cout << "product: " << num1 * num2 << endl;
 
-//     return 0;
-// }
+    if (num2 != 0) {
+        cout << "quotient: " << num1 / num2 << endl;
+    }
+    else {
+        cout << "division by zero is not possible\n";
+    }
+    /////////////////////////
+
+    double b, c;
+
+    cout << "enter the value of b: ";
+    cin >> b;
+
+    cout << "enter the value of c: ";
+    cin >> c;
+
+    if (b != 0) {
+        double x = -c / b;
+        cout << "solution: x = " << x << endl;
+    }
+    else {
+        cout << "invalid equation. 'b' cannot be zero\n";
+    }
+
+    /////////////////////////
+
+    double aa, bb, cc;
+
+    while (true) {
+        cout << "Enter the value of a: ";
+        if (!(cin >> aa)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error\n";
+            continue;
+        } break;
+    }
+
+    while (true) {
+        cout << "Enter the value of b: ";
+        if (!(cin >> bb)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error\n";
+            continue;
+        } break;
+    }
+
+    while (true) {
+        cout << "Enter the value of c: ";
+        if (!(cin >> cc)) {
+            cin.clear();
+            cin.ignore();
+            cout << "error\n";
+            continue;
+        } break;
+    }
+
+    double discriminant = bb * bb - 4 * aa * c;
+
+    if (discriminant > 0) {
+        double root1 = (-bb + sqrt(discriminant)) / (2 * aa);
+        double root2 = (-bb - sqrt(discriminant)) / (2 * aa);
+        cout << "two real and distinct roots: x1 = " << root1 << ", x2 = " << root2 << endl;
+    }
+    else if (discriminant == 0) {
+        double root = -bb / (2 * aa);
+        cout << "one real root: x = " << root << endl;
+    }
+    else {
+        double realPart = -bb / (2 * aa);
+        double imaginaryPart = sqrt(-discriminant) / (2 * aa);
+        cout << "two complex roots: x1 = " << realPart << " + " << imaginaryPart << "i, x2 = " << realPart << " - " << imaginaryPart << "i\n";
+    }
+
+    return 0;
+}
