@@ -1,5 +1,3 @@
-
-
 def task_1_3():
     x = 5 >= 2
     A = {1, 3, 7, 8}
@@ -137,7 +135,7 @@ def main():
             print("oh, okay:(")
             break
         else:
-            print("invalid choice. please enter a valid option.")
+            print("invalid choice. please enter a valid option")
 
 if __name__ == "__main__":
     main()
