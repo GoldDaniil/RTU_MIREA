@@ -103,7 +103,7 @@ def main():
         print("10 = task 4.3.3")
         print("11 = task 4.3.4")
         print("12 = task 4.3.5")
-        print("exit. no task\n\n")
+        print("no task - if you want to exit, enter 'exit'\n\n")
 
         choice = input("enter your choice: ")
         if choice == '1':
