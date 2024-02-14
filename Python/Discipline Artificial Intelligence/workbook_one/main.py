@@ -129,7 +129,9 @@ def task_4_3_2():
     plt.show()
 
 def task_4_3_3():
-    print("  ")
+    from scipy.integrate import simps
+    from numpy import trapz
+
 
 def task_4_3_4():
     print("  ")
