@@ -88,6 +88,56 @@ def task_4_3_1():
     plt.grid(True)
     plt.show()
 
+def task_4_3_2():
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import math
+
+    # Функция
+    def my_function(x):
+        return (math.sqrt(1 + math.exp(math.sqrt(x)) + math.cos(x**2)) /
+                abs(1 - math.sin(x)**3)) + math.log(abs(2*x))
+
+    # Создаем массив x от 1 до 10
+    x = np.linspace(1, 10, 10)
+
+    # Вычисляем значения функции для массива x
+    y = np.array([my_function(val) for val in x])
+
+    # Выделение среза первой половины массива
+    x_slice = x[:5]
+    y_slice = y[:5]
+
+    # Построение графика для основного массива (линейный)
+    plt.figure(figsize=(10, 5))
+    plt.plot(x, y, label='основной массив', color='blue')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.title('график функции')
+    plt.grid(True)
+    plt.legend()
+    plt.show()
+
+    # Построение графика для среза (точечный)
+    plt.figure(figsize=(10, 5))
+    plt.scatter(x_slice, y_slice, label='Срез', color='red')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.title('график среза первой половины массива')
+    plt.grid(True)
+    plt.legend()
+    plt.show()
+
+def task_4_3_3():
+    print("  ")
+
+def task_4_3_4():
+    print("  ")
+
+def task_4_3_5():
+    print("  ")
+
+
 def main():
     while True:
         print("\nselect a task to open:")
