@@ -1,6 +1,25 @@
 #написать функцию с параметрами для проверки введенных данных - вводится переменная - закидываю ее в параметры ф-ции
 #прописать исключения - не отваливалось
 
+def check_variable_type(variable, expected_type):
+    try:
+        expected_type(variable)
+        return True
+    except ValueError:
+        return False
+
+def check_variables(variables):
+    for var_name, expected_type in variables.items():
+        while True:
+            user_input = input(f"enter {var_name}: ")
+            if check_variable_type(user_input, expected_type):
+                variables[var_name] = expected_type(user_input)
+                break
+            else:
+                print(f"error {expected_type.__name__}")
+
+#------------------------------------------------------------------
+
 def task_1_3():
     x = 5 >= 2
     A = {1, 3, 7, 8}
@@ -13,8 +32,19 @@ def task_1_3():
     print(x, '|', type(x), '\n', A, '|', type(A), '\n', B, '|', type(B), '\n', C, '|', type(C), '\n', df, '|', type(df), '\n', z, '|', type(z), '\n', D, '|', type(D))
 
 def task_2_3():
-    x = int(input("\nenter x: "))
-            #написать функцию с параметрами - проверка на введеные данные
+    #x = int(input("\nenter x: "))
+    #expected_type = int
+    #test_x = input_variable(expected_type, "Enter x: ")
+
+    variables = {
+        'x': int,
+    }
+    # проверка переменных
+    check_variables(variables)
+    # проверка проверки
+    print("Variables:", variables)
+
+    # алгоритм - х1йня - подумать еще раз над проверкой
 
     if x < -5:
         print('(-infinity, -5)')
