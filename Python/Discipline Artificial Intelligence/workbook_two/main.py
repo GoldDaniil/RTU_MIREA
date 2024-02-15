@@ -34,6 +34,18 @@ def task_1_3_5():
     arr = np.array([3, 1, 5, 2, 4])
 
     arr_sorted = np.sort(arr)[::-1]
-    
+
     print("исходный массив:", arr)
     print("массив - отсортированный по убыванию:", arr_sorted)
+
+def task_1_3_6():
+    matrix = np.array([[1, 2, 3],
+                   [4, 5, 6],
+                   [7, 8, 9]])
+
+    print("форма матрицы:", matrix.shape)
+
+    print("pазмер матрицы:", matrix.size)
+
+    print("pазмерность матрицы:", matrix.ndim)
+    
