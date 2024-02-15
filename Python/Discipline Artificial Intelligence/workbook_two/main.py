@@ -30,3 +30,10 @@ def task_1_3_4():
 
     print(matrix)
 
+def task_1_3_5():
+    arr = np.array([3, 1, 5, 2, 4])
+
+    arr_sorted = np.sort(arr)[::-1]
+
+    print("исходный массив:", arr)
+    print("массив - отсортированный по убыванию:", arr_sorted)
