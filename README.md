@@ -1,12 +1,6 @@
 #RTU_MIREA
 
-Disciplines : procedural programming,
-
-artificial intelligence systems,
-              
-data processing structures and algorithms,
-              
-artificial intelligence.
+Disciplines : procedural programming, artificial intelligence systems, data processing structures and algorithms, artificial intelligence.
               
 Homework, projects and drafts.
 
