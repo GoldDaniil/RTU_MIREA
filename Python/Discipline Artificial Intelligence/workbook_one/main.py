@@ -1,6 +1,11 @@
 #написать функцию с параметрами для проверки введенных данных - вводится переменная - закидываю ее в параметры ф-ции
 #прописать исключения - не отваливалось
 
+import math
+import math as m
+import numpy as np
+import matplotlib.pyplot as plt
+
 def check_variable_type(variable, expected_type):
     try:
         expected_type(variable)
@@ -95,9 +100,6 @@ def task_3_3_5():
     print(x)
 
 def task_4_3_1():
-    import math as m
-    import numpy as np
-    import matplotlib.pyplot as plt
 
     np.random.seed(42)  # чтобы результат был воспроизводимым
     data = np.random.rand(100)
@@ -124,10 +126,6 @@ def task_4_3_1():
     plt.show()
 
 def task_4_3_2():
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import math
-
     # функция
     def my_function(x):
         return (math.sqrt(1 + math.exp(math.sqrt(x)) + math.cos(x**2)) /
