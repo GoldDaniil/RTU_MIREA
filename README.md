@@ -2,11 +2,11 @@
 
 Disciplines : procedural programming,
 
-              artificial intelligence systems,
+artificial intelligence systems,
               
-              data processing structures and algorithms,
+data processing structures and algorithms,
               
-              artificial intelligence.
+artificial intelligence.
               
 Homework, projects and drafts.
 
