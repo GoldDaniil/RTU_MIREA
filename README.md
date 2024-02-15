@@ -5,4 +5,4 @@
               artificial intelligence.
 ~Homework, projects and drafts.
 
-![KBSP_colour](https://github.com/GoldDaniil/RTU_MIREA/assets/66370296/9199be0c-7a72-4d7f-95a7-6e8b58180763)
+<img width="500" alt="Screenshot 2024-02-15 at 17 23 00" src="https://github.com/GoldDaniil/RTU_MIREA/assets/66370296/27f4df29-1ecf-4ca6-83c3-c7253c4a383a">
