@@ -1,3 +1,6 @@
+#написать функцию с параметрами для проверки введенных данных - вводится переменная - закидываю ее в параметры ф-ции
+#прописать исключения - не отваливалось
+
 def task_1_3():
     x = 5 >= 2
     A = {1, 3, 7, 8}
@@ -11,6 +14,7 @@ def task_1_3():
 
 def task_2_3():
     x = int(input("\nenter x: "))
+            #написать функцию с параметрами - проверка на введеные данные
 
     if x < -5:
         print('(-infinity, -5)')
@@ -20,7 +24,8 @@ def task_2_3():
         print('(5, +infinity)')
 
 def task_3_3_1():
-    x = int(input('enter x = '))
+    x = int(input('enter x = '))         #написать функцию с параметрами - проверка на введеные данные
+
     while x >= 1:
         print(x)
         x -= 3
@@ -64,26 +69,26 @@ def task_4_3_1():
     import numpy as np
     import matplotlib.pyplot as plt
 
-    np.random.seed(42)  # Чтобы результат был воспроизводимым
+    np.random.seed(42)  # чтобы результат был воспроизводимым
     data = np.random.rand(100)
 
-    # Рассчитываем среднее значение
+    # рассчитываем среднее значение
     mean_value = np.mean(data)
 
-    # Рассчитываем медиану
+    # рассчитываем медиану
     median_value = np.median(data)
 
-    print("Среднее значение:", mean_value)
-    print("Медиана:", median_value)
+    print("среднее значение:", mean_value)
+    print("медиана:", median_value)
 
-    # Строим точечную диаграмму рассеяния
+    # строим точечную диаграмму рассеяния
     plt.figure(figsize=(8, 6))
     plt.scatter(range(len(data)), data, color='blue', alpha=0.5)
-    plt.axhline(y=mean_value, color='r', linestyle='-', label='Среднее значение')
-    plt.axhline(y=median_value, color='g', linestyle='--', label='Медиана')
-    plt.xlabel('Индекс')
-    plt.ylabel('Значение')
-    plt.title('Точечная диаграмма рассеяния')
+    plt.axhline(y=mean_value, color='r', linestyle='-', label='среднее значение')
+    plt.axhline(y=median_value, color='g', linestyle='--', label='медиана')
+    plt.xlabel('индекс')
+    plt.ylabel('значение')
+    plt.title('точечная диаграмма рассеяния')
     plt.legend()
     plt.grid(True)
     plt.show()
@@ -93,22 +98,22 @@ def task_4_3_2():
     import matplotlib.pyplot as plt
     import math
 
-    # Функция
+    # функция
     def my_function(x):
         return (math.sqrt(1 + math.exp(math.sqrt(x)) + math.cos(x**2)) /
                 abs(1 - math.sin(x)**3)) + math.log(abs(2*x))
 
-    # Создаем массив x от 1 до 10
+    # создаем массив x от 1 до 10
     x = np.linspace(1, 10, 10)
 
-    # Вычисляем значения функции для массива x
+    # вычисляем значения функции для массива x
     y = np.array([my_function(val) for val in x])
 
-    # Выделение среза первой половины массива
+    # выделение среза первой половины массива
     x_slice = x[:5]
     y_slice = y[:5]
 
-    # Построение графика для основного массива (линейный)
+    # построение графика для основного массива (линейный)
     plt.figure(figsize=(10, 5))
     plt.plot(x, y, label='основной массив', color='blue')
     plt.xlabel('x')
@@ -118,7 +123,7 @@ def task_4_3_2():
     plt.legend()
     plt.show()
 
-    # Построение графика для среза (точечный)
+    # построение графика для среза (точечный)
     plt.figure(figsize=(10, 5))
     plt.scatter(x_slice, y_slice, label='Срез', color='red')
     plt.xlabel('x')
@@ -129,16 +134,83 @@ def task_4_3_2():
     plt.show()
 
 def task_4_3_3():
-    from scipy.integrate import simps
+    #from scipy.integrate import simps
     from numpy import trapz
-
 
 def task_4_3_4():
     print("  ")
 
 def task_4_3_5():
-    print("  ")
+    import math
 
+    def add(x, y):
+        return x + y
+    
+    def substruct(x, y):
+        return x - y
+
+    def multiply(x, y):
+        return x * y
+
+    def divide(x, y):
+        if y == 0:
+            return "error\n"
+        else :
+            return x / y
+
+    def exponential(x, y):
+        return math.exp(x + y)
+    
+    def sine(x, y):
+        return math.sin(x + y)
+
+    def cosine(x, y):
+        return math.cos(x + y)
+
+    def power(x, y):
+        return x ** y
+
+    print("select operation:")
+    print("1. addition +")
+    print("2. subtraction -")
+    print("3. multiplication *")
+    print("4. division /")
+    print("5. exponential function (e**(x+y))")
+    print("6. sine (sin(x + y))")
+    print("7. cosine (cos(x + y))")
+    print("8. exponentiation (x**y)")
+
+    choice = input("enter transaction number (1/ 2/ 3/ 4/ 5/ 6/ 7/ 8): ")
+        #написать функцию с параметрами - проверка на введеные данные
+
+
+    if choice in ('1', '2', '3', '4', '8'):
+        num1 = float(input("enter first number: "))
+                #написать функцию с параметрами - проверка на введеные данные
+
+        num2 = float(input("enter second number: "))
+        #написать функцию с параметрами - проверка на введеные данные
+
+        if choice == '1':
+            print("result:", add(num1, num2))
+        elif choice == '2':
+            print("result: ", subtract(num1, num2))
+        elif choice == '3':
+            print("result: ", multiply(num1, num2))
+        elif choice == '4':
+            print("result: ", divide(num1, num2))
+        elif choice == '8':
+            print("result: ", power(num1, num2))
+    else:
+        num = float(input("enter number "))
+                #написать функцию с параметрами - проверка на введеные данные
+
+        if choice == '5':
+            print("result: ", exponential(num, num))
+        elif choice == '6':
+            print("result: ", sine(num, num))
+        elif choice == '7':
+            print("result: ", cosine(num, num))
 
 def main():
     while True:
@@ -158,6 +230,8 @@ def main():
         print("no task - if you want to exit, enter 'exit'\n\n")
 
         choice = input("enter your choice: ")
+        #написать функцию с параметрами - проверка на введеные данные
+
         if choice == '1':
             task_1_3()
         elif choice == '2':
