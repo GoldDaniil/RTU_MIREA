@@ -5,7 +5,7 @@ def check_variable_int_float(variable):
     
     while True:
         try:
-            variable = float, int (variable)  # преобразуем введенное значение в число
+            variable = float(variable)  # преобразуем введенное значение в число
             return variable  # возвращаем значение - если успешно преобразовалось
         except ValueError:
             print("error/ required type - integer/float \n")
