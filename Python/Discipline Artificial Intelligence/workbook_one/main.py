@@ -1,27 +1,28 @@
-#написать функцию с параметрами для проверки введенных данных - вводится переменная - закидываю ее в параметры ф-ции
-#прописать исключения - не отваливалось
-
 import math
 import math as m
 import numpy as np
 import matplotlib.pyplot as plt
 
-def check_variable_type(variable, expected_type):
-    try:
-        expected_type(variable)
-        return True
-    except ValueError:
-        return False
+def check_variable_int_float(variable):
+    # функция - которая проверяет - является ли переменная целым или числом 
+    # с плавающей точкой(дробным числом)и предоставляет пользователю возможность
+    # вводить значение переменной до тех пор - пока не будет введен верный тип
+    while True:
+        try:
+            variable = float(variable)  # преобразуем введенное значение в число
+            return variable  # возвращаем значение - если успешно преобразовалось
+        except ValueError:
+            print("error/ required type - integer/float \n")
+            variable = input("try entering again: ")  # запрашиваем ввод снова
 
-def check_variables(variables):
-    for var_name, expected_type in variables.items():
-        while True:
-            user_input = input(f"enter {var_name}: ")
-            if check_variable_type(user_input, expected_type):
-                variables[var_name] = expected_type(user_input)
-                break
-            else:
-                print(f"error {expected_type.__name__}")
+def check_variable_str(variable):
+    while True:
+        try:
+            variable = str(variable)
+            return variable
+        except ValueError:
+            print("error. required type - string \n")
+            variable = input("try entering again: ")
 
 #------------------------------------------------------------------
 
@@ -37,19 +38,8 @@ def task_1_3():
     print(x, '|', type(x), '\n', A, '|', type(A), '\n', B, '|', type(B), '\n', C, '|', type(C), '\n', df, '|', type(df), '\n', z, '|', type(z), '\n', D, '|', type(D))
 
 def task_2_3():
-    #x = int(input("\nenter x: "))
-    #expected_type = int
-    #test_x = input_variable(expected_type, "Enter x: ")
-
-    variables = {
-        'x': int,
-    }
-    # проверка переменных
-    check_variables(variables)
-    # проверка проверки
-    print("Variables:", variables)
-
-    # алгоритм - х1йня - подумать еще раз над проверкой
+    variable = input("enter x: ")
+    x = check_variable_int_float(variable)
 
     if x < -5:
         print('(-infinity, -5)')
@@ -59,7 +49,8 @@ def task_2_3():
         print('(5, +infinity)')
 
 def task_3_3_1():
-    x = int(input('enter x = '))         #написать функцию с параметрами - проверка на введеные данные
+    variable = input("enter x: ")
+    x = check_variable_int_float(variable)
 
     while x >= 1:
         print(x)
@@ -208,16 +199,15 @@ def task_4_3_5():
     print("7. cosine (cos(x + y))")
     print("8. exponentiation (x**y)")
 
-    choice = input("enter transaction number (1/ 2/ 3/ 4/ 5/ 6/ 7/ 8): ")
-        #написать функцию с параметрами - проверка на введеные данные
-
+    variable = input("enter transaction number (1/ 2/ 3/ 4/ 5/ 6/ 7/ 8): ")
+    choice = check_variable_int_float(variable)
 
     if choice in ('1', '2', '3', '4', '8'):
-        num1 = float(input("enter first number: "))
-                #написать функцию с параметрами - проверка на введеные данные
+        variable = input("enter first number: ")
+        num1 = check_variable_int_float(variable)
 
-        num2 = float(input("enter second number: "))
-        #написать функцию с параметрами - проверка на введеные данные
+        variable = input("enter first number: ")
+        num2 = check_variable_int_float(variable)
 
         if choice == '1':
             print("result:", add(num1, num2))
@@ -230,9 +220,9 @@ def task_4_3_5():
         elif choice == '8':
             print("result: ", power(num1, num2))
     else:
-        num = float(input("enter number "))
-                #написать функцию с параметрами - проверка на введеные данные
-
+        variable = input("enter first number: ")
+        num = check_variable_int_float(variable)
+        
         if choice == '5':
             print("result: ", exponential(num, num))
         elif choice == '6':
@@ -258,7 +248,6 @@ def main():
         print("no task - if you want to exit, enter 'exit'\n\n")
 
         choice = input("enter your choice: ")
-        #написать функцию с параметрами - проверка на введеные данные
 
         if choice == '1':
             task_1_3()
