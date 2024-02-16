@@ -1,61 +1,30 @@
 def check_variable_int_float(variable):
-    """
-    функция - которая проверяет - является ли переменная целым или числом с плавающей точкой
-    """
-    if isinstance(variable, (int, float)):
-        return True
-    else:
-        return False
+    # функция - которая проверяет - является ли переменная целым или числом 
+    # с плавающей точкой(дробным числом)и предоставляет пользователю возможность
+    # вводить значение переменной до тех пор - пока не будет введен верный тип
+    
+    while True:
+        try:
+            variable = float, int (variable)  # преобразуем введенное значение в число
+            return variable  # возвращаем значение - если успешно преобразовалось
+        except ValueError:
+            print("required type - integer/float \n")
+            variable = input("try entering again: ")  # запрашиваем ввод снова
 
-def check_variable_string(variable):
-    """
-    функция - которая проверяет - является ли переменная строкой
-    """
-    if isinstance(variable, str):
-        return True
-    else:
-        return False
+
 
 def main():
-    """
-    """
-    while True:
-        var1 = input("enter: ")
-        if check_variable_int_float(var1):
-            break
-        else:
-            print("error.")
+    # ввод переменных с клавиатуры с проверкой типа данных
+    var1 = input("enter first number: ")
+    var1 = check_variable_int_float(var1)
 
-    while True:
-        var2 = input("enter: ")
-        if check_variable_int_float(var2):
-            break
-        else:
-            print("error.")
-
-    while True:
-        var3 = input("enter: ")
-        if check_variable_string(var3):
-            break
-        else:
-            print("должна быть строкой.")
-
-    while True:
-        var4 = input("enter: ")
-        if check_variable_string(var4):
-            break
-        else:
-            print("должна быть строкой.")
-
-    # преобразование строковых значений в числа
-    var1 = float(var1)
-    var2 = float(var2)
+    var2 = input("enter second number: ")
+    var2 = check_variable_int_float(var2)
 
     sum_result = var1 + var2
 
     print("sum:", sum_result)
-    print(" :", var3 + ' and ' + var4)
 
-# Вызов основной функции
+
 if __name__ == "__main__":
     main()
