@@ -1,4 +1,6 @@
 import numpy as np
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 def check_variable_int_float(variable):
     while True:
@@ -17,7 +19,6 @@ def check_variable_str(variable):
         except ValueError:
             print("error. required type - string \n")
             variable = input("try entering again: ")
-
 
 
 def task_1_3_1():
@@ -44,7 +45,6 @@ def task_1_3_4():
     matrix[-1, :] = 1
     matrix[:, 0] = 1
     matrix[:, -1] = 1
-
     print(matrix)
 
 def task_1_3_5():
@@ -61,10 +61,26 @@ def task_1_3_6():
                    [7, 8, 9]])
 
     print("форма матрицы:", matrix.shape)
-
     print("pазмер матрицы:", matrix.size)
-
     print("pазмерность матрицы:", matrix.ndim)
+
+
+def task_3_3_2():
+    url = "https://raw.githubusercontent.com/akmand/datasets/master/iris.csv"
+    iris_df = pd.read_csv(url)
+
+    print("первые несколько строк данных:")
+    print(iris_df.head())
+
+    min_max_scaler = MinMaxScaler()
+    iris_df['sepal_length_cm_normalized'] = min_max_scaler.fit_transform(iris_df[['sepal_length_cm']])
+
+    standard_scaler = StandardScaler()
+    iris_df['sepal_width_cm_scaled'] = standard_scaler.fit_transform(iris_df[['sepal_width_cm']])
+
+    print("\nнормализованные данные:")
+    print(iris_df[['sepal_length_cm_normalized', 'sepal_width_cm_scaled']].head())
+
 
 def main():
     while True:
@@ -74,43 +90,36 @@ def main():
         print("3 = task 1.3.3")
         print("4 = task 1.3.4")
         print("5 = task 1.3.5")
-        
-        print("6 = task 3.3.4")
-        print("7 = task 3.3.5")
-        print("8 = task 4.3.1")
-        print("9 = task 4.3.2")
-        print("10 = task 4.3.3")
-        print("11 = task 4.3.4")
-        print("12 = task 4.3.5")
+        print("6 = task 1.3.6")
+        print("7 = task 2.3.1")
+        print("8 = task 2.3.2")
+        print("9 = task 2.3.3")
+        print("10 = task 3.3.2")
         print("no task - if you want to exit, enter 'exit'\n\n")
 
         choice = input("enter your choice: ")
 
         if choice == '1':
-            task_1_3()
+            task_1_3_1()
         elif choice == '2':
-            task_2_3()
+            task_1_3_2()
         elif choice == '3':
-            task_3_3_1()
+            task_1_3_3()
         elif choice == '4':
-            task_3_3_2()
+            task_1_3_4()
         elif choice == '5':
-            task_3_3_3()
+            task_1_3_5()
         elif choice == '6':
-            task_3_3_4()
-        elif choice == '7':
-            task_3_3_5()
-        elif choice == '8':
-            task_4_3_1()
-        elif choice == '9':
-            task_4_3_2()
-        elif choice == '10':
-            task_4_3_3()
-        elif choice == '11':
-            task_4_3_4()
-        elif choice == '12':
-            task_4_3_5()
+            task_1_3_6()
 
+        elif choice == '7':
+            task_2_3_1()
+        elif choice == '8':
+            task_2_3_2()
+        elif choice == '9':
+            task_2_3_3()
+        elif choice == '10':
+            task_3_3_2()
         elif choice == 'exit':
             print("oh, okay:(")
             break
@@ -119,3 +128,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
