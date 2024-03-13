@@ -87,7 +87,6 @@ def task_3_3_5():
     even_indices_slice = x[2:9:2]  # 2 - начальный индекс, 9 - конечный индекс (не включая), 2 - шаг
     even_indices_slice.reverse()
     x[2:9:2] = even_indices_slice  # заменяем часть списка перевернутым срезом
-
     print(x)
 
 def task_4_3_1():
