@@ -152,8 +152,40 @@ def task_4_3_2():
     plt.show()
 
 def task_4_3_3():
-    #from scipy.integrate import simps
+    from scipy.integrate import simps           ### scipy.integrate ???
     from numpy import trapz
+    import matplotlib.pyplot as plt
+
+    # определяем функцию
+    def f(x):
+        return abs(cos(x * exp(cos(x) + ln(x + 1))))
+
+    # задаем интервал и шаг
+    a = 0
+    b = 10
+    h = 1
+
+    # вычисляем значения функции
+    x = np.arange(a, b + h, h)
+    y = f(x)
+
+    # вычисляем площадь под кривой
+    S = trapz(y, x)
+
+    # строим график
+    plt.plot(x, y, color="blue")
+    plt.fill_between(x, y, 0, color="gray")
+
+    # фформляем график
+    plt.xlabel("x")
+    plt.ylabel("|cos(x * e^(cos(x) + ln(x + 1)))|")
+    plt.grid()
+
+    # показываем график
+    plt.show()
+
+    # выводим площадь
+    print("Площадь:", S)
 
 def task_4_3_4():
     print("  ")
