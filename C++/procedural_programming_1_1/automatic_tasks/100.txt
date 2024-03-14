@@ -1,0 +1,292 @@
+// Финальный вариант
+
+#include<iostream>
+#include<vector>
+#include<cstdlib>
+#include<ctime>
+#include<algorithm>
+#include<Windows.h>
+#include<random>     
+
+using namespace std;
+
+HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+
+vector<char> generate_alphabet_symbols(int count);
+
+enum CellState { DEAD = 0, ALIVE = 1, MAX_AGE = 12 };
+
+struct Cell {
+    int state;
+    int age;
+    char symbol;
+
+    Cell() = default;
+};
+
+class GameOfLife {
+public:
+    GameOfLife(int size, int max_years, int unique_symbols)
+        : size(size), max_years(max_years), unique_symbols(unique_symbols) {
+        srand(time(0));
+        symbols = generate_alphabet_symbols(unique_symbols);
+        grid.resize(size, vector<Cell>(size, Cell()));
+        initialize_grid_manually();
+    }
+
+    void initialize_grid_manually() {
+        cout << "\nunique symbols:\n";
+
+        for (char ch : symbols) {
+            cout << ch << " ";
+        }
+        cout << endl;
+
+        random_device rd;
+        shuffle(symbols.begin(), symbols.end(), mt19937(rd()));
+
+        cout << "\nselected symbol for adaptation: " << symbols[0] << endl << endl;
+
+        int symbolIndex = 0;
+
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                grid[i][j].state = (rand() % 2 == 0) ? ALIVE : DEAD;
+                grid[i][j].symbol = symbols[symbolIndex];
+
+                symbolIndex = (symbolIndex + 1) % symbols.size();
+            }
+        }
+    }
+
+    void print_grid() const {
+        cout << endl;
+
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                if (grid[i][j].state == ALIVE) {
+                    cout << "\033[42m    \033[0m";
+                }
+                else {
+                    cout << "\033[47;90m    \033[0m";
+                }
+            }
+            cout << endl;
+        }
+        cout << endl;
+
+        cout << endl << "age:" << endl;
+
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                if (grid[i][j].state == ALIVE) {
+                    if (grid[i][j].age > 0) {
+                        cout << " " << grid[i][j].age << " ";
+                    }
+                    else {
+                        cout << " 1 ";
+                    }
+                }
+                else {
+                    cout << " . ";
+                }
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+
+    void simulate_life() {
+        for (int year = 1; year <= max_years; ++year) {
+            cout << "generation " << year << ":" << endl;
+            print_grid();
+            evolve();
+
+            if (is_game_over()) {
+                cout << "\nGame over!\nAll microbes are dead!\n" << endl;
+                break;
+            }
+        }
+    }
+
+private:
+    void evolve() {
+        vector<vector<Cell>> new_grid(size, vector<Cell>(size, Cell()));
+
+        for (int i = 0; size_t(i) < size; ++i) {
+            for (int j = 0; size_t(j) < size; ++j) {
+                int neighbors = count_neighbors(i, j);
+
+                if (grid[i][j].state == 1) {
+                    if (neighbors == 2 || neighbors == 3) {
+                        new_grid[i][j].state = 1;
+                        new_grid[i][j].age = grid[i][j].age + 1;
+
+                        if (new_grid[i][j].age >= 12) {
+                            new_grid[i][j].state = 0;
+                            new_grid[i][j].age = 0;
+                        }
+                    }
+                }
+                else {
+                    if (neighbors == 3) {
+                        new_grid[i][j].state = 1;
+                        new_grid[i][j].age = 1;
+                    }
+                }
+            }
+        }
+
+        grid = new_grid;
+    }
+
+    int count_neighbors(int x, int y) const {
+        int count = 0;
+
+        for (int i = -1; i <= 1; ++i) {
+            for (int j = -1; j <= 1; ++j) {
+                int newX = x + i;
+                int newY = y + j;
+
+                if ((i == 0) && (j == 0)) {
+                    continue;
+                }
+
+                if ((newX >= 0) && (newX < size) && (newY >= 0) && (newY < size)) {
+                    count += grid[newX][newY].state == ALIVE ? 1 : 0;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    bool is_game_over() const {
+        for (int i = 0; size_t(i) < size; ++i) {
+            for (int j = 0; size_t(j) < size; ++j) {
+                if (grid[i][j].state == ALIVE) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    int size;
+    int max_years;
+    int unique_symbols;
+    vector<vector<Cell>> grid;
+    vector<char> symbols;
+    char selected_symbol;
+};
+
+vector<char> generate_alphabet_symbols(int count) {
+    vector<char> symbols;
+    for (char ch = 'a'; size_t(symbols.size()) < count; ++ch) {
+        symbols.push_back(ch);
+    }
+    return symbols;
+}
+
+int main() {
+    const WORD textColor = 0xE;
+    const WORD bgColor = 0x70;
+    SetConsoleTextAttribute(console, textColor | (bgColor << 4));
+    cout << "Welcome to the game of 'LIFE'!\n\n";
+    SetConsoleTextAttribute(console, textColor);
+    cout << "Once upon a time there were microbes. They lived happily ever after,\nbut there was one problem: after life there was always death comes.\nWe have the opportunity to look at the development of microbes with our own eyes!\n\n";
+    SetConsoleTextAttribute(console, 15);
+
+    int size, max_years, unique_symbols;
+
+    while (true) {
+        // ввод размера матрицы
+        cout << "Enter matrix size: ";
+        while (true) {
+            if (!(cin >> size)) {
+                cin.clear();
+                cin.ignore();
+                cout << "\nerror! Invalid input. Please enter a valid number.\n\n";
+                continue;
+            }
+            break;
+        }
+
+        // ввод количества уникальных символов
+        cout << "Enter the number of unique symbols: ";
+        while (true) {
+            if (!(cin >> unique_symbols)) {
+                cin.clear();
+                cin.ignore();
+                cout << "\nerror! Invalid input. Please enter a valid number.\n\n";
+                continue;
+            }
+            break;
+        }
+
+        // ввод максимального числа поколений
+        cout << "Enter the maximum number of generations: ";
+        while (true) {
+            if (!(cin >> max_years)) {
+                cin.clear();
+                cin.ignore();
+                cout << "\nerror! Invalid input. Please enter a valid number.\n\n";
+                continue;
+            }
+            break;
+        }
+
+        GameOfLife game(size, max_years, unique_symbols);
+        game.simulate_life();
+
+        // создается объект игры и затем запускают симуляцию "Жизнь микроба(бактерий)" - 
+        // выводя информацию о состоянии игры на каждом поколении
+
+        char playAgain;
+        cout << "do you want to play again? (y/n): ";
+        cin >> playAgain;
+
+        if (playAgain != 'yes' && playAgain != 'Yes') {
+            break;
+        }
+    }
+
+    return 0;
+}
+
+
+
+1) Функция generate_alphabet_symbols(int count) предназначена для создания вектора уникальных символов алфавита. 
+   Её параметр count указывает, сколько символов нужно сгенерировать. 
+   
+   vector<char> symbols = generate_alphabet_symbols(unique_symbols); - Эта строка кода создает вектор symbols, 
+   который содержит уникальные символы алфавита ('a', 'b', 'c', ..., 'z') в количестве = unique_symbols.
+
+2) enum CellState { DEAD = 0, ALIVE = 1, MAX_AGE = 12 }; - это перечисление (enum) для представления состояний клетки.
+   
+3) struct Cell предназначена для представления характеристик отдельной клетки в игре. Она содержит информацию о состоянии 
+   (state), возрасте (age) и символе (symbol) клетки.
+
+4) class GameOfLife представляет собой класс, который описывает саму игру "жизнь"  и содержит логику её моделирования.
+   a. Конструктор GameOfLife(int size, int max_years, int unique_symbols) инициализирует объект игры "жизнь" с заданными параметрами: размером сетки (size),
+      максимальным количеством лет (поколений) (max_years) и количеством уникальных символов для микробов (unique_symbols). 
+   b. Функция initialize_grid_manually() предназначена для инициализации игровой сетки клеток. Она устанавливает рандомные 
+      состояния (живая или мёртвая клетка) и связывает каждую клетку с уникальным символом. 
+      Позволяет пользователю задавать начальное состояние микробов в игре с определёнными символами.
+   c. Функция print_grid() предназначена для вывода текущего состояния игровой сетки на экран. В ней используется символы и 
+      цвета для визуализации живых и мёртвых клеток, также отображается возраст живых клеток. Это позволяет пользователю 
+      следить за эволюцией микробов на каждом шаге симуляции.
+   d. Функция simulate_life() предназначена для запуска симуляции жизни микробов на протяжении заданного количества лет (поколений). 
+      В каждом поколении она выводит текущее состояние сетки на экран, эволюционирует по правилам игры и проверяет, завершена ли игра 
+      (все ли микробы мертвы).
+   e. Фукнция evolve() предназначена для эволюции игровой сетки клеток на один шаг вперёд. В соответствии с правилами игры, функция 
+      обновляет состояние каждой клетки на основе количества её живых соседей. Она определяет какие клетки будут рождаться, выживать 
+      или умирать на следующем шаге симуляции.
+   f. Функция count_neighbors(int x, int y) предназначена для подсчёта количества живых соседей для конкретной клетки.
+   g. Функция bool is_game_over() предназначена для проверки завершения игры. Если все клетки мертвы - игра завершена.
+
+5) Функция int main() предназначена для:
+   a. Установка цвета в консоль;
+   b. Пользователю предлагается ввести размер сетки, количество уникальных символов и максимальное количество поколений;
+   c. Создание объекта GameOfLife;
+   d. Запуск симуляции жизни микробов с выводом состояния на каждом шаге.
