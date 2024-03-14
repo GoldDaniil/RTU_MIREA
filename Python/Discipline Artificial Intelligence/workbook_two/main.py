@@ -64,6 +64,20 @@ def task_1_3_6():
     print("pазмер матрицы:", matrix.size)
     print("pазмерность матрицы:", matrix.ndim)
 
+def task_2_3_1():
+    def euclidean_distance(a, b):
+        if len(a) != len(b):
+            raise ValueError("error")
+        
+        squared_diff = [(a[i] - b[i]) ** 2 for i in range(len(a))]
+        return np.sqrt(sum(squared_diff))
+    
+        #пример использования 
+        a = [1, 2, 3]
+        b = [4, 5, 6]
+        distance = euclidean_distance(a, b)
+        print("euclidean_distance = ")
+        
 
 def task_3_3_2():
     url = "https://raw.githubusercontent.com/akmand/datasets/master/iris.csv"
@@ -80,7 +94,6 @@ def task_3_3_2():
 
     print("\nнормализованные данные:")
     print(iris_df[['sepal_length_cm_normalized', 'sepal_width_cm_scaled']].head())
-
 
 def main():
     while True:
