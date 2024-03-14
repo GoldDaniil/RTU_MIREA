@@ -78,6 +78,12 @@ def task_2_3_1():
         distance = euclidean_distance(a, b)
         print("euclidean_distance = ")
         
+def task_2_3_2():
+
+
+def task_2_3_3():
+
+    
 
 def task_3_3_2():
     url = "https://raw.githubusercontent.com/akmand/datasets/master/iris.csv"
