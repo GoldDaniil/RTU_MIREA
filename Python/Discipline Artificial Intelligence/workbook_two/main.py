@@ -79,10 +79,10 @@ def task_2_3_1():
         print("euclidean_distance = ")
         
 def task_2_3_2():
-
+..................
 
 def task_2_3_3():
-
+.......................
     
 
 def task_3_3_2():
