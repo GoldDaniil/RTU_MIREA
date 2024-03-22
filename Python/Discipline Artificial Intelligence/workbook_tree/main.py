@@ -40,7 +40,13 @@ def task_2_3_1():
 
 
 def task_3_3_2():
+    from sklearn.feature_extraction import DictVectorizer
 
+    x = [{"Двуногое": 2, },
+         {"без перьев": 3}]
+    dictVectorizer = DictVectorizer(sparse=False)
+    y = dictVectorizer.fit_transform(x)
+    print(y)
 
 
 def main():
@@ -70,4 +76,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-  
