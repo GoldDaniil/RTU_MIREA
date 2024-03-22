@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def check_variable_int_float(variable):
-    # функция - которая проверяет - является ли переменная целым или числом 
+    # функция - которая проверяет - является ли переменная целым или числом
     # с плавающей точкой(дробным числом)и предоставляет пользователю возможность
     # вводить значение переменной до тех пор - пока не будет введен верный тип
     while True:
@@ -15,6 +15,7 @@ def check_variable_int_float(variable):
             print("error/ required type - integer/float \n")
             variable = input("try entering again: ")  # запрашиваем ввод снова
 
+
 def check_variable_str(variable):
     while True:
         try:
@@ -24,7 +25,8 @@ def check_variable_str(variable):
             print("error. required type - string \n")
             variable = input("try entering again: ")
 
-#------------------------------------------------------------------
+
+# ------------------------------------------------------------------
 
 def task_1_3():
     x = 5 >= 2
@@ -35,7 +37,9 @@ def task_1_3():
     z = 'type'
     D = [1, 'title', 2, 'content']
 
-    print(x, '|', type(x), '\n', A, '|', type(A), '\n', B, '|', type(B), '\n', C, '|', type(C), '\n', df, '|', type(df), '\n', z, '|', type(z), '\n', D, '|', type(D))
+    print(x, '|', type(x), '\n', A, '|', type(A), '\n', B, '|', type(B), '\n', C, '|', type(C), '\n', df, '|', type(df),
+          '\n', z, '|', type(z), '\n', D, '|', type(D))
+
 
 def task_2_3():
     variable = input("enter x: ")
@@ -48,6 +52,7 @@ def task_2_3():
     else:
         print('(5, +infinity)')
 
+
 def task_3_3_1():
     variable = input("enter x: ")
     x = check_variable_int_float(variable)
@@ -55,6 +60,7 @@ def task_3_3_1():
     while x >= 1:
         print(x)
         x -= 3
+
 
 def task_3_3_2():
     features = [
@@ -73,13 +79,16 @@ def task_3_3_2():
     for feature in features:
         print(feature)
 
+
 def task_3_3_3():
     numbers = list(range(2, 16))
     print(numbers)
 
+
 def task_3_3_4():
     for num in range(106, 5, 25):
         print(num)
+
 
 def task_3_3_5():
     x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -89,8 +98,8 @@ def task_3_3_5():
     x[2:9:2] = even_indices_slice  # заменяем часть списка перевернутым срезом
     print(x)
 
-def task_4_3_1():
 
+def task_4_3_1():
     np.random.seed(42)  # чтобы результат был воспроизводимым
     data = np.random.rand(100)
 
@@ -115,11 +124,12 @@ def task_4_3_1():
     plt.grid(True)
     plt.show()
 
+
 def task_4_3_2():
     # функция
     def my_function(x):
-        return (math.sqrt(1 + math.exp(math.sqrt(x)) + math.cos(x**2)) /
-                abs(1 - math.sin(x)**3)) + math.log(abs(2*x))
+        return (math.sqrt(1 + math.exp(math.sqrt(x)) + math.cos(x ** 2)) /
+                abs(1 - math.sin(x) ** 3)) + math.log(abs(2 * x))
 
     # создаем массив x от 1 до 10
     x = np.linspace(1, 10, 10)
@@ -151,14 +161,15 @@ def task_4_3_2():
     plt.legend()
     plt.show()
 
+
 def task_4_3_3():
-    from scipy.integrate import simps           ### scipy.integrate ???
+    from scipy.integrate import simps  ### scipy.integrate ???
     from numpy import trapz
     import matplotlib.pyplot as plt
 
     # определяем функцию
     def f(x):
-        return abs(cos(x * exp(cos(x) + ln(x + 1))))
+        return abs(math.cos(x * math.exp(math.cos(x) + math.log(x + 1))))
 
     # задаем интервал и шаг
     a = 0
@@ -187,15 +198,17 @@ def task_4_3_3():
     # выводим площадь
     print("Площадь:", S)
 
+
 def task_4_3_4():
     print("  ")
+
 
 def task_4_3_5():
     import math
 
     def add(x, y):
         return x + y
-    
+
     def substruct(x, y):
         return x - y
 
@@ -205,12 +218,12 @@ def task_4_3_5():
     def divide(x, y):
         if y == 0:
             return "error\n"
-        else :
+        else:
             return x / y
 
     def exponential(x, y):
         return math.exp(x + y)
-    
+
     def sine(x, y):
         return math.sin(x + y)
 
@@ -243,7 +256,7 @@ def task_4_3_5():
         if choice == '1':
             print("result:", add(num1, num2))
         elif choice == '2':
-            print("result: ", subtract(num1, num2))
+            print("result: ", substruct(num1, num2))
         elif choice == '3':
             print("result: ", multiply(num1, num2))
         elif choice == '4':
@@ -253,13 +266,14 @@ def task_4_3_5():
     else:
         variable = input("enter first number: ")
         num = check_variable_int_float(variable)
-        
+
         if choice == '5':
             print("result: ", exponential(num, num))
         elif choice == '6':
             print("result: ", sine(num, num))
         elif choice == '7':
             print("result: ", cosine(num, num))
+
 
 def main():
     while True:
@@ -310,6 +324,7 @@ def main():
             break
         else:
             print("invalid choice. please enter a valid option")
+
 
 if __name__ == "__main__":
     main()
