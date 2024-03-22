@@ -1,3 +1,4 @@
+#готово
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
@@ -5,11 +6,11 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 def check_variable_int_float(variable):
     while True:
         try:
-            variable = float(variable)  # преобразуем введенное значение в число
-            return variable  # возвращаем значение - если успешно преобразовалось
+            variable = float(variable)
+            return variable
         except ValueError:
             print("error/ required type - integer/float \n")
-            variable = input("try entering again: ")  # запрашиваем ввод снова
+            variable = input("try entering again: ")
 
 def check_variable_str(variable):
     while True:
@@ -20,9 +21,8 @@ def check_variable_str(variable):
             print("error. required type - string \n")
             variable = input("try entering again: ")
 
-
 def task_1_3_1():
-    matrix = [[0] * 8 for _ in range (8)]
+    matrix = [[0] * 8 for _ in range(8)]
     for i in range(8):
         for j in range(8):
             if (i + j) % 2 == 0:
@@ -49,17 +49,14 @@ def task_1_3_4():
 
 def task_1_3_5():
     arr = np.array([3, 1, 5, 2, 4])
-
     arr_sorted = np.sort(arr)[::-1]
-
     print("исходный массив:", arr)
     print("массив - отсортированный по убыванию:", arr_sorted)
 
 def task_1_3_6():
     matrix = np.array([[1, 2, 3],
-                   [4, 5, 6],
-                   [7, 8, 9]])
-
+                       [4, 5, 6],
+                       [7, 8, 9]])
     print("форма матрицы:", matrix.shape)
     print("pазмер матрицы:", matrix.size)
     print("pазмерность матрицы:", matrix.ndim)
@@ -68,27 +65,33 @@ def task_2_3_1():
     def euclidean_distance(a, b):
         if len(a) != len(b):
             raise ValueError("error")
-        
         squared_diff = [(a[i] - b[i]) ** 2 for i in range(len(a))]
         return np.sqrt(sum(squared_diff))
-    
-        #пример использования 
-        a = [1, 2, 3]
-        b = [4, 5, 6]
-        distance = euclidean_distance(a, b)
-        print("euclidean_distance = ")
-        
+
+    # пример использования
+    a = [1, 2, 3]
+    b = [4, 5, 6]
+    distance = euclidean_distance(a, b)
+    print("euclidean_distance =", distance)
+
 def task_2_3_2():
-..................
+    url = "https://raw.githubusercontent.com/akmand/datasets/master/iris.csv"
+    df = pd.read_csv(url)
+    print(df.head(6))
 
 def task_2_3_3():
-.......................
-    
+    url = "https://raw.githubusercontent.com/akmand/datasets/master/iris.csv"
+    df = pd.read_csv(url)
+    print(df.head(10))
+    print(df.tail(3))
+    print(df.shape)
+    print(df.describe())
+    print(df.iloc[1:4])
+    print(df[df['species'] == 'setosa'].head())
 
 def task_3_3_2():
     url = "https://raw.githubusercontent.com/akmand/datasets/master/iris.csv"
     iris_df = pd.read_csv(url)
-
     print("первые несколько строк данных:")
     print(iris_df.head())
 
@@ -130,7 +133,6 @@ def main():
             task_1_3_5()
         elif choice == '6':
             task_1_3_6()
-
         elif choice == '7':
             task_2_3_1()
         elif choice == '8':
@@ -147,4 +149,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
