@@ -15,7 +15,6 @@ def check_variable_int_float(variable):
             print("error/ required type - integer/float \n")
             variable = input("try entering again: ")  # запрашиваем ввод снова
 
-
 def check_variable_str(variable):
     while True:
         try:
@@ -24,7 +23,6 @@ def check_variable_str(variable):
         except ValueError:
             print("error. required type - string \n")
             variable = input("try entering again: ")
-
 
 # ------------------------------------------------------------------
 
@@ -169,7 +167,7 @@ def task_4_3_3():
 
     # определяем функцию
     def f(x):
-        return abs(math.cos(x * math.exp(math.cos(x) + math.log(x + 1))))
+        return np.abs(np.cos(x * np.exp(np.cos(x) + np.log(x + 1))))
 
     # задаем интервал и шаг
     a = 0
