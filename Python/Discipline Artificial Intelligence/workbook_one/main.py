@@ -85,8 +85,8 @@ def task_3_3_3():
 
 
 def task_3_3_4():
-    for num in range(106, 5, 25):
-        print(num)
+    for i in range(105, 5, -25):
+        print(i)
 
 
 def task_3_3_5():
@@ -220,7 +220,7 @@ def task_4_3_5():
     def add(x, y):
         return x + y
 
-    def substruct(x, y):
+    def subtract(x, y):
         return x - y
 
     def multiply(x, y):
@@ -254,36 +254,46 @@ def task_4_3_5():
     print("7. cosine (cos(x + y))")
     print("8. exponentiation (x**y)")
 
+    def check_variable_int_float(var):
+        try:
+            return int(var)
+        except ValueError:
+            try:
+                return float(var)
+            except ValueError:
+                return None
+
     variable = input("enter transaction number (1/ 2/ 3/ 4/ 5/ 6/ 7/ 8): ")
     choice = check_variable_int_float(variable)
 
-    if choice in ('1', '2', '3', '4', '8'):
-        variable = input("enter first number: ")
-        num1 = check_variable_int_float(variable)
+    if choice in (1, 2, 3, 4, 8):
+        num1 = input("enter first number: ")
+        num1 = check_variable_int_float(num1)
+        num2 = input("enter second number: ")
+        num2 = check_variable_int_float(num2)
 
-        variable = input("enter first number: ")
-        num2 = check_variable_int_float(variable)
-
-        if choice == '1':
+        if choice == 1:
             print("result:", add(num1, num2))
-        elif choice == '2':
-            print("result: ", substruct(num1, num2))
-        elif choice == '3':
+        elif choice == 2:
+            print("result: ", subtract(num1, num2))
+        elif choice == 3:
             print("result: ", multiply(num1, num2))
-        elif choice == '4':
+        elif choice == 4:
             print("result: ", divide(num1, num2))
-        elif choice == '8':
+        elif choice == 8:
             print("result: ", power(num1, num2))
     else:
-        variable = input("enter first number: ")
-        num = check_variable_int_float(variable)
+        num = input("enter number: ")
+        num = check_variable_int_float(num)
 
-        if choice == '5':
+        if choice == 5:
             print("result: ", exponential(num, num))
-        elif choice == '6':
+        elif choice == 6:
             print("result: ", sine(num, num))
-        elif choice == '7':
+        elif choice == 7:
             print("result: ", cosine(num, num))
+
+
 
 
 def main():
