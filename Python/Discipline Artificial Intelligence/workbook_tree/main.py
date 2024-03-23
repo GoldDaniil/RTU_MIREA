@@ -2,6 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy import *
 from mpl_toolkits.mplot3d import Axes3D
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.neighbors import KNeighborsClassifier
 
 def check_variable_int_float(variable):
     while True:
@@ -37,7 +41,53 @@ def task_1_3_2():
     print(x)
 
 def task_2_3_1():
+    iris = sns.load_dataset('iris')
 
+    # Split data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(
+        iris.iloc[:, :-1],
+        iris.iloc[:, -1],
+        test_size=0.15,
+        random_state=42  # Added for reproducibility
+    )
+
+    # Function to initialize and train KNN model
+    def init_model(k, X_train, y_train, X_test):
+        model = KNeighborsClassifier(n_neighbors=k)
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+        return y_pred
+
+    # Function to plot the data points and misclassified points
+    def graph(y_test, X_test, y_pred):
+        plt.figure(figsize=(10, 7))
+        sns.scatterplot(x='petal_width', y='petal_length', data=iris, hue='species', s=70)
+        plt.xlabel("Длина лепестка, см")
+        plt.ylabel("Ширина лепестка, см")
+        plt.legend(loc=2)
+        plt.grid()
+
+        for i in range(len(y_test)):
+            if np.array(y_test)[i] != y_pred[i]:
+                plt.scatter(X_test.iloc[i, 3], X_test.iloc[i, 2], color='red', s=150)
+
+    # Function to calculate accuracy and print it
+    def calculate_accuracy(y_pred, y_test):
+        accuracy = accuracy_score(y_pred, y_test)
+        print(f'Accuracy: {accuracy:.3}')
+
+    # Get user input for k
+    k = int(input('Введите значение k (1, 5, или 10): '))
+
+    # Initialize and train the model
+    y_pred = init_model(k, X_train, y_train, X_test)
+
+    # Calculate and print accuracy
+    calculate_accuracy(y_pred, y_test)
+
+    # Plot the graph
+    graph(y_test, X_test, y_pred)
+    plt.show()
 
 def task_3_3_2():
     from sklearn.feature_extraction import DictVectorizer
