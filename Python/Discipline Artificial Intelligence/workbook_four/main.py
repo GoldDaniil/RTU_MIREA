@@ -1,6 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
 
 def check_variable_int_float(variable):
     # функция - которая проверяет - является ли переменная целым или числом
@@ -176,6 +180,95 @@ class TaskOneFive:
         ax.legend()
         plt.show()
 
+def task_1_2_1():
+    url = "https://raw.githubusercontent.com/AnnaShestova/salary-years-simple-linear-regression/master/Salary_Data.csv"
+    data = pd.read_csv(url)
+
+    years_experience = data['YearsExperience'].values.reshape(-1, 1)  # Reshaping to 2D array for sklearn
+    salary = data['Salary'].values
+
+    model = LinearRegression()
+    model.fit(years_experience, salary)
+
+    intercept = model.intercept_
+    slope = model.coef_[0]
+    print("Intercept:", intercept)
+    print("Slope:", slope)
+
+    plt.scatter(years_experience, salary, color='blue', label='Data')
+    plt.plot(years_experience, model.predict(years_experience), color='red', label='Linear Regression')
+    plt.xlabel('Years of Experience')
+    plt.ylabel('Salary')
+    plt.title('Linear Regression: Salary vs. Years of Experience')
+    plt.legend()
+    plt.show()
+
+    years_exp_new = np.array([[10], [15], [20]])
+    predictions = model.predict(years_exp_new)
+    for i, exp in enumerate(years_exp_new):
+        print(f"Predicted salary for {exp} years of experience: {predictions[i]}")
+
+def task_1_3_2():
+    url = "https://raw.githubusercontent.com/aniruddhachoudhury/Red-Wine-Quality/master/winequality-red.csv"
+    data = pd.read_csv(url)
+
+    # Предварительный анализ данных
+    print(data.head())  # Первые строки данных
+    print(data.info())  # Информация о данных
+
+    # Выделение признаков (X) и целевой переменной (Y)
+    X = data.drop('quality', axis=1)  # Исключаем столбец 'quality'
+    Y = data['quality']
+
+    # Разделение данных на обучающий и тестовый наборы
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+    # Построение модели множественной линейной регрессии
+    model = LinearRegression()
+    model.fit(X_train, Y_train)
+
+    # Получение коэффициентов регрессии
+    coefficients = pd.DataFrame({'Признак': X.columns, 'Коэффициент': model.coef_})
+    print(coefficients)
+
+    # Прогнозирование на тестовом наборе
+    Y_pred = model.predict(X_test)
+
+    # Оценка качества модели
+    mse = mean_squared_error(Y_test, Y_pred)
+    r2 = r2_score(Y_test, Y_pred)
+    print(f'Среднеквадратичная ошибка (MSE): {mse:.2f}')
+    print(f'Коэффициент детерминации (R^2): {r2:.2f}')
+
+def task_1_3_3():
+    x_data = np.array([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    y_data = np.array([3.0, 6.0, 3.0, 6.0, 4.0, 3.0])
+
+    # Построение полинома первой степени (прямой)
+    A1 = np.vstack([x_data, np.ones(len(x_data))]).T
+    m1, c1 = np.linalg.lstsq(A1, y_data, rcond=None)[0]
+
+    # Построение полинома второй степени (параболы)
+    A2 = np.vstack([x_data ** 2, x_data, np.ones(len(x_data))]).T
+    a2, b2, c2 = np.linalg.lstsq(A2, y_data, rcond=None)[0]
+
+    # Вычисление значений полиномов для построения графиков
+    x_values = np.linspace(0, 1, 100)
+    y_poly1 = m1 * x_values + c1
+    y_poly2 = a2 * x_values ** 2 + b2 * x_values + c2
+
+    # Построение графиков
+    plt.figure(figsize=(10, 6))
+    plt.plot(x_data, y_data, 'bo', label='Экспериментальные данные')
+    plt.plot(x_values, y_poly1, 'r', label=f'Полином 1-й степени: y = {m1:.2f}x + {c1:.2f}')
+    plt.plot(x_values, y_poly2, 'g', label=f'Полином 2-й степени: y = {a2:.2f}x^2 + {b2:.2f}x + {c2:.2f}')
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.title('Аппроксимация данных полиномами 1-й и 2-й степени')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
 def main() :
     while True:
         print("\nselect a task to open:")
@@ -192,9 +285,9 @@ def main() :
             task_1_1_3()
         elif choice == '2':
             TaskOneFive.fun_one()
-            TaskOneFive.fun_two()
-            TaskOneFive.fun_three()
-            TaskOneFive.fun_four()
+            #TaskOneFive.fun_two()
+            #TaskOneFive.fun_three()
+            #TaskOneFive.fun_four()
 
         #elif choice == '3':
         #    task_1_2_1()
@@ -202,6 +295,12 @@ def main() :
         #    task_1_3_2()
         #elif choice == '5':
         #    task_1_3_3()
+        elif choice == '3':
+            task_1_2_1()
+        elif choice == '4':
+            task_1_3_2()
+        elif choice == '5':
+            task_1_3_3()
         elif choice == 'exit':
             print("oh, okay:(")
             break
