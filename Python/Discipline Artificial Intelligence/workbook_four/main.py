@@ -29,19 +29,15 @@ def check_variable_str(variable):
             variable = input("try entering again: ")
 
 def task_1_1_3():
-    # Создаем фиктивные данные
     x = np.array([-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6])
     y = np.array([-53, -26, -9, 0, 1, 0, 9, 26, 53, 88, 129])
 
-    # Построение экстраполяции полиномами первой, второй и третьей степени
     m = np.vstack((x ** 3, x ** 2, x, np.ones(11))).T
-    s1 = np.linalg.lstsq(m[:, :2], y, rcond=None)[0]  # Полином первой степени
-    s2 = np.linalg.lstsq(m[:, :3], y, rcond=None)[0]  # Полином второй степени
+    s1 = np.linalg.lstsq(m[:, :2], y, rcond=None)[0]
+    s2 = np.linalg.lstsq(m[:, :3], y, rcond=None)[0]
 
-    # Новые точки для экстраполяции
     x_prec = np.linspace(-5, 7, 101)
 
-    # Построение графика
     plt.plot(x, y, 'D', label='Исходные данные')
     plt.plot(x_prec, s1[0] * x_prec + s1[1], '-', lw=3, label='Полином 1-й степени')
     plt.plot(x_prec, s2[0] * x_prec ** 2 + s2[1] * x_prec + s2[2], '-', lw=3, label='Полином 2-й степени')
@@ -51,28 +47,23 @@ def task_1_1_3():
     plt.show()
 
 def task_five_fun_one():
-    # Определение своей функции
     def f(x, b0, b1):
-        return b0 + b1 * x ** 2  # Пример квадратичной функции
+        return b0 + b1 * x ** 2
 
-    # Задание своих данных
-    xdata = np.linspace(0, 5, 50)  # Создаем свои данные x
-    b0, b1 = 1.5, 2.5  # Пример коэффициентов для функции
-    y = f(xdata, b0, b1)  # Вычисляем значения функции без шума
-    ydata = y + 0.2 * np.random.randn(len(xdata))  # Добавляем шум
+    xdata = np.linspace(0, 5, 50)
+    b0, b1 = 1.5, 2.5
+    y = f(xdata, b0, b1)
+    ydata = y + 0.2 * np.random.randn(len(xdata))
 
-    # Аппроксимация
     beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
 
-        # Вывод результатов
     print("Оптимальные коэффициенты:", beta_opt)
-    lin_dev = sum(beta_cov[0])  # Линейное отклонение
+    lin_dev = sum(beta_cov[0])
     print("Линейное отклонение:", lin_dev)
-    residuals = ydata - f(xdata, *beta_opt)  # Остатки
-    fres = sum(residuals ** 2)  # Квадратичное отклонение
+    residuals = ydata - f(xdata, *beta_opt)
+    fres = sum(residuals ** 2)
     print("Квадратичное отклонение:", fres)
 
-    # Визуализация
     fig, ax = plt.subplots()
     ax.scatter(xdata, ydata)
     ax.plot(xdata, y, 'r--', lw=2, label='Исходная функция')
@@ -85,26 +76,22 @@ def task_five_fun_one():
 
 def task_five_fun_two():
     def f(x, b0, b1, b2):
-        return b0 + b1 * x + b2 * x ** 2  # Пример квадратичной функции
+        return b0 + b1 * x + b2 * x ** 2
 
-    # Задание своих данных
-    xdata = np.linspace(0, 5, 50)  # Создаем свои данные x
-    beta = (0.25, 0.75, 0.5)  # Пример коэффициентов для функции
-    y = f(xdata, *beta)  # Вычисляем значения функции без шума
-    ydata = y + 0.05 * np.random.randn(len(xdata))  # Добавляем шум
+    xdata = np.linspace(0, 5, 50)
+    beta = (0.25, 0.75, 0.5)
+    y = f(xdata, *beta)
+    ydata = y + 0.05 * np.random.randn(len(xdata))
 
-    # Аппроксимация
     beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
 
-    # Вывод результатов
     print("Оптимальные коэффициенты:", beta_opt)
-    lin_dev = sum(beta_cov[0])  # Линейное отклонение
+    lin_dev = sum(beta_cov[0])
     print("Линейное отклонение:", lin_dev)
-    residuals = ydata - f(xdata, *beta_opt)  # Остатки
-    fres = sum(residuals ** 2)  # Квадратичное отклонение
+    residuals = ydata - f(xdata, *beta_opt)
+    fres = sum(residuals ** 2)
     print("Квадратичное отклонение:", fres)
 
-    # Визуализация
     fig, ax = plt.subplots()
     ax.scatter(xdata, ydata)
     ax.plot(xdata, y, 'r', lw=2, label='Исходная функция')
@@ -117,26 +104,22 @@ def task_five_fun_two():
 
 def task_five_fun_three():
     def f(x, b0, b1):
-        return b0 + b1 * np.log(x)  # Функция с логарифмом
+        return b0 + b1 * np.log(x)
 
-    # Задание своих данных
-    xdata = np.linspace(1, 5, 50)  # Создаем свои данные x
-    beta = (1, 2)  # Пример коэффициентов для функции
-    y = f(xdata, *beta)  # Вычисляем значения функции без шума
-    ydata = y + 0.05 * np.random.randn(len(xdata))  # Добавляем шум
+    xdata = np.linspace(1, 5, 50)
+    beta = (1, 2)
+    y = f(xdata, *beta)
+    ydata = y + 0.05 * np.random.randn(len(xdata))
 
-    # Аппроксимация
     beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
 
-    # Вывод результатов
     print("Оптимальные коэффициенты:", beta_opt)
-    lin_dev = sum(beta_cov[0])  # Линейное отклонение
+    lin_dev = sum(beta_cov[0])
     print("Линейное отклонение:", lin_dev)
-    residuals = ydata - f(xdata, *beta_opt)  # Остатки
-    fres = sum(residuals ** 2)  # Квадратичное отклонение
+    residuals = ydata - f(xdata, *beta_opt)
+    fres = sum(residuals ** 2)
     print("Квадратичное отклонение:", fres)
 
-    # Визуализация
     fig, ax = plt.subplots()
     ax.scatter(xdata, ydata)
     ax.plot(xdata, y, 'r', lw=2, label='Исходная функция')
@@ -149,26 +132,22 @@ def task_five_fun_three():
 
 def task_five_fun_four():
     def f(x, b0, b1):
-        return b0 * x ** b1  # Пример степенной функции
+        return b0 * x ** b1
 
-    # Задание своих данных
-    xdata = np.linspace(1, 5, 50)  # Создаем свои данные x
-    beta = (1, 2)  # Пример коэффициентов для функции
-    y = f(xdata, *beta)  # Вычисляем значения функции без шума
-    ydata = y + 0.05 * np.random.randn(len(xdata))  # Добавляем шум
+    xdata = np.linspace(1, 5, 50)
+    beta = (1, 2)
+    y = f(xdata, *beta)
+    ydata = y + 0.05 * np.random.randn(len(xdata))
 
-    # Аппроксимация
     beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
 
-    # Вывод результатов
     print("Оптимальные коэффициенты:", beta_opt)
-    lin_dev = sum(beta_cov[0])  # Линейное отклонение
+    lin_dev = sum(beta_cov[0])  
     print("Линейное отклонение:", lin_dev)
-    residuals = ydata - f(xdata, *beta_opt)  # Остатки
-    fres = sum(residuals ** 2)  # Квадратичное отклонение
+    residuals = ydata - f(xdata, *beta_opt)
+    fres = sum(residuals ** 2)
     print("Квадратичное отклонение:", fres)
 
-    # Визуализация
     fig, ax = plt.subplots()
     ax.scatter(xdata, ydata)
     ax.plot(xdata, y, 'r', lw=2, label='Исходная функция')
@@ -185,7 +164,7 @@ def task_1_2_1():
     url = "https://raw.githubusercontent.com/AnnaShestova/salary-years-simple-linear-regression/master/Salary_Data.csv"
     data = pd.read_csv(url)
 
-    years_experience = data['YearsExperience'].values.reshape(-1, 1)  # Reshaping to 2D array for sklearn
+    years_experience = data['YearsExperience'].values.reshape(-1, 1)
     salary = data['Salary'].values
 
     model = LinearRegression()
@@ -214,29 +193,22 @@ def task_1_3_2():
     url = "https://raw.githubusercontent.com/aniruddhachoudhury/Red-Wine-Quality/master/winequality-red.csv"
     data = pd.read_csv(url)
 
-    # Предварительный анализ данных
-    print(data.head())  # Первые строки данных
-    print(data.info())  # Информация о данных
+    print(data.head())
+    print(data.info())
 
-    # Выделение признаков (X) и целевой переменной (Y)
-    X = data.drop('quality', axis=1)  # Исключаем столбец 'quality'
+    X = data.drop('quality', axis=1)
     Y = data['quality']
 
-    # Разделение данных на обучающий и тестовый наборы
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
-    # Построение модели множественной линейной регрессии
     model = LinearRegression()
     model.fit(X_train, Y_train)
 
-    # Получение коэффициентов регрессии
     coefficients = pd.DataFrame({'Признак': X.columns, 'Коэффициент': model.coef_})
     print(coefficients)
 
-    # Прогнозирование на тестовом наборе
     Y_pred = model.predict(X_test)
 
-    # Оценка качества модели
     mse = mean_squared_error(Y_test, Y_pred)
     r2 = r2_score(Y_test, Y_pred)
     print(f'Среднеквадратичная ошибка (MSE): {mse:.2f}')
@@ -246,20 +218,16 @@ def task_1_3_3():
     x_data = np.array([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
     y_data = np.array([3.0, 6.0, 3.0, 6.0, 4.0, 3.0])
 
-    # Построение полинома первой степени (прямой)
     A1 = np.vstack([x_data, np.ones(len(x_data))]).T
     m1, c1 = np.linalg.lstsq(A1, y_data, rcond=None)[0]
 
-    # Построение полинома второй степени (параболы)
     A2 = np.vstack([x_data ** 2, x_data, np.ones(len(x_data))]).T
     a2, b2, c2 = np.linalg.lstsq(A2, y_data, rcond=None)[0]
 
-    # Вычисление значений полиномов для построения графиков
     x_values = np.linspace(0, 1, 100)
     y_poly1 = m1 * x_values + c1
     y_poly2 = a2 * x_values ** 2 + b2 * x_values + c2
 
-    # Построение графиков
     plt.figure(figsize=(10, 6))
     plt.plot(x_data, y_data, 'bo', label='Экспериментальные данные')
     plt.plot(x_values, y_poly1, 'r', label=f'Полином 1-й степени: y = {m1:.2f}x + {c1:.2f}')
