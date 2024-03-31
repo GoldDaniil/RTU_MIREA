@@ -1,5 +1,7 @@
 import math
 from graphviz import Digraph
+import matplotlib.pyplot as plt
+
 
 def check_variable_int_float(variable):
     while True:
@@ -90,6 +92,59 @@ def task_1_2():
     # Вывод графа на экран
     tree_graph.render('tree')
     tree_graph.view()
+
+def task_1_3():
+    class Tree:
+        def __init__(self, data):
+            self.left = None
+            self.right = None
+            self.data = data
+
+        def insert(self, value):
+            """Метод для вставки нового элемента в бинарное дерево поиска."""
+            if value < self.data:
+                if self.left is None:
+                    self.left = Tree(value)
+                else:
+                    self.left.insert(value)
+            elif value > self.data:
+                if self.right is None:
+                    self.right = Tree(value)
+                else:
+                    self.right.insert(value)
+
+        def print_tree(self, x=0, y=0, x_parent=None, y_parent=None):
+            """Метод для визуализации дерева."""
+            if self.left:
+                plt.plot([x, x_parent], [y - 1, y], 'k-')
+                self.left.print_tree(x - 2, y - 1, x, y)
+            if self.right:
+                plt.plot([x, x_parent], [y - 1, y], 'k-')
+                self.right.print_tree(x + 2, y - 1, x, y)
+            plt.text(x, y, str(self.data), fontsize=12, ha='center', va='center',
+                     bbox=dict(facecolor='white', edgecolor='black', boxstyle='circle'))
+
+    # Пример использования класса Tree
+    if __name__ == "__main__":
+        # Создаем корень дерева
+        root = Tree(10)
+
+        # Вставляем новые элементы
+        root.insert(5)
+        root.insert(15)
+        root.insert(3)
+        root.insert(8)
+        root.insert(12)
+        root.insert(20)
+
+        # Выводим дерево
+        plt.figure(figsize=(8, 8))
+        root.print_tree()
+        plt.xlim(-10, 10)
+        plt.ylim(-10, 0)
+        plt.gca().invert_yaxis()
+        plt.axis('off')
+        plt.show()
 
 def main():
     while True:
