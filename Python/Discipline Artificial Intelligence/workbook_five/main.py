@@ -3,8 +3,16 @@ from graphviz import Digraph
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+import ssl
+import urllib.request
+import requests
+from io import StringIO
 
-# 2 номер доработать
+# 2 номер доработать = проверить 5 номер
 
 def check_variable_int_float(variable):
     while True:
@@ -173,20 +181,46 @@ def task_1_3_1():
     plt.title('Decision Tree Classifier')
     plt.show()
 
+def task_1_4_1():
+    ssl._create_default_https_context = ssl._create_unverified_context
+
+    # URL для загрузки данных
+    url = "https://raw.githubusercontent.com/likarajo/petrol_consumption/master/data/petrol_consumption.csv"
+
+    # Загрузка данных
+    data = pd.read_csv(url)
+
+    # Подготовка данных
+    X = data.drop('Petrol_Consumption', axis=1)
+    y = data['Petrol_Consumption']
+
+    # Разделение данных на обучающий и тестовый наборы
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Создание и обучение модели регрессии
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+
+    # Прогнозирование на тестовом наборе
+    y_pred = model.predict(X_test)
+
+    # Оценка точности модели
+    mse = mean_squared_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    print(f'Среднеквадратичная ошибка (MSE): {mse:.2f}')
+    print(f'Коэффициент детерминации (R^2): {r2:.2f}')
+
 
 def main():
     while True:
-        choice = input("\nselect a task to open: \n \n1 = task 1.1() \n2 = task 1.2()\n3 = task 1.3()\n4 = task 1.3.1 \n(no task - if you want to exit, enter 'exit'): ")
+        choice = input("\nselect a task to open: \n \n1 = task 1.1() \n2 = task 1.2()\n3 = task 1.3()\n4 = task 1.3.1()\n5 = task 1.4.1() \n(no task - if you want to exit, enter 'exit'): ")
 
         menu = {
             '1': task_1_1,
             '2': task_1_2,
             '3': task_1_3,
             '4': task_1_3_1,
-            #'5':
-            #'6':
-            #'7':
-            #'8':
+            '5': task_1_4_1,
             'exit': lambda: print("oh, okay:(")
         }
 
