@@ -5,8 +5,7 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
-
-# ОШИБКА В 6 И 7 НОМЕРЕ
+import ssl
 
 def check_variable_int_float(variable):
     # функция - которая проверяет - является ли переменная целым или числом
@@ -181,6 +180,8 @@ def task_five_fun_four():
     plt.show()
 
 def task_1_2_1():
+    ssl._create_default_https_context = ssl._create_unverified_context
+
     url = "https://raw.githubusercontent.com/AnnaShestova/salary-years-simple-linear-regression/master/Salary_Data.csv"
     data = pd.read_csv(url)
 
@@ -206,7 +207,8 @@ def task_1_2_1():
     years_exp_new = np.array([[10], [15], [20]])
     predictions = model.predict(years_exp_new)
     for i, exp in enumerate(years_exp_new):
-        print(f"Predicted salary for {exp} years of experience: {predictions[i]}")
+        print(f"Predicted salary for {exp[0]} years of experience: {predictions[i]}")
+
 
 def task_1_3_2():
     url = "https://raw.githubusercontent.com/aniruddhachoudhury/Red-Wine-Quality/master/winequality-red.csv"
