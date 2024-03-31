@@ -6,6 +6,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 
+# ОШИБКА В 6 И 7 НОМЕРЕ
+
 def check_variable_int_float(variable):
     # функция - которая проверяет - является ли переменная целым или числом
     # с плавающей точкой(дробным числом)и предоставляет пользователю возможность
@@ -49,136 +51,134 @@ def task_1_1_3():
     plt.savefig('полиномы_1_и_2_степени.png')
     plt.show()
 
-class TaskOneFive:
-    @staticmethod
-    def fun_one():
-        # Определение своей функции
-        def f(x, b0, b1):
-            return b0 + b1 * x ** 2  # Пример квадратичной функции
+def task_five_fun_one():
+    # Определение своей функции
+    def f(x, b0, b1):
+        return b0 + b1 * x ** 2  # Пример квадратичной функции
 
-        # Задание своих данных
-        xdata = np.linspace(0, 5, 50)  # Создаем свои данные x
-        b0, b1 = 1.5, 2.5  # Пример коэффициентов для функции
-        y = f(xdata, b0, b1)  # Вычисляем значения функции без шума
-        ydata = y + 0.2 * np.random.randn(len(xdata))  # Добавляем шум
+    # Задание своих данных
+    xdata = np.linspace(0, 5, 50)  # Создаем свои данные x
+    b0, b1 = 1.5, 2.5  # Пример коэффициентов для функции
+    y = f(xdata, b0, b1)  # Вычисляем значения функции без шума
+    ydata = y + 0.2 * np.random.randn(len(xdata))  # Добавляем шум
 
-        # Аппроксимация
-        beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
+    # Аппроксимация
+    beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
 
         # Вывод результатов
-        print("Оптимальные коэффициенты:", beta_opt)
-        lin_dev = sum(beta_cov[0])  # Линейное отклонение
-        print("Линейное отклонение:", lin_dev)
-        residuals = ydata - f(xdata, *beta_opt)  # Остатки
-        fres = sum(residuals ** 2)  # Квадратичное отклонение
-        print("Квадратичное отклонение:", fres)
+    print("Оптимальные коэффициенты:", beta_opt)
+    lin_dev = sum(beta_cov[0])  # Линейное отклонение
+    print("Линейное отклонение:", lin_dev)
+    residuals = ydata - f(xdata, *beta_opt)  # Остатки
+    fres = sum(residuals ** 2)  # Квадратичное отклонение
+    print("Квадратичное отклонение:", fres)
 
-        # Визуализация
-        fig, ax = plt.subplots()
-        ax.scatter(xdata, ydata)
-        ax.plot(xdata, y, 'r--', lw=2, label='Исходная функция')
-        ax.plot(xdata, f(xdata, *beta_opt), 'b', lw=2, label='Аппроксимация')
-        ax.set_xlim(0, 5)
-        ax.set_xlabel(r"$x$", fontsize=18)
-        ax.set_ylabel(r"$f(x, \beta)$", fontsize=18)
-        ax.legend()
-        plt.show()
-    @staticmethod
-    def fun_two():
-        def f(x, b0, b1, b2):
-            return b0 + b1 * x + b2 * x ** 2  # Пример квадратичной функции
+    # Визуализация
+    fig, ax = plt.subplots()
+    ax.scatter(xdata, ydata)
+    ax.plot(xdata, y, 'r--', lw=2, label='Исходная функция')
+    ax.plot(xdata, f(xdata, *beta_opt), 'b', lw=2, label='Аппроксимация')
+    ax.set_xlim(0, 5)
+    ax.set_xlabel(r"$x$", fontsize=18)
+    ax.set_ylabel(r"$f(x, \beta)$", fontsize=18)
+    ax.legend()
+    plt.show()
 
-        # Задание своих данных
-        xdata = np.linspace(0, 5, 50)  # Создаем свои данные x
-        beta = (0.25, 0.75, 0.5)  # Пример коэффициентов для функции
-        y = f(xdata, *beta)  # Вычисляем значения функции без шума
-        ydata = y + 0.05 * np.random.randn(len(xdata))  # Добавляем шум
+def task_five_fun_two():
+    def f(x, b0, b1, b2):
+        return b0 + b1 * x + b2 * x ** 2  # Пример квадратичной функции
 
-        # Аппроксимация
-        beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
+    # Задание своих данных
+    xdata = np.linspace(0, 5, 50)  # Создаем свои данные x
+    beta = (0.25, 0.75, 0.5)  # Пример коэффициентов для функции
+    y = f(xdata, *beta)  # Вычисляем значения функции без шума
+    ydata = y + 0.05 * np.random.randn(len(xdata))  # Добавляем шум
 
-        # Вывод результатов
-        print("Оптимальные коэффициенты:", beta_opt)
-        lin_dev = sum(beta_cov[0])  # Линейное отклонение
-        print("Линейное отклонение:", lin_dev)
-        residuals = ydata - f(xdata, *beta_opt)  # Остатки
-        fres = sum(residuals ** 2)  # Квадратичное отклонение
-        print("Квадратичное отклонение:", fres)
+    # Аппроксимация
+    beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
 
-        # Визуализация
-        fig, ax = plt.subplots()
-        ax.scatter(xdata, ydata)
-        ax.plot(xdata, y, 'r', lw=2, label='Исходная функция')
-        ax.plot(xdata, f(xdata, *beta_opt), 'b', lw=2, label='Аппроксимация')
-        ax.set_xlim(0, 5)
-        ax.set_xlabel(r"$x$", fontsize=18)
-        ax.set_ylabel(r"$f(x, \beta)$", fontsize=18)
-        ax.legend()
-        plt.show()
-    @staticmethod
-    def fun_three():
-        def f(x, b0, b1):
-            return b0 + b1 * np.log(x)  # Функция с логарифмом
+    # Вывод результатов
+    print("Оптимальные коэффициенты:", beta_opt)
+    lin_dev = sum(beta_cov[0])  # Линейное отклонение
+    print("Линейное отклонение:", lin_dev)
+    residuals = ydata - f(xdata, *beta_opt)  # Остатки
+    fres = sum(residuals ** 2)  # Квадратичное отклонение
+    print("Квадратичное отклонение:", fres)
 
-        # Задание своих данных
-        xdata = np.linspace(1, 5, 50)  # Создаем свои данные x
-        beta = (1, 2)  # Пример коэффициентов для функции
-        y = f(xdata, *beta)  # Вычисляем значения функции без шума
-        ydata = y + 0.05 * np.random.randn(len(xdata))  # Добавляем шум
+    # Визуализация
+    fig, ax = plt.subplots()
+    ax.scatter(xdata, ydata)
+    ax.plot(xdata, y, 'r', lw=2, label='Исходная функция')
+    ax.plot(xdata, f(xdata, *beta_opt), 'b', lw=2, label='Аппроксимация')
+    ax.set_xlim(0, 5)
+    ax.set_xlabel(r"$x$", fontsize=18)
+    ax.set_ylabel(r"$f(x, \beta)$", fontsize=18)
+    ax.legend()
+    plt.show()
 
-        # Аппроксимация
-        beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
+def task_five_fun_three():
+    def f(x, b0, b1):
+        return b0 + b1 * np.log(x)  # Функция с логарифмом
 
-        # Вывод результатов
-        print("Оптимальные коэффициенты:", beta_opt)
-        lin_dev = sum(beta_cov[0])  # Линейное отклонение
-        print("Линейное отклонение:", lin_dev)
-        residuals = ydata - f(xdata, *beta_opt)  # Остатки
-        fres = sum(residuals ** 2)  # Квадратичное отклонение
-        print("Квадратичное отклонение:", fres)
+    # Задание своих данных
+    xdata = np.linspace(1, 5, 50)  # Создаем свои данные x
+    beta = (1, 2)  # Пример коэффициентов для функции
+    y = f(xdata, *beta)  # Вычисляем значения функции без шума
+    ydata = y + 0.05 * np.random.randn(len(xdata))  # Добавляем шум
 
-        # Визуализация
-        fig, ax = plt.subplots()
-        ax.scatter(xdata, ydata)
-        ax.plot(xdata, y, 'r', lw=2, label='Исходная функция')
-        ax.plot(xdata, f(xdata, *beta_opt), 'b', lw=2, label='Аппроксимация')
-        ax.set_xlim(0, 5)
-        ax.set_xlabel(r"$x$", fontsize=18)
-        ax.set_ylabel(r"$f(x, \beta)$", fontsize=18)
-        ax.legend()
-        plt.show()
-    @staticmethod
-    def fun_four():
-        def f(x, b0, b1):
-            return b0 * x ** b1  # Пример степенной функции
+    # Аппроксимация
+    beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
 
-        # Задание своих данных
-        xdata = np.linspace(1, 5, 50)  # Создаем свои данные x
-        beta = (1, 2)  # Пример коэффициентов для функции
-        y = f(xdata, *beta)  # Вычисляем значения функции без шума
-        ydata = y + 0.05 * np.random.randn(len(xdata))  # Добавляем шум
+    # Вывод результатов
+    print("Оптимальные коэффициенты:", beta_opt)
+    lin_dev = sum(beta_cov[0])  # Линейное отклонение
+    print("Линейное отклонение:", lin_dev)
+    residuals = ydata - f(xdata, *beta_opt)  # Остатки
+    fres = sum(residuals ** 2)  # Квадратичное отклонение
+    print("Квадратичное отклонение:", fres)
 
-        # Аппроксимация
-        beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
+    # Визуализация
+    fig, ax = plt.subplots()
+    ax.scatter(xdata, ydata)
+    ax.plot(xdata, y, 'r', lw=2, label='Исходная функция')
+    ax.plot(xdata, f(xdata, *beta_opt), 'b', lw=2, label='Аппроксимация')
+    ax.set_xlim(0, 5)
+    ax.set_xlabel(r"$x$", fontsize=18)
+    ax.set_ylabel(r"$f(x, \beta)$", fontsize=18)
+    ax.legend()
+    plt.show()
 
-        # Вывод результатов
-        print("Оптимальные коэффициенты:", beta_opt)
-        lin_dev = sum(beta_cov[0])  # Линейное отклонение
-        print("Линейное отклонение:", lin_dev)
-        residuals = ydata - f(xdata, *beta_opt)  # Остатки
-        fres = sum(residuals ** 2)  # Квадратичное отклонение
-        print("Квадратичное отклонение:", fres)
+def task_five_fun_four():
+    def f(x, b0, b1):
+        return b0 * x ** b1  # Пример степенной функции
 
-        # Визуализация
-        fig, ax = plt.subplots()
-        ax.scatter(xdata, ydata)
-        ax.plot(xdata, y, 'r', lw=2, label='Исходная функция')
-        ax.plot(xdata, f(xdata, *beta_opt), 'b', lw=2, label='Аппроксимация')
-        ax.set_xlim(0, 5)
-        ax.set_xlabel(r"$x$", fontsize=18)
-        ax.set_ylabel(r"$f(x, \beta)$", fontsize=18)
-        ax.legend()
-        plt.show()
+    # Задание своих данных
+    xdata = np.linspace(1, 5, 50)  # Создаем свои данные x
+    beta = (1, 2)  # Пример коэффициентов для функции
+    y = f(xdata, *beta)  # Вычисляем значения функции без шума
+    ydata = y + 0.05 * np.random.randn(len(xdata))  # Добавляем шум
+
+    # Аппроксимация
+    beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
+
+    # Вывод результатов
+    print("Оптимальные коэффициенты:", beta_opt)
+    lin_dev = sum(beta_cov[0])  # Линейное отклонение
+    print("Линейное отклонение:", lin_dev)
+    residuals = ydata - f(xdata, *beta_opt)  # Остатки
+    fres = sum(residuals ** 2)  # Квадратичное отклонение
+    print("Квадратичное отклонение:", fres)
+
+    # Визуализация
+    fig, ax = plt.subplots()
+    ax.scatter(xdata, ydata)
+    ax.plot(xdata, y, 'r', lw=2, label='Исходная функция')
+    ax.plot(xdata, f(xdata, *beta_opt), 'b', lw=2, label='Аппроксимация')
+    ax.set_xlim(0, 5)
+    ax.set_xlabel(r"$x$", fontsize=18)
+    ax.set_ylabel(r"$f(x, \beta)$", fontsize=18)
+    ax.legend()
+    plt.show()
 
 def task_1_2_1():
     url = "https://raw.githubusercontent.com/AnnaShestova/salary-years-simple-linear-regression/master/Salary_Data.csv"
@@ -271,41 +271,27 @@ def task_1_3_3():
 
 def main() :
     while True:
-        print("\nselect a task to open:")
-        print("1 = task 1.1.3")
-        print("2 = task 1.1.5")
-        print("3 = task 1.2.1")
-        print("4 = task 1.3.2")
-        print("5 = task 1.3.3")
-        print("no task - if you want to exit, enter 'exit'\n\n")
 
-        choice = input("enter your choice: ")
+        choice = input("\nselect a task to open: \n \n1 = task 1.1.3, \n2 = task 1.1.5.1, \n3 = task 1.1.5.2, \n4 = task 1.1.5.3, \n5 = task 1.1.5.4, \n6 = task 1.2.1, \n7 = task 1.3.2, \n8 = task 1.3.3 \n(no task - if you want to exit, enter 'exit'): ")
 
-        if choice == '1':
-            task_1_1_3()
-        elif choice == '2':
-            TaskOneFive.fun_one()
-            #TaskOneFive.fun_two()
-            #TaskOneFive.fun_three()
-            #TaskOneFive.fun_four()
+        menu = {
+            '1': task_1_1_3,
+            '2': task_five_fun_one,
+            '3': task_five_fun_two,
+            '4': task_five_fun_three,
+            '5': task_five_fun_four,
+            '6': task_1_2_1,
+            '7': task_1_3_2,
+            '8': task_1_3_3,
+            'exit': lambda: print("oh, okay:(")
+        }
 
-        #elif choice == '3':
-        #    task_1_2_1()
-        #elif choice == '4':
-        #    task_1_3_2()
-        #elif choice == '5':
-        #    task_1_3_3()
-        elif choice == '3':
-            task_1_2_1()
-        elif choice == '4':
-            task_1_3_2()
-        elif choice == '5':
-            task_1_3_3()
-        elif choice == 'exit':
-            print("oh, okay:(")
-            break
+        if choice in menu:
+            menu[choice]()
+            if choice == 'exit':
+                break
         else:
             print("invalid choice. please enter a valid option")
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
