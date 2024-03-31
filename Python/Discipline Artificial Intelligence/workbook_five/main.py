@@ -1,7 +1,10 @@
 import math
 from graphviz import Digraph
 import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier
 
+# 2 номер доработать
 
 def check_variable_int_float(variable):
     while True:
@@ -146,20 +149,51 @@ def task_1_3():
         plt.axis('off')
         plt.show()
 
+def task_1_3_1():
+    X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
+    target = [0, 0, 0, 1, 1, 1]
+
+    # Создание и обучение модели дерева принятия решений
+    clf = DecisionTreeClassifier()
+    clf.fit(X, target)
+
+    # Визуализация решающей поверхности
+    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+    y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.01),
+                         np.arange(y_min, y_max, 0.01))
+
+    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+
+    plt.contourf(xx, yy, Z, alpha=0.8)
+    plt.scatter(X[:, 0], X[:, 1], c=target, cmap=plt.cm.coolwarm)
+    plt.xlabel('Feature 1')
+    plt.ylabel('Feature 2')
+    plt.title('Decision Tree Classifier')
+    plt.show()
+
+
 def main():
     while True:
-        print("\nselect a task to open:")
-        print("1 = task 1.1\n2 = task 1.2   ")
+        choice = input("\nselect a task to open: \n \n1 = task 1.1() \n2 = task 1.2()\n3 = task 1.3()\n4 = task 1.3.1 \n(no task - if you want to exit, enter 'exit'): ")
 
-        choice = input("enter your choice: ")
+        menu = {
+            '1': task_1_1,
+            '2': task_1_2,
+            '3': task_1_3,
+            '4': task_1_3_1,
+            #'5':
+            #'6':
+            #'7':
+            #'8':
+            'exit': lambda: print("oh, okay:(")
+        }
 
-        if choice == '1':
-            task_1_1()
-        if choice == '2':
-            task_1_2()
-        if choice == 'exit':
-            print("oh, okay:(")
-            break
+        if choice in menu:
+            menu[choice]()
+            if choice == 'exit':
+                break
         else:
             print("invalid choice. please enter a valid option")
 
