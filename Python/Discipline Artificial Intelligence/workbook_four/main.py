@@ -7,6 +7,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 import ssl
 
+# 2 and 3 - проверить
+
 def check_variable_int_float(variable):
     # функция - которая проверяет - является ли переменная целым или числом
     # с плавающей точкой(дробным числом)и предоставляет пользователю возможность
@@ -142,7 +144,7 @@ def task_five_fun_four():
     beta_opt, beta_cov = sp.optimize.curve_fit(f, xdata, ydata)
 
     print("Оптимальные коэффициенты:", beta_opt)
-    lin_dev = sum(beta_cov[0])  
+    lin_dev = sum(beta_cov[0])
     print("Линейное отклонение:", lin_dev)
     residuals = ydata - f(xdata, *beta_opt)
     fres = sum(residuals ** 2)
