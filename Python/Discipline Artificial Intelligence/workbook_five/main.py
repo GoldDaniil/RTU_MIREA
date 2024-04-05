@@ -12,7 +12,7 @@ import urllib.request
 import requests
 from io import StringIO
 
-# 2 номер доработать = проверить 5 номер
+# проверить 5 номер
 
 def check_variable_int_float(variable):
     while True:
@@ -74,31 +74,37 @@ def task_1_1():
     print("Arccosine: ", Trigonometry.arccosine(0.7071067811865476))
     print("Arctangent: ", Trigonometry.arctangent(1))
 
+# def task_1_2():
+#     tree = ['A', ['B', ['D', [], []], ['E', [], []]], ['C', ['F', [], []], []]]
+#
+#     def create_tree_graph(tree, graph=None):
+#         if graph is None:
+#             graph = Digraph(format='png')
+#         if len(tree) > 0:
+#             root = str(tree[0])
+#             graph.node(root, label=root, shape='oval')
+#             if len(tree[1]) > 0:
+#                 left_child = str(tree[1][0])
+#                 graph.node(left_child, label=left_child, shape='oval')
+#                 graph.edge(root, left_child)
+#                 create_tree_graph(tree[1], graph)
+#             if len(tree[2]) > 0:
+#                 right_child = str(tree[2][0])
+#                 graph.node(right_child, label=right_child, shape='oval')
+#                 graph.edge(root, right_child)
+#                 create_tree_graph(tree[2], graph)
+#         return graph
+#
+#     tree_graph = create_tree_graph(tree)
+#
+#     tree_graph.render('tree')
+#     tree_graph.view()
+
 def task_1_2():
-    tree = ['A', ['B', ['D', [], []], ['E', [], []]], ['C', ['F', [], []], []]]
-
-    def create_tree_graph(tree, graph=None):
-        if graph is None:
-            graph = Digraph(format='png')
-        if len(tree) > 0:
-            root = str(tree[0])
-            graph.node(root, label=root, shape='oval')
-            if len(tree[1]) > 0:
-                left_child = str(tree[1][0])
-                graph.node(left_child, label=left_child, shape='oval')
-                graph.edge(root, left_child)
-                create_tree_graph(tree[1], graph)
-            if len(tree[2]) > 0:
-                right_child = str(tree[2][0])
-                graph.node(right_child, label=right_child, shape='oval')
-                graph.edge(root, right_child)
-                create_tree_graph(tree[2], graph)
-        return graph
-
-    tree_graph = create_tree_graph(tree)
-
-    tree_graph.render('tree')
-    tree_graph.view()
+    T = [["d", "e"], ["f"]]
+    print(T)
+    print(T[0])
+    print(T[1])
 
 def task_1_3():
     class Tree:
