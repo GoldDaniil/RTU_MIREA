@@ -157,11 +157,10 @@ def task_1_2():
 #         plt.show()
 def task_1_3():
     class Node:
-        def __init__(self, val):
-            self.l = None
-            self.r = None
-            self.v = val
-
+        def __init__(self, val, left=None, right=None):
+            self.val = val
+            self.left = left
+            self.right = right
 
     class Tree:
         def __init__(self):
@@ -174,16 +173,16 @@ def task_1_3():
                 self._add(val, self.root)
 
         def _add(self, val, node):
-            if val < node.v:
-                if node.l is not None:
-                    self._add(val, node.l)
+            if val < node.val:
+                if node.left is not None:
+                    self._add(val, node.left)
                 else:
-                    node.l = Node(val)
+                    node.left = Node(val)
             else:
-                if node.r is not None:
-                    self._add(val, node.r)
+                if node.right is not None:
+                    self._add(val, node.right)
                 else:
-                    node.r = Node(val)
+                    node.right = Node(val)
 
         def find(self, val):
             if self.root is not None:
@@ -192,12 +191,12 @@ def task_1_3():
                 return None
 
         def _find(self, val, node):
-            if val == node.v:
+            if val == node.val:
                 return node
-            elif val < node.v and node.l is not None:
-                return self._find(val, node.l)
-            elif val > node.v and node.r is not None:
-                return self._find(val, node.r)
+            elif val < node.val and node.left is not None:
+                return self._find(val, node.left)
+            elif val > node.val and node.right is not None:
+                return self._find(val, node.right)
 
         def printTree(self):
             if self.root is not None:
@@ -205,19 +204,19 @@ def task_1_3():
 
         def _printTree(self, node):
             if node is not None:
-                if node.l is not None:
-                    self._printTree(node.l)
-                print(str(node.v) + ' ')
-                if node.r is not None:
-                    self._printTree(node.r)
+                self._printTree(node.left)
+                print(str(node.val), end=' ')
+                self._printTree(node.right)
 
-    tree = Tree()
-    tree.add(5)
-    tree.add(3)
-    tree.add(7)
-    tree.add(1)
-    tree.add(4)
-    tree.printTree()
+    if __name__ == "__main__":
+        tree = Tree()
+        tree.add(5)
+        tree.add(3)
+        tree.add(7)
+        tree.add(1)
+        tree.add(4)
+        tree.printTree()
+
 
 def task_1_3_1():
     X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
