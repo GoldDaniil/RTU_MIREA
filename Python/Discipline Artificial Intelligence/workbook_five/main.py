@@ -106,117 +106,55 @@ def task_1_2():
 #     print(T[0])
 #     print(T[1])
 
-# def task_1_3():
-#     class Tree:
-#         def __init__(self, data):
-#             self.left = None
-#             self.right = None
-#             self.data = data
-#
-#         def insert(self, value):
-#             """Метод для вставки нового элемента в бинарное дерево поиска."""
-#             if value < self.data:
-#                 if self.left is None:
-#                     self.left = Tree(value)
-#                 else:
-#                     self.left.insert(value)
-#             elif value > self.data:
-#                 if self.right is None:
-#                     self.right = Tree(value)
-#                 else:
-#                     self.right.insert(value)
-#
-#         def print_tree(self, x=0, y=0, x_parent=None, y_parent=None):
-#             """Метод для визуализации дерева."""
-#             if self.left:
-#                 plt.plot([x, x_parent], [y - 1, y], 'k-')
-#                 self.left.print_tree(x - 2, y - 1, x, y)
-#             if self.right:
-#                 plt.plot([x, x_parent], [y - 1, y], 'k-')
-#                 self.right.print_tree(x + 2, y - 1, x, y)
-#             plt.text(x, y, str(self.data), fontsize=12, ha='center', va='center',
-#                      bbox=dict(facecolor='white', edgecolor='black', boxstyle='circle'))
-#
-#     # Пример использования класса Tree
-#     if __name__ == "__main__":
-#         root = Tree(10)
-#
-#         root.insert(5)
-#         root.insert(15)
-#         root.insert(3)
-#         root.insert(8)
-#         root.insert(12)
-#         root.insert(20)
-#
-#         plt.figure(figsize=(8, 8))
-#         root.print_tree()
-#         plt.xlim(-10, 10)
-#         plt.ylim(-10, 0)
-#         plt.gca().invert_yaxis()
-#         plt.axis('off')
-#         plt.show()
 def task_1_3():
-    class Node:
-        def __init__(self, val, left=None, right=None):
-            self.val = val
-            self.left = left
-            self.right = right
-
     class Tree:
-        def __init__(self):
-            self.root = None
+        def __init__(self, data):
+            self.left = None
+            self.right = None
+            self.data = data
 
-        def add(self, val):
-            if self.root is None:
-                self.root = Node(val)
-            else:
-                self._add(val, self.root)
-
-        def _add(self, val, node):
-            if val < node.val:
-                if node.left is not None:
-                    self._add(val, node.left)
+        def insert(self, value):
+            """Метод для вставки нового элемента в бинарное дерево поиска."""
+            if value < self.data:
+                if self.left is None:
+                    self.left = Tree(value)
                 else:
-                    node.left = Node(val)
-            else:
-                if node.right is not None:
-                    self._add(val, node.right)
+                    self.left.insert(value)
+            elif value > self.data:
+                if self.right is None:
+                    self.right = Tree(value)
                 else:
-                    node.right = Node(val)
+                    self.right.insert(value)
 
-        def find(self, val):
-            if self.root is not None:
-                return self._find(val, self.root)
-            else:
-                return None
+        def print_tree(self, x=0, y=0, x_parent=None, y_parent=None):
+            """Метод для визуализации дерева."""
+            if self.left:
+                plt.plot([x, x_parent], [y - 1, y], 'k-')
+                self.left.print_tree(x - 2, y - 1, x, y)
+            if self.right:
+                plt.plot([x, x_parent], [y - 1, y], 'k-')
+                self.right.print_tree(x + 2, y - 1, x, y)
+            plt.text(x, y, str(self.data), fontsize=12, ha='center', va='center',
+                     bbox=dict(facecolor='white', edgecolor='black', boxstyle='circle'))
 
-        def _find(self, val, node):
-            if val == node.val:
-                return node
-            elif val < node.val and node.left is not None:
-                return self._find(val, node.left)
-            elif val > node.val and node.right is not None:
-                return self._find(val, node.right)
-
-        def printTree(self):
-            if self.root is not None:
-                self._printTree(self.root)
-
-        def _printTree(self, node):
-            if node is not None:
-                self._printTree(node.left)
-                print(str(node.val), end=' ')
-                self._printTree(node.right)
-
+    # Пример использования класса Tree
     if __name__ == "__main__":
-        tree = Tree()
-        tree.add(5)
-        tree.add(3)
-        tree.add(7)
-        tree.add(1)
-        tree.add(4)
-        tree.printTree()
+        root = Tree(10)
 
+        root.insert(5)
+        root.insert(15)
+        root.insert(3)
+        root.insert(8)
+        root.insert(12)
+        root.insert(20)
+
+        plt.figure(figsize=(8, 8))
+        root.print_tree()
+        plt.xlim(-10, 10)
+        plt.ylim(-10, 0)
+        plt.gca().invert_yaxis()
+        plt.axis('off')
+        plt.show()
 
 def task_1_3_1():
     X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
