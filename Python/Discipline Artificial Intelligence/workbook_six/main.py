@@ -93,10 +93,10 @@ def check_variable_str(variable):
 #     for i in range(len(results[2])): qualityArrZ += results[2][i][3]
 #     print(f'max Z:{max(qualityArrZ)}')
 
-# построить ~Деструктор &конструктор с динимаческим выделением памяти 
+# построить ~Деструктор &конструктор с динимаческим выделением памяти
 # отдельный класс : &_, 1:
 
-def local_data_set():
+def task_1_1_1_one():
     def qZ(x, y):
         return (x - 3 * y + 1) / (3 * x ** 2 + 3 * y ** 2 + 1)
 
@@ -161,13 +161,56 @@ def local_data_set():
     for i in range(len(results[2])):
         qualityArrZ += results[2][i][3]
     print(f'max Z:{max(qualityArrZ)}')
+    
+def task_1_1_2_one(): 
+    
+def task_1_1_3_one(): 
+
+def task_1_1_4_one(): 
+
+def task_1_1_5_one(): 
+
+def task_1_1_6_one(): 
+
+def task_1_1_7_one(): 
+
+def task_1_1_8_one():
+
+def task_1_1_9_one():
+    
+def task_1_1_10_one(): 
+
+def launcher_1_1_1():
+    choice = input("\nselect a task to open: \n \n1 = task () \n2 = task ()\n3 = task () \n(no task - if you want to exit, enter 'exit'):")
+
+    menu = {
+        '1': task_1_1_1_one,
+        '2': task_1_1_2_one,
+        '3': task_1_1_3_one,
+        '4': task_1_1_4_one,
+        '5': task_1_1_5_one,
+        '6': task_1_1_6_one,
+        '7': task_1_1_7_one,
+        '8': task_1_1_8_one,
+        '9': task_1_1_9_one,
+        '10': task_1_1_10_one,
+
+        'exit': lambda: print("oh, okay:(")
+    }
+
+    if choice in menu:
+        menu[choice]()
+        if choice == 'exit':
+            break
+    else:
+        print("invalid choice. please enter a valid option")
 
 def main():
     while True:
         choice = input("\nselect a task to open: \n \n1 = task () \n2 = task ()\n3 = task () \n(no task - if you want to exit, enter 'exit'): ")
 
         menu = {
-            '1': local_data_set,
+            '1': launcher_1_1_1,
             #'2': task_1_2,
             #'3': task_1_3,
             'exit': lambda: print("oh, okay:(")
