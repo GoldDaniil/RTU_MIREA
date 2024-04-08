@@ -113,48 +113,42 @@ def task_1_3():
             self.right = None
             self.data = data
 
-        def insert(self, value):
-            """Метод для вставки нового элемента в бинарное дерево поиска."""
-            if value < self.data:
+        def insert(self, data):
+            if data < self.data:
                 if self.left is None:
-                    self.left = Tree(value)
+                    self.left = Tree(data)
                 else:
-                    self.left.insert(value)
-            elif value > self.data:
+                    self.left.insert(data)
+            elif data > self.data:
                 if self.right is None:
-                    self.right = Tree(value)
+                    self.right = Tree(data)
                 else:
-                    self.right.insert(value)
+                    self.right.insert(data)
 
-        def print_tree(self, x=0, y=0, x_parent=None, y_parent=None):
-            """Метод для визуализации дерева."""
+        def print_tree(self, dot, parent_node=None):
+            dot.node(str(self.data))
+            if parent_node is not None:
+                dot.edge(str(parent_node.data), str(self.data))
             if self.left:
-                plt.plot([x, x_parent], [y - 1, y], 'k-')
-                self.left.print_tree(x - 2, y - 1, x, y)
+                self.left.print_tree(dot, self)
             if self.right:
-                plt.plot([x, x_parent], [y - 1, y], 'k-')
-                self.right.print_tree(x + 2, y - 1, x, y)
-            plt.text(x, y, str(self.data), fontsize=12, ha='center', va='center',
-                     bbox=dict(facecolor='white', edgecolor='black', boxstyle='circle'))
+                self.right.print_tree(dot, self)
 
-    # Пример использования класса Tree
-    if __name__ == "__main__":
-        root = Tree(10)
+    root = Tree(5)
 
-        root.insert(5)
-        root.insert(15)
-        root.insert(3)
-        root.insert(8)
-        root.insert(12)
-        root.insert(20)
+    root.insert(3)
+    root.insert(7)
+    root.insert(2)
+    root.insert(4)
+    root.insert(6)
+    root.insert(8)
 
-        plt.figure(figsize=(8, 8))
-        root.print_tree()
-        plt.xlim(-10, 10)
-        plt.ylim(-10, 0)
-        plt.gca().invert_yaxis()
-        plt.axis('off')
-        plt.show()
+    dot = Digraph()
+
+    root.print_tree(dot)
+
+    dot.render('binary_tree_corrected', format='png', view=True)
+
 
 def task_1_3_1():
     X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
