@@ -1,7 +1,31 @@
 def qZ_1(x, y):
-    return (x - 2 * y) / (x ** 2 + y ** 2 + 1)
+    return (x - 3 * y + 1) / (3 * x ** 2 + 3 * y ** 2 + 1)
 
 def qZ_2(x, y):
+    return (x - 2 * y - 3) / (x ** 2 + 3 * y ** 2 + 1)
+
+def qZ_3(x, y):
+    return (x - 3 * y - 2) / (x ** 2 + y ** 2 + 1)
+
+def qZ_4(x, y):
+    return (x + 3 * y) / (3 * x ** 2 + y ** 2 + 1)
+
+def qZ_5(x, y):
+    return (x - 3 * y + 1) / (3 * x ** 2 + y ** 2 + 1)
+
+def qZ_6(x, y):
+    return (x + 3 * y) / (x ** 2 + y ** 2 + 1)
+
+def qZ_7(x, y):
+    return (x + 3 * y - 3) / (3 * x ** 2 + y ** 2 + 1)
+
+def qZ_8(x, y):
+    return (x - 3 * y - 3) / (x ** 2 + 2 * y ** 2 + 1)
+
+def qZ_9(x, y):
+    return (x - 2 * y) / (x ** 2 + y ** 2 + 1)
+
+def qZ_10(x, y):
     return (x - 3 * y) / (2 * x ** 2 + 2 * y ** 2 + 1)
 
 
@@ -62,15 +86,44 @@ def common_task(qZ_func, newX, newY):
         qualityArrZ += results[2][i][3]
     print(f'max Z:{max(qualityArrZ)}')
 
+# первый вариант
+def task_1_1_1_one():
 
 
-# Первая задача
+# второй вариант
+def task_1_1_2_one():
+
+
+# третий вариант
+def task_1_1_3_one():
+
+
+# четвертый вариант
+def task_1_1_4_one():
+
+
+# пятый вариант
+def task_1_1_5_one():
+
+
+# шестой вариант
+def task_1_1_6_one():
+
+
+# седьмой вариант
+def task_1_1_7_one():
+
+
+# восьмой вариант
+def task_1_1_8_one():
+
+# девятый вариант
 def task_1_1_9_one():
     newX = [-1, 0, 2, 3]
     newY = [0, -1, -2, 1]
     common_task(qZ_1, newX, newY)
 
-# Вторая задача
+# десятый вариант
 def task_1_1_10_one():
     newX = [-1, 0, 2, 3]
     newY = [0, 1, -2, 2]
