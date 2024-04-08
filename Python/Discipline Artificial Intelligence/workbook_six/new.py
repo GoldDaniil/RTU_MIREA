@@ -133,7 +133,7 @@ def task_1_1_8_one():
     newX = [-5, -3, -2, -1]
     newY = [-1, -2, 0, 1]
     common_task(qZ_1, newX, newY)
-    
+
 # девятый вариант
 def task_1_1_9_one():
     newX = [-1, 0, 2, 3]
@@ -148,13 +148,53 @@ def task_1_1_10_one():
 
 # Вызываем нужные функции для каждой задачи
 
-task_1_1_1_one()
-task_1_1_2_one()
-task_1_1_3_one()
-task_1_1_4_one()
-task_1_1_5_one()
-task_1_1_6_one()
-task_1_1_7_one()
-task_1_1_8_one()
-task_1_1_9_one()
-task_1_1_10_one()
+def launcher_1_1_1():
+    while True:
+        choice = input("\nselect task option: \n1 = first option \n2 = second option \n3 = third option \n4 = fourth option \n5 = fifth option \n6 = sixth option \n7 = seventh option \n8 = eighth option  \n9 = ninth option \n10 = tenth option \n(no option - if you want to exit, enter 'exit'):")
+
+        menu = {
+            '1': task_1_1_1_one,
+            '2': task_1_1_2_one,
+            '3': task_1_1_3_one,
+            '4': task_1_1_4_one,
+            '5': task_1_1_5_one,
+            '6': task_1_1_6_one,
+            '7': task_1_1_7_one,
+            '8': task_1_1_8_one,
+            '9': task_1_1_9_one,
+            '10': task_1_1_10_one,
+
+            'exit': lambda: print("\n\nmain menu!")
+        }
+
+        if choice in menu:
+            menu[choice]()
+            if choice == 'exit':
+                return
+        else:
+            print("invalid choice. please enter a valid option")
+
+
+
+
+def main():
+    while True:
+        choice = input("\nselect a task to open: \n \n1 = task () \n2 = task ()\n3 = task () \n(no task - if you want to exit, enter 'exit'): ")
+
+        menu = {
+            '1': launcher_1_1_1,
+            #'2': второй лаунчер,
+            #'3': третий лаунчер(по надобности),
+            'exit': lambda: print("oh, okay:(")
+        }
+
+        if choice in menu:
+            menu[choice]()
+            if choice == 'exit':
+                return
+        else:
+            print("invalid choice. please enter a valid option")
+
+
+if __name__ == "__main__":
+    main()
