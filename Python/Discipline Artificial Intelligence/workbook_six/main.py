@@ -734,29 +734,30 @@ def task_1_1_10_one():
     print(f'max Z:{max(qualityArrZ)}')
 
 def launcher_1_1_1():
-    choice = input("\nselect a task to open: \n \n1 = task () \n2 = task ()\n3 = task () \n(no task - if you want to exit, enter 'exit'):")
+    while True:
+        choice = input("\nselect task option: \n1 = first option \n2 = second option \n3 = third option \n4 = fourth option \n5 = fifth option \n6 = sixth option \n7 = seventh option \n8 = eighth option  \n9 = ninth option \n10 = tenth option \n(no option - if you want to exit, enter 'exit'):")
 
-    menu = {
-        '1': task_1_1_1_one,
-        '2': task_1_1_2_one,
-        '3': task_1_1_3_one,
-        '4': task_1_1_4_one,
-        '5': task_1_1_5_one,
-        '6': task_1_1_6_one,
-        '7': task_1_1_7_one,
-        '8': task_1_1_8_one,
-        '9': task_1_1_9_one,
-        '10': task_1_1_10_one,
+        menu = {
+            '1': task_1_1_1_one,
+            '2': task_1_1_2_one,
+            '3': task_1_1_3_one,
+            '4': task_1_1_4_one,
+            '5': task_1_1_5_one,
+            '6': task_1_1_6_one,
+            '7': task_1_1_7_one,
+            '8': task_1_1_8_one,
+            '9': task_1_1_9_one,
+            '10': task_1_1_10_one,
 
-        'exit': lambda: print("oh, okay:(")
-    }
+            'exit': lambda: print("\n\nmain menu!")
+        }
 
-    if choice in menu:
-        menu[choice]()
-        if choice == 'exit':
-            break
-    else:
-        print("invalid choice. please enter a valid option")
+        if choice in menu:
+            menu[choice]()
+            if choice == 'exit':
+                return
+        else:
+            print("invalid choice. please enter a valid option")
 
 def main():
     while True:
@@ -764,15 +765,15 @@ def main():
 
         menu = {
             '1': launcher_1_1_1,
-            #'2': task_1_2,
-            #'3': task_1_3,
+            #'2': второй лаунчер,
+            #'3': третий лаунчер(по надобности),
             'exit': lambda: print("oh, okay:(")
         }
 
         if choice in menu:
             menu[choice]()
             if choice == 'exit':
-                break
+                return
         else:
             print("invalid choice. please enter a valid option")
 
