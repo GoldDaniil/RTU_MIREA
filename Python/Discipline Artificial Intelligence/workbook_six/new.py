@@ -262,6 +262,8 @@ def task_1_2_1_one():
     print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
     print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
+    drawRouteGraph(distances, bestRoute)
+
 def task_1_2_2_one():
     distances = [(1, 2, 25), (1, 3, 41), (1, 4, 38), (1, 5, 27), (1, 6, 20), (2, 3, 21), (2, 4, 34), (2, 5, 39),
                  (2, 6, 17), (3, 4, 24), (3, 5, 40), (3, 6, 22), (4, 5, 21), (4, 6, 21), (5, 6, 22)]
@@ -277,6 +279,7 @@ def task_1_2_2_one():
     print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
     print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
+    drawRouteGraph(distances, bestRoute)
 
 def task_1_2_3_one():
     distances = [(1, 2, 23), (1, 3, 42), (1, 4, 40), (1, 5, 25), (1, 6, 22), (2, 3, 20), (2, 4, 30), (2, 5, 34),
@@ -292,6 +295,7 @@ def task_1_2_3_one():
     print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
     print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
+    drawRouteGraph(distances, bestRoute)
 
 def task_1_2_4_one():
     distances = [(1, 2, 17), (1, 3, 39), (1, 4, 32), (1, 5, 28), (1, 6, 18), (2, 3, 24), (2, 4, 28), (2, 5, 35),
@@ -307,6 +311,7 @@ def task_1_2_4_one():
     print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
     print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
+    drawRouteGraph(distances, bestRoute)
 
 def task_1_2_5_one():
     distances = [(1, 2, 18), (1, 3, 41), (1, 4, 36), (1, 5, 29), (1, 6, 19), (2, 3, 27), (2, 4, 31), (2, 5, 37),
@@ -322,6 +327,7 @@ def task_1_2_5_one():
     print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
     print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
+    drawRouteGraph(distances, bestRoute)
 
 def task_1_2_6_one():
     distances = [(1, 2, 22), (1, 3, 43), (1, 4, 39), (1, 5, 28), (1, 6, 20), (2, 3, 26), (2, 4, 33), (2, 5, 36),
@@ -337,6 +343,7 @@ def task_1_2_6_one():
     print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
     print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
+    drawRouteGraph(distances, bestRoute)
 
 def task_1_2_7_one():
     distances = [(1, 2, 24), (1, 3, 41), (1, 4, 36), (1, 5, 22), (1, 6, 19), (2, 3, 21), (2, 4, 33), (2, 5, 33),
@@ -352,6 +359,7 @@ def task_1_2_7_one():
     print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
     print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
+    drawRouteGraph(distances, bestRoute)
 
 def task_1_2_8_one():
     distances = [(1, 2, 19), (1, 3, 39), (1, 4, 35), (1, 5, 26), (1, 6, 18), (2, 3, 26), (2, 4, 33), (2, 5, 37),
@@ -366,6 +374,8 @@ def task_1_2_8_one():
     print(f'Лучший выбранный маршрут: {bestRoute}')
     print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
     print(f'Длины всех рассмотренных маршрутов: {arrLength}')
+
+    drawRouteGraph(distances, bestRoute)
 
 
 def launcher_1_2_1():
