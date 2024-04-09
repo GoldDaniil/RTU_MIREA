@@ -12,8 +12,6 @@ import urllib.request
 import requests
 from io import StringIO
 
-# переделать 3
-
 def check_variable_int_float(variable):
     while True:
         try:
