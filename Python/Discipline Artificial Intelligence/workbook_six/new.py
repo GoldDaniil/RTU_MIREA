@@ -1,29 +1,38 @@
 def qZ_1(x, y):
     return (x - 3 * y + 1) / (3 * x ** 2 + 3 * y ** 2 + 1)
 
+
 def qZ_2(x, y):
     return (x - 2 * y - 3) / (x ** 2 + 3 * y ** 2 + 1)
+
 
 def qZ_3(x, y):
     return (x - 3 * y - 2) / (x ** 2 + y ** 2 + 1)
 
+
 def qZ_4(x, y):
     return (x + 3 * y) / (3 * x ** 2 + y ** 2 + 1)
+
 
 def qZ_5(x, y):
     return (x - 3 * y + 1) / (3 * x ** 2 + y ** 2 + 1)
 
+
 def qZ_6(x, y):
     return (x + 3 * y) / (x ** 2 + y ** 2 + 1)
+
 
 def qZ_7(x, y):
     return (x + 3 * y - 3) / (3 * x ** 2 + y ** 2 + 1)
 
+
 def qZ_8(x, y):
     return (x - 3 * y - 3) / (x ** 2 + 2 * y ** 2 + 1)
 
+
 def qZ_9(x, y):
     return (x - 2 * y) / (x ** 2 + y ** 2 + 1)
+
 
 def qZ_10(x, y):
     return (x - 3 * y) / (2 * x ** 2 + 2 * y ** 2 + 1)
@@ -92,11 +101,13 @@ def task_1_1_1_one():
     newY = [-2, -1, 0, -1]
     common_task(qZ_1, newX, newY)
 
+
 # второй вариант
 def task_1_1_2_one():
     newX = [-4, -2, 0, 2]
     newY = [-1, 1, 0, -2]
     common_task(qZ_1, newX, newY)
+
 
 # третий вариант
 def task_1_1_3_one():
@@ -104,11 +115,13 @@ def task_1_1_3_one():
     newY = [-2, 1, 0, -1]
     common_task(qZ_1, newX, newY)
 
+
 # четвертый вариант
 def task_1_1_4_one():
     newX = [-1, 0, 2, 4]
     newY = [-2, 1, -1, 0]
     common_task(qZ_1, newX, newY)
+
 
 # пятый вариант
 def task_1_1_5_one():
@@ -116,11 +129,13 @@ def task_1_1_5_one():
     newY = [-2, 0, -1, 1]
     common_task(qZ_1, newX, newY)
 
+
 # шестой вариант
 def task_1_1_6_one():
     newX = [-5, -3, -2, -1]
     newY = [-1, -2, 0, 1]
     common_task(qZ_1, newX, newY)
+
 
 # седьмой вариант
 def task_1_1_7_one():
@@ -128,11 +143,13 @@ def task_1_1_7_one():
     newY = [-1, -2, 0, 1]
     common_task(qZ_1, newX, newY)
 
+
 # восьмой вариант
 def task_1_1_8_one():
     newX = [-5, -3, -2, -1]
     newY = [-1, -2, 0, 1]
     common_task(qZ_1, newX, newY)
+
 
 # девятый вариант
 def task_1_1_9_one():
@@ -140,16 +157,19 @@ def task_1_1_9_one():
     newY = [0, -1, -2, 1]
     common_task(qZ_1, newX, newY)
 
+
 # десятый вариант
 def task_1_1_10_one():
     newX = [-1, 0, 2, 3]
     newY = [0, 1, -2, 2]
     common_task(qZ_2, newX, newY)
 
+
 # Вызываем нужные функции для каждой задачи
 def launcher_1_1_1():
     while True:
-        choice = input("\nselect task option: \n1 = first option \n2 = second option \n3 = third option \n4 = fourth option \n5 = fifth option \n6 = sixth option \n7 = seventh option \n8 = eighth option  \n9 = ninth option \n10 = tenth option \n(no option - if you want to exit, enter 'exit'):")
+        choice = input(
+            "\nselect task option: \n1 = first option \n2 = second option \n3 = third option \n4 = fourth option \n5 = fifth option \n6 = sixth option \n7 = seventh option \n8 = eighth option  \n9 = ninth option \n10 = tenth option \n(no option - if you want to exit, enter 'exit'):")
 
         menu = {
             '1': task_1_1_1_one,
@@ -172,31 +192,38 @@ def launcher_1_1_1():
                 return
         else:
             print("invalid choice. please enter a valid option")
-            
-            
-            
-#-----------------------------------------------------------------------------------------------
+
+
+# -----------------------------------------------------------------------------------------------
 
 def task_1_2_1_one():
 
+
 def task_1_2_2_one():
+
 
 def task_1_2_3_one():
 
+
 def task_1_2_4_one():
+
 
 def task_1_2_5_one():
 
+
 def task_1_2_6_one():
 
+
 def task_1_2_7_one():
+
 
 def task_1_2_8_one():
 
 
 def launcher_1_2_1():
     while True:
-        choice = input("\nselect task option: \n1 = first option \n2 = second option \n3 = third option \n4 = fourth option \n5 = fifth option \n6 = sixth option \n7 = seventh option \n8 = eighth option \n(no option - if you want to exit, enter 'exit'):")
+        choice = input(
+            "\nselect task option: \n1 = first option \n2 = second option \n3 = third option \n4 = fourth option \n5 = fifth option \n6 = sixth option \n7 = seventh option \n8 = eighth option \n(no option - if you want to exit, enter 'exit'):")
 
         menu = {
             '1': task_1_2_1_one,
@@ -220,12 +247,13 @@ def launcher_1_2_1():
 
 def main():
     while True:
-        choice = input("\nselect a task to open: \n \n1 = task () \n2 = task ()\n3 = task () \n(no task - if you want to exit, enter 'exit'): ")
+        choice = input(
+            "\nselect a task to open: \n \n1 = task () \n2 = task ()\n3 = task () \n(no task - if you want to exit, enter 'exit'): ")
 
         menu = {
             '1': launcher_1_1_1,
             '2': launcher_1_2_1,
-            #'3': третий лаунчер(по надобности),
+            # '3': третий лаунчер(по надобности),
             'exit': lambda: print("oh, okay:(")
         }
 
