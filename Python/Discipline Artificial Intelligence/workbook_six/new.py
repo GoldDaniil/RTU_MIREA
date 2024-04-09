@@ -2,8 +2,6 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from math import e
 
-#task_1_2_3_one = c этого задания менять вклюительно
-
 def qZ_1(x, y):
     return (x - 3 * y + 1) / (3 * x ** 2 + 3 * y ** 2 + 1)
 
