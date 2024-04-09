@@ -1,88 +1,58 @@
 import numpy as np
 
-def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+class ActivationFunctions:
+    @staticmethod
+    def sigmoid(x):
+        return 1 / (1 + np.exp(-x))
 
-def sigmoid_derivative(x):
-    return x * (1 - x)
+    @staticmethod
+    def tanh(x):
+        return np.tanh(x)
 
-class Perceptron:
-    def __init__(self, N):
-        self.w = [0] * N
+    @staticmethod
+    def relu(x):
+        return np.maximum(0, x)
 
-    def calc(self, x):
-        res = 0
-        for i in range(len(self.w)):
-            res += self.w[i] * x[i]
-        return res
+class NeuralNetwork:
+    def __init__(self, input_size, hidden_size, output_size, activation_function):
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.output_size = output_size
+        self.activation_function = activation_function
 
-    def sign(self, x):
-        if self.calc(x) > 0:
-            return 1
+        self.weights_input_hidden = np.random.rand(input_size, hidden_size)
+        self.weights_hidden_output = np.random.rand(hidden_size, output_size)
+        self.bias = np.zeros((1, hidden_size))
+
+    def feedforward(self, x):
+        hidden_layer_input = np.dot(x, self.weights_input_hidden) + self.bias
+
+        if self.activation_function == 'sigmoid':
+            hidden_layer_output = ActivationFunctions.sigmoid(hidden_layer_input)
+        elif self.activation_function == 'tanh':
+            hidden_layer_output = ActivationFunctions.tanh(hidden_layer_input)
+        elif self.activation_function == 'relu':
+            hidden_layer_output = ActivationFunctions.relu(hidden_layer_input)
         else:
-            return -1
+            raise ValueError("error")
 
-    def learn(self, la, x, y):
-        if y * self.calc(x) <= 0:
-            for i in range(len(self.w)):
-                self.w[i] += la * y * x[i]
+        output = np.dot(hidden_layer_output, self.weights_hidden_output)
 
-    def learning(self, la, T):
-        for n in range(100):
-            for t in T:
-                self.learn(la, t[0], t[1])
-
-class NeuralNetwork1:
-    def __init__(self):
-        self.input_size = 3
-        self.hidden_size = 3
-        self.output_size = 1
-        self.weights_input_hidden = np.array([[0.5, 0.5, 0.5],
-                                              [0.5, 0.5, 0.5],
-                                              [0.5, 0.5, 0.5]])
-        self.weights_hidden_output = np.random.rand(self.hidden_size, self.output_size)
-        self.bias = 0
-
-    def feedforward(self, x):
-        self.hidden_layer_input = np.dot(x, self.weights_input_hidden) + self.bias
-        self.hidden_layer_output = sigmoid(self.hidden_layer_input)
-        self.output = sigmoid(np.dot(self.hidden_layer_output, self.weights_hidden_output))
-        return self.output
-
-
-class NeuralNetwork2:
-    def __init__(self):
-        self.input_size = 2
-        self.hidden_size = 2
-        self.output_size = 2
-        self.weights_input_hidden = np.array([[1, 0],
-                                              [1, 0]])
-        self.weights_hidden_output = np.random.rand(self.hidden_size, self.output_size)
-        self.bias = 1
-
-    def feedforward(self, x):
-        self.hidden_layer_input = np.dot(x, self.weights_input_hidden) + self.bias
-        self.hidden_layer_output = sigmoid(self.hidden_layer_input)
-        self.output = sigmoid(np.dot(self.hidden_layer_output, self.weights_hidden_output))
-        return self.output
+        return output
 
 if __name__ == "__main__":
-    perceptron = Perceptron(2)
-    la = 0.1  
-    T = [[[2, 1], 1],
-         [[3, 2], 1],
-         [[4, 1], 1],
-         [[1, 2], -1],
-         [[2, 3], -1],
-         [[5, 7], -1]]
-    perceptron.learning(la, T)
+    nn_sigmoid = NeuralNetwork(input_size=2, hidden_size=2, output_size=2, activation_function='sigmoid')
 
-    nn1 = NeuralNetwork1()
-    x_nn1 = np.array([[1, 0, 1]])
-    output_nn1 = nn1.feedforward(x_nn1)
-    print("Neural Network 1 output:", output_nn1)
+    nn_tanh = NeuralNetwork(input_size=2, hidden_size=2, output_size=2, activation_function='tanh')
 
-    nn2 = NeuralNetwork2()
-    x_nn2 = np.array([[1, 0]])
-    output_nn2 = nn2.feedforward(x_nn2)
-    print("Neural Network 2 output:", output_nn2)
+    nn_relu = NeuralNetwork(input_size=2, hidden_size=2, output_size=2, activation_function='relu')
+
+    x = np.array([[0.5, 0.7]])
+
+    output_sigmoid = nn_sigmoid.feedforward(x)
+    output_tanh = nn_tanh.feedforward(x)
+    output_relu = nn_relu.feedforward(x)
+
+    print("Output using sigmoid activation function:", output_sigmoid)
+    print("Output using tanh activation function:", output_tanh)
+    print("Output using ReLU activation function:", output_relu)
