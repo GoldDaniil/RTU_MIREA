@@ -1,5 +1,6 @@
 import numpy as np
 
+# все кроме последнего задания
 class ActivationFunctions:
     @staticmethod
     def sigmoid(x):
