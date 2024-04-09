@@ -246,7 +246,7 @@ def drawRouteGraph(distances, bestRoute):
     nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
     plt.show()
 
-
+# первый вариант
 def task_1_2_1_one():
     distances = [(1, 2, 26), (1, 3, 42), (1, 4, 44), (1, 5, 31), (1, 6, 24), (2, 3, 20), (2, 4, 34), (2, 5, 40),
                  (2, 6, 15), (3, 4, 23), (3, 5, 43), (3, 6, 20), (4, 5, 27), (4, 6, 22), (5, 6, 26)]
@@ -264,6 +264,7 @@ def task_1_2_1_one():
 
     drawRouteGraph(distances, bestRoute)
 
+# второй вариант
 def task_1_2_2_one():
     distances = [(1, 2, 25), (1, 3, 41), (1, 4, 38), (1, 5, 27), (1, 6, 20), (2, 3, 21), (2, 4, 34), (2, 5, 39),
                  (2, 6, 17), (3, 4, 24), (3, 5, 40), (3, 6, 22), (4, 5, 21), (4, 6, 21), (5, 6, 22)]
@@ -281,6 +282,7 @@ def task_1_2_2_one():
 
     drawRouteGraph(distances, bestRoute)
 
+# третий вариант
 def task_1_2_3_one():
     distances = [(1, 2, 23), (1, 3, 42), (1, 4, 40), (1, 5, 25), (1, 6, 22), (2, 3, 20), (2, 4, 30), (2, 5, 34),
                  (2, 6, 13), (3, 4, 22), (3, 5, 41), (3, 6, 21), (4, 5, 26), (4, 6, 19), (5, 6, 22)]
@@ -297,6 +299,7 @@ def task_1_2_3_one():
 
     drawRouteGraph(distances, bestRoute)
 
+# четвертый вариант
 def task_1_2_4_one():
     distances = [(1, 2, 17), (1, 3, 39), (1, 4, 32), (1, 5, 28), (1, 6, 18), (2, 3, 24), (2, 4, 28), (2, 5, 35),
                  (2, 6, 13), (3, 4, 25), (3, 5, 43), (3, 6, 23), (4, 5, 20), (4, 6, 16), (5, 6, 24)]
@@ -313,6 +316,7 @@ def task_1_2_4_one():
 
     drawRouteGraph(distances, bestRoute)
 
+# пятый вариант
 def task_1_2_5_one():
     distances = [(1, 2, 18), (1, 3, 41), (1, 4, 36), (1, 5, 29), (1, 6, 19), (2, 3, 27), (2, 4, 31), (2, 5, 37),
                  (2, 6, 15), (3, 4, 19), (3, 5, 42), (3, 6, 23), (4, 5, 24), (4, 6, 17), (5, 6, 24)]
@@ -329,6 +333,7 @@ def task_1_2_5_one():
 
     drawRouteGraph(distances, bestRoute)
 
+# шестой вариант
 def task_1_2_6_one():
     distances = [(1, 2, 22), (1, 3, 43), (1, 4, 39), (1, 5, 28), (1, 6, 20), (2, 3, 26), (2, 4, 33), (2, 5, 36),
                  (2, 6, 17), (3, 4, 22), (3, 5, 40), (3, 6, 24), (4, 5, 22), (4, 6, 19), (5, 6, 20)]
@@ -345,6 +350,7 @@ def task_1_2_6_one():
 
     drawRouteGraph(distances, bestRoute)
 
+# седьмой вариант
 def task_1_2_7_one():
     distances = [(1, 2, 24), (1, 3, 41), (1, 4, 36), (1, 5, 22), (1, 6, 19), (2, 3, 21), (2, 4, 33), (2, 5, 33),
                  (2, 6, 14), (3, 4, 27), (3, 5, 39), (3, 6, 23), (4, 5, 20), (4, 6, 20), (5, 6, 19)]
@@ -361,6 +367,7 @@ def task_1_2_7_one():
 
     drawRouteGraph(distances, bestRoute)
 
+# восьмой вариант
 def task_1_2_8_one():
     distances = [(1, 2, 19), (1, 3, 39), (1, 4, 35), (1, 5, 26), (1, 6, 18), (2, 3, 26), (2, 4, 33), (2, 5, 37),
                  (2, 6, 14), (3, 4, 22), (3, 5, 41), (3, 6, 21), (4, 5, 22), (4, 6, 19), (5, 6, 24)]
@@ -376,7 +383,6 @@ def task_1_2_8_one():
     print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
     drawRouteGraph(distances, bestRoute)
-
 
 def launcher_1_2_1():
     while True:
@@ -402,7 +408,6 @@ def launcher_1_2_1():
         else:
             print("invalid choice. please enter a valid option")
 
-
 def main():
     while True:
         choice = input(
@@ -411,7 +416,6 @@ def main():
         menu = {
             '1': launcher_1_1_1,
             '2': launcher_1_2_1,
-            # '3': третий лаунчер(по надобности),
             'exit': lambda: print("oh, okay:(")
         }
 
@@ -421,7 +425,6 @@ def main():
                 return
         else:
             print("invalid choice. please enter a valid option")
-
 
 if __name__ == "__main__":
     main()
