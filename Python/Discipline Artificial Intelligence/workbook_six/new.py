@@ -1,42 +1,36 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+from math import e
+
 def qZ_1(x, y):
     return (x - 3 * y + 1) / (3 * x ** 2 + 3 * y ** 2 + 1)
-
 
 def qZ_2(x, y):
     return (x - 2 * y - 3) / (x ** 2 + 3 * y ** 2 + 1)
 
-
 def qZ_3(x, y):
     return (x - 3 * y - 2) / (x ** 2 + y ** 2 + 1)
-
 
 def qZ_4(x, y):
     return (x + 3 * y) / (3 * x ** 2 + y ** 2 + 1)
 
-
 def qZ_5(x, y):
     return (x - 3 * y + 1) / (3 * x ** 2 + y ** 2 + 1)
-
 
 def qZ_6(x, y):
     return (x + 3 * y) / (x ** 2 + y ** 2 + 1)
 
-
 def qZ_7(x, y):
     return (x + 3 * y - 3) / (3 * x ** 2 + y ** 2 + 1)
-
 
 def qZ_8(x, y):
     return (x - 3 * y - 3) / (x ** 2 + 2 * y ** 2 + 1)
 
-
 def qZ_9(x, y):
     return (x - 2 * y) / (x ** 2 + y ** 2 + 1)
 
-
 def qZ_10(x, y):
     return (x - 3 * y) / (2 * x ** 2 + 2 * y ** 2 + 1)
-
 
 def common_task(qZ_func, newX, newY):
     def qSumZ(Z):
@@ -94,13 +88,11 @@ def common_task(qZ_func, newX, newY):
         qualityArrZ += results[2][i][3]
     print(f'max Z:{max(qualityArrZ)}')
 
-
 # первый вариант
 def task_1_1_1_one():
     newX = [-2, -1, 0, -1]
     newY = [-2, -1, 0, -1]
     common_task(qZ_1, newX, newY)
-
 
 # второй вариант
 def task_1_1_2_one():
@@ -108,13 +100,11 @@ def task_1_1_2_one():
     newY = [-1, 1, 0, -2]
     common_task(qZ_1, newX, newY)
 
-
 # третий вариант
 def task_1_1_3_one():
     newX = [-1, 0, 2, 3]
     newY = [-2, 1, 0, -1]
     common_task(qZ_1, newX, newY)
-
 
 # четвертый вариант
 def task_1_1_4_one():
@@ -122,13 +112,11 @@ def task_1_1_4_one():
     newY = [-2, 1, -1, 0]
     common_task(qZ_1, newX, newY)
 
-
 # пятый вариант
 def task_1_1_5_one():
     newX = [-2, -1, 0, 2]
     newY = [-2, 0, -1, 1]
     common_task(qZ_1, newX, newY)
-
 
 # шестой вариант
 def task_1_1_6_one():
@@ -136,13 +124,11 @@ def task_1_1_6_one():
     newY = [-1, -2, 0, 1]
     common_task(qZ_1, newX, newY)
 
-
 # седьмой вариант
 def task_1_1_7_one():
     newX = [-5, -3, -2, 0]
     newY = [-1, -2, 0, 1]
     common_task(qZ_1, newX, newY)
-
 
 # восьмой вариант
 def task_1_1_8_one():
@@ -150,20 +136,17 @@ def task_1_1_8_one():
     newY = [-1, -2, 0, 1]
     common_task(qZ_1, newX, newY)
 
-
 # девятый вариант
 def task_1_1_9_one():
     newX = [-1, 0, 2, 3]
     newY = [0, -1, -2, 1]
     common_task(qZ_1, newX, newY)
 
-
 # десятый вариант
 def task_1_1_10_one():
     newX = [-1, 0, 2, 3]
     newY = [0, 1, -2, 2]
     common_task(qZ_2, newX, newY)
-
 
 # Вызываем нужные функции для каждой задачи
 def launcher_1_1_1():
@@ -193,31 +176,195 @@ def launcher_1_1_1():
         else:
             print("invalid choice. please enter a valid option")
 
-
 # -----------------------------------------------------------------------------------------------
 
-def task_1_2_1_one():
+def probability(delta, T):
+    return 100 * e ** (-delta / T)
 
+def reductTemp(prevT):
+    nextT = 0.5 * prevT
+    return nextT
+
+def edgeLength(i, j, distances, roundTrip=True):
+    if roundTrip:
+        return max([(item[2] if (item[0] == i and item[1] == j) or (item[1] == i and item[0] == j) else -1)
+                    for item in distances])
+    else:
+        return max([(item[2] if (item[0] == i and item[1] == j) else -1) for item in distances])
+
+def routeLength(V, distances):
+    edges = []
+    for i in range(len(V) - 1):
+        edges.append(edgeLength(V[i], V[i + 1], distances))
+    return sum(edges)
+
+def routeOneReplacement(arrV, Z, replacementByName=True):
+    decrement = 1 if replacementByName else 0
+    arrV[Z[0] - decrement], arrV[Z[1] - decrement] = arrV[Z[1] - decrement], arrV[Z[0] - decrement]
+    return arrV
+
+def routeReplacement(V, Z):
+    for z in Z:
+        V = routeOneReplacement(V, z)
+    return V
+
+def chooseRoute(distances, V, z, T, P):
+    sumLength = routeLength(V, distances)
+    arrSum = [sumLength]
+
+    for i in range(len(z)):
+        newV = routeOneReplacement(V[:], z[i])
+        newS = routeLength(newV, distances)
+        arrSum.append(newS)
+        deltas = newS - sumLength
+
+        if deltas > 0:
+            p = probability(deltas, T)
+            if p > P[i]:
+                V = newV
+                sumLength = newS
+            else:
+                V = newV
+                sumLength = newS
+
+            T = reductTemp(T)
+
+    return V, arrSum
+
+def drawRouteGraph(distances, bestRoute):
+    newDistances = []
+    for i in range(len(bestRoute) - 1):
+        for distance in distances:
+            if (distance[0] == bestRoute[i] and distance[1] == bestRoute[i + 1]) or (distance[1] == bestRoute[i] and distance[0] == bestRoute[i + 1]):
+                newDistances.append(distance)
+
+    graph = nx.Graph()
+    graph.add_weighted_edges_from(newDistances)
+    pos = nx.kamada_kawai_layout(graph)
+    nx.draw(graph, pos, with_labels=True, node_color='#fb7258', node_size=2000)
+    labels = nx.get_edge_attributes(graph, 'weight')
+    nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
+    plt.show()
+
+
+def task_1_2_1_one():
+    distances = [(1, 2, 20),(1, 3, 40),(1, 4, 42),(1, 5, 33), (1, 6, 21), (2, 3, 26), (2, 4, 38), (2, 5, 42),(2, 6, 17),(3, 4, 22), (3, 5, 43), (3, 6, 21),(4, 5, 27), (4, 6, 22), (5, 6, 26)]
+    V = [1, 4, 5, 2, 6, 3, 1]
+    z = [(3, 4),(4, 6),(5, 2), (6, 2)]
+    P = [49, 54, 43, 54]
+    T = 100
+
+    bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
+
+    print(f'Лучший выбранный маршрут: {bestRoute}')
+    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
+
+    drawRouteGraph(distances, bestRoute)
 
 def task_1_2_2_one():
+    distances = [(1, 2, 20), (1, 3, 40), (1, 4, 42), (1, 5, 33), (1, 6, 21), (2, 3, 26), (2, 4, 38), (2, 5, 42),
+                 (2, 6, 17), (3, 4, 22), (3, 5, 43), (3, 6, 21), (4, 5, 27), (4, 6, 22), (5, 6, 26)]
+    V = [1, 4, 5, 2, 6, 3, 1]
+    z = [(3, 4), (4, 6), (5, 2), (6, 2)]
+    P = [49, 54, 43, 54]
+    T = 100
+
+    bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
+
+    print(f'Лучший выбранный маршрут: {bestRoute}')
+    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
 
 def task_1_2_3_one():
+    distances = [(1, 2, 20), (1, 3, 40), (1, 4, 42), (1, 5, 33), (1, 6, 21), (2, 3, 26), (2, 4, 38), (2, 5, 42),
+                 (2, 6, 17), (3, 4, 22), (3, 5, 43), (3, 6, 21), (4, 5, 27), (4, 6, 22), (5, 6, 26)]
+    V = [1, 4, 5, 2, 6, 3, 1]
+    z = [(3, 4), (4, 6), (5, 2), (6, 2)]
+    P = [49, 54, 43, 54]
+    T = 100
+
+    bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
+
+    print(f'Лучший выбранный маршрут: {bestRoute}')
+    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
 
 def task_1_2_4_one():
+    distances = [(1, 2, 20), (1, 3, 40), (1, 4, 42), (1, 5, 33), (1, 6, 21), (2, 3, 26), (2, 4, 38), (2, 5, 42),
+                 (2, 6, 17), (3, 4, 22), (3, 5, 43), (3, 6, 21), (4, 5, 27), (4, 6, 22), (5, 6, 26)]
+    V = [1, 4, 5, 2, 6, 3, 1]
+    z = [(3, 4), (4, 6), (5, 2), (6, 2)]
+    P = [49, 54, 43, 54]
+    T = 100
+
+    bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
+
+    print(f'Лучший выбранный маршрут: {bestRoute}')
+    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
 
 def task_1_2_5_one():
+    distances = [(1, 2, 20), (1, 3, 40), (1, 4, 42), (1, 5, 33), (1, 6, 21), (2, 3, 26), (2, 4, 38), (2, 5, 42),
+                 (2, 6, 17), (3, 4, 22), (3, 5, 43), (3, 6, 21), (4, 5, 27), (4, 6, 22), (5, 6, 26)]
+    V = [1, 4, 5, 2, 6, 3, 1]
+    z = [(3, 4), (4, 6), (5, 2), (6, 2)]
+    P = [49, 54, 43, 54]
+    T = 100
+
+    bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
+
+    print(f'Лучший выбранный маршрут: {bestRoute}')
+    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
 
 def task_1_2_6_one():
+    distances = [(1, 2, 20), (1, 3, 40), (1, 4, 42), (1, 5, 33), (1, 6, 21), (2, 3, 26), (2, 4, 38), (2, 5, 42),
+                 (2, 6, 17), (3, 4, 22), (3, 5, 43), (3, 6, 21), (4, 5, 27), (4, 6, 22), (5, 6, 26)]
+    V = [1, 4, 5, 2, 6, 3, 1]
+    z = [(3, 4), (4, 6), (5, 2), (6, 2)]
+    P = [49, 54, 43, 54]
+    T = 100
+
+    bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
+
+    print(f'Лучший выбранный маршрут: {bestRoute}')
+    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
 
 def task_1_2_7_one():
+    distances = [(1, 2, 20), (1, 3, 40), (1, 4, 42), (1, 5, 33), (1, 6, 21), (2, 3, 26), (2, 4, 38), (2, 5, 42),
+                 (2, 6, 17), (3, 4, 22), (3, 5, 43), (3, 6, 21), (4, 5, 27), (4, 6, 22), (5, 6, 26)]
+    V = [1, 4, 5, 2, 6, 3, 1]
+    z = [(3, 4), (4, 6), (5, 2), (6, 2)]
+    P = [49, 54, 43, 54]
+    T = 100
+
+    bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
+
+    print(f'Лучший выбранный маршрут: {bestRoute}')
+    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
 
 def task_1_2_8_one():
+    distances = [(1, 2, 20), (1, 3, 40), (1, 4, 42), (1, 5, 33), (1, 6, 21), (2, 3, 26), (2, 4, 38), (2, 5, 42),
+                 (2, 6, 17), (3, 4, 22), (3, 5, 43), (3, 6, 21), (4, 5, 27), (4, 6, 22), (5, 6, 26)]
+    V = [1, 4, 5, 2, 6, 3, 1]
+    z = [(3, 4), (4, 6), (5, 2), (6, 2)]
+    P = [49, 54, 43, 54]
+    T = 100
+
+    bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
+
+    print(f'Лучший выбранный маршрут: {bestRoute}')
+    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
 
 
 def launcher_1_2_1():
