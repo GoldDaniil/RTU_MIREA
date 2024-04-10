@@ -411,7 +411,7 @@ def launcher_1_2_1():
 def main():
     while True:
         choice = input(
-            "\nselect a task to open: \n \n1 = task () \n2 = task ()\n3 = task () \n(no task - if you want to exit, enter 'exit'): ")
+            "\nselect a task to open: \n \n1 = task () \n2 = task () \n(no task - if you want to exit, enter 'exit'): ")
 
         menu = {
             '1': launcher_1_1_1,
