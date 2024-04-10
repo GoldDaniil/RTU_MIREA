@@ -54,6 +54,6 @@ if __name__ == "__main__":
     output_tanh = nn_tanh.feedforward(x)
     output_relu = nn_relu.feedforward(x)
 
-    print("Output using sigmoid activation function:", output_sigmoid)
-    print("Output using tanh activation function:", output_tanh)
-    print("Output using ReLU activation function:", output_relu)
+    print("output using sigmoid activation function:", output_sigmoid)
+    print("output using tanh activation function:", output_tanh)
+    print("output using ReLU activation function:", output_relu)
