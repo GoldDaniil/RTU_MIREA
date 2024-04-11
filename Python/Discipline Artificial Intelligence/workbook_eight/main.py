@@ -54,7 +54,7 @@ def task_1_1_3():
 def main():
     while True:
         choice = input(
-            "\nselect task: \n1 = first task \n2 = second task \n3 = third task \n4 = fourth task \n(no option - if you want to exit, enter 'exit'):")
+            "\nselect task: \n1 = first task \n2 = second task \n3 = third task \n4 = fourth task \n(no option - if you want to exit, enter 'exit'): ")
 
         menu = {
             '1': task_1_1_2,
@@ -73,4 +73,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
