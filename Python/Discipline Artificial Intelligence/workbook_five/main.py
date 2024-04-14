@@ -1,3 +1,4 @@
+#готово
 import math
 from graphviz import Digraph
 import matplotlib.pyplot as plt
