@@ -41,7 +41,7 @@ class NeuralNetwork:
 
         return output
 
-if __name__ == "__main__":
+def task_1_1():
     nn_sigmoid = NeuralNetwork(input_size=2, hidden_size=2, output_size=2, activation_function='sigmoid')
 
     nn_tanh = NeuralNetwork(input_size=2, hidden_size=2, output_size=2, activation_function='tanh')
@@ -57,3 +57,29 @@ if __name__ == "__main__":
     print("output using sigmoid activation function:", output_sigmoid)
     print("output using tanh activation function:", output_tanh)
     print("output using ReLU activation function:", output_relu)
+
+def task_1_2():
+    print('hello world')
+
+
+def main():
+    while True:
+        choice = input(
+            "\nselect a task to open: \n \n1 = task () \n2 = task () \n(no task - if you want to exit, enter 'exit'): ")
+
+        menu = {
+            '1': task_1_1,
+            '2': task_1_2,
+            'exit': lambda: print("oh, okay:(")
+        }
+
+        if choice in menu:
+            menu[choice]()
+            if choice == 'exit':
+                return
+        else:
+            print("invalid choice. please enter a valid option")
+
+
+if __name__ == "__main__":
+    main()
