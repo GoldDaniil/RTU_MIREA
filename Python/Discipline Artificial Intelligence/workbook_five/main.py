@@ -80,12 +80,12 @@ def task_1_2():
         if graph is None:
             graph = Digraph(format='png')
         if len(tree) > 0:
-            root = str(tree[0])
+            root = str(tree[0]) #узел
             graph.node(root, label=root, shape='oval')
             if len(tree[1]) > 0:
                 left_child = str(tree[1][0])
                 graph.node(left_child, label=left_child, shape='oval') #метка узла - идентификатор 
-                graph.edge(root, left_child)
+                graph.edge(root, left_child) #нач уз - конечный
                 create_tree_graph(tree[1], graph)
             if len(tree[2]) > 0:
                 right_child = str(tree[2][0])
@@ -94,7 +94,7 @@ def task_1_2():
                 create_tree_graph(tree[2], graph)
         return graph
 
-    tree_graph = create_tree_graph(tree)
+    tree_graph = create_tree_graph(tree) #результат вызова функции
 
     tree_graph.render('tree')
     tree_graph.view()
@@ -107,17 +107,17 @@ def task_1_2():
 
 def task_1_3():
     class Tree:
-        def __init__(self, data):
+        def __init__(self, data):#конструктор
             self.left = None
-            self.right = None
-            self.data = data
+            self.right = None #поддерево
+            self.data = data 
 
         def insert(self, data):
             if data < self.data:
                 if self.left is None:
-                    self.left = Tree(data)
+                    self.left = Tree(data) #создание нового объекта (data)
                 else:
-                    self.left.insert(data)
+                    self.left.insert(data) #вставка в левое поддерево текущего узла
             elif data > self.data:
                 if self.right is None:
                     self.right = Tree(data)
@@ -125,29 +125,28 @@ def task_1_3():
                     self.right.insert(data)
 
         def print_tree(self, dot, parent_node=None):
-            dot.node(str(self.data))
-            if parent_node is not None:
-                dot.edge(str(parent_node.data), str(self.data))
+            dot.node(str(self.data)) #создание узла с меткой равной значению текущего узла
+            if parent_node is not None: #существует ли родительский узел
+                dot.edge(str(parent_node.data), str(self.data)) #создание ребра
             if self.left:
                 self.left.print_tree(dot, self)
             if self.right:
                 self.right.print_tree(dot, self)
 
-    root = Tree(5)
+    root = Tree(5) # корневой узел = 5
 
-    root.insert(3)
+    root.insert(3) # добавление новых узлов со значениями
     root.insert(7)
     root.insert(2)
     root.insert(4)
     root.insert(6)
     root.insert(8)
 
-    dot = Digraph()
+    dot = Digraph() # создание объекта 
 
-    root.print_tree(dot)
+    root.print_tree(dot) # печать
 
-    dot.render('binary_tree_corrected', format='png', view=True)
-
+    dot.render('binary_tree_corrected', format='png', view=True) # открытие для просмотра
 
 def task_1_3_1():
     X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
