@@ -101,12 +101,6 @@ def task_1_2():
     tree_graph.render('tree')
     tree_graph.view()
 
-# def task_1_2():
-#     T = [["d", "e"], ["f"]]
-#     print(T)
-#     print(T[0])
-#     print(T[1])
-
 def task_1_3():
     class Tree:
         def __init__(self, data):#конструктор
@@ -141,7 +135,7 @@ def task_1_3():
     root.insert(10)
     root.insert(2)
     root.insert(4)
-    root.insert(6)
+    root.insert(60)
     root.insert(8)
 
     dot = Digraph() # создание объекта 
@@ -150,27 +144,98 @@ def task_1_3():
 
     dot.render('binary_tree_corrected', format='png', view=True) # открытие для просмотра
 
-def task_1_3_1():
-    X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]]) # создание набора данных Х 
-    target = [0, 0, 0, 1, 1, 1] # и метки клссов target
+# def task_1_3_1():
+#     X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]]) # создание набора данных Х
+#     target = [0, 0, 0, 1, 1, 1] # и метки клссов target
+#
+#     clf = DecisionTreeClassifier() # создание объекта классификатора
+#     clf.fit(X, target)  # обучение на наборе данных Х с метками target
+#
+#     manCheck = [] # создаем пустой список для хранения введеных пользователем щнач
+#
+#     for i in range(2):
+#         value = input(f"Введите значение {i + 1}: ")  # Запрашиваем ввод числа,  что пользователь будет вводить числа с плавающей точкой
+#         manCheck.append(value)  # добавление введеного знач в список manCheck
+#         value = check_variable_int_float(value)
+#         manCheck.append(value)
+#
+#     manCheck = np.array(manCheck).reshape(1, -1)  # преобразование списка в массив numpy
+#     prediction = clf.predict(manCheck)  # пркдскаываем класс для введеных пользователем значений
+#
+#     if prediction == 0:
+#         print("класс 0")
+#     else:
+#         print("класс 1")
+#
+#     x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1  #
+#     y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1  #
+#     xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.01), #
+#                          np.arange(y_min, y_max, 0.01)) #
+#
+#     Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+#     Z = Z.reshape(xx.shape)
+#     plt.contourf(xx, yy, Z, alpha=0.8)
+#     plt.scatter(X[:, 0], X[:, 1], c=target, cmap=plt.cm.coolwarm)
+#     plt.xlabel('Feature 1')
+#     plt.ylabel('Feature 2')
+#     plt.title('Decision Tree Classifier')
+#     plt.show()
 
-    clf = DecisionTreeClassifier() # создание объекта классификатора
+def task_1_3_1():
+    X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])  # создание набора данных Х
+    target = [0, 0, 0, 1, 1, 1]  # и метки клссов target
+
+    clf = DecisionTreeClassifier()  # создание объекта классификатора
     clf.fit(X, target)  # обучение на наборе данных Х с метками target
+
+    manCheck = [] # создаем пустой список для хранения введеных пользователем щнач
+
+    # Запрашиваем у пользователя ввод двух значений
+    for i in range(2):
+        while True:
+            value = input(f"Введите значение {i+1}: ")
+            try:
+                value = float(value)
+                manCheck.append(value)
+                break
+            except ValueError:
+                print("error.")
+
+    manCheck = np.array(manCheck).reshape(1, -1)
+    prediction = clf.predict(manCheck)
+
+    if prediction == 0:
+        print("класс 0")
+    else:
+        print("класс 1")
 
     x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1  #
     y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1  #
-    xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.01), #
-                         np.arange(y_min, y_max, 0.01)) #
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.01),  #
+                         np.arange(y_min, y_max, 0.01))  #
 
     Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
-    manCheck = []
+
     plt.contourf(xx, yy, Z, alpha=0.8)
-    plt.scatter(X[:, 0], X[:, 1], c=target, cmap=plt.cm.coolwarm)
+    num_red_points = np.sum(np.array(target) == 0)
+    num_blue_points = np.sum(np.array(target) == 1)
+
+    plt.scatter(X[:num_red_points, 0], X[:num_red_points, 1], c='red', label='Class 0')
+    plt.scatter(X[num_red_points:, 0], X[num_red_points:, 1], c='blue', label='Class 1')
+
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')
     plt.title('Decision Tree Classifier')
+    plt.legend()
     plt.show()
+
+    num_points = Z.size
+    print(f"колво точек, используемых для построения графика: {num_points}")
+
+    # Выводим количество точек
+    print(f"колво красных точек (класс 0): {num_red_points}")
+    print(f"колво синих точек (класс 1): {num_blue_points}")
 
 def task_1_4_1():
     ssl._create_default_https_context = ssl._create_unverified_context
@@ -193,6 +258,33 @@ def task_1_4_1():
     r2 = r2_score(y_test, y_pred)
     print(f'Среднеквадратичная ошибка (MSE): {mse:.2f}')
     print(f'Коэффициент детерминации (R^2): {r2:.2f}')
+
+    plt.scatter(y_test, y_pred)
+    plt.xlabel("реал знач")
+    plt.ylabel("предсказ знач")
+    plt.title("график реал vs предссказс знач")
+    plt.show()
+# def task_1_4_1():
+#     ssl._create_default_https_context = ssl._create_unverified_context
+#
+#     url = "https://raw.githubusercontent.com/likarajo/petrol_consumption/master/data/petrol_consumption.csv"
+#
+#     data = pd.read_csv(url)
+#
+#     X = data.drop('Petrol_Consumption', axis=1)
+#     y = data['Petrol_Consumption']
+#
+#     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+#
+#     model = LinearRegression()
+#     model.fit(X_train, y_train)
+#
+#     y_pred = model.predict(X_test)
+#
+#     mse = mean_squared_error(y_test, y_pred)
+#     r2 = r2_score(y_test, y_pred)
+#     print(f'Среднеквадратичная ошибка (MSE): {mse:.2f}')
+#     print(f'Коэффициент детерминации (R^2): {r2:.2f}')
 
 def main():
     while True:
