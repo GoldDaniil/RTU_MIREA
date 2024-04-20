@@ -17,6 +17,8 @@ def check_variable_int_float(variable):
     while True:
         try:
             variable = float(variable)
+            if variable < 0:
+                raise ValueError("error!\n")
             return variable
         except ValueError:
             print("error/ required type - integer/float \n")
@@ -63,7 +65,7 @@ def task_1_1():
             return math.radians(degress)
 
     # пример
-    angle_degrees = 45
+    angle_degrees = check_variable_int_float(input("Enter angle in degrees: "))
     angle_radians = Trigonometry.degress_to_radians(angle_degrees)
 
     print("Cosine: ", Trigonometry.cosine(angle_radians))
@@ -135,8 +137,8 @@ def task_1_3():
 
     root = Tree(5) # корневой узел = 5
 
-    root.insert(3) # добавление новых узлов со значениями
-    root.insert(7)
+    root.insert(1) # добавление новых узлов со значениями
+    root.insert(10)
     root.insert(2)
     root.insert(4)
     root.insert(6)
@@ -162,7 +164,7 @@ def task_1_3_1():
 
     Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
-
+    manCheck = []
     plt.contourf(xx, yy, Z, alpha=0.8)
     plt.scatter(X[:, 0], X[:, 1], c=target, cmap=plt.cm.coolwarm)
     plt.xlabel('Feature 1')
