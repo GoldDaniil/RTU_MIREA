@@ -1,4 +1,5 @@
-#готово
+# правильный код находится в файле 20arp.py
+
 import math
 from graphviz import Digraph
 import matplotlib.pyplot as plt
