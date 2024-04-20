@@ -149,16 +149,16 @@ def task_1_3():
     dot.render('binary_tree_corrected', format='png', view=True) # открытие для просмотра
 
 def task_1_3_1():
-    X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
-    target = [0, 0, 0, 1, 1, 1]
+    X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]]) # создание набора данных Х 
+    target = [0, 0, 0, 1, 1, 1] # и метки клссов target
 
-    clf = DecisionTreeClassifier()
-    clf.fit(X, target)
+    clf = DecisionTreeClassifier() # создание объекта классификатора
+    clf.fit(X, target)  # обучение на наборе данных Х с метками target
 
-    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
-    y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
-    xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.01),
-                         np.arange(y_min, y_max, 0.01))
+    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1  #
+    y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1  #
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.01), #
+                         np.arange(y_min, y_max, 0.01)) #
 
     Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
