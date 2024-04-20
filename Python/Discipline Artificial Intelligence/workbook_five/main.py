@@ -84,7 +84,7 @@ def task_1_2():
             graph.node(root, label=root, shape='oval')
             if len(tree[1]) > 0:
                 left_child = str(tree[1][0])
-                graph.node(left_child, label=left_child, shape='oval')
+                graph.node(left_child, label=left_child, shape='oval') #метка узла - идентификатор 
                 graph.edge(root, left_child)
                 create_tree_graph(tree[1], graph)
             if len(tree[2]) > 0:
