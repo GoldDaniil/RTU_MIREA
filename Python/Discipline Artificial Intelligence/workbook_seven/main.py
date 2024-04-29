@@ -1,4 +1,11 @@
 import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neural_network import MLPRegressor, MLPClassifier
+from sklearn.metrics import mean_squared_error, r2_score, accuracy_score
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 
 # все кроме последнего задания
 class ActivationFunctions:
@@ -59,7 +66,51 @@ def task_1_1():
     print("output using ReLU activation function:", output_relu)
 
 def task_1_2():
-    print('hello world MLPClassified')
+    url = "https://raw.githubusercontent.com/AnnaShestova/salary-years-simple-linear-regression/master/Salary_Data.csv"
+    data = pd.read_csv(url)
+    X_reg = data.iloc[:, :-1].values
+    y_reg = data.iloc[:, 1].values
+
+    X_train_reg, X_test_reg, y_train_reg, y_test_reg = train_test_split(X_reg, y_reg, test_size=0.2, random_state=42)
+
+    regressor = MLPRegressor(hidden_layer_sizes=(100,), activation='relu', solver='adam', max_iter=1000,
+                             random_state=42)
+    regressor.fit(X_train_reg, y_train_reg)
+
+    y_pred_reg = regressor.predict(X_test_reg)
+
+    mse_reg = mean_squared_error(y_test_reg, y_pred_reg)
+    r2_reg = r2_score(y_test_reg, y_pred_reg)
+
+    plt.scatter(X_test_reg, y_test_reg, color='black')
+    plt.plot(X_test_reg, y_pred_reg, color='blue', linewidth=3)
+    plt.xlabel('опыт работы (лет)')
+    plt.ylabel('заработная плата ($)')
+    plt.title('зависимость заработной платы от опыта работы (регрессия)')
+    plt.show()
+
+    iris = load_iris()
+    X_cls = iris.data
+    y_cls = iris.target
+
+    scaler = StandardScaler()
+    X_scaled_cls = scaler.fit_transform(X_cls)
+
+    X_train_cls, X_test_cls, y_train_cls, y_test_cls = train_test_split(X_scaled_cls, y_cls, test_size=0.2,
+                                                                        random_state=42)
+
+    classifier = MLPClassifier(hidden_layer_sizes=(100,), activation='relu', solver='adam', max_iter=1000,
+                               random_state=42)
+    classifier.fit(X_train_cls, y_train_cls)
+
+    y_pred_cls = classifier.predict(X_test_cls)
+
+    accuracy_cls = accuracy_score(y_test_cls, y_pred_cls)
+
+    print("regression Mean Squared Error:", mse_reg)
+    print("regression R^2 Score:", r2_reg)
+
+    print("classification Accuracy:", accuracy_cls)
 
 def task_1_3():
     print('hello world MLPRegressor')
