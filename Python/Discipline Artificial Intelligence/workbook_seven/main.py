@@ -66,6 +66,9 @@ def task_1_1():
     print("output using ReLU activation function:", output_relu)
 
 def task_1_2():
+    print('hello MLPClassified')
+
+def task_1_3():
     url = "https://raw.githubusercontent.com/AnnaShestova/salary-years-simple-linear-regression/master/Salary_Data.csv"
     data = pd.read_csv(url)
     X_reg = data.iloc[:, :-1].values
@@ -111,9 +114,6 @@ def task_1_2():
     print("regression R^2 Score:", r2_reg)
 
     print("classification Accuracy:", accuracy_cls)
-
-def task_1_3():
-    print('hello world MLPRegressor')
 
 def main():
     while True:
