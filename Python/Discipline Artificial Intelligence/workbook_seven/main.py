@@ -6,8 +6,10 @@ from sklearn.metrics import mean_squared_error, r2_score, accuracy_score
 from sklearn.datasets import load_iris
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
+import requests
+from io import StringIO
 
-# все кроме последнего задания
+# все кроме задания классификатора из 3
 class ActivationFunctions:
     @staticmethod
     def sigmoid(x):
@@ -70,7 +72,8 @@ def task_1_2():
 
 def task_1_3():
     url = "https://raw.githubusercontent.com/AnnaShestova/salary-years-simple-linear-regression/master/Salary_Data.csv"
-    data = pd.read_csv(url)
+    response = requests.get(url)
+    data = pd.read_csv(StringIO(response.text))
     X_reg = data.iloc[:, :-1].values
     y_reg = data.iloc[:, 1].values
 
