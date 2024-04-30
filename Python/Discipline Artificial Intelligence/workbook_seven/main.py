@@ -8,8 +8,9 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import requests
 from io import StringIO
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.preprocessing import LabelEncoder, StandardScaler
 
-# все кроме задания классификатора из 3
 class ActivationFunctions:
     @staticmethod
     def sigmoid(x):
@@ -68,7 +69,31 @@ def task_1_1():
     print("output using ReLU activation function:", output_relu)
 
 def task_1_2():
-    print('hello MLPClassified')
+    url = "https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv"
+    response = requests.get(url)
+    data = pd.read_csv(StringIO(response.text))
+
+    X = data.iloc[:, :-1].values
+    y = data.iloc[:, -1].values
+
+    le = LabelEncoder()
+    y = le.fit_transform(y)
+
+    scaler = StandardScaler()
+    X = scaler.fit_transform(X)
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    classifier = MLPClassifier(hidden_layer_sizes=(100,), activation='relu', solver='adam', max_iter=1000,
+                               random_state=42)
+    classifier.fit(X_train, y_train)
+
+    y_pred = classifier.predict(X_test)
+
+    print("Confusion Matrix:")
+    print(confusion_matrix(y_test, y_pred))
+    print("\nClassification Report:")
+    print(classification_report(y_test, y_pred))
 
 def task_1_3():
     url = "https://raw.githubusercontent.com/AnnaShestova/salary-years-simple-linear-regression/master/Salary_Data.csv"
