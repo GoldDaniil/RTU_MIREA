@@ -1,4 +1,4 @@
-import numpy as np   # доработать 1 номер
+import numpy as np # доработать 1 номер
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor, MLPClassifier
@@ -32,7 +32,7 @@ class NeuralNetwork1:
         self.o1 = Neuron(weights, bias)
 
     def feedforward(self, x):
-        x = np.concatenate([x, [1]])  
+        x = np.concatenate([x, [1]])
         out_h1 = self.h1.feedforward(x)
         out_h2 = self.h2.feedforward(x)
         out_o1 = self.o1.feedforward(np.array([out_h1, out_h2]))
@@ -48,7 +48,7 @@ class NeuralNetwork2:
         self.o2 = Neuron(weights, bias)
 
     def feedforward(self, x):
-        x = np.concatenate([x, [1]])  
+        x = np.concatenate([x, [1]])
         out_h1 = self.h1.feedforward(x)
         out_h2 = self.h2.feedforward(x)
         out_o1 = self.o1.feedforward(np.array([out_h1, out_h2]))
@@ -79,6 +79,7 @@ class ActivationFunctions:
         return np.maximum(0, x)
 
 class NeuralNetwork:
+    # слои нейронной сети, self - параметр; конструктор; тип функции активации
     def __init__(self, input_size, hidden_size, output_size, activation_function):
         self.input_size = input_size
         self.hidden_size = hidden_size
