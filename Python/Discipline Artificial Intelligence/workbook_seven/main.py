@@ -1,4 +1,4 @@
-import numpy as np
+import numpy as np   # доработать 1 номер
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor, MLPClassifier
@@ -10,6 +10,60 @@ import requests
 from io import StringIO
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.preprocessing import LabelEncoder, StandardScaler
+
+class Neuron:
+    def __init__(self, weights, bias):
+        self.weights = weights
+        self.bias = bias
+
+    def feedforward(self, inputs):
+        total = np.dot(self.weights, inputs) + self.bias
+        return self.sigmoid(total)
+
+    def sigmoid(self, x):
+        return 1 / (1 + np.exp(-x))
+
+class NeuralNetwork1:
+    def __init__(self):
+        weights = np.array([0.5, 0.5, 0.5])
+        bias = 0
+        self.h1 = Neuron(weights, bias)
+        self.h2 = Neuron(weights, bias)
+        self.o1 = Neuron(weights, bias)
+
+    def feedforward(self, x):
+        x = np.concatenate([x, [1]])  
+        out_h1 = self.h1.feedforward(x)
+        out_h2 = self.h2.feedforward(x)
+        out_o1 = self.o1.feedforward(np.array([out_h1, out_h2]))
+        return out_o1
+
+class NeuralNetwork2:
+    def __init__(self):
+        weights = np.array([1, 0])
+        bias = 1
+        self.h1 = Neuron(weights, bias)
+        self.h2 = Neuron(weights, bias)
+        self.o1 = Neuron(weights, bias)
+        self.o2 = Neuron(weights, bias)
+
+    def feedforward(self, x):
+        x = np.concatenate([x, [1]])  
+        out_h1 = self.h1.feedforward(x)
+        out_h2 = self.h2.feedforward(x)
+        out_o1 = self.o1.feedforward(np.array([out_h1, out_h2]))
+        out_o2 = self.o2.feedforward(np.array([out_h1, out_h2]))
+        return out_o1, out_o2
+
+def task_1_1():
+    network1 = NeuralNetwork1()
+    x = np.array([2, 3])
+    print(network1.feedforward(x))  # ч
+
+    network2 = NeuralNetwork2()
+    x = np.array([2, 3])
+    print(network2.feedforward(x))  # ч
+
 
 class ActivationFunctions:
     @staticmethod
@@ -51,7 +105,7 @@ class NeuralNetwork:
 
         return output
 
-def task_1_1():
+def task_1_2():
     nn_sigmoid = NeuralNetwork(input_size=2, hidden_size=2, output_size=2, activation_function='sigmoid')
 
     nn_tanh = NeuralNetwork(input_size=2, hidden_size=2, output_size=2, activation_function='tanh')
@@ -68,7 +122,7 @@ def task_1_1():
     print("output using tanh activation function:", output_tanh)
     print("output using ReLU activation function:", output_relu)
 
-def task_1_2():
+def task_1_3():
     url = "https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv"
     response = requests.get(url)
     data = pd.read_csv(StringIO(response.text))
@@ -95,7 +149,7 @@ def task_1_2():
     print("\nClassification Report:")
     print(classification_report(y_test, y_pred))
 
-def task_1_3():
+def task_1_4():
     url = "https://raw.githubusercontent.com/AnnaShestova/salary-years-simple-linear-regression/master/Salary_Data.csv"
     response = requests.get(url)
     data = pd.read_csv(StringIO(response.text))
@@ -146,12 +200,13 @@ def task_1_3():
 def main():
     while True:
         choice = input(
-            "\nselect a task to open: \n \n1 = task () \n2 = task() class MLPClassified \n3 = task() class MLPRegressor \n(no task - if you want to exit, enter 'exit'): ")
+            "\nselect a task to open: \n \n1 = task() \n2 = task() \n3 = task() class MLPClassified \n4 = task() class MLPRegressor \n(no task - if you want to exit, enter 'exit'): ")
 
         menu = {
             '1': task_1_1,
             '2': task_1_2,
             '3': task_1_3,
+            '4': task_1_4,
             'exit': lambda: print("oh, okay:(")
         }
 
