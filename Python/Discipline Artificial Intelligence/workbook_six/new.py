@@ -99,57 +99,57 @@ def task_1_1_1_one():
 def task_1_1_2_one():
     newX = [-4, -2, 0, 2]
     newY = [-1, 1, 0, -2]
-    common_task(qZ_1, newX, newY)
+    common_task(qZ_2, newX, newY)
 
 # третий вариант
 def task_1_1_3_one():
     newX = [-1, 0, 2, 3]
     newY = [-2, 1, 0, -1]
-    common_task(qZ_1, newX, newY)
+    common_task(qZ_3, newX, newY)
 
 # четвертый вариант
 def task_1_1_4_one():
     newX = [-1, 0, 2, 4]
     newY = [-2, 1, -1, 0]
-    common_task(qZ_1, newX, newY)
+    common_task(qZ_4, newX, newY)
 
 # пятый вариант
 def task_1_1_5_one():
     newX = [-2, -1, 0, 2]
     newY = [-2, 0, -1, 1]
-    common_task(qZ_1, newX, newY)
+    common_task(qZ_5, newX, newY)
 
 # шестой вариант
 def task_1_1_6_one():
     newX = [-5, -3, -2, -1]
     newY = [-1, -2, 0, 1]
-    common_task(qZ_1, newX, newY)
+    common_task(qZ_6, newX, newY)
 
 # седьмой вариант
 def task_1_1_7_one():
     newX = [-5, -3, -2, 0]
     newY = [-1, -2, 0, 1]
-    common_task(qZ_1, newX, newY)
+    common_task(qZ_7, newX, newY)
 
 # восьмой вариант
 def task_1_1_8_one():
     newX = [-5, -3, -2, -1]
     newY = [-1, -2, 0, 1]
-    common_task(qZ_1, newX, newY)
+    common_task(qZ_8, newX, newY)
 
 # девятый вариант
 def task_1_1_9_one():
     newX = [-1, 0, 2, 3]
     newY = [0, -1, -2, 1]
-    common_task(qZ_1, newX, newY)
+    common_task(qZ_9, newX, newY)
 
 # десятый вариант
 def task_1_1_10_one():
     newX = [-1, 0, 2, 3]
     newY = [0, 1, -2, 2]
-    common_task(qZ_2, newX, newY)
+    common_task(qZ_10, newX, newY)
 
-# Вызываем нужные функции для каждой задачи
+# вызываем нужные функции для каждой задачи
 def launcher_1_1_1():
     while True:
         choice = input(
