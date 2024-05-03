@@ -3,7 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from math import e
 
-def qZ_1(x, y):
+def qZ_1(x, y): # вычисление значения функции 𝑞𝑍1 для заданных значений x и y
     return (x - 3 * y + 1) / (3 * x ** 2 + 3 * y ** 2 + 1)
 
 def qZ_2(x, y):
@@ -35,17 +35,19 @@ def qZ_10(x, y):
 
 def common_task(qZ_func, newX, newY):
     def qSumZ(Z):
-        return sum(Z)
+        return sum(Z) #возврат суммы всех элементов списка Z
 
-    def exchangeScheme(oldX, oldY, sortedId):
+    def exchangeScheme(oldX, oldY, sortedId): #список старых значений, индексов, отсортированных по убыванию
         X = [0 for i in range(4)]
-        Y = [0 for i in range(4)]
+        Y = [0 for i in range(4)] #создание новых списков
 
         X[2] = oldX[sortedId[2]]
         X[3] = oldX[sortedId[2]]
 
         X[0] = oldX[sortedId[0]]
 
+        #переупорядочивание значений переменных X и Y позволяет поместить лучшие значения в начало списков - что упрощает доступ к наилучшим текущим решениям в ходе оптимизации
+    
         X[1] = oldX[sortedId[1]]
 
         Y[0] = oldY[sortedId[2]]
@@ -53,7 +55,7 @@ def common_task(qZ_func, newX, newY):
 
         Y[2] = oldY[sortedId[0]]
 
-        Y[3] = oldY[sortedId[1]]
+        Y[3] = oldY[sortedId[1]] #переупорядочивание значений переменных х и у на основе отсортированных индексов sortedId
 
         return X, Y
 
@@ -71,7 +73,7 @@ def common_task(qZ_func, newX, newY):
         Z.pop(minId)
         return X, Y, Z
 
-    def evoSteps(X, Y, stepsNum=4):
+    def evoSteps(X, Y, stepsNum=4): # вычисление значения Z для каждой комбинации значений x и y
         results = []
         for i in range(4):
             arrZ = [qZ_func(x, Y[i]) for i, x in enumerate(X)]
