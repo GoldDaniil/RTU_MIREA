@@ -47,7 +47,7 @@ def common_task(qZ_func, newX, newY):
         X[0] = oldX[sortedId[0]]
 
         #переупорядочивание значений переменных X и Y позволяет поместить лучшие значения в начало списков - что упрощает доступ к наилучшим текущим решениям в ходе оптимизации
-    
+
         X[1] = oldX[sortedId[1]]
 
         Y[0] = oldY[sortedId[2]]
@@ -60,16 +60,21 @@ def common_task(qZ_func, newX, newY):
         return X, Y
 
     def sorting(Z):
-        sortedId = sorted(range(len(Z)), key=lambda k: Z[k])
+        sortedId = sorted(range(len(Z)), key=lambda k: Z[k]) #сортировка списка Z по возрастанию значений - сохран в sortedId
+
+        # key=lambda k: Z[k] определение ключа сортировки - в данном случае используется лямбда-функция - которая возвращает значение элемента Z по индексу k.
         return sortedId
 
     def evoStep(X, Y, Z):
         _, minId = min((value, id) for (id, value) in enumerate(Z))
-        X = X[:]
+        #_, minId - это распаковка кортежа - где первый элемент игнорируется - значение второго элемента сохран в переменной minId
+        # найти минимальное значение из всех пар (значение, индекс) - где значение берется из списка Z, а индекс соответствует позиции этого значения в списке
+
+        X = X[:] # создание копии списков
         Y = Y[:]
         Z = Z[:]
         X.pop(minId)
-        Y.pop(minId)
+        Y.pop(minId) # удаление элементов с минимальным значением функции
         Z.pop(minId)
         return X, Y, Z
 
@@ -77,16 +82,19 @@ def common_task(qZ_func, newX, newY):
         results = []
         for i in range(4):
             arrZ = [qZ_func(x, Y[i]) for i, x in enumerate(X)]
+            #создаем список arrZ - в котором каждый элемент получен из вызова функции qZ_func(x, Y[i]) - где x берется из
+            #списка X - Y[i] берется из списка Y на позиции, соответствующей текущему индексу i
+
             X, Y, Z = evoStep(X, Y, arrZ)
             X, Y = exchangeScheme(X, Y, sorting(Z))
-            results.append([X, Y, qSumZ(arrZ), arrZ])
+            results.append([X, Y, qSumZ(arrZ), arrZ]) # создание списка результатов
         return X, Y, results
 
     results = evoSteps(newX, newY)
 
     for i in range(len(results[2])):
         print(f'max_{i + 1}_step: {results[2][i][2]}')
-    qualityArrZ = []
+    qualityArrZ = []    # отслеживание изменения функции qZ и нахождение ее максимального значения
     for i in range(len(results[2])):
         qualityArrZ += results[2][i][3]
     print(f'max Z:{max(qualityArrZ)}')
