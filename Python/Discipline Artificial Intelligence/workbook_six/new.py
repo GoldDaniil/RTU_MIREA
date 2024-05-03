@@ -45,9 +45,6 @@ def common_task(qZ_func, newX, newY):
         X[3] = oldX[sortedId[2]]
 
         X[0] = oldX[sortedId[0]]
-
-        #переупорядочивание значений переменных X и Y позволяет поместить лучшие значения в начало списков - что упрощает доступ к наилучшим текущим решениям в ходе оптимизации
-
         X[1] = oldX[sortedId[1]]
 
         Y[0] = oldY[sortedId[2]]
@@ -60,15 +57,11 @@ def common_task(qZ_func, newX, newY):
         return X, Y
 
     def sorting(Z):
-        sortedId = sorted(range(len(Z)), key=lambda k: Z[k]) #сортировка списка Z по возрастанию значений - сохран в sortedId
-
-        # key=lambda k: Z[k] определение ключа сортировки - в данном случае используется лямбда-функция - которая возвращает значение элемента Z по индексу k.
+        sortedId = sorted(range(len(Z)), key=lambda k: Z[k])
         return sortedId
 
     def evoStep(X, Y, Z):
         _, minId = min((value, id) for (id, value) in enumerate(Z))
-        #_, minId - это распаковка кортежа - где первый элемент игнорируется - значение второго элемента сохран в переменной minId
-        # найти минимальное значение из всех пар (значение, индекс) - где значение берется из списка Z, а индекс соответствует позиции этого значения в списке
 
         X = X[:] # создание копии списков
         Y = Y[:]
@@ -82,8 +75,6 @@ def common_task(qZ_func, newX, newY):
         results = []
         for i in range(4):
             arrZ = [qZ_func(x, Y[i]) for i, x in enumerate(X)]
-            #создаем список arrZ - в котором каждый элемент получен из вызова функции qZ_func(x, Y[i]) - где x берется из
-            #списка X - Y[i] берется из списка Y на позиции, соответствующей текущему индексу i
 
             X, Y, Z = evoStep(X, Y, arrZ)
             X, Y = exchangeScheme(X, Y, sorting(Z))
@@ -269,9 +260,9 @@ def task_1_2_1_one():
 
     bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
 
-    print(f'Лучший выбранный маршрут: {bestRoute}')
-    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
-    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
+    print(f'лучший выбранный маршрут: {bestRoute}')
+    print(f'длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'длины всех рассмотренных маршрутов: {arrLength}')
 
     drawRouteGraph(distances, bestRoute)
 
@@ -287,9 +278,9 @@ def task_1_2_2_one():
 
     bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
 
-    print(f'Лучший выбранный маршрут: {bestRoute}')
-    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
-    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
+    print(f'лучший выбранный маршрут: {bestRoute}')
+    print(f'длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'длины всех рассмотренных маршрутов: {arrLength}')
 
     drawRouteGraph(distances, bestRoute)
 
@@ -304,9 +295,9 @@ def task_1_2_3_one():
 
     bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
 
-    print(f'Лучший выбранный маршрут: {bestRoute}')
-    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
-    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
+    print(f'лучший выбранный маршрут: {bestRoute}')
+    print(f'длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'длины всех рассмотренных маршрутов: {arrLength}')
 
     drawRouteGraph(distances, bestRoute)
 
@@ -321,9 +312,9 @@ def task_1_2_4_one():
 
     bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
 
-    print(f'Лучший выбранный маршрут: {bestRoute}')
-    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
-    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
+    print(f'лучший выбранный маршрут: {bestRoute}')
+    print(f'длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'длины всех рассмотренных маршрутов: {arrLength}')
 
     drawRouteGraph(distances, bestRoute)
 
@@ -338,9 +329,9 @@ def task_1_2_5_one():
 
     bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
 
-    print(f'Лучший выбранный маршрут: {bestRoute}')
-    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
-    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
+    print(f'лучший выбранный маршрут: {bestRoute}')
+    print(f'длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'длины всех рассмотренных маршрутов: {arrLength}')
 
     drawRouteGraph(distances, bestRoute)
 
@@ -355,9 +346,9 @@ def task_1_2_6_one():
 
     bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
 
-    print(f'Лучший выбранный маршрут: {bestRoute}')
-    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
-    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
+    print(f'лучший выбранный маршрут: {bestRoute}')
+    print(f'длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'длины всех рассмотренных маршрутов: {arrLength}')
 
     drawRouteGraph(distances, bestRoute)
 
@@ -372,9 +363,9 @@ def task_1_2_7_one():
 
     bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
 
-    print(f'Лучший выбранный маршрут: {bestRoute}')
-    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
-    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
+    print(f'лучший выбранный маршрут: {bestRoute}')
+    print(f'длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'длины всех рассмотренных маршрутов: {arrLength}')
 
     drawRouteGraph(distances, bestRoute)
 
@@ -389,9 +380,9 @@ def task_1_2_8_one():
 
     bestRoute, arrLength = chooseRoute(distances, V, z, T, P)
 
-    print(f'Лучший выбранный маршрут: {bestRoute}')
-    print(f'Длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
-    print(f'Длины всех рассмотренных маршрутов: {arrLength}')
+    print(f'лучший выбранный маршрут: {bestRoute}')
+    print(f'длина лучшего выбранного маршрута: {routeLength(bestRoute, distances)}')
+    print(f'длины всех рассмотренных маршрутов: {arrLength}')
 
     drawRouteGraph(distances, bestRoute)
 
