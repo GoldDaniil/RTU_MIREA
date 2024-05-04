@@ -57,11 +57,11 @@ def common_task(qZ_func, newX, newY):
         return X, Y
 
     def sorting(Z):
-        sortedId = sorted(range(len(Z)), key=lambda k: Z[k])
+        sortedId = sorted(range(len(Z)), key=lambda k: Z[k]) #сортировка списка Z по возрастанию значений
         return sortedId
 
     def evoStep(X, Y, Z):
-        _, minId = min((value, id) for (id, value) in enumerate(Z))
+        _, minId = min((value, id) for (id, value) in enumerate(Z)) #распаковка кортежа(1 игнор)(сохран в minId)
 
         X = X[:] # создание копии списков
         Y = Y[:]
