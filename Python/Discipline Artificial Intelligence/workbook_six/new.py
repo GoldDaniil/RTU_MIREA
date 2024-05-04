@@ -181,9 +181,9 @@ def launcher_1_1_1():
 # -----------------------------------------------------------------------------------------------
 
 def probability(delta, T):
-    return 100 * e ** (-delta / T)
+    return 100 * e ** (-delta / T) #возврат вероятности принятия изменения на основе delta и тек T
 
-def reductTemp(prevT):
+def reductTemp(prevT):  #уменьшение температуры
     nextT = 0.5 * prevT
     return nextT
 
