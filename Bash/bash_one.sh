@@ -122,6 +122,8 @@ task9() {
 task10() {
   echo "ЗАДАЧА 10 в файле task10.sh"
 
+  #ДОРАБОТАТЬ!!!!
+
 }
 
 while true; do
