@@ -117,12 +117,16 @@ task9() {
   echo "ЗАДАЧА 9 в файле task9.sh"
 
   #/Users/gold/PycharmProjects/bash/scripts/task9.sh /Users/gold/PycharmProjects/bash/scripts/input.txt /Users/gold/PycharmProjects/bash/scripts/output.txt
+}
+
+task10() {
+  echo "ЗАДАЧА 10 в файле task10.sh"
 
 }
 
 while true; do
     echo "
-    выберите задание (от 1 до 8) или введите 'exit' для выхода:"
+    выберите задание (от 1 до 10) или введите 'exit' для выхода:"
     read -r choice
 
     case $choice in
@@ -150,6 +154,12 @@ while true; do
         8)
             task8 "$2"
             ;;
+        9)
+            task9
+            ;;
+        10)
+            task10
+            ;;
         exit)
             echo "
     эх...печально:("
@@ -157,7 +167,7 @@ while true; do
             ;;
         *)
             echo "
-    неверный выбор. введите число от 1 до 8 или 'exit' для выхода."
+    неверный выбор. введите число от 1 до 10 или 'exit' для выхода."
             ;;
     esac
 done
