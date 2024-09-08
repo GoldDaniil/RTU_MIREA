@@ -106,12 +106,18 @@ task7() {
     #find_duplicates.sh
 }
 
-
 task8() {
     echo "ЗАДАЧА 8 в файле task8.sh
     "
 
     #/Users/gold/PycharmProjects/bash/scripts/task8.sh /Users/gold/PycharmProjects/bash/duplicatesTASK7 txt
+}
+
+task9() {
+  echo "ЗАДАЧА 9 в файле task9.sh"
+
+  #/Users/gold/PycharmProjects/bash/scripts/task9.sh /Users/gold/PycharmProjects/bash/scripts/input.txt /Users/gold/PycharmProjects/bash/scripts/output.txt
+
 }
 
 while true; do
