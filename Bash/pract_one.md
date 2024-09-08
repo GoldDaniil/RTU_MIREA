@@ -4,6 +4,6 @@
 grep '^[^#]' /etc/passwd | cut -d ':' -f 1 | sort                                                             
 
 
-<img width="600" height="500" alt="Screenshot 2024-09-08 at 19 08 56" src="https://github.com/user-attachments/assets/00442559-44a9-410e-bed1-89e0469f9c7a">
+<img width="500" height="470" alt="Screenshot 2024-09-08 at 19 08 56" src="https://github.com/user-attachments/assets/00442559-44a9-410e-bed1-89e0469f9c7a">
 
 
