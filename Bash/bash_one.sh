@@ -48,7 +48,13 @@ task4() {
 
 task5() {
     echo "
-    ЗАДАЧА 5."
+    ЗАДАЧА 5. Написать программу для регистрации пользовательской команды (правильные права доступа и копирование в /usr/local/bin).
+  Например, пусть программа называется reg:
+  ./reg banner
+  В результате для banner задаются правильные права доступа и сам banner копируется в /usr/local/bin.
+
+  "
+
     if [ -z "$1" ]; then
       echo "укаажите имя программы для регистрации: "
       exit 1
@@ -59,7 +65,7 @@ task5() {
 
     # проверка- существует ли программа
     if [ ! -f "$prog_name" ]; then
-      echo "Файл $prog_name не найден."
+      echo "файл $prog_name не найден."
       exit 1
     fi
 
@@ -67,7 +73,10 @@ task5() {
     sudo cp "$prog_name" "$dest"
     sudo chmod 755 "$dest"
 
-    echo "Программа $prog_name успешно зарегистрирована в /usr/local/bin."
+    echo "пфрограмма $prog_name успешно зарегистрирована в /usr/local/bin."
+
+  #ls -l /usr/local/bin/reg
+  #reg banner
 }
 
 task6() {
