@@ -100,27 +100,18 @@ task6() {
 }
 
 task7() {
-    echo "ЗАДАЧА 7 в файле find_duplicates.sh"
+    echo "ЗАДАЧА 7 в файле find_duplicates.sh
+    "
 
     #find_duplicates.sh
 }
 
 
 task8() {
-    echo "
-    ЗАДАЧА 8. "
-    if [ -z "$1" ]; then
-      echo "Укажите расширение файлов для архивирования."
-      exit 1
-    fi
+    echo "ЗАДАЧА 8 в файле task8.sh
+    "
 
-    extension="$1"
-    archive_name="archive_$extension.tar"
-
-    # Поиск файлов и добавление их в архив
-    tar -cvf "$archive_name" *."$extension"
-
-    echo "Файлы с расширением $extension были архивированы в $archive_name."
+    #/Users/gold/PycharmProjects/bash/scripts/task8.sh /Users/gold/PycharmProjects/bash/duplicatesTASK7 txt
 }
 
 while true; do
