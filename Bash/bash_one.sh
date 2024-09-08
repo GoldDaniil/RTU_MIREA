@@ -73,7 +73,9 @@ task5() {
     sudo cp "$prog_name" "$dest"
     sudo chmod 755 "$dest"
 
-    echo "пфрограмма $prog_name успешно зарегистрирована в /usr/local/bin."
+    echo "
+    пфрограмма $prog_name успешно зарегистрирована в /usr/local/bin.
+    "
 
   #ls -l /usr/local/bin/reg
   #reg banner
