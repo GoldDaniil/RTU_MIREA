@@ -56,7 +56,9 @@ task5() {
   "
 
     if [ -z "$1" ]; then
-      echo "укаажите имя программы для регистрации: "
+      echo "реализация задания с помощью команд "
+        #ls -l /usr/local/bin/reg
+  #reg banner
       exit 1
     fi
 
@@ -98,15 +100,11 @@ task6() {
 }
 
 task7() {
-    echo "
-    ЗАДАЧА 7. "
-    if [ -z "$1" ]; then
-      echo "Укажите путь для поиска файлов-дубликатов."
-      exit 1
-    fi
+    echo "ЗАДАЧА 7 в файле find_duplicates.sh"
 
-    find "$1" -type f -exec md5sum {} + | sort | uniq -w32 -dD
+    #find_duplicates.sh
 }
+
 
 task8() {
     echo "
