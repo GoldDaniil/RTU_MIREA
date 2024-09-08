@@ -92,6 +92,7 @@ task6() {
         fi
       fi
     done
+    #test.py - убираем добавляем #
 }
 
 task7() {
