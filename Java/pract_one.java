@@ -21,10 +21,10 @@ public class Main {
                     task2(scanner);
                     break;
                 case 3:
-                    System.out.println("ну вот:(.");
+                    System.out.println("ну вот:(");
                     break;
                 default:
-                    System.out.println("Неправильный выбор. Пожалуйста, введите 1, 2 или 3.");
+                    System.out.println("\nнеправильный выбор. введите 1, 2 или 3");
                     break;
             }
         } while (choice != 3);
@@ -96,7 +96,7 @@ public class Main {
                 }
             } else {
                 System.out.println("неверный ввод, введите целое число");
-                scanner.next(); // Считываем неправильный ввод и игнорируем его
+                scanner.next(); // cчитываем неправильный ввод и игнорируем его
             }
         }
         return number;
