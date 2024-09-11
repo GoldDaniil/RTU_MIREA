@@ -6,9 +6,9 @@
 using namespace std;
 
 HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
-//SetConsoleTextAttribute(back_col, 0x0a);
-//SetConsoleTextAttribute(back_col, 0x07);
-
+//SetConsoleTextAttribute(back_col, 0x0a); green
+//SetConsoleTextAttribute(back_col, 0x07); default
+//SetConsoleTextAttribute(back_col, 0x0C); red
 
 
 // 1 первая задача
