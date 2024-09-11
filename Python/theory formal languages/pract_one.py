@@ -1,61 +1,95 @@
-def validate_rpn_expression(rpn_expression):
-    valid_operators = {'+', '-', '*', '/'}
-    operand_count = 0
+class Colors:
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    BLUE = '\033[94m'
+    MAGENTA = '\033[95m'
+    CYAN = '\033[96m'
+    RESET = '\033[0m'
 
-    for token in rpn_expression:
-        if token.isdigit():
-            operand_count += 1
-        elif token in valid_operators:
-            if operand_count < 2:  # для выполнения операции нужно минимум 2 операнда
-                return False, "ошибка: недостаточно операндов для выполнения операции."
-            operand_count -= 1
+# print(f"{Colors.RED}test{Colors.RESET}")
+# print(f"{Colors.GREEN}test{Colors.RESET}")
+# print(f"{Colors.YELLOW}test{Colors.RESET}")
+# print(f"{Colors.BLUE}test{Colors.RESET}")
+# print(f"{Colors.MAGENTA}test{Colors.RESET}")
+
+def precedence(op):
+    if op in ('+', '-'):
+        return 1
+    if op in ('*', '/'):
+        return 2
+    return 0
+
+def is_valid_expression(expression):
+    # проверка - выражение состоит только из допустимых символов
+    valid_chars = set('0123456789+-*/()')
+    return all(char in valid_chars or char == ' ' for char in expression)
+
+def infix_to_rpn(expression):
+    stack = []
+    output = []
+    for char in expression:
+        if char.isdigit():
+            output.append(char)
+        elif char == '(':
+            stack.append(char)
+        elif char == ')':
+            while stack and stack[-1] != '(':
+                output.append(stack.pop())
+            stack.pop()
         else:
-            return False, f"ошибка: недопустимый символ '{token}'."
+            while stack and precedence(char) <= precedence(stack[-1]):
+                output.append(stack.pop())
+            stack.append(char)
 
-    if operand_count != 1:  # После завершения выражения в стеке должен остаться один результат
-        return False, "ошибка: неправильное количество операндов."
+    while stack:
+        output.append(stack.pop())
 
-    return True, "корректное выражение."
+    return ''.join(output)
 
 
-def calculate_rpn_expression(rpn_expression):
-    operand_stack = []
-
-    for token in rpn_expression:
-        if token.isdigit():
-            operand_stack.append(int(token))
+def evaluate_rpn(rpn):
+    stack = []
+    for char in rpn:
+        if char.isdigit():
+            stack.append(int(char))
         else:
-            second_operand = operand_stack.pop()
-            first_operand = operand_stack.pop()
-
-            if token == '+':
-                operand_stack.append(first_operand + second_operand)
-            elif token == '-':
-                operand_stack.append(first_operand - second_operand)
-            elif token == '*':
-                operand_stack.append(first_operand * second_operand)
-            elif token == '/':
-                operand_stack.append(first_operand / second_operand)
-
-    return operand_stack[0]
+            b = stack.pop()
+            a = stack.pop()
+            if char == '+':
+                stack.append(a + b)
+            elif char == '-':
+                stack.append(a - b)
+            elif char == '*':
+                stack.append(a * b)
+            elif char == '/':
+                if b == 0:
+                    print(f"{Colors.RED}хули на 0 делишь{Colors.RESET}")
+                    return None
+                stack.append(a // b)
+    return stack[0]
 
 
 def main():
-    user_input_expression = input(
-        "введите выражение в обратной польской нотации (через пробелы) или введи 'exit' чтобы выйти.: ").split()
+    while True:
+        expression = input("введи алгебраическое выражение (можно с пробелами): ").replace(' ', '')
 
-    if 'exit' in user_input_expression:
-        print("эх...ок(")
-        return
+        # проверка входных
+        if not is_valid_expression(expression):
+            print(f"{Colors.RED}ошибка! выражение содержит недопустимые символы{Colors.RESET}")
+            continue
 
-    # проверка корректность введенного выражения
-    is_valid_expression, validation_message = validate_rpn_expression(user_input_expression)
-    if not is_valid_expression:
-        print(validation_message)
-        return
+        try:
+            rpn = infix_to_rpn(expression)
+            print("обратная польская запись (ОПЗ):", rpn)
+            result = evaluate_rpn(rpn)
+            if result is not None:
+                print(f"{Colors.GREEN}результат: {Colors.RESET}", result)
+            else:
+                print(f"{Colors.RED}ошибка - неверное выражение! езе раз введите{Colors.RESET}")
+        except (IndexError, ValueError):
+            print(f"{Colors.RED}ошибка - неверное выражение! введите еще раз{Colors.RESET}")
 
-    rpn_result = calculate_rpn_expression(user_input_expression)
-    print(f"результат: {rpn_result}")
 
 if __name__ == "__main__":
     main()
