@@ -2,6 +2,8 @@
 #include <iostream>
 #include <Windows.h>
 #include <bitset>
+#include <fstream>
+#include <chrono>
 
 using namespace std;
 
@@ -53,15 +55,13 @@ void one_third_task() {
     }
 
     cout << endl;
-    system("pause");
     return;
 }
 
 
-
 // 2 первая задача
 void two_first_task() {
-    unsigned char array_bit = 0; // битовый массив для хранения чисел (0-7)
+    unsigned char array_bit = 0; 
     int number_digits, number;
 
     cout << "enter the number of numbers (no more than 8): ";
@@ -71,7 +71,7 @@ void two_first_task() {
         cout << "error!!! enter a valid number (1 to 8): ";
         SetConsoleTextAttribute(back_col, 0x07);
         cin.clear();
-        cin.ignore(); // очищаем буфер
+        cin.ignore();
     }
 
     cout << "enter a number from 0 to 7: ";
@@ -81,7 +81,7 @@ void two_first_task() {
             cout << "error!!! the numbers must be in the range from 0 to 7: ";
             SetConsoleTextAttribute(back_col, 0x07);
             cin.clear();
-            cin.ignore(); // очищаем буфер
+            cin.ignore();
         }
         array_bit |= (1 << number); // установка соответствующего бита
     }
@@ -97,7 +97,7 @@ void two_first_task() {
 
 // 2 вторая задача
 void two_second_task() {
-    unsigned long long array_bit = 0; // битовый массив для хранения чисел (0-63)
+    unsigned long long array_bit = 0;
     int number_digits, number;
 
     cout << "enter the number of numbers (no more than 64): ";
@@ -133,7 +133,7 @@ void two_second_task() {
 // 2 третья задача
 void two_third_task() {
     const int number_bytes = 8; // 64 числа по 8 бит на байт
-    unsigned char array_bit[number_bytes] = { 0 }; // массив для хранения 64 чисел
+    unsigned char array_bit[number_bytes] = { 0 }; 
     int number_digits, number;
 
     cout << "enter the number of numbers (no more than 64): ";
@@ -160,13 +160,58 @@ void two_third_task() {
 
     for (int i = 0; i < 64; i++) {
         if (array_bit[i / 8] & (1 << (i % 8))) { // проходимся по каждому биту
-            cout << i << " ";
+            cout << i << " ";   
         }
     }
     cout << endl;
 
 }
 
+
+void three_task() {
+    const int MAX_NUMBERS = 8388608; 
+
+    const int BIT_ARRAY_SIZE = MAX_NUMBERS / 8; // 8 388 608 / 8 = 1 048 576 байт - 1мб
+
+    bitset<MAX_NUMBERS> bit_array; // битовый массив с 1 битом на каждое число
+
+    ifstream input_file("input.txt"); 
+
+    ofstream output_file("output.txt");
+
+    if (!input_file.is_open()) {
+        cerr << "error open input.txt!" << endl; 
+        return;
+    }
+
+    int number; // текущие число
+
+    auto start = chrono::high_resolution_clock::now(); 
+
+    // чтение из входа
+    while (input_file >> number) { 
+        if (number >= 0 && number < MAX_NUMBERS) {
+            bit_array.set(number); // установка бита у данного числа в 1 
+        }
+    }
+    input_file.close(); 
+
+    // проходка по битмасс
+    for (int i = 0; i < MAX_NUMBERS; i++) {
+        if (bit_array[i]) { // если 1 - число было в input data
+            output_file << i << endl; 
+        }
+    }
+    output_file.close();
+
+    auto end = chrono::high_resolution_clock::now(); 
+
+    chrono::duration<double> duration = end - start; 
+
+    cout << "time: " << duration.count() << " sec" << endl;
+
+    return; 
+}
 
 
 // лаунчер
@@ -182,7 +227,8 @@ int main() {
         cout << "4 - sorting up to 8 numbers" << endl;
         cout << "5 - sorting up to 64 numbers (unsigned long long)" << endl;
         cout << "6 - sorting up to 64 numbers (unsigned char array)" << endl;
-        cout << "10 - exit;(" << endl;
+        cout << "7 - last task\n";
+        cout << "8 - exit;(" << endl;
         cout << "enter u choice: ";
         SetConsoleTextAttribute(back_col, 0x07);
         cin >> user_choice;
@@ -206,7 +252,10 @@ int main() {
         case 6:
             two_third_task();
             break;
-        case 10:
+        case 7:
+            three_task();
+            break;
+        case 8:
             cout << "oh...okay:(" << endl;
             return 0;
         default:
