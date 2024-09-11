@@ -67,7 +67,9 @@ void two_first_task() {
     cout << "enter the number of numbers (no more than 8): ";
 
     while (!(cin >> number_digits) || number_digits > 8 || number_digits < 1) {
+        SetConsoleTextAttribute(back_col, 0x0C);
         cout << "error!!! enter a valid number (1 to 8): ";
+        SetConsoleTextAttribute(back_col, 0x07);
         cin.clear();
         cin.ignore(); // очищаем буфер
     }
@@ -75,7 +77,9 @@ void two_first_task() {
     cout << "enter a number from 0 to 7: ";
     for (int i = 0; i < number_digits; i++) {
         while (!(cin >> number) || number < 0 || number > 7) {
+            SetConsoleTextAttribute(back_col, 0x0C);
             cout << "error!!! the numbers must be in the range from 0 to 7: ";
+            SetConsoleTextAttribute(back_col, 0x07);
             cin.clear();
             cin.ignore(); // очищаем буфер
         }
@@ -101,6 +105,7 @@ void two_second_task() {
 
     if (number_digits > 64) {
         cout << "error!!! the number of numbers must not exceed 64!" << endl;
+
         return;
     }
 
