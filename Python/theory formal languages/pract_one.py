@@ -133,3 +133,6 @@ class Colors:
 
 if __name__ == "__main__":
     main()
+
+
+#pyinstaller --onefile /Users/gold/PycharmProjects/untitled/.venv/main.py
