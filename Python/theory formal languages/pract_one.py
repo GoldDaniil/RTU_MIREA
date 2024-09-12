@@ -5,12 +5,16 @@ class TaskOne:
             return 1
         if op in ('*', '/'):
             return 2
+        if op == '^':  # степень
+            return 3
+        if op in ('!', '|', '#', '*', '@', '%', '=', '+'):
+            return 4  # логические операции имеют приоритет выше арифметических
         return 0
 
     @staticmethod
     def is_valid_expression(expression):
-        # проверка - выражение состоит только из допустимых символов
-        valid_chars = set('0123456789+-*/()')
+        # разрешенные символы: цифры, буквы, операторы, скобки
+        valid_chars = set('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-*/^()!|#*+^@%=')
         return all(char in valid_chars or char == ' ' for char in expression)
 
     @staticmethod
@@ -18,7 +22,7 @@ class TaskOne:
         stack = []
         output = []
         for char in expression:
-            if char.isdigit():
+            if char.isalnum():  # буквы или цифры
                 output.append(char)
             elif char == '(':
                 stack.append(char)
@@ -34,55 +38,29 @@ class TaskOne:
         while stack:
             output.append(stack.pop())
 
-        return ''.join(output)
-
-    @staticmethod
-    def evaluate_rpn(rpn):
-        stack = []
-        for char in rpn:
-            if char.isdigit():
-                stack.append(int(char))
-            else:
-                b = stack.pop()
-                a = stack.pop()
-                if char == '+':
-                    stack.append(a + b)
-                elif char == '-':
-                    stack.append(a - b)
-                elif char == '*':
-                    stack.append(a * b)
-                elif char == '/':
-                    if b == 0:
-                        print(f"{Colors.RED}хули на 0 делишь{Colors.RESET}")
-                        return None
-                    stack.append(a // b)
-        return stack[0]
+        return ' '.join(output)
 
     @staticmethod
     def run():
         while True:
-            expression = input("введите алгебраическое выражение (можно с пробелами), для выхода введите 'exit': ").replace(' ', '')
+            expression = input("введите арифметическое или логическое выражение (можно с пробелами), для выхода введите 'exit': ").replace(' ', '')
 
             # проверка выхода из программы
             if expression.lower() == 'exit':
-                print(f"{Colors.MAGENTA}oh...okay;({Colors.RESET}")
+                print(f"{Colors.MAGENTA}Выход...{Colors.RESET}")
                 break
 
-            # проверка входных
+            # проверка входных данных
             if not TaskOne.is_valid_expression(expression):
                 print(f"{Colors.RED}ошибка! выражение содержит недопустимые символы{Colors.RESET}")
                 continue
 
             try:
                 rpn = TaskOne.infix_to_rpn(expression)
-                print("обратная польская запись (ОПЗ):", rpn)
-                result = TaskOne.evaluate_rpn(rpn)
-                if result is not None:
-                    print(f"{Colors.GREEN}результат: {Colors.RESET}", result)
-                else:
-                    print(f"{Colors.RED}ошибка - неверное выражение! езе раз введите{Colors.RESET}")
+                print("Обратная польская запись (ОПЗ):", rpn)
             except (IndexError, ValueError):
-                print(f"{Colors.RED}ошибка - неверное выражение! введите еще раз{Colors.RESET}")
+                print(f"{Colors.RED}ошибка - неверное выражение! {Colors.RESET}")
+
 
 class RPNCalculator:
     def evaluate_rpn(self, rpn):
@@ -155,15 +133,3 @@ class Colors:
 
 if __name__ == "__main__":
     main()
-
-
-# print(f"{Colors.RED}test{Colors.RESET}")
-# print(f"{Colors.GREEN}test{Colors.RESET}")
-# print(f"{Colors.YELLOW}test{Colors.RESET}")
-# print(f"{Colors.BLUE}test{Colors.RESET}")
-# print(f"{Colors.MAGENTA}test{Colors.RESET}")
-
-#pip install pyinstaller
-#pyinstaller --onefile your_script_name.py
-
-#
