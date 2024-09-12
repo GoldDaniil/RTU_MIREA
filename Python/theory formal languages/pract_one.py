@@ -163,3 +163,7 @@ if __name__ == "__main__":
 # print(f"{Colors.BLUE}test{Colors.RESET}")
 # print(f"{Colors.MAGENTA}test{Colors.RESET}")
 
+#pip install pyinstaller
+#pyinstaller --onefile your_script_name.py
+
+#
