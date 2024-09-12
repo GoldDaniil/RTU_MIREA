@@ -72,7 +72,11 @@ def evaluate_rpn(rpn):
 
 def main():
     while True:
-        expression = input("введи алгебраическое выражение (можно с пробелами): ").replace(' ', '')
+        expression = input("введите алгебраическое выражение (можно с пробелами), для выхода введите 'exit': ").replace(' ', '')
+
+        if expression.lower() == 'exit':
+            print(f"{Colors.MAGENTA}oh...okay;({Colors.RESET}")
+            break
 
         # проверка входных
         if not is_valid_expression(expression):
