@@ -47,7 +47,7 @@ class TaskOne:
 
             # проверка выхода из программы
             if expression.lower() == 'exit':
-                print(f"{Colors.MAGENTA}Выход...{Colors.RESET}")
+                print(f"{Colors.MAGENTA}oh...okay;({Colors.RESET}")
                 break
 
             # проверка входных данных
@@ -57,7 +57,7 @@ class TaskOne:
 
             try:
                 rpn = TaskOne.infix_to_rpn(expression)
-                print("Обратная польская запись (ОПЗ):", rpn)
+                print("oбратная польская запись (ОПЗ):", rpn)
             except (IndexError, ValueError):
                 print(f"{Colors.RED}ошибка - неверное выражение! {Colors.RESET}")
 
@@ -80,7 +80,7 @@ class RPNCalculator:
                         stack.append(a * b)
                     elif char == '/':
                         if b == 0:
-                            print("нах на 0 делишь")
+                            print("нельзя делить на 0")
                             return None
                         stack.append(a // b)
                 except IndexError:
