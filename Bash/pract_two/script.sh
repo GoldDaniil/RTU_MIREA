@@ -79,7 +79,7 @@ task4() {
     fi
 
     # запуск через MiniZinc
-    echo "запуск модели Playground.mzn через MiniZinc"
+    echo "запуск Playground.mzn через MiniZinc"
     "$MINIZINC_PATH" "$PLAYGROUND_PATH"
 }
 
