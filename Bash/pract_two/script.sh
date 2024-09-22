@@ -23,7 +23,7 @@ task2() {
 
     echo "
     загрузка пакета express без менеджера пакетов:"
-    wget https://github.com/expressjs/express/archive/refs/tags/4.18.2.tar.gz
+    wget https://github.com/expressjs/express/archive/refs/tags/4.18.2.tar.gz"
     echo "
     архив express загружен = распакуйте его с помощью команды tar:"
     echo "
@@ -67,6 +67,22 @@ task3() {
     dot -Tpng express_dependencies.dot -o express_dependencies.png
     echo "изображение express_dependencies.png создано."
 }
+
+task4() {
+    MINIZINC_PATH="/Applications/MiniZincIDE.app/Contents/Resources/minizinc"
+
+    PLAYGROUND_PATH="/Users/gold/Desktop/Playground.mzn"
+
+    if [ ! -f "$PLAYGROUND_PATH" ]; then
+        echo "файл Playground.mzn не найден по пути: $PLAYGROUND_PATH"
+        return
+    fi
+
+    # запуск через MiniZinc
+    echo "запуск модели Playground.mzn через MiniZinc"
+    "$MINIZINC_PATH" "$PLAYGROUND_PATH"
+}
+
 
 while true; do
     echo "
