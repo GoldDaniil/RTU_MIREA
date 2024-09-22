@@ -31,9 +31,7 @@ task2() {
 }
 
 task3() {
-    echo "
-    Задача 3
-
+    echo " Задача 3
     Сформировать graphviz-код и получить изображения зависимостей matplotlib и express."
 
     if ! command -v dot &> /dev/null; then
