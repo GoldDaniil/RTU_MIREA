@@ -85,8 +85,8 @@ task4() {
 
 
 while true; do
-    echo "
-    выберите задание (от 1 до 6) или введите 'exit' для выхода:"
+    echo -e "\033[35mвыберите задание (от 1 до 6) или введите 'exit' для выхода:\033[0m"
+
     read -r choice
 
     case $choice in
@@ -109,8 +109,8 @@ while true; do
             task6
             ;;
         exit)
-            echo "
-    эх...печально:("
+            echo -e "\033[36mэх...печально:(\033[0m"
+
             break
             ;;
         *)
