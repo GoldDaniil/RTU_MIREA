@@ -11,18 +11,10 @@ task1() {
 task2() {
     echo "Задача 2
     Вывести служебную информацию о пакете express (JavaScript). Разобрать основные элементы содержимого файла со служебной информацией из пакета. Как получить пакет без менеджера пакетов, прямо из репозитория?
-
-    echo "
-    получение служебной информации о пакете express"
-    npm view express
-
-    echo "
-    загрузка пакета express без менеджера пакетов:"
-    wget https://github.com/expressjs/express/archive/refs/tags/4.18.2.tar.gz"
-    echo "
-    архив express загружен = распакуйте его с помощью команды tar:"
-    echo "
-    tar -xvzf 4.18.2.tar.gz"
+    "
+    git clone https://github.com/expressjs/express.git
+    cd express
+    cat package.json
 }
 
 task3() {
