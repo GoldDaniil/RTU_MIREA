@@ -3,14 +3,9 @@
 task1() {
   echo "
   Задача 1. Вывести служебную информацию о пакете matplotlib (Python). Разобрать основные элементы содержимого файла со служебной информацией из пакета. Как получить пакет без менеджера пакетов, прямо из репозитория?"
-    pip show matplotlib
-    echo "
-    загрузка пакетов:"
-    wget https://github.com/matplotlib/matplotlib/archive/refs/tags/v3.5.2.tar.gz
-    echo "
-  архив matplotlib загружен - распакуйте его с помощью команды tar:"
-    echo "
-  tar -xvzf v3.5.2.tar.gz"
+
+  pip install matplotlib
+  pip show matplotlib
 }
 
 task2() {
