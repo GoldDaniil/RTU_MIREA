@@ -1,6 +1,6 @@
 public class MainTask2 {
     public static void launchTask2() {
-        CarTask2 car1 = new CarTask2("Mazda 6", "A123BC 77", "Black", 2015);
+        CarTask2 car1 = new CarTask2("\nMazda 6", "A123BC 77", "Black", 2015);
         CarTask2 car2 = new CarTask2();  // конструктор по умолчанию
         CarTask2 car3 = new CarTask2("Honda Accord", 2019);  // конструктор с моделью и годом
 
