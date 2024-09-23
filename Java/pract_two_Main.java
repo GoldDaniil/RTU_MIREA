@@ -169,6 +169,3 @@ class Car {
         System.out.println(model + " " + number + " " + color + " " + year + " year");
     }
 }
-
-
-
