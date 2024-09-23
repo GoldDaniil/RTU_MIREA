@@ -11,7 +11,7 @@ public class Main {
         System.out.println("hello world");
 
         do {
-            System.out.println("select task:");
+            System.out.println("\nselect task:");
             System.out.println("1 - task one");
             System.out.println("2 - task two");
             System.out.println("3 - exit");
@@ -23,13 +23,14 @@ public class Main {
                     task1(scanner);
                     break;
                 case 2:
-                    task2(scanner);
+                    MainTask2.launchTask2();
+//                    task2(scanner);
                     break;
                 case 3:
                     System.out.println("ну вот:(");
                     break;
                 default:
-                    System.out.println("\nнеправильный выбор - enter 1, 2 или 3");
+                    System.out.println("\nerror choice- enter 1, 2 или 3");
                     System.out.println("select task:");
                     System.out.println("1 - task one");
                     System.out.println("2 - task two");
@@ -43,10 +44,10 @@ public class Main {
     }
 
     public static void task1(Scanner scanner) {
-        System.out.println("select the type of constructor to create a car:");
-        System.out.println("1 is a constructor with a full set of fields");
-        System.out.println("2 is the default constructor:");
-
+        System.out.println("\nselect the type of constructor to create a car:");
+        System.out.println("1 - constructor with a full set of fields");
+        System.out.println("2 - default constructor:");
+        System.out.println("3 - constructor with fields (model and year)");
         int constructorChoice = getValidInt(scanner);
         Car car;
 
@@ -66,6 +67,15 @@ public class Main {
 
             case 2:
                 car = generateRandomCar();
+                break;
+
+            case 3:
+                System.out.print("enter model: ");
+                model = scanner.next();
+                System.out.print("enter year: ");
+                year = getValidInt(scanner);
+
+                car = new Car(model, year);
                 break;
 
             default:
@@ -97,11 +107,6 @@ public class Main {
         return new Car(model, number, color, year);
     }
 
-    public static void task2(Scanner scanner) {
-        System.out.println("hello task2");
-
-    }
-
     public static int getValidInt(Scanner scanner) {
         int number = -1;
         while (true) {
@@ -110,7 +115,7 @@ public class Main {
                 if (number >= 0) {
                     break;
                 } else {
-                    System.out.println("неверный ввод, enter положительное число");
+                    System.out.println("error, enter positive number");
                     System.out.println("select task:");
                     System.out.println("1 - task one");
                     System.out.println("2 - task two");
@@ -119,7 +124,7 @@ public class Main {
                     scanner.next();
                 }
             } else {
-                System.out.println("неверный ввод, enter целое число");
+                System.out.println("error, enter integer number");
                 System.out.println("select task:");
                 System.out.println("1 - task one");
                 System.out.println("2 - task two");
@@ -164,3 +169,6 @@ class Car {
         System.out.println(model + " " + number + " " + color + " " + year + " year");
     }
 }
+
+
+
