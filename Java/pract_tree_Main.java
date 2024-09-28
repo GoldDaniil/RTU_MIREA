@@ -13,7 +13,7 @@ public class Main {
         System.out.println();
 
         ElectricCar electricCar = new ElectricCar("Jane Doe", "98765XYZ", "electric", 85);
-        System.out.println("electric Car Information:");
+        System.out.println("electric car information:");
         electricCar.displayInfo();
     }
 }
