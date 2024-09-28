@@ -110,6 +110,10 @@ task5() {
     "$MINIZINC_PATH" "$PLAYGROUND_PATH"
 }
 
+task7() {
+
+}
+
 while true; do
     echo -e "\033[35mвыберите задание (от 1 до 6) или введите 'exit' для выхода:\033[0m"
 
@@ -133,6 +137,9 @@ while true; do
             ;;
         6)
             task6
+            ;;
+        7)
+            task7
             ;;
         exit)
             echo -e "\033[36mэх...печально:(\033[0m"
