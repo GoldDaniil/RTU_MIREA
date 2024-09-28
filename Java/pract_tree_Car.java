@@ -12,12 +12,12 @@ public class Car {
         this.engineType = engineType;
     }
 
-    // геттер для ownerName
+    // геттер
     public String getOwnerName() {
         return ownerName;
     }
 
-    // cеттер для ownerName
+    // cеттер
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
     }
