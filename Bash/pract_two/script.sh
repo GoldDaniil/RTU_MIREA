@@ -18,41 +18,66 @@ task2() {
 }
 
 task3() {
-    echo " Задача 3
-    Сформировать graphviz-код и получить изображения зависимостей matplotlib и express."
+    echo "Задача 3: Сформировать graphviz-код и получить изображения зависимостей matplotlib и express."
 
-    if ! command -v dot &> /dev/null; then
-        echo "
-        graphviz- не установлен - установите graphviz для продолжения"
-        echo "
-        для установки используйте команду - sudo apt install graphviz"
-        return
+    echo "генерация зависимостей matplotlib"
+
+    pip install graphviz
+    # генерация графа зависимостей matplotlib
+    pipdeptree --packages matplotlib --graph-output dot > matplotlib_deps.dot
+    dot -Tpng matplotlib_deps.dot -o matplotlib_deps.png
+    echo "зависимости matplotlib сохранены в 'matplotlib_deps.png'"
+
+    echo "генерация зависимостей express"
+
+    # проверка - что express был клонирован
+    if [ ! -d "express" ]; then
+        echo "клонирование репозитория express"
+        git clone https://github.com/expressjs/express.git
     fi
 
-    echo "
-    генерация зависимостей matplotlib"
+    cd express
 
-    pip install pipdeptree
+    cat <<EOF > express_deps.dot
+    digraph G {
+      node [shape=box];
+      express -> 'accepts';
+      express -> 'body-parser';
+      express -> 'content-disposition';
+      express -> 'content-type';
+      express -> 'cookie';
+      express -> 'cookie-signature';
+      express -> 'debug';
+      express -> 'depd';
+      express -> 'encodeurl';
+      express -> 'etag';
+      express -> 'finalhandler';
+      express -> 'fresh';
+      express -> 'http-errors';
+      express -> 'merge-descriptors';
+      express -> 'methods';
+      express -> 'mime-types';
+      express -> 'on-finished';
+      express -> 'once';
+      express -> 'parseurl';
+      express -> 'qs';
+      express -> 'range-parser';
+      express -> 'router';
+      express -> 'safe-buffer';
+      express -> 'send';
+      express -> 'serve-static';
+      express -> 'setprototypeof';
+      express -> 'statuses';
+      express -> 'type-is';
+      express -> 'utils-merge';
+      express -> 'vary';
+    }
+EOF
 
-    pipdeptree --graph-output dot > matplotlib_dependencies.dot
-    echo "
-    файл matplotlib_dependencies.dot с зависимостями создан"
+    dot -Tpng express_deps.dot -o express_deps.png
+#    echo "зависимости express сохранены в 'express_deps.png'."
 
-    dot -Tpng matplotlib_dependencies.dot -o matplotlib_dependencies.png
-    echo "
-    изображение matplotlib_dependencies.png создано"
-
-    echo "
-    ненерация зависимостей express"
-
-    npm ls --json > express_dependencies.json
-
-    echo 'digraph express_dependencies {' > express_dependencies.dot
-    jq -r '.dependencies | to_entries[] | .key as $pkg | .value.dependencies | to_entries[] | "  \"" + $pkg + "\" -> \"" + .key + "\";"' express_dependencies.json >> express_dependencies.dot
-    echo '}' >> express_dependencies.dot
-
-    dot -Tpng express_dependencies.dot -o express_dependencies.png
-    echo "изображение express_dependencies.png создано."
+    cd ..
 }
 
 task4() {
