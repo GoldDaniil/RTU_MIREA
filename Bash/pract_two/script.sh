@@ -95,27 +95,38 @@ task4() {
     "$MINIZINC_PATH" "$PLAYGROUND_PATH"
 }
 
-task5() {
+task6() {
     MINIZINC_PATH="/Applications/MiniZincIDE.app/Contents/Resources/minizinc"
 
-    PLAYGROUND_PATH="/Users/gold/Desktop/task5.mzn"
+    PLAYGROUND_PATH="/Users/gold/Desktop/task6.mzn"
 
     if [ ! -f "$PLAYGROUND_PATH" ]; then
-        echo "файл task5.mzn не найден по пути: $PLAYGROUND_PATH"
+        echo "файл task6.mzn не найден по пути: $PLAYGROUND_PATH"
         return
     fi
 
     #запуск - вызов через minizinc
-    echo "запуск task5.mzn через minizinc"
+    echo "запуск task6.mzn через minizinc"
     "$MINIZINC_PATH" "$PLAYGROUND_PATH"
 }
 
 task7() {
+    MINIZINC_PATH="/Applications/MiniZincIDE.app/Contents/Resources/minizinc"
 
+    PLAYGROUND_PATH="/Users/gold/Desktop/task7.mzn"
+
+    if [ ! -f "$PLAYGROUND_PATH" ]; then
+        echo "файл task7.mzn не найден по пути: $PLAYGROUND_PATH"
+        return
+    fi
+
+    #запуск - вызов через minizinc
+    echo "запуск task7.mzn через minizinc"
+    "$MINIZINC_PATH" "$PLAYGROUND_PATH"
 }
 
 while true; do
-    echo -e "\033[35mвыберите задание (от 1 до 6) или введите 'exit' для выхода:\033[0m"
+    echo -e "\033[35mвыберите задание (от 1 до 7) или введите 'exit' для выхода:\033[0m"
 
     read -r choice
 
@@ -148,7 +159,7 @@ while true; do
             ;;
         *)
             echo "
-    неверный выбор. введите число от 1 до 6 или 'exit' для выхода."
+    неверный выбор. введите число от 1 до 7 или 'exit' для выхода."
             ;;
     esac
 done
