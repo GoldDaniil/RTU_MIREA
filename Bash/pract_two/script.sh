@@ -95,6 +95,20 @@ task4() {
     "$MINIZINC_PATH" "$PLAYGROUND_PATH"
 }
 
+task5() {
+    MINIZINC_PATH="/Applications/MiniZincIDE.app/Contents/Resources/minizinc"
+
+    PLAYGROUND_PATH="/Users/gold/Desktop/task5.mzn"
+
+    if [ ! -f "$PLAYGROUND_PATH" ]; then
+        echo "файл task5.mzn не найден по пути: $PLAYGROUND_PATH"
+        return
+    fi
+
+    #запуск - вызов через minizinc
+    echo "запуск task5.mzn через minizinc"
+    "$MINIZINC_PATH" "$PLAYGROUND_PATH"
+}
 
 while true; do
     echo -e "\033[35mвыберите задание (от 1 до 6) или введите 'exit' для выхода:\033[0m"
