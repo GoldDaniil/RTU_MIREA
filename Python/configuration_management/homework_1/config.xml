@@ -1,0 +1,5 @@
+<config>
+    <computer_name>school_computer</computer_name>
+    <tar_path>virtual_fs.tar</tar_path>
+    <start_script>start_script.sh</start_script>
+</config>
