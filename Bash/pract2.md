@@ -69,10 +69,17 @@ shared 2.0.0 не имеет зависимостей.
 shared 1.0.0 зависит от target ^1.0.0.
 target 2.0.0 и 1.0.0 не имеют зависимостей.
 ```
+<img width="623" alt="Screenshot 2024-09-30 at 09 45 55" src="https://github.com/user-attachments/assets/106c776d-f6cf-4fc6-8a2e-9ef447acd32e">
+<img width="742" alt="Screenshot 2024-09-30 at 09 46 48" src="https://github.com/user-attachments/assets/e31f3f5f-7fce-4c1b-b7be-c6eb26e47964">
+
+<img width="486" alt="Screenshot 2024-09-30 at 09 46 12" src="https://github.com/user-attachments/assets/bc6d6cd0-3bce-4c9f-af3f-7e97682a08c4">
 
 ## Задача 7
 
 Представить задачу о зависимостях пакетов в общей форме. Здесь необходимо действовать аналогично реальному менеджеру пакетов. То есть получить описание пакета, а также его зависимости в виде структуры данных. Например, в виде словаря. В предыдущих задачах зависимости были явно заданы в системе ограничений. Теперь же систему ограничений надо построить автоматически, по метаданным.
+<img width="877" alt="Screenshot 2024-09-30 at 09 47 24" src="https://github.com/user-attachments/assets/89aa6083-31a3-4cf9-8b5f-410c4f48ddb1">
+<img width="613" alt="Screenshot 2024-09-30 at 09 47 48" src="https://github.com/user-attachments/assets/da328f14-1513-43f9-8fc7-60750726f93e">
+<img width="494" alt="Screenshot 2024-09-30 at 09 47 37" src="https://github.com/user-attachments/assets/96495d46-6654-4d74-b6e0-5d27cbae75f4">
 
 ## Полезные ссылки
 
