@@ -8,11 +8,7 @@
 
 <img width="800" alt="Screenshot 2024-09-30 at 09 24 54" src="https://github.com/user-attachments/assets/f37ea8c7-8a31-470e-8c33-5e72abbd9dc7">
 <img width="400" height="500" alt="Screenshot 2024-09-30 at 09 25 09" src="https://github.com/user-attachments/assets/5638d3e1-d51d-4785-af0e-9ae73763a181">
-<img width="800" alt="Screenshot 2024-09-30 at 09 25 19" src="https://github.com/user-attachments/assets/bc0738a3-554d-44b7-8027-39249eabc32a">
-
-
-
-
+<img width="500" alt="Screenshot 2024-09-30 at 09 25 19" src="https://github.com/user-attachments/assets/bc0738a3-554d-44b7-8027-39249eabc32a">
 
 ## Задача 2
 
