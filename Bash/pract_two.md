@@ -71,8 +71,8 @@ target 2.0.0 и 1.0.0 не имеют зависимостей.
 ```
 <img width="623" alt="Screenshot 2024-09-30 at 09 45 55" src="https://github.com/user-attachments/assets/106c776d-f6cf-4fc6-8a2e-9ef447acd32e">
 <img width="742" alt="Screenshot 2024-09-30 at 09 46 48" src="https://github.com/user-attachments/assets/e31f3f5f-7fce-4c1b-b7be-c6eb26e47964">
+<img width="569" alt="Screenshot 2024-09-30 at 10 13 26" src="https://github.com/user-attachments/assets/a9361ee0-665f-4c56-adde-1bed2a9271a8">
 
-<img width="486" alt="Screenshot 2024-09-30 at 09 46 12" src="https://github.com/user-attachments/assets/bc6d6cd0-3bce-4c9f-af3f-7e97682a08c4">
 
 ## Задача 7
 
