@@ -23,6 +23,8 @@
 <img width="911" alt="Screenshot 2024-09-30 at 09 30 14" src="https://github.com/user-attachments/assets/979a9155-d32f-40ac-9820-1b3712c5a4de">
 <img width="580" alt="Screenshot 2024-09-30 at 09 30 57" src="https://github.com/user-attachments/assets/a3728fa8-23dc-4e5a-bbf3-af8dcc970bb7">
 <img width="970" alt="Screenshot 2024-09-30 at 09 31 18" src="https://github.com/user-attachments/assets/a4d87b2a-cf78-48d3-88ef-e93ffebf1064">
+<img width="589" alt="Screenshot 2024-09-30 at 10 14 42" src="https://github.com/user-attachments/assets/99413b89-12b0-46ef-806e-996eef4860ca">
+
 <img width="1341" alt="Screenshot 2024-09-30 at 09 31 42" src="https://github.com/user-attachments/assets/132958a0-8cf2-4d2f-bdce-06eeff898f72">
 
 ## Задача 4
