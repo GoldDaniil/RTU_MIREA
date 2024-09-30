@@ -1,12 +1,18 @@
 # Практическое занятие №2. Менеджеры пакетов
 
-П.Н. Советов, РТУ МИРЭА
-
-Разобраться, что представляет собой менеджер пакетов, как устроен пакет, как читать версии стандарта semver. Привести примеры программ, в которых имеется встроенный пакетный менеджер.
-
 ## Задача 1
 
 Вывести служебную информацию о пакете matplotlib (Python). Разобрать основные элементы содержимого файла со служебной информацией из пакета. Как получить пакет без менеджера пакетов, прямо из репозитория?
+
+<img width="800" alt="Screenshot 2024-09-30 at 09 24 29" src="https://github.com/user-attachments/assets/68cf885a-bb0c-40fc-8ac5-c94d5d16f2c9">
+
+<img width="800" alt="Screenshot 2024-09-30 at 09 24 54" src="https://github.com/user-attachments/assets/f37ea8c7-8a31-470e-8c33-5e72abbd9dc7">
+<img width="800" alt="Screenshot 2024-09-30 at 09 25 09" src="https://github.com/user-attachments/assets/5638d3e1-d51d-4785-af0e-9ae73763a181">
+<img width="800" alt="Screenshot 2024-09-30 at 09 25 19" src="https://github.com/user-attachments/assets/bc0738a3-554d-44b7-8027-39249eabc32a">
+
+
+
+
 
 ## Задача 2
 
