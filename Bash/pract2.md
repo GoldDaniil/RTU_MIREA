@@ -14,9 +14,9 @@
 
 Вывести служебную информацию о пакете express (JavaScript). Разобрать основные элементы содержимого файла со служебной информацией из пакета. Как получить пакет без менеджера пакетов, прямо из репозитория?
 
-<img width="800" alt="Screenshot 2024-09-30 at 09 27 43" src="https://github.com/user-attachments/assets/6199eb62-41c5-44ee-bbda-2239bf91069f">
-<img width="800" alt="Screenshot 2024-09-30 at 09 28 19" src="https://github.com/user-attachments/assets/f7c438e8-fb9d-46b1-94f3-6a09ec307004">
-<img width="800" alt="Screenshot 2024-09-30 at 09 28 29" src="https://github.com/user-attachments/assets/ec346c1c-0237-4586-9177-cda7a7eef61c">
+<img width="1000" alt="Screenshot 2024-09-30 at 09 27 43" src="https://github.com/user-attachments/assets/6199eb62-41c5-44ee-bbda-2239bf91069f">
+<img width="1200" alt="Screenshot 2024-09-30 at 09 28 19" src="https://github.com/user-attachments/assets/f7c438e8-fb9d-46b1-94f3-6a09ec307004">
+<img width="1200" alt="Screenshot 2024-09-30 at 09 28 29" src="https://github.com/user-attachments/assets/ec346c1c-0237-4586-9177-cda7a7eef61c">
 
 
 
