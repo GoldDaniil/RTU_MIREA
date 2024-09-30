@@ -38,7 +38,6 @@
 Решить на MiniZinc задачу о счастливых билетах. Добавить ограничение на то, что все цифры билета должны быть различными (подсказка: используйте all_different). Найти минимальное решение для суммы 3 цифр.
 
 <img width="671" alt="Screenshot 2024-09-30 at 09 34 38" src="https://github.com/user-attachments/assets/416a2f1a-2c55-4864-94e4-93800cb78c0d">
-<img width="496" alt="Screenshot 2024-09-30 at 09 35 54" src="https://github.com/user-attachments/assets/3d587043-b9e7-4b39-ac0f-c47a6bf8d406">
 <img width="485" alt="Screenshot 2024-09-30 at 09 39 02" src="https://github.com/user-attachments/assets/c35d55eb-1be1-489b-88d9-90cd51815b16">
 
 
