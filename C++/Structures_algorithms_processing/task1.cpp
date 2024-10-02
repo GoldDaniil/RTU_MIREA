@@ -4,6 +4,12 @@
 #include <bitset>
 #include <fstream>
 #include <chrono>
+#include <random>
+#include <vector>
+#include <ctime>
+#include <set>
+
+#include <cstdint>
 
 using namespace std;
 
@@ -12,13 +18,15 @@ HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
 //SetConsoleTextAttribute(back_col, 0x07); default
 //SetConsoleTextAttribute(back_col, 0x0C); red
 
+const int MAX_NUM = 100000;
+const string INPUT_FILE = "input.txt";
+const string OUTPUT_FILE = "output.txt";
 
 // 1 первая задача
 void one_first_task() {
     unsigned char x = 255; // 11111111
     unsigned char maska = 1; // 00000001
 
-    // установка 5ого бита (4-я позиция) в 0
     x = x & (~(maska << 4)); // 11111111 & 11101111 = 11101111 (239)
 
     cout << "result: " << static_cast<int>(x) << " (bit representation: " << bitset<8>(x) << ")" << endl;
@@ -30,7 +38,6 @@ void one_second_task() {
     unsigned char x = 175; // 10101111
     unsigned char maska = 1; // 00000001
 
-    // установка 7ого бита (6-я позиция) в 1
     x = x | (maska << 6); // 10101111 | 01000000 = 11101111 (239)
 
     cout << "result: " << static_cast<int>(x) << " (bit representation: " << bitset<8>(x) << ")" << endl;
@@ -42,9 +49,9 @@ void one_third_task() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    unsigned int x = 25; // Число 25 в двоичном виде: 00000000000000000000000000011001
+    unsigned int x = 25; // 00000000000000000000000000011001
     const int n = sizeof(int) * 8; // 32 бита для типа int
-    unsigned int maska = (1 << (n - 1)); // 1 в старшем бите 32-разрядного числа
+    unsigned int maska = (1 << (n - 1)); // 32 - 1 = 31 
 
     cout << "initial view of the mask: " << bitset<n>(maska) << endl; // Выводим маску: 10000000000000000000000000000000
 
@@ -59,9 +66,9 @@ void one_third_task() {
 }
 
 
-// 2 первая задача
+// 4 задача
 void two_first_task() {
-    unsigned char array_bit = 0; 
+    unsigned char array_bit = 0;
     int number_digits, number;
 
     cout << "enter the number of numbers (no more than 8): ";
@@ -95,7 +102,7 @@ void two_first_task() {
     cout << endl << endl;
 }
 
-// 2 вторая задача
+// 5 задача
 void two_second_task() {
     unsigned long long array_bit = 0;
     int number_digits, number;
@@ -130,10 +137,10 @@ void two_second_task() {
     return;
 }
 
-// 2 третья задача
+// 6 задача
 void two_third_task() {
     const int number_bytes = 8; // 64 числа по 8 бит на байт
-    unsigned char array_bit[number_bytes] = { 0 }; 
+    unsigned char array_bit[number_bytes] = { 0 };
     int number_digits, number;
 
     cout << "enter the number of numbers (no more than 64): ";
@@ -160,7 +167,7 @@ void two_third_task() {
 
     for (int i = 0; i < 64; i++) {
         if (array_bit[i / 8] & (1 << (i % 8))) { // проходимся по каждому биту
-            cout << i << " ";   
+            cout << i << " ";
         }
     }
     cout << endl;
@@ -168,51 +175,78 @@ void two_third_task() {
 }
 
 
-void three_task() {
-    const int MAX_NUMBERS = 8388608; 
+//three task last
 
-    const int BIT_ARRAY_SIZE = MAX_NUMBERS / 8; // 8 388 608 / 8 = 1 048 576 байт - 1мб
-
-    bitset<MAX_NUMBERS> bit_array; // битовый массив с 1 битом на каждое число
-
-    ifstream input_file("input.txt"); 
-
-    ofstream output_file("output.txt");
-
-    if (!input_file.is_open()) {
-        cerr << "error open input.txt!" << endl; 
+void fill_input_file_with_unique_numbers(const string& filename, int n) {
+    ofstream inputFile(filename);
+    if (!inputFile.is_open()) {
+        cerr << "error: " << filename << endl;
         return;
     }
 
-    int number; // текущие число
+    set<int> unique_numbers; // множество для хранения уникальных чисел
+    random_device rd; // генератор случайных чисел
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(1000000, 9999999); // диапазон чисел от 1_000_000 до 9_999_999
 
-    auto start = chrono::high_resolution_clock::now(); 
-
-    // чтение из входа
-    while (input_file >> number) { 
-        if (number >= 0 && number < MAX_NUMBERS) {
-            bit_array.set(number); // установка бита у данного числа в 1 
-        }
+    while (unique_numbers.size() < n) {
+        int num = dis(gen);
+        unique_numbers.insert(num);
     }
-    input_file.close(); 
 
-    // проходка по битмасс
-    for (int i = 0; i < MAX_NUMBERS; i++) {
-        if (bit_array[i]) { // если 1 - число было в input data
-            output_file << i << endl; 
-        }
+    for (int num : unique_numbers) {
+        inputFile << num << endl;
     }
-    output_file.close();
 
-    auto end = chrono::high_resolution_clock::now(); 
-
-    chrono::duration<double> duration = end - start; 
-
-    cout << "time: " << duration.count() << " sec" << endl;
-
-    return; 
+    inputFile.close();
+    cout << "enter file '" << filename << "' successfully filled with " << n << " unique numbers." << endl;
 }
 
+void three_task() {
+    int number_of_unique_numbers = 10000000;
+    fill_input_file_with_unique_numbers(INPUT_FILE, number_of_unique_numbers); // заполняем входной файл
+
+    clock_t t0 = clock();
+
+    // размер битового массива: делим на 8, чтобы вместить биты в char
+    vector<char> ArrayBit(MAX_NUM / 8, 0); // инициализация значениями 0
+
+    ifstream inputFile(INPUT_FILE);
+    if (!inputFile.is_open()) {
+        cerr << "error open file" << INPUT_FILE << endl;
+        return;
+    }
+
+    int number;
+    while (inputFile >> number) {
+        if (number >= 0 && number < MAX_NUM) {
+            // устанавливаем соответствующий бит в 1
+            ArrayBit[number / 8] |= (1 << (number % 8)); // находим правильный байт и устанавливаем бит
+        }
+    }
+    inputFile.close();
+
+    ofstream outputFile(OUTPUT_FILE);
+    if (!outputFile.is_open()) {
+        cerr << "error open file" << OUTPUT_FILE << endl;
+        return;
+    }
+
+    // проходим по массиву и записываем индексы установленных битов в выходной файл
+    for (int i = 0; i < MAX_NUM; ++i) {
+        if (ArrayBit[i / 8] & (1 << (i % 8))) { // проверяем, установлен ли бит
+            outputFile << i << endl; // запись уникального числа
+        }
+    }
+    outputFile.close();
+
+    clock_t t1 = clock();
+
+    cout << "numbers from the file " << INPUT_FILE << " sorted and placed in " << OUTPUT_FILE << endl;
+    cout << "program execution time: " << (double)(t1 - t0) / CLOCKS_PER_SEC << " seconds" << endl;
+
+    return;
+}
 
 // лаунчер
 int main() {
@@ -220,10 +254,10 @@ int main() {
 
     while (true) {
         SetConsoleTextAttribute(back_col, 0x0a);
-        cout << "select task:" << endl;
-        cout << "1 - " << endl;
-        cout << "2 - " << endl;
-        cout << "3 - " << endl;
+        cout << "\nselect task:" << endl;
+        cout << "1 - first task" << endl;
+        cout << "2 - second task" << endl;
+        cout << "3 - third task" << endl;
         cout << "4 - sorting up to 8 numbers" << endl;
         cout << "5 - sorting up to 64 numbers (unsigned long long)" << endl;
         cout << "6 - sorting up to 64 numbers (unsigned char array)" << endl;
