@@ -126,18 +126,22 @@ task6() {
 }
 
 task7() {
-    MINIZINC_PATH="/Applications/MiniZincIDE.app/Contents/Resources/minizinc"
+    # MINIZINC_PATH="/Applications/MiniZincIDE.app/Contents/Resources/minizinc"
 
-    PLAYGROUND_PATH="/Users/gold/Desktop/task7.mzn"
+    # PLAYGROUND_PATH="/Users/gold/Desktop/task7.mzn"
 
-    if [ ! -f "$PLAYGROUND_PATH" ]; then
-        echo "файл task7.mzn не найден по пути: $PLAYGROUND_PATH"
-        return
-    fi
+    # if [ ! -f "$PLAYGROUND_PATH" ]; then
+    #     echo "файл task7.mzn не найден по пути: $PLAYGROUND_PATH"
+    #     return
+    # fi
 
-    #запуск - вызов через minizinc
-    echo "запуск task7.mzn через minizinc"
-    "$MINIZINC_PATH" "$PLAYGROUND_PATH"
+    # #запуск - вызов через minizinc
+    # echo "запуск task7.mzn через minizinc"
+    # "$MINIZINC_PATH" "$PLAYGROUND_PATH"
+
+
+
+    
 }
 
 while true; do
