@@ -71,9 +71,11 @@ shared 2.0.0 не имеет зависимостей.
 shared 1.0.0 зависит от target ^1.0.0.
 target 2.0.0 и 1.0.0 не имеют зависимостей.
 ```
-<img width="623" alt="Screenshot 2024-09-30 at 09 45 55" src="https://github.com/user-attachments/assets/106c776d-f6cf-4fc6-8a2e-9ef447acd32e">
-<img width="742" alt="Screenshot 2024-09-30 at 09 46 48" src="https://github.com/user-attachments/assets/e31f3f5f-7fce-4c1b-b7be-c6eb26e47964">
-<img width="569" alt="Screenshot 2024-09-30 at 10 13 26" src="https://github.com/user-attachments/assets/a9361ee0-665f-4c56-adde-1bed2a9271a8">
+<img width="654" alt="Screenshot 2024-10-07 at 01 22 55" src="https://github.com/user-attachments/assets/83b171aa-5342-4fa8-b6d0-aca073bc99cb">
+
+<img width="940" alt="Screenshot 2024-10-07 at 01 22 40" src="https://github.com/user-attachments/assets/635ba5ec-3c79-4db5-960c-0269135480be">
+
+<img width="299" alt="Screenshot 2024-10-07 at 01 21 58" src="https://github.com/user-attachments/assets/2036c1e9-25b3-4edc-bf43-e12b74b6edb7">
 
 
 ## Задача 7
