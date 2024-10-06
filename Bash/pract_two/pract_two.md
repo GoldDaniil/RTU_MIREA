@@ -79,9 +79,9 @@ target 2.0.0 и 1.0.0 не имеют зависимостей.
 ## Задача 7
 
 Представить задачу о зависимостях пакетов в общей форме. Здесь необходимо действовать аналогично реальному менеджеру пакетов. То есть получить описание пакета, а также его зависимости в виде структуры данных. Например, в виде словаря. В предыдущих задачах зависимости были явно заданы в системе ограничений. Теперь же систему ограничений надо построить автоматически, по метаданным.
-<img width="877" alt="Screenshot 2024-09-30 at 09 47 24" src="https://github.com/user-attachments/assets/89aa6083-31a3-4cf9-8b5f-410c4f48ddb1">
-<img width="613" alt="Screenshot 2024-09-30 at 09 47 48" src="https://github.com/user-attachments/assets/da328f14-1513-43f9-8fc7-60750726f93e">
-<img width="494" alt="Screenshot 2024-09-30 at 09 47 37" src="https://github.com/user-attachments/assets/96495d46-6654-4d74-b6e0-5d27cbae75f4">
+<img width="967" alt="Screenshot 2024-10-07 at 01 20 42" src="https://github.com/user-attachments/assets/a8afe819-5a80-402c-a7d3-588aa260713f">
+<img width="999" alt="Screenshot 2024-10-07 at 01 20 58" src="https://github.com/user-attachments/assets/d5f9dae0-3b95-4d10-a3c2-1bb9b9dca4da">
+<img width="721" alt="Screenshot 2024-10-07 at 01 21 05" src="https://github.com/user-attachments/assets/8a2ad1d1-05c7-47a9-9170-fdac521198ed">
 
 ## Полезные ссылки
 
