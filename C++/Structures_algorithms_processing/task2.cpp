@@ -16,18 +16,14 @@ HANDLE back_col = GetStdHandle(STD_OUTPUT_HANDLE);
 //SetConsoleTextAttribute(back_col, 0x0C); red
 
 class task_one {
-public:  //публичная структура
+public:
     struct infile_record_structure {
         int policy_number;
         string name_company;
         string owner_company_name;
     };
 
-    int generate_random_number(int min, int max) {
-        return rand() % (max - min + 1) + min;
-    }
-
-    //функция для генерации случайных записей
+    //генерация случайных записей
     vector<infile_record_structure> generate_records(int count) {
         vector<infile_record_structure> records;
         srand(time(0));  //инициализация генератора случайных чисел
@@ -35,7 +31,7 @@ public:  //публичная структура
         for (int i = 0; i < count; ++i) {
             infile_record_structure record;
 
-            //генерируем случайный номер полиса    
+            //генерация случайного номера полиса    
             record.policy_number = rand() % 1000000;
 
             //названия компании и владельца
@@ -45,10 +41,15 @@ public:  //публичная структура
             records.push_back(record);
         }
 
+        //сортировка записей по номеру полиса (policy_number)
+        sort(records.begin(), records.end(), [](const infile_record_structure& a, const infile_record_structure& b) {
+            return a.policy_number < b.policy_number;
+            });
+
         return records;
     }
 
-    //функция для записи текстового файла
+    //запись текстового файла
     void write_to_text_file(const vector<infile_record_structure>& records, const string& filename) {
         ofstream outfile(filename);
 
@@ -64,7 +65,7 @@ public:  //публичная структура
         outfile.close();
     }
 
-    //функция для записи в двоичный файл
+    //запись в двоичный файл
     void write_to_binary_file(const vector<infile_record_structure>& records, const string& filename) {
         ofstream outfile(filename, ios::binary);
 
@@ -76,7 +77,7 @@ public:  //публичная структура
         for (const auto& record : records) {
             outfile.write((char*)&record.policy_number, sizeof(record.policy_number));
             outfile.write(record.name_company.c_str(), record.name_company.size());
-            outfile.put('\0'); //завершающий символ для строк
+            outfile.put('\0');  //завершающий символ для строк
             outfile.write(record.owner_company_name.c_str(), record.owner_company_name.size());
             outfile.put('\0');
         }
@@ -86,7 +87,7 @@ public:  //публичная структура
 };
 
 class task_two {
-public:  // Делаем структуру публичной
+public: 
     struct infile_record_structure {
         int policy_number;
         string name_company;
@@ -94,7 +95,7 @@ public:  // Делаем структуру публичной
     };
 
 public:
-    // Линейный поиск по ключу в бинарном файле
+    //линейный поиск по ключу в бинарном файле
     infile_record_structure linear_search_in_binary_file(const string& filename, int key) {
         ifstream infile(filename, ios::binary);
         infile_record_structure record;
@@ -125,7 +126,7 @@ public:
         streampos file_offset;
     };
 
-    // Функция создания таблицы ключ-смещение из бинарного файла
+    //функция создания таблицы ключ-смещение из бинарного файла
     vector<IndexEntry> create_index_table(const string& filename) {
         vector<IndexEntry> index_table;
         ifstream infile(filename, ios::binary);
@@ -146,18 +147,24 @@ public:
             if (infile.eof()) break;
 
             //пропускаем строки (компанию и владельца)
-            //infile.ignore((numeric_limits<streamsize>::max)(), '\0');
-            //infile.ignore((numeric_limits<streamsize>::max)(), '\0');
+            infile.ignore((numeric_limits<streamsize>::max)(), '\0');
+            infile.ignore((numeric_limits<streamsize>::max)(), '\0');
 
             //добавляем запись в таблицу
             index_table.push_back({ record.policy_number, current_offset });
         }
 
         infile.close();
+
+        //сортировка таблицы индексов по policy_number
+        sort(index_table.begin(), index_table.end(), [](const IndexEntry& a, const IndexEntry& b) {
+            return a.policy_number < b.policy_number;
+            });
+
         return index_table;
     }
 
-    //функция для поиска по ключу в таблице
+    //поиск по ключу в таблице индексов
     streampos search_in_index_table(const vector<IndexEntry>& index_table, int key) {
         for (const auto& entry : index_table) {
             if (entry.policy_number == key) {
@@ -165,17 +172,17 @@ public:
             }
         }
 
-        cerr << "record with key " << key << " not found in the index table!!!" << endl;
+        cerr << "record with key " << key << " not found in the index table!" << endl;
         return -1;
     }
 
-    //функция для чтения записи по смещению из бинарного файла
+    //чтение записи по смещению из бинарного файла
     task_one::infile_record_structure read_record_by_offset(const string& filename, streampos offset) {
         ifstream infile(filename, ios::binary);
         task_one::infile_record_structure record;
 
         if (!infile.is_open()) {
-            cerr << "error opening binary file for reading!!!" << endl;
+            cerr << "error opening binary file for reading!" << endl;
             return record;
         }
 
