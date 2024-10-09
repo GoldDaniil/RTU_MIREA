@@ -24,8 +24,6 @@ public:
         string owner_company_name;
     };
 
-
-
     //генерация случайных записей
     vector<infile_record_structure> generate_records(int count) {
         vector<infile_record_structure> records;
@@ -121,7 +119,6 @@ public:
         return record;
     }
 };
-
 
 class task_three {
 public:
@@ -251,8 +248,6 @@ public:
     }
 };
 
-
-
 int main() {
     int user_choice;
 
@@ -311,8 +306,6 @@ int main() {
                 cout << "time: " << duration.count() << " seconds\n";
             }
             break;
-
-  
         }
         case 3: {
             auto start = std::chrono::high_resolution_clock::now();
