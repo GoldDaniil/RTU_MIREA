@@ -60,9 +60,9 @@ class task_three:
         for _ in range(10):
             print(task_three.generate_phrase(grammar, 'E'))
 
-class task_four:           
+# class task_four:           
             
-class task_five:
+# class task_five:
 
 def main():
     while True:
