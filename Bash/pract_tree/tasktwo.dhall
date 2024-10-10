@@ -1,6 +1,8 @@
 let generateGroup = λ(i : Natural) → "ИКБО-" ++ Natural/show i ++ "-20"
 
-let groupList = [ generateGroup i | i <- List/replicate 24 1 + i ]
+let numbers = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 ]
+
+let groupList = List/map Natural Text generateGroup numbers
 
 let student1 = { age = 19, group = "ИКБО-4-20", name = "Иванов И.И." }
 
