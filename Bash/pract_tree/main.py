@@ -60,9 +60,64 @@ class task_three:
         for _ in range(10):
             print(task_three.generate_phrase(grammar, 'E'))
 
-# class task_four:           
-            
-# class task_five:
+class task_four:
+    BNF = '''
+    E = P | Q | P Q | empty
+    P = '(' E ')'
+    Q = '{' E '}'
+    empty = ''
+    '''
+
+    @staticmethod
+    def parse_bnf(text):
+        grammar = {}
+        rules = [line.split('=') for line in text.strip().split('\n')]
+        for name, body in rules:
+            grammar[name.strip()] = [alt.split() for alt in body.split('|')]
+        return grammar
+
+    @staticmethod
+    def generate_phrase(grammar, start):
+        if start in grammar:
+            seq = random.choice(grammar[start])
+            return ''.join([task_four.generate_phrase(grammar, name) for name in seq])
+        return str(start)
+
+    @staticmethod
+    def run():
+        print("запуск задания 4: правильно расставленные скобки")
+        grammar = task_four.parse_bnf(task_four.BNF)
+        for _ in range(10):
+            print(task_four.generate_phrase(grammar, 'E'))
+
+class task_five:
+    BNF = '''
+    E = T | F | E '&' E | E '|' E | '~' E
+    T = 'x' | 'y'
+    F = 'x' | 'y'
+    '''
+
+    @staticmethod
+    def parse_bnf(text):
+        grammar = {}
+        rules = [line.split('=') for line in text.strip().split('\n')]
+        for name, body in rules:
+            grammar[name.strip()] = [alt.split() for alt in body.split('|')]
+        return grammar
+
+    @staticmethod
+    def generate_phrase(grammar, start):
+        if start in grammar:
+            seq = random.choice(grammar[start])
+            return ''.join([task_five.generate_phrase(grammar, name) for name in seq])
+        return str(start)
+
+    @staticmethod
+    def run():
+        print("запуск задания 5: алгебра логики")
+        grammar = task_five.parse_bnf(task_five.BNF)
+        for _ in range(10):
+            print(task_five.generate_phrase(grammar, 'E'))
 
 def main():
     while True:
@@ -70,8 +125,8 @@ def main():
         print("1. первое задание (Jsonnet)")
         print("2. второе задание (Dhall)")
         print("3. третье задание (БНФ-грамматика)")
-        print("4. четвертое задание")
-        print("5. пятое задание")
+        print("4. четвертое задание скобки")
+        print("5. пятое задание алгебра логики")
         print(f"{Colors.RED}'exit' - выход{Colors.RESET}")
 
         choice = input("введите номер задания (1...5) или 'exit' для выхода: ").lower()
@@ -82,6 +137,10 @@ def main():
             task_two.run()
         elif choice == '3':
             task_three.run()
+        elif choice == '4':
+            task_four.run();
+        elif choice == '5':
+            task_four.run();
         elif choice == 'exit':
             print(f"{Colors.MAGENTA}выход из программы...{Colors.RESET}")
             break
