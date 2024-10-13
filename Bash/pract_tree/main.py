@@ -92,9 +92,8 @@ class task_four:
 
 class task_five:
     BNF = '''
-    E = T | F | E '&' E | E '|' E | '~' E
+    E = T | E '&' E | E '|' E | '~' E | '(' E ')'
     T = 'x' | 'y'
-    F = 'x' | 'y'
     '''
 
     @staticmethod
@@ -140,7 +139,7 @@ def main():
         elif choice == '4':
             task_four.run();
         elif choice == '5':
-            task_four.run();
+            task_five.run();
         elif choice == 'exit':
             print(f"{Colors.MAGENTA}выход из программы...{Colors.RESET}")
             break
