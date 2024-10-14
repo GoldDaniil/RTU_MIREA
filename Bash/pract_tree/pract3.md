@@ -66,10 +66,11 @@
   "subject": "Конфигурационное управление"
 }
 
-<img width="1000" alt="Screenshot 2024-10-14 at 09 29 05" src="https://github.com/user-attachments/assets/30db06a2-05ab-4271-b929-c321aec2b3f2">
 
 
 ```
+<img width="1000" alt="Screenshot 2024-10-14 at 09 29 05" src="https://github.com/user-attachments/assets/30db06a2-05ab-4271-b929-c321aec2b3f2">
+
 
 Для решения дальнейших задач потребуется программа на Питоне, представленная ниже. Разбираться в самом языке Питон при этом необязательно.
 
