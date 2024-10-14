@@ -8,6 +8,11 @@
 
 Реализовать на Jsonnet приведенный ниже пример в формате JSON. Использовать в реализации свойство программируемости и принцип DRY.
 
+<img width="932" alt="Screenshot 2024-10-14 at 09 25 14" src="https://github.com/user-attachments/assets/af229cfb-75ba-411d-8aaa-603b8af6fedf">
+<img width="585" alt="Screenshot 2024-10-14 at 09 25 43" src="https://github.com/user-attachments/assets/f5292801-10cd-4b2c-88a5-71202a635d2a">
+<img width="449" alt="Screenshot 2024-10-14 at 09 26 33" src="https://github.com/user-attachments/assets/95d37d26-5514-4760-a558-da1c07d40d5d">
+<img width="423" alt="Screenshot 2024-10-14 at 09 26 46" src="https://github.com/user-attachments/assets/28101ede-e1d0-4d19-9a9e-d7045a950e69">
+
 ## Задача 2
 
 Реализовать на Dhall приведенный ниже пример в формате JSON. Использовать в реализации свойство программируемости и принцип DRY.
@@ -59,7 +64,11 @@
     <добавьте ваши данные в качестве четвертого студента>
   ],
   "subject": "Конфигурационное управление"
-} 
+}
+
+<img width="1000" alt="Screenshot 2024-10-14 at 09 29 05" src="https://github.com/user-attachments/assets/30db06a2-05ab-4271-b929-c321aec2b3f2">
+
+
 ```
 
 Для решения дальнейших задач потребуется программа на Питоне, представленная ниже. Разбираться в самом языке Питон при этом необязательно.
@@ -112,6 +121,9 @@ for i in range(10):
 000
 ```
 
+<img width="764" alt="Screenshot 2024-10-14 at 09 29 48" src="https://github.com/user-attachments/assets/b23a5cd7-47bd-43ec-ae8f-9866ba0acb2e">
+<img width="447" alt="Screenshot 2024-10-14 at 09 30 21" src="https://github.com/user-attachments/assets/1790760f-9ca7-4d48-8fb6-0fd21a65ff33">
+
 ## Задача 4
 
 Язык правильно расставленных скобок двух видов.
@@ -124,6 +136,10 @@ for i in range(10):
 {}
 ```
 
+<img width="764" alt="Screenshot 2024-10-14 at 09 30 45" src="https://github.com/user-attachments/assets/caefbb24-1c39-4432-840b-2c490d69997c">
+<img width="1676" alt="Screenshot 2024-10-14 at 09 31 03" src="https://github.com/user-attachments/assets/c7f190da-85a1-4103-84ec-75c80e9f409c">
+
+
 ## Задача 5
 
 Язык выражений алгебры логики.
@@ -135,6 +151,9 @@ y & ~(y)
 ~x
 ~((x) & y | (y) | (x)) & x | x | (y & ~y)
 ```
+<img width="764" alt="Screenshot 2024-10-14 at 09 32 11" src="https://github.com/user-attachments/assets/80c49b20-2cd8-48a5-9e7a-992bef7df04a">
+<img width="1692" alt="Screenshot 2024-10-14 at 09 31 51" src="https://github.com/user-attachments/assets/ae441f01-e30a-4d3a-94c3-0330a37e8477">
+
 
 ## Полезные ссылки
 
