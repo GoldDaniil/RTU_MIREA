@@ -24,6 +24,8 @@ public:
         string owner_company_name;
     };
 
+
+
     //генерация случайных записей
     vector<infile_record_structure> generate_records(int count) {
         vector<infile_record_structure> records;
@@ -38,14 +40,14 @@ public:
             //названия компании и владельца
             record.name_company = "company_" + to_string(i + 1);
             record.owner_company_name = "owner_" + to_string(i + 1);
-            
+
             records.push_back(record);
         }
 
         //сортировка записей по номеру полиса (policy_number)
         sort(records.begin(), records.end(), [](const infile_record_structure& a, const infile_record_structure& b) {
             return a.policy_number < b.policy_number;
-        });
+            });
 
         return records;
     }
@@ -88,7 +90,7 @@ public:
 };
 
 class task_two {
-public: 
+public:
     struct infile_record_structure {
         int policy_number;
         string name_company;
@@ -119,6 +121,7 @@ public:
         return record;
     }
 };
+
 
 class task_three {
 public:
@@ -165,62 +168,64 @@ public:
         return index_table;
     }
 
-    //поиск по ключу в таблице индексов с использованием линейного поиска
-    streampos search_in_index_table(const vector<IndexEntry>& index_table, int key) {
-        for (const auto& entry : index_table) {
-            if (entry.policy_number == key) {
-                return entry.file_offset;
-            }
+    //функция для предвычисления чисел Фибоначчи
+    vector<int> generate_fibonacci(int n) {
+        vector<int> fib(n + 2, 0); // создаем массив для хранения чисел Фибоначчи
+        fib[0] = 0;
+        fib[1] = 1;
+        for (int i = 2; i <= n; ++i) {
+            fib[i] = fib[i - 1] + fib[i - 2];
         }
-
-        cerr << "record with key " << key << " not found in the index table!" << endl;
-        return -1;
+        return fib;
     }
 
     //поиск по ключу в таблице индексов с использованием поиска Фибоначчи
     streampos fibonacci_search_in_index_table(const vector<IndexEntry>& index_table, int key) {
         int n = index_table.size();
-        int fibM2 = 0; // (m-2)
-        int fibM1 = 1; // (m-1)
-        int fibM = fibM2 + fibM1; 
 
-        //найти Fibonacci number < n
+        //генерация всех чисел Фибоначчи до размера массива
+        vector<int> fib = generate_fibonacci(n);
+
+        //инициализация индексов
+        int fibM2 = 0;     // (m-2)
+        int fibM1 = 1;     // (m-1)
+        int fibM = fibM2 + fibM1; // m-е число Фибоначчи
+
+        //найдем наибольшее число Фибоначчи - меньшее или равное n
         while (fibM < n) {
             fibM2 = fibM1;
             fibM1 = fibM;
-            fibM = fibM2 + fibM1;
+            fibM = fibM1 + fibM2;
         }
 
-        //индекс -который будет использоваться для сравнения
+        //инициализация оффсета
         int offset = -1;
 
+        //пока больше одного элемента
         while (fibM > 1) {
-            //индекс для сравнения
             int i = min(offset + fibM2, n - 1);
 
-            //если key больше - чем элемент - по индексу i
             if (index_table[i].policy_number < key) {
                 fibM = fibM1;
                 fibM1 = fibM2;
                 fibM2 = fibM - fibM1;
-                offset = i; //переход к следующей части
+                offset = i;
             }
-            //если key меньше - чем элемент - по индексу i
             else if (index_table[i].policy_number > key) {
                 fibM = fibM2;
                 fibM1 = fibM1 - fibM2;
                 fibM2 = fibM - fibM1;
             }
-            //элемент найден
-            else return index_table[i].file_offset;
+            else {
+                return index_table[i].file_offset;
+            }
         }
 
-        //сравнить последний элемент
+        //проверяем последний элемент
         if (fibM1 && index_table[offset + 1].policy_number == key) {
             return index_table[offset + 1].file_offset;
         }
 
-        //если элемент не найден
         cerr << "record with key " << key << " not found in the index table!" << endl;
         return -1;
     }
@@ -247,6 +252,7 @@ public:
         return record;
     }
 };
+
 
 int main() {
     int user_choice;
@@ -306,6 +312,8 @@ int main() {
                 cout << "time: " << duration.count() << " seconds\n";
             }
             break;
+
+
         }
         case 3: {
             auto start = std::chrono::high_resolution_clock::now();
@@ -323,7 +331,7 @@ int main() {
             SetConsoleTextAttribute(back_col, 0x07);
             cin >> key;
 
-            streampos offset = object.search_in_index_table(index_table, key);
+            streampos offset = object.fibonacci_search_in_index_table(index_table, key);
 
             //чтение записи по смещению
             if (offset != -1) {
