@@ -21,12 +21,22 @@ class task_two:
         print("запуск задания 2: tasktwo.dhall")
         if os.path.exists("tasktwo.dhall"):
             try:
-                result = subprocess.run(["dhall", "decode", "<", "tasktwo.dhall"], capture_output=True, text=True)
-                print(result.stdout)
+                #используем прямую команду для dhall-to-json
+                result = subprocess.run(
+                    ["dhall-to-json", "--file", "tasktwo.dhall"],
+                    capture_output=True, text=True, timeout=10  #добавлен тайм-аут на 10 секунд
+                )
+
+                if result.returncode != 0:
+                    print(f"ошибка - dhall-to-json: {result.stderr}")
+                else:
+                    print(result.stdout)
+            except subprocess.TimeoutExpired:
+                print("оч долго")
             except Exception as e:
                 print(f"ошибка при запуске tasktwo.dhall: {e}")
         else:
-            print("не найден файл")
+            print("файл tasktwo.dhall не найден")
 
 class task_three:
     BNF = '''
@@ -113,7 +123,7 @@ class task_five:
 
     @staticmethod
     def run():
-        print("запуск задания 5: алгебра логики")
+        print("Запуск задания 5: Алгебра логики")
         grammar = task_five.parse_bnf(task_five.BNF)
         for _ in range(10):
             print(task_five.generate_phrase(grammar, 'E'))
