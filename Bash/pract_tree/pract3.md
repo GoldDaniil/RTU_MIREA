@@ -69,7 +69,10 @@
 
 
 ```
-<img width="1000" alt="Screenshot 2024-10-14 at 09 29 05" src="https://github.com/user-attachments/assets/30db06a2-05ab-4271-b929-c321aec2b3f2">
+<img width="834" alt="Screenshot 2024-10-20 at 18 59 29" src="https://github.com/user-attachments/assets/18eb7a87-8309-4bd9-9be9-43f4a1f6008b">
+<img width="892" alt="Screenshot 2024-10-20 at 18 59 42" src="https://github.com/user-attachments/assets/0af709b6-40fd-41c2-baf5-fa995a315742">
+<img width="446" alt="Screenshot 2024-10-20 at 19 00 03" src="https://github.com/user-attachments/assets/bedfdcc8-2af0-4af5-8d0c-510e50a9ffc3">
+<img width="410" alt="Screenshot 2024-10-20 at 19 00 16" src="https://github.com/user-attachments/assets/9d7fbe88-622d-4e3d-8e8f-1e178d516bdb">
 
 
 Для решения дальнейших задач потребуется программа на Питоне, представленная ниже. Разбираться в самом языке Питон при этом необязательно.
