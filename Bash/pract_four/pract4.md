@@ -85,8 +85,8 @@ mathematics
 Реализовать вариант трансляции, при котором повторный запуск make не выводит для civgraph на экран уже выполненные "задачи".
 
 <img width="857" alt="Screenshot 2024-10-21 at 13 04 14" src="https://github.com/user-attachments/assets/a5608c48-a0a0-4866-b580-52e67f21c60a">
-<img width="778" alt="Screenshot 2024-10-21 at 13 04 40" src="https://github.com/user-attachments/assets/f70d846e-e377-4b2b-b2b4-cd6fa8d82eb4">
 <img width="440" alt="Screenshot 2024-10-21 at 13 06 47" src="https://github.com/user-attachments/assets/9db86670-c8df-4a8b-8b7d-404c2ade75f1">
+<img width="778" alt="Screenshot 2024-10-21 at 13 04 40" src="https://github.com/user-attachments/assets/f70d846e-e377-4b2b-b2b4-cd6fa8d82eb4">
 <img width="899" alt="Screenshot 2024-10-21 at 13 04 55" src="https://github.com/user-attachments/assets/b0e0c0f8-34c2-4a5f-abc9-f5c0383e062a">
 
 ## Задача 3
