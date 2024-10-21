@@ -34,7 +34,13 @@ socks: pullover
     @echo "Putting on socks."
 ```
 
+
+
+
 Визуализировать файл [civgraph.txt](civgraph.txt).
+
+
+
 <img width="435" alt="Screenshot 2024-10-21 at 12 54 39" src="https://github.com/user-attachments/assets/ac90b265-62e4-4fe7-879c-a42acf7fc28d">
 <img width="404" alt="Screenshot 2024-10-21 at 12 55 18" src="https://github.com/user-attachments/assets/cb954ceb-18ed-4747-b616-9e667f3d7ffd">
 
