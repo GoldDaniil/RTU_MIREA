@@ -35,7 +35,8 @@ socks: pullover
 ```
 
 Визуализировать файл [civgraph.txt](civgraph.txt).
-
+<img width="435" alt="Screenshot 2024-10-21 at 12 54 39" src="https://github.com/user-attachments/assets/ac90b265-62e4-4fe7-879c-a42acf7fc28d">
+<img width="404" alt="Screenshot 2024-10-21 at 12 55 18" src="https://github.com/user-attachments/assets/cb954ceb-18ed-4747-b616-9e667f3d7ffd">
 
 ## Задача 1
 
@@ -61,7 +62,18 @@ early_empire
 mysticism
 drama_poetry
 mathematics
+
 ```
+<img width="812" alt="Screenshot 2024-10-21 at 12 56 30" src="https://github.com/user-attachments/assets/817bf9c5-e223-4810-a9f0-9ff77f73b79a">
+<img width="952" alt="Screenshot 2024-10-21 at 12 56 47" src="https://github.com/user-attachments/assets/9655a8a7-305b-4fae-b71c-0209116f8506">
+<img width="889" alt="Screenshot 2024-10-21 at 12 57 26" src="https://github.com/user-attachments/assets/20af7e35-f6c9-4bdb-8e35-821af451ae31">
+
+
+
+```
+```
+
+
 
 ## Задача 2
 
