@@ -67,18 +67,20 @@ mathematics
 <img width="812" alt="Screenshot 2024-10-21 at 12 56 30" src="https://github.com/user-attachments/assets/817bf9c5-e223-4810-a9f0-9ff77f73b79a">
 <img width="952" alt="Screenshot 2024-10-21 at 12 56 47" src="https://github.com/user-attachments/assets/9655a8a7-305b-4fae-b71c-0209116f8506">
 <img width="889" alt="Screenshot 2024-10-21 at 12 57 26" src="https://github.com/user-attachments/assets/20af7e35-f6c9-4bdb-8e35-821af451ae31">
-
+<img width="442" alt="Screenshot 2024-10-21 at 13 03 06" src="https://github.com/user-attachments/assets/9a71e087-bee0-4354-aa51-4dba4f6a4e4d">
+<img width="601" alt="Screenshot 2024-10-21 at 13 03 25" src="https://github.com/user-attachments/assets/f49276e8-0503-434a-ae55-d658b1275ccb">
 
 
 ```
 ```
-
-
 
 ## Задача 2
 
 Реализовать вариант трансляции, при котором повторный запуск make не выводит для civgraph на экран уже выполненные "задачи".
 
+<img width="857" alt="Screenshot 2024-10-21 at 13 04 14" src="https://github.com/user-attachments/assets/a5608c48-a0a0-4866-b580-52e67f21c60a">
+<img width="778" alt="Screenshot 2024-10-21 at 13 04 40" src="https://github.com/user-attachments/assets/f70d846e-e377-4b2b-b2b4-cd6fa8d82eb4">
+<img width="899" alt="Screenshot 2024-10-21 at 13 04 55" src="https://github.com/user-attachments/assets/b0e0c0f8-34c2-4a5f-abc9-f5c0383e062a">
 
 ## Задача 3
 
