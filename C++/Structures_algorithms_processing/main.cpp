@@ -4,6 +4,8 @@
 
 using namespace std;
 
+const int DELETED = -1;//маркер для удаления
+
 //cтруктура - хранения данных читательского абонемента
 struct Abonement {
     int number;        
@@ -58,12 +60,14 @@ public:
         int index = hash1(abonement.number);
         int step = hash2(abonement.number);
 
-        while (table[index] != nullptr) {//пробирование пока место не найдем
+        while (table[index] != nullptr && table[index]->number != DELETED) {//пробирование пока место не найдем
             index = (index + step) % size;
         }
 
-        table[index] = new Abonement(abonement);
-        count++;
+        if (table[index] == nullptr || table[index]->number == DELETED) {
+            table[index] = new Abonement(abonement);
+            count++;
+        }
     }
 
     //поиск абонемента по номеру
@@ -87,10 +91,8 @@ public:
 
         while (table[index] != nullptr) {
             if (table[index]->number == number) {
-                delete table[index]; //освобождаем память
-                table[index] = nullptr;
-                count--;
-                cout << "abonement removed\n";
+                table[index]->number = DELETED;//ставим маркер удаления
+                cout << "abonement marked as deleted\n";
                 return;
             }
             index = (index + step) % size;
@@ -101,7 +103,7 @@ public:
     //вывод всех абонементов
     void display() {
         for (int i = 0; i < size; i++) {
-            if (table[i] != nullptr) {
+            if (table[i] != nullptr && table[i]->number != DELETED) {
                 cout << "abonement: " << table[i]->number
                     << ", name: " << table[i]->name
                     << ", address: " << table[i]->address << endl;
@@ -160,7 +162,7 @@ void menu(HashTable& table) {
                 cout << "abonement found: " << result->number << ", name: " << result->name << ", address: " << result->address << endl;
             }
             else {
-                cout << "abonement not found.\n";
+                cout << "abonement not found.\n";   
             }
         }
         else if (choice == 3) {
