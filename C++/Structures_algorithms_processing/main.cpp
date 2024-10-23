@@ -160,7 +160,8 @@ void autoFill(HashTable& table) {
 void menu(HashTable& table) {
     int choice;
     do {
-        cout << "\n1 - insert abonement\n2 - search abonement\n3 - remove abonement\n4 - display all abonements\n5 - display collision info\n6 - exit\n";
+        cout << "\n1 - insert abonement\n2 - search abonement\n3 - remove abonement";
+        cout << "\n4 - display all abonements\n5 - display collision info\n6 - exit\n";
         cout << "choose number: ";
         cin >> choice;
 
@@ -181,7 +182,8 @@ void menu(HashTable& table) {
             cin >> number;
             Abonement* result = table.search(number);
             if (result) {
-                cout << "abonement found: " << result->number << ", name: " << result->name << ", address: " << result->address << endl;
+                cout << "abonement found: " << result->number << ", name: " << result->name 
+                    << ", address: " << result->address << endl;
             }
             else {
                 cout << "abonement not found.\n";   
