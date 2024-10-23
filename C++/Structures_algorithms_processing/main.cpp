@@ -19,6 +19,7 @@ private:
     vector<Abonement*> table;//хеш-таблица
     int size;
     int count;
+    vector<int> collisionCount;//массив для хранения колва коллизий
 
     int hash1(int key) {
         return key % size;
@@ -34,12 +35,16 @@ private:
         size *= 2;//увеличиваем размер таблицы в 2 раза
         vector<Abonement*> oldTable = table;
 
+        vector<int> oldCollisions = collisionCount;//сохраняем старый массив коллизий
+
         table.clear();
         table.resize(size, nullptr);
+        collisionCount.clear();
+        collisionCount.resize(size, 0);
         count = 0;
 
         for (int i = 0; i < oldSize; i++) {
-            if (oldTable[i] != nullptr) {
+            if (oldTable[i] != nullptr && oldTable[i]->number != DELETED) {
                 insert(*oldTable[i]);//перезаполняем таблицу
             }
         }
@@ -49,6 +54,7 @@ public:
     //констурктор
     HashTable(int initialSize) : size(initialSize), count(0) {
         table.resize(size, nullptr);
+        collisionCount.resize(size, 0);//иИнициализируем массив коллизий
     }
 
     //вставка нового абонемента в таблицу
@@ -59,14 +65,21 @@ public:
 
         int index = hash1(abonement.number);
         int step = hash2(abonement.number);
+        bool collided = false;
 
-        while (table[index] != nullptr && table[index]->number != DELETED) {//пробирование пока место не найдем
+        //пробирование пока место не найдем
+        while (table[index] != nullptr && table[index]->number != DELETED) {
+            collided = true;
+            collisionCount[index]++; //увеличиваем количество коллизий для текущего индекса
             index = (index + step) % size;
         }
 
         if (table[index] == nullptr || table[index]->number == DELETED) {
             table[index] = new Abonement(abonement);
             count++;
+            if (collided) {
+                collisionCount[index]++;//фиксируем коллизию на конечной позиции
+            }
         }
     }
 
@@ -106,12 +119,21 @@ public:
             if (table[i] != nullptr && table[i]->number != DELETED) {
                 cout << "abonement: " << table[i]->number
                     << ", name: " << table[i]->name
-                    << ", address: " << table[i]->address << endl;
+                    << ", address: " << table[i]->address
+                    << ", collisions: " << collisionCount[i] << endl;//колво коллизий для ячейки
             }
         }
     }
 
-    //деструктор
+    void displayCollisions() {
+        cout << "\ncollision information:\n";
+        for (int i = 0; i < size; i++) {
+            if (collisionCount[i] > 0) {
+                cout << "index " << i << ": " << collisionCount[i] << " collisions\n";
+            }
+        }
+    }
+
     ~HashTable() {
         for (int i = 0; i < size; i++) {
             if (table[i] != nullptr) {
@@ -138,7 +160,7 @@ void autoFill(HashTable& table) {
 void menu(HashTable& table) {
     int choice;
     do {
-        cout << "\n1 - insert abonement\n2 - search abonement\n3 - remove abonement\n4 - display all abonements\n5 - exit\n";
+        cout << "\n1 - insert abonement\n2 - search abonement\n3 - remove abonement\n4 - display all abonements\n5 - display collision info\n6 - exit\n";
         cout << "choose number: ";
         cin >> choice;
 
@@ -174,7 +196,10 @@ void menu(HashTable& table) {
         else if (choice == 4) {
             table.display();
         }
-    } while (choice != 5);
+        else if (choice == 5) {
+            table.displayCollisions(); 
+        }
+    } while (choice != 6);
 }
 
 int main() {
