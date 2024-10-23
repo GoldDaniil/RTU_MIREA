@@ -21,11 +21,11 @@ private:
     int count;
     vector<int> collisionCount;//массив для хранения колва коллизий
 
-    int hash1(int key) {
+    int hash1(int key) {//начальный иднекс
         return key % size;
     }
 
-    int hash2(int key) {
+    int hash2(int key) {//вычисляем сдвиг
         return 1 + (key % (size - 1));
     }
 
@@ -64,7 +64,7 @@ public:
         }
 
         int index = hash1(abonement.number);
-        int step = hash2(abonement.number);
+        int step = hash2(abonement.number);//вычисляем сдвиг
         bool collided = false;
 
         //пробирование пока место не найдем
