@@ -7,6 +7,15 @@ begin
     y as 20;
     z as x plus y;
 
+    x as .5e+2
+
+    x as 10h34;
+    y as 20;
+    z as x plus y;
+    a as 5.5;
+    b as a div 2;
+    flag as true;
+
     a as 5.5;
     b as a div 2;
 
