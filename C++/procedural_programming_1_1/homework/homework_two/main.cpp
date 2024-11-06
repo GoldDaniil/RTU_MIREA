@@ -1,167 +1,145 @@
- #include<iostream>
- #include<math.h>
- #include<cmath>
- #include<stdio.h>
+#include <iostream>
+#include <cmath>
+#include <limits>
 
- using namespace std;
+using namespace std;
 
- int main () {
-     int i;
-     ///Task "Cone"
-     double visota, bolshoy_radius, radius, V, S, dlina_obrazueshey;
-     ///Task "Branching"
-     double arbitrary_a, argument_x, arbitrary_w, e;
-     ///Task "Function"
-     double arbitrary_b, arbitrary_y, arbitrary_x, function_z;
-     ///Task "Order"
-     double number_N;
-     ///The Tabulation task
-     double function_x, function_y;
+constexpr double PI = 3.141592653589793;
 
-     /////////////////////////////////////////////
-     ///Task "Cone"
-     while (true) {
-         cout << "vvedite visotu : " << endl;
-         if (!(cin >> visota)) {
-             cin.ignore();
-             cin.clear();
-             cout << "Error, you entered a non-numeric value!" << endl;
-             continue;
-         }
-         break;
-     }
-     while (true) {
-         cout << "vvedite bolshoy_radius : " << endl;
-         if (!(cin >> bolshoy_radius)) {
-             cin.ignore();
-             cin.clear();
-             cout << "Error, you entered a non-numeric value!" << endl;
-             continue;
-         }
-         break;
-     }
-     while (true) {
-         cout << "vvedite radius : " << endl;
-         if (!(cin >> radius)) {
-             cin.ignore();
-             cin.clear();
-             cout << "Error, you entered a non-numeric value!" << endl;
-             continue;
-         }
-         break;
-     }
+void cone_task();
+void branching_task();
+void function_task();
+void order_task();
+void tabulation_task();
+void clear_input();
+double get_positive_double(const string& prompt);
 
-     if ((radius > 1 and radius != 0) and (visota > 1 and visota != 0) and (bolshoy_radius > 1 and bolshoy_radius != 0)) {
-         dlina_obrazueshey = sqrt(pow(visota, 2) + pow((bolshoy_radius-radius), 2));
-     } else {
-         cout << "the root value must be greater than 0 and 1" << endl;
-     }
+int main() {
+    int choice;
 
-     if (visota != 0) {
-         V = (1/(3 * 3.14159265359 * visota)) * (pow(bolshoy_radius, 2) + bolshoy_radius * radius + (pow(radius, 2)));
-         cout << V << endl;
-         S = 3.14159265359*(pow(bolshoy_radius, 2) + (bolshoy_radius + radius)*dlina_obrazueshey + (pow(radius, 2)));
-         cout << S << endl << endl;
-     } else {
-         cout << "delit na nol nelyza! nelyza nayti V" << endl;
-         S = 3.14159265359*(pow(bolshoy_radius, 2) + (bolshoy_radius + radius)*dlina_obrazueshey + (pow(radius, 2)));
-         cout << S << endl << endl;
-     }
- /////////////////////////////////////////////
- ///    Task "Branching"
- ///    double arbitrary_a, argument_x, arbitrary_w, e;
-     while (true) {
-         cout << "enter arbitrary_a : " << endl;
-         if(!(cin >> arbitrary_a)) {
-             cin.clear();
-             cin.ignore();
-             continue;
-         }
-         break;
-     }
-     while (true) {
-         cout << "enter argument_x : " << endl;
-         if(!(cin >> argument_x)) {
-             cin.clear();
-             cin.ignore();
-             continue;
-         }
-         break;
-     }
+    while (true) {
+        cout << "\n=== task launcher ===\n";
+        cout << "1 - task 'cone'\n";
+        cout << "2 - task 'branching'\n";
+        cout << "3 - task 'function'\n";
+        cout << "4 - task 'order'\n";
+        cout << "5 - task 'tabulation'\n";
+        cout << "0 - exit\n";
+        cout << "choose a task to execute: ";
 
-     if ((abs(argument_x) < 1) and (argument_x >= 0)) {
-         arbitrary_w = arbitrary_a * log(arbitrary_x);
-         cout << arbitrary_w << endl;
-     } else if ((abs(argument_x) >= 1) and (argument_x >= 0)) {
-         arbitrary_w = sqrt(arbitrary_a - pow(arbitrary_x, 2));
-         cout << "arbitrary_w : " << arbitrary_w << endl << endl;
-     }
+        if (!(cin >> choice) || choice < 0 || choice > 5) {
+            cout << "enter a number between 0 and 5\n";
+            clear_input();
+            continue;
+        }
 
- /////////////////////////////////////////////
- ///Task "Function"
-     while (true) {
-         cout << "enter arbitrary_b: " << endl;
-         if (!(cin >> arbitrary_b)) {
-             cin.clear();
-             cin.ignore();
-             cout << "Error, you entered a non-numeric value!" << endl;
-             continue;
-         }
-         break;
-     }
-     while (true) {
-         cout << "enter arbitrary_y: " << endl;
-         if (!(cin >> arbitrary_y)) {
-             cin.clear();
-             cin.ignore();
-             cout << "Error, you entered a non-numeric value!" << endl;
-             continue;
-         }
-         break;
-     }
-     while (true) {
-         cout << "enter arbitrary_x: " << endl;
-         if (!(cin >> arbitrary_x)) {
-             cin.clear();
-             cin.ignore();
-             cout << "Error, you entered a non-numeric value!" << endl;
-             continue;
-         }
-         break;
-     }
-     if ((arbitrary_b - arbitrary_x) >= 0 and ((arbitrary_b - arbitrary_y) > 0)) {
-         function_z = log(arbitrary_b - arbitrary_y) * sqrt(arbitrary_b - arbitrary_x);
-         cout << function_z << endl << endl;
-     } else {
-         cout << "function z cannot be calculated " << endl;
-     }
+        switch (choice) {
+        case 1: cone_task(); break;
+        case 2: branching_task(); break;
+        case 3: function_task(); break;
+        case 4: order_task(); break;
+        case 5: tabulation_task(); break;
+        case 0: cout << "\nwhy?!\n"; return 0;
+        }
+    }
+}
 
-     /////////////////////////////////////////////
-     ///Task "Order"
+void cone_task() {
+    cout << "\n--- task: cone ---\n";
 
-     while (true) {
-         cout << "enter number_N : " << endl;
-         if (!(cin >> number_N) and (number_N <= 0)){
-             cin.clear();
-             cin.ignore();
-             continue;
-         }
-         break;
-     }
-     for (int i = number_N ; i < number_N + 10; i++ ) {
-         cout << i << endl;
-     }
-     /////////////////////////////////////////////
-     ///The Tabulation task
+    double height = get_positive_double("enter height: ");
+    double big_radius = get_positive_double("enter big radius: ");
+    double radius = get_positive_double("enter small radius: ");
 
-     for (i = -4; i <= 4; i += 0.5) {
-         if (i == 1) {
-             cout << "error, for x = 1 the denominator will be 0! " << endl;
-         } else {
-             cout << "";
-             function_y = (pow(i, 2) - 2 * i + 2) / (i - 1);
-             cout << function_y << endl << endl;
-         }
-     }
-    return 0;
- }
+    double slantHeight = sqrt(pow(height, 2) + pow(big_radius - radius, 2));
+    double volume = (PI * height / 3) * (pow(big_radius, 2) + big_radius * radius + pow(radius, 2));
+    double surfaceArea = PI * (pow(big_radius, 2) + (big_radius + radius) * slantHeight + pow(radius, 2));
+
+    cout << "volume: " << volume << "\nsurface area: " << surfaceArea << "\n\n";
+}
+
+void branching_task() {
+    cout << "\n--- task: branching ---\n";
+
+    double a = get_positive_double("enter arbitrary a: ");
+    double x = get_positive_double("enter argument x: ");
+    double w;
+
+    if (abs(x) < 1 && x >= 0) {
+        w = a * log(x);
+    }
+    else if (abs(x) >= 1 && x >= 0) {
+        w = sqrt(a - pow(x, 2));
+    }
+    else {
+        cout << "x is out of range for calculations\n";
+        return;
+    }
+
+    cout << "result (w): " << w << "\n\n";
+}
+
+void function_task() {
+    cout << "\n--- task: function ---\n";
+
+    double b = get_positive_double("enter arbitrary b: ");
+    double y = get_positive_double("enter arbitrary y: ");
+    double x = get_positive_double("enter arbitrary x: ");
+    double z;
+
+    if ((b - x) >= 0 && (b - y) > 0) {
+        z = log(b - y) * sqrt(b - x);
+        cout << "result (z): " << z << "\n\n";
+    }
+    else {
+        cout << "cannot compute z due to invalid input values\n";
+    }
+}
+
+void order_task() {
+    cout << "\n--- task: order ---\n";
+
+    int N;
+    cout << "enter number N (positive integer): ";
+    while (!(cin >> N) || N <= 0) {
+        cout << "enter a positive integer\n";
+        clear_input();
+    }
+
+    cout << "sequence starting from " << N << ":\n";
+    for (int i = N; i < N + 10; ++i) {
+        cout << i << " ";
+    }
+    cout << "\n\n";
+}
+
+void tabulation_task() {
+    cout << "\n--- task: tabulation ---\n";
+
+    for (double x = -4; x <= 4; x += 0.5) {
+        if (x == 1) {
+            cout << "x = " << x << ":error (denominator is zero)\n";
+        }
+        else {
+            double y = (pow(x, 2) - 2 * x + 2) / (x - 1);
+            cout << "x = " << x << ", y = " << y << "\n";
+        }
+    }
+    cout << "\n";
+}
+
+double get_positive_double(const string& prompt) {
+    double value;
+    while (true) {
+        cout << prompt;
+        if (cin >> value && value > 0) return value;
+
+        cout << "error\n";
+        clear_input();
+    }
+}
+
+void clear_input() {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
