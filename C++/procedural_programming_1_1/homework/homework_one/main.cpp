@@ -79,7 +79,6 @@ cout << "error!
     }
 }
 
-// Task 3: Solve Linear Equation bx + c = 0
 void solve_linear_equation() {
     double b, c;
 
