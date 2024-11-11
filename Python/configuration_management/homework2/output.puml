@@ -1,0 +1,7 @@
+@startuml
+"2e9a739\nDaniil Gold\n2024-11-09 19:38:46"
+"7c06677\nDaniil Gold\n2024-11-09 19:38:46"
+"2e9a739\nDaniil Gold\n2024-11-09 19:38:46" --> "7c06677\nDaniil Gold\n2024-11-09 19:38:46"
+"0de1151\nDaniil Gold\n2024-11-09 19:30:29"
+"7c06677\nDaniil Gold\n2024-11-09 19:38:46" --> "0de1151\nDaniil Gold\n2024-11-09 19:30:29"
+@enduml
