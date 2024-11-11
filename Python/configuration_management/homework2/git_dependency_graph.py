@@ -75,9 +75,9 @@ class GitDependencyGraph:
 
 
 if __name__ == "__main__":
-    repo_path = "C:\\Users\\Albina\\Desktop\\localip\\konfig\\homework2"
+    repo_path = "C:\\Users\\     \\Desktop\\localip\\konfig\\homework2"
     branch_name = "master"
-    output_file = "C:\\Users\\Albina\\Desktop\\localip\\konfig\\homework2\\output.puml"
+    output_file = "C:\\Users\\    \\Desktop\\localip\\konfig\\homework2\\output.puml"
 
     graph = GitDependencyGraph(repo_path, branch_name, output_file)
     graph.build_commit_graph()
