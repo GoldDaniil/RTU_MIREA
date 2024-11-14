@@ -1,3 +1,4 @@
+#верно
 class TaskOne:
     @staticmethod
     def precedence(op):
