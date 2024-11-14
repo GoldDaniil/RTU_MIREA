@@ -1,3 +1,4 @@
+#верно
 from collections import defaultdict, deque
 
 def check_states_input(prompt, valid_states=None):
