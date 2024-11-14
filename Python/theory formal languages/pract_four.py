@@ -1,5 +1,10 @@
-from collections import defaultdict, deque
+#баг : ожидаемый вывод(верный):  1, 12, 13, 3, 123 - мой вывод(неверный): 1, 3, 12, 13, 123
+#неверно : D(3, a) = 3    -  верно: D(13, a) = 123
+#неверно : D(3, b) = 3    -  верно: D(13, b) = 3
+#неверно : D(13, a) = 123   -  верно: D(3, a) = 3
+#неверно : D(13, b) = 3   - верно: D(3, b) = 3
 
+from collections import defaultdict, deque
 
 def check_states_input(prompt, valid_states=None):
     while True:
@@ -18,10 +23,8 @@ def check_states_input(prompt, valid_states=None):
         else:
             print("введи только числовые значения")
 
-
 def get_input(prompt):
     return input(prompt).strip().split()
-
 
 def check_input_alphabet(prompt):
     while True:
@@ -35,7 +38,6 @@ def check_input_alphabet(prompt):
             return set(user_input)
         else:
             print("введи только односимвольные буквы:")
-
 
 def get_transitions_input(prompt, states, alphabet):
     transitions = defaultdict(lambda: defaultdict(set))
@@ -62,7 +64,6 @@ def get_transitions_input(prompt, states, alphabet):
         transitions[state_from][symbol].add(state_to)
     return transitions
 
-
 def epsilon_closure(state_set, transitions):
     stack = list(state_set)
     closure = set(state_set)
@@ -75,14 +76,12 @@ def epsilon_closure(state_set, transitions):
                     stack.append(next_state)
     return closure
 
-
 def move(state_set, symbol, transitions):
     next_states = set()
     for state in state_set:
         if symbol in transitions[state]:
             next_states.update(transitions[state][symbol])
     return epsilon_closure(next_states, transitions)
-
 
 def nfa_to_dfa(states, alphabet, transitions, initial_states, final_states):
     dfa_states = {}
