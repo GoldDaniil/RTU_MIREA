@@ -1,18 +1,21 @@
 from collections import defaultdict
 
-def check_states_input(prompt):
+def check_states_input(prompt, valid_states=None):
     while True:
         user_input = input(prompt).strip().split()
 
-        if len(user_input) < 0:
-            print("введи мин")
+        if not user_input:
+            print("введи хотя бы одно состояние:")
             continue
 
-        if all(item.isdigit() for item in user_input):
-            return set(user_input)
+        if all(item.isdigit() for item in user_input):#все элементы - числа
+            user_set = set(user_input)
+            if valid_states and not user_set <= valid_states:#если допустимый набор - все введеннные состояния принадлежат набору
+                print("ошибка - Н")
+                continue
+            return user_set
         else:
-            print("тут только числовые значения")
-
+            print("введи только числовые значения")
 def get_input(prompt):
     return input(prompt).strip().split()
 
@@ -29,6 +32,38 @@ def check_input_alphabet(prompt):
         else:
             print("только односимвольные буквы")
 
+from collections import defaultdict
+
+def check_states_input(prompt, valid_states=None):
+    while True:
+        user_input = input(prompt).strip().split()
+
+        if not user_input:
+            print("введи хотя бы одно состояние")
+            continue
+
+        if all(item.isdigit() for item in user_input):
+            user_set = set(user_input)
+            if valid_states and not user_set <= valid_states:
+                print("ошибка - состояния не из допустимого набора")
+                continue
+            return user_set
+        else:
+            print("введи только числовые значения")
+
+def check_input_alphabet(prompt):
+    while True:
+        user_input = input(prompt).strip().split()
+
+        if len(user_input) < 2:
+            print("введи хотя бы два символа алфавита:")
+            continue
+
+        if all(item.isalpha() and len(item) == 1 for item in user_input):
+            return set(user_input)
+        else:
+            print("введи только односимвольные буквы:")
+
 def get_transitions_input(prompt, states, alphabet):
     transitions = defaultdict(lambda: defaultdict(set))
     print(prompt)
@@ -41,24 +76,18 @@ def get_transitions_input(prompt, states, alphabet):
 
         user_input = user_input.replace(' ', '')
         if user_input.count(',') != 2 or not user_input.startswith('(') or not user_input.endswith(')'):
-            print("поймал - формат ввода :(состояние, символ, следующее состояние)")
+            print("ошибка: формат ввода :(состояние, символ, следующее состояние)")
             continue
 
         user_input = user_input[1:-1]#убираем 0-ую и посл скобку
-        parts = user_input.split(',')
+        state_from, symbol, state_to = user_input.split(',')
 
-        if len(parts) != 3:
-            print("поймал- формат ввода должен содержать 3 элемента:(состояние, символ, следующее состояние)")
+        if state_from not in states or state_to not in states or symbol not in alphabet:
+            print("ошибка:состояние или символ не из допустимого набора")
             continue
-
-        state_from, symbol, state_to = parts
 
         transitions[state_from][symbol].add(state_to)
     return transitions
-
-
-
-
 
 def read_nfa(states, alphabet, transitions, initial_states, final_states):#нка параметры
     transition_input = get_input("")
