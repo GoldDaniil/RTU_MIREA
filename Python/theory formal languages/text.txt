@@ -9,7 +9,10 @@ begin
 
     x as .5e+2
 
-    x as 10h34;
+    x as 12h13;
+
+    x as 1.23e4;
+
     y as 20;
     z as x plus y;
     a as 5.5;
@@ -18,7 +21,7 @@ begin
 
     a as 5.5;
     b as a div 2;
-
+    c as '123565'
     flag as true;
 
     if x LT y then
