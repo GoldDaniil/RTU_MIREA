@@ -1,9 +1,3 @@
-#баг : ожидаемый вывод(верный):  1, 12, 13, 3, 123 - мой вывод(неверный): 1, 3, 12, 13, 123
-#неверно : D(3, a) = 3    -  верно: D(13, a) = 123
-#неверно : D(3, b) = 3    -  верно: D(13, b) = 3
-#неверно : D(13, a) = 123   -  верно: D(3, a) = 3
-#неверно : D(13, b) = 3   - верно: D(3, b) = 3
-
 from collections import defaultdict, deque
 
 def check_states_input(prompt, valid_states=None):
@@ -34,13 +28,13 @@ def check_input_alphabet(prompt):
             print("введи хотя бы два символа алфавита:")
             continue
 
-        if all(item.isalpha() and len(item) == 1 for item in user_input):
+        if all(item.isalpha() and len(item) == 1 for item in user_input):#проверка- все символы односимвольные и буквы
             return set(user_input)
         else:
             print("введи только односимвольные буквы:")
 
 def get_transitions_input(prompt, states, alphabet):
-    transitions = defaultdict(lambda: defaultdict(set))
+    transitions = defaultdict(lambda: defaultdict(set))#создаем структуру для хранения переходов
     print(prompt)
 
     while True:
@@ -49,7 +43,7 @@ def get_transitions_input(prompt, states, alphabet):
         if user_input.lower() == 'домой':
             break
 
-        user_input = user_input.replace(' ', '')
+        user_input = user_input.replace(' ', '')#убираем пробелы из ввода
         if user_input.count(',') != 2 or not user_input.startswith('(') or not user_input.endswith(')'):
             print("ошибка: формат ввода :(состояние, символ, следующее состояние)")
             continue
@@ -61,32 +55,32 @@ def get_transitions_input(prompt, states, alphabet):
             print("ошибка: состояние или символ не из допустимого набора")
             continue
 
-        transitions[state_from][symbol].add(state_to)
+        transitions[state_from][symbol].add(state_to)#добавляем переход в структуру transitions
     return transitions
 
 def epsilon_closure(state_set, transitions):
-    stack = list(state_set)
-    closure = set(state_set)
+    stack = list(state_set)#используем стек для обхода
+    closure = set(state_set)#создаем начальное замыкание
     while stack:
         state = stack.pop()
-        if '' in transitions[state]:
+        if '' in transitions[state]:#проверяем наличие переходов по эпсилон
             for next_state in transitions[state]['']:
-                if next_state not in closure:
+                if next_state not in closure:#добавляем в замыкание состояния - которых еще нет
                     closure.add(next_state)
                     stack.append(next_state)
     return closure
 
 def move(state_set, symbol, transitions):
-    next_states = set()
+    next_states = set()#создаем множество для хранения следующих состояний
     for state in state_set:
-        if symbol in transitions[state]:
+        if symbol in transitions[state]:#проверяем наличие переходов по символу
             next_states.update(transitions[state][symbol])
     return epsilon_closure(next_states, transitions)
 
 def nfa_to_dfa(states, alphabet, transitions, initial_states, final_states):
-    dfa_states = {}
-    dfa_transitions = {}
-    dfa_final_states = set()
+    dfa_states = {}#инициаллизация словарь для хранения состояний DFA
+    dfa_transitions = {}#инициализация словарь для хранения переходов DFA
+    dfa_final_states = set()#инициализация множество для конечных состояний DFA
 
     start_closure = frozenset(epsilon_closure(initial_states, transitions))
     dfa_states[start_closure] = ''.join(sorted(start_closure))
@@ -98,7 +92,7 @@ def nfa_to_dfa(states, alphabet, transitions, initial_states, final_states):
         dfa_transitions[current_name] = {}
 
         for symbol in sorted(alphabet):
-            next_state = frozenset(move(current, symbol, transitions))
+            next_state = frozenset(move(current, symbol, transitions))#вычисляем следующее состояние для символа
             if not next_state:
                 continue
 
@@ -107,27 +101,26 @@ def nfa_to_dfa(states, alphabet, transitions, initial_states, final_states):
                 dfa_states[next_state] = state_name
                 unmarked_states.append(next_state)
 
-            dfa_transitions[current_name][symbol] = dfa_states[next_state]
+            dfa_transitions[current_name][symbol] = dfa_states[next_state]#добавляем переход в DFA
             if next_state & final_states:
                 dfa_final_states.add(dfa_states[next_state])
 
     return dfa_states, dfa_transitions, dfa_states[start_closure], dfa_final_states
 
-
 def display_dfa(dfa_states, alphabet, dfa_transitions, initial_state, final_states):
     print("\nDFA:")
-    print("Set of states:", ', '.join(dfa_states.values()))
-    print("Input alphabet:", ', '.join(sorted(alphabet)))
-    print("State-transitions function:")
+    print("set of states:", ', '.join(dfa_states.values()))
+    print("input alphabet:", ', '.join(sorted(alphabet)))
+    print("state-transitions function:")
 
     for state in dfa_states.values():
         if state in dfa_transitions:
-            for symbol in sorted(alphabet):
+            for symbol in sorted(alphabet):#выводим переходы для каждого состояния и символа
                 if symbol in dfa_transitions[state]:
                     print(f"D({state}, {symbol}) = {dfa_transitions[state][symbol]}")
 
-    print("Initial state:", initial_state)
-    print("Final states:", ', '.join(sorted(final_states, key=lambda x: (len(x), x))))
+    print("initial state:", initial_state)
+    print("final states:", ', '.join(sorted(final_states, key=lambda x: (len(x), x))))
 
 def main():
     print("введи набор состояний:")
@@ -162,7 +155,6 @@ def main():
         dfa_initial_state,
         dfa_final_states
     )
-
 
 if __name__ == "__main__":
     main()
