@@ -47,7 +47,7 @@ def check_syntax(input_text):#проверка синтаксиса входно
             if not tag_stack or tag_stack.pop() != tag:
                 raise SyntaxError(f"ошибка синтаксиса - неверный закрывающий тег </{tag}>")
 
-    if tag_stack:  # теги остались в стеке
+    if tag_stack:#теги остались в стеке
         raise SyntaxError(f"ошибка синтаксиса - незакрытые теги: {tag_stack}")
 
     return True
