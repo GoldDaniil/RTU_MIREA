@@ -2,9 +2,7 @@
 
 ## описание
 алгоритм строит граф коммитов, анализируя файлы объектов (`.git/objects/`) и ссылки на ветки (`.git/refs/heads`). каждый узел графа представляет коммит, включая его хеш, 
-автора и дату. результат сохраняется в формате PlantUML, который можно визуализировать с помощью [PlantUML](https://plantuml.com) или установить плагин для JETBRAINS IDE
-(например PyCharm)
-[PlantUML](https://plugins.jetbrains.com/plugin/7017-plantuml-integration/versions/stable)
+автора и дату. результат сохраняется в формате PlantUML, который можно визуализировать с помощью [PlantUML](https://plantuml.com) или установить плагин для JETBRAINS IDE (например PyCharm) https://plugins.jetbrains.com/plugin/7017-plantuml-integration/versions/stable
 
 ## индивидуальный вариант
 ![image](https://github.com/user-attachments/assets/4fce165a-aa8e-4c16-bb54-8ac84f989e76)
