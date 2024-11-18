@@ -31,12 +31,13 @@
 
 1. клонируйте этот репозиторий или скопируйте код в вашу рабочую папку
 2. создайте виртуальное окружение и активируйте его или используйте уже существующее:
+   #для linux/macOS
    ```bash
 
-   #для linux/macOS
    python -m venv .venv
    source .venv/bin/activate
 
    #для Windows
+   ```bash
    python -m venv .venv
    .venv\Scripts\activate     
