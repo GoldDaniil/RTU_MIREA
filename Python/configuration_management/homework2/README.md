@@ -19,18 +19,18 @@ homework2/
 ```
 
 ## реализация
-```git_dependency_graph.py
 ![image](https://github.com/user-attachments/assets/30090f47-83ec-4e59-89d3-7856e4c98381)
 ![image](https://github.com/user-attachments/assets/6fcff08b-4c27-4c24-8a4b-ee4e45da4919)
 ![image](https://github.com/user-attachments/assets/13674125-e8b9-465b-b0fa-a1326ee64e15)
 ```
-
-```output.puml
-![image](https://github.com/user-attachments/assets/1ec241dd-b539-430a-bfc3-1265965ba7ea)
 ```
 
-```requirements.txt
+![image](https://github.com/user-attachments/assets/1ec241dd-b539-430a-bfc3-1265965ba7ea)
+```
+```
+
 gitpython
+```
 ```
 
 ## особенности
