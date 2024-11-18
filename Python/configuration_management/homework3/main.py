@@ -1,3 +1,4 @@
+#deal
 import re
 
 constants = {}#словарь - значения констант
@@ -47,7 +48,7 @@ def check_syntax(input_text):#проверка синтаксиса входно
             if not tag_stack or tag_stack.pop() != tag:
                 raise SyntaxError(f"ошибка синтаксиса - неверный закрывающий тег </{tag}>")
 
-    if tag_stack:#теги остались в стеке
+    if tag_stack:  # теги остались в стеке
         raise SyntaxError(f"ошибка синтаксиса - незакрытые теги: {tag_stack}")
 
     return True
@@ -58,15 +59,15 @@ def transform_to_output_format(input_text):#входной текст - выхо
     for line in input_text.splitlines():
         line = line.strip()
 
-        if line.startswith("*") or line.startswith("{{!") or line.endswith("}}"):#пропуск комментов
+        if line.startswith("*") or line.startswith("{{!") or line.endswith("}}"):# пропуск комментов
             output.append(line)
 
         elif re.match(r"\[\[(.*)\]\]", line):#строка - формат
             match = re.match(r"\[\[(.*)\]\]", line)
-            output.append(f"string: \"{match.group(1)}\"")
+            output.append(f"[[{match.group(1)}]]")#формат [[...]]
 
         elif line.startswith("<array>") and line.endswith("</array>"):#массив - формат
-            array_content = line[len("<array>"):-len("</array>")].strip()#внутри тега 
+            array_content = line[len("<array>"):-len("</array>")].strip()#внутри тега
 
             array_content = array_content.strip("'()\"")#убираем скобки - кавычки
             formatted_elements = []
@@ -93,7 +94,7 @@ def transform_to_output_format(input_text):#входной текст - выхо
                     while i < len(array_content) and array_content[i] != "\"":
                         i += 1
                     i += 1#скип завершающую кавычку
-                    formatted_elements.append(f"\"{array_content[str_start + 1:i - 1]}\"")#с кавычками
+                    formatted_elements.append(f"\"{array_content[str_start + 1:i - 1]}\"")# с кавычками
                     continue
 
                 i += 1
@@ -103,11 +104,11 @@ def transform_to_output_format(input_text):#входной текст - выхо
         elif re.match(r"^[a-z][a-z0-9_]*$", line):#имена
             output.append(f"name: {line}")
 
-        elif re.match(r"^\d+(\.\d+)?$", line):#числа - строки
+        elif re.match(r"^\d+(\.\d+)?$", line):#числа
             output.append(f"number: {line}")
 
         elif match := re.match(r"^\"(.*)\"$", line):#строка
-            output.append(f"string: \"{match.group(1)}\"")
+            output.append(f"[[{match.group(1)}]]")#изменяем формат строки
 
         elif match := re.match(r"^def (\w+) (.+);$", line):#обьявление конст
             name, value = match.groups()
