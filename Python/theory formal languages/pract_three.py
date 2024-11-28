@@ -1,10 +1,10 @@
 class LexicalAnalyzer:
-    def __init__(self, input_string):  # инициалзция
-        self.state = "H"  # начальное
-        self.buffer = ""  # буфер = накопление с лексемы
-        self.z = 1  # индекс лексемы
+    def __init__(self, input_string):#инициалзция
+        self.state = "H"#начальное
+        self.buffer = ""#буфер = накопление с лексемы
+        self.z = 1#индекс лексемы
         self.input_string = input_string
-        self.position = 0  # текущая позиция в строке
+        self.position = 0#текущая позиция в строке
 
     def out(self, code1, code2):
         print(f"OUT({code1}, {code2})")
@@ -17,21 +17,21 @@ class LexicalAnalyzer:
             char = self.input_string[self.position] if self.position < len(self.input_string) else None
             self.position += 1
 
-            if self.state == "H":  # начальное состояние
+            if self.state == "H":#начальное состояние
                 if char and (char.isalpha() or char.isdigit()):
                     self.buffer += char
                     self.state = "I"
                 elif char == "}":
                     self.out(2, 2)
-                    self.state = "V"  # в  V - завершение
+                    self.state = "V"# в  V - завершение
                 elif char == "/":
-                    self.state = "C1"  # в  C1 - начало коммента)
+                    self.state = "C1"# в  C1 - начало коммента)
                 elif char == "<":
-                    self.state = "M1"  # в  M1 - оператор
+                    self.state = "M1"# в  M1 - оператор
                 elif char == ">":
-                    self.state = "M2"  # в M2 - оператор
+                    self.state = "M2"# в M2 - оператор
 
-            elif self.state == "I":  # идентификатор
+            elif self.state == "I":# идентификатор
                 if char and char.isalnum():
                     self.buffer += char
                 else:
@@ -43,24 +43,24 @@ class LexicalAnalyzer:
                     self.z += 1
                     self.buffer = ""
                     self.state = "H"
-                    if char:  # возвращаем символ назад
+                    if char:#возвращаем символ назад
                         self.position -= 1
 
-            elif self.state == "C1":  # комментарий (начало)
+            elif self.state == "C1":#комментарий (начало)
                 if char == "*":
                     self.state = "C2"
                 else:
                     print("ошибка: некорректный комментарий")
                     self.state = "H"
 
-            elif self.state == "C2":  # тело комментария
+            elif self.state == "C2":#тело комментария
                 if char == "*":
                     self.state = "C3"
                 elif char is None:
                     print("ошибка: незакрытый комментарий")
                     self.state = "H"
 
-            elif self.state == "C3":  # завершение комментария
+            elif self.state == "C3":#завершение комментария
                 if char == "/":
                     self.state = "H"
                 elif char is None:
@@ -69,34 +69,34 @@ class LexicalAnalyzer:
                 else:
                     self.state = "C2"
 
-            elif self.state == "M1":  # оператор <
+            elif self.state == "M1":#оператор <
                 if char == "=":
                     self.out(2, 16)
                 elif char == ">":
                     self.out(2, 18)
                 else:
                     self.out(2, 21)
-                    self.position -= 1  # вернуться на символ назад
+                    self.position -= 1#вернуться на символ назад
                 self.state = "H"
 
-            elif self.state == "M2":  # оператор >
+            elif self.state == "M2":#оператор >
                 if char == "=":
                     self.out(2, 20)
                 else:
                     self.out(2, 22)
-                    self.position -= 1  # вернуться на символ назад
+                    self.position -= 1#вернуться на символ назад
                 self.state = "H"
 
-            elif self.state == "V":  # завершение
+            elif self.state == "V":#завершение
                 print("завершение обработки.")
                 break
 
             if char is None and self.state != "H":
-                # обрабатываем оставшиеся данные
+                #обрабатываем оставшиеся данные
                 if self.state == "I" and self.buffer:
-                    if self.buffer == "let":  # завершаем лекс
+                    if self.buffer == "let":#завершаем лекс
                         self.put(self.buffer)
-                        self.out(4, self.z)  # OUT
+                        self.out(4, self.z)#OUT
                     else:
                         self.out(1, self.z)
                     self.z += 1
