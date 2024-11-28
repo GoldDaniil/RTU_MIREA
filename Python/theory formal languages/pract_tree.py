@@ -1,180 +1,125 @@
-#полностью переработать
+class LexicalAnalyzer:
+    def __init__(self, input_string):#инициалзция
+        self.state = "H"#начальное 
+        self.buffer = ""#буфер = накопление с лексемы
+        self.z = 1#индекс лексемы
+        self.input_string = input_string
+        self.position = 0#текущая позиция в строке
 
-bin_num = ['1', '0', 'B', 'b']
-oct_num = ['0', '1', '2', '3', '4', '5', '6', '7', 'O', 'o']
-dec_num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'D', 'd']
-hex_num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f', 'H', 'h']
-real_num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'e', 'E']
-keywords = ["program", "var", "begin", "end", "integer", "real", "boolean",
-            "if", "then", "else", "for", "to", "do", "while", "read", "write",
-            "as", "plus", "min", "or", "mult", "div", "and", "NE", "EQ", "LT",
-            "LE", "GT", "GE"]
+    def out(self, code1, code2):
+        print(f"OUT({code1}, {code2})")#OUT
 
-delimiters = [',', ';', '(', ')', ':']
+    def put(self, lexeme):
+        print(f"PUT({lexeme})")#PUT
 
-#функция для обработки разделителей
-def process_delimiter(c):
-    if c in delimiters:
-        tok = token(Toknames.DELIM, c)
-        add_token(tok)
+    def process(self):#обработка строки
+        while self.position < len(self.input_string):
+            char = self.input_string[self.position]
+            self.position += 1
 
-class States:
-    H = "H"#начальное состояние
-    ID = "ID"#идентификатор
-    NM = "NM"#номер
-    ASGN = "ASGN"#присваивание
-    DLM = "DLM"#разделитель
-    COMM = "COMM"#комментарий
-    ERR = "ERR"#ошибка
+            if self.state == "H":
+                if char.isalpha() or char.isdigit():
+                    self.buffer += char
+                    self.state = "I"# в I
+                elif char == "}":
+                    self.out(2, 2)
+                    self.state = "V"#в  V - завершение
+                elif char == "/":
+                    self.state = "C1"#в  C1 - начало коммента)
+                elif char == "<":
+                    self.state = "M1"#в  M1 - оператор
+                elif char == ">":
+                    self.state = "M2"#в M2 - оператор
 
-class Toknames:
-    KWORD = "KWORD"
-    IDENT = "IDENT"
-    NUM = "NUM"
-    OPER = "OPER"
-    DELIM = "DELIM"
-    ERR = "ERR"#
+            elif self.state == "V":#заверш обработку
+                print("end")
+                break
 
-class token:
-    def __init__(self, token_name, token_value):
-        self.token_name = token_name
-        self.token_value = token_value
-
-class LexemeTable:
-    def __init__(self, tok=None):
-        self.tok = tok
-        self.next = None
-
-lt = None
-lt_head = None
-
-def is_kword(id):
-    return id in keywords
-
-def add_token(tok):
-    global lt, lt_head
-    new_entry = LexemeTable(tok)
-    if lt is None:
-        lt = new_entry#первый токен добавляется в таблицу лексем
-        lt_head = new_entry
-    else:
-        lt.next = new_entry
-        lt = new_entry
-
-def lexer(filename):#лекс анализ файла
-    try:
-        with open(filename, "r") as fd:
-            CS = States.H
-            c = fd.read(1)
-            while c:
-                if CS == States.H:
-                    while c in [' ', '\t', '\n']:
-                        c = fd.read(1)
-                    if c.isalpha():
-                        CS = States.ID
-                    elif c.isdigit() or c == '.':
-                        CS = States.NM
-                    elif c == ':':
-                        CS = States.ASGN
-                    elif c == '{':
-                        CS = States.COMM
-                        c = fd.read(1)
-                    elif c in [',', ';', '(', ')', '"']:
-                        tok = token(Toknames.DELIM, c)
-                        add_token(tok)
-                        c = fd.read(1)
+            elif self.state == "I":# I - идент
+                if char.isalnum():
+                    self.buffer += char#эд символ в буфер
+                else:
+                    if self.buffer == "let":#завершаем лекс
+                        self.put(self.buffer)
+                        self.out(4, self.z)#OUT
+                        self.z += 1
                     else:
-                        CS = States.DLM
-                elif CS == States.ASGN:
-                    colon = c
-                    c = fd.read(1)
-                    if c == '=':
-                        tok = token(Toknames.OPER, ":=")
-                        add_token(tok)
-                        c = fd.read(1)
-                        CS = States.H
-                    else:
-                        tok = token(Toknames.OPER, ":")
-                        add_token(tok)
-                        CS = States.H
-                elif CS == States.DLM:
-                    if c in ['+', '-', '*', '/', '!', '=', '<', '>', '&', '|', '~']:
-                        buf = c
-                        c = fd.read(1)
-                        if buf == '=' and c == '=':
-                            buf += c
-                            tok = token(Toknames.OPER, buf)
-                            add_token(tok)
-                            c = fd.read(1)
-                        else:
-                            tok = token(Toknames.OPER, buf)
-                            add_token(tok)
-                        CS = States.H
-                    else:
-                        print(f"\nunknown character: {c}")
-                        c = fd.read(1)
-                        CS = States.ERR
-                elif CS == States.COMM:
-                    while c:
-                        if c == '}':
-                            c = fd.read(1)
-                            CS = States.H
-                            break
-                        c = fd.read(1)
-                elif CS == States.ERR:
-                    CS = States.H
-                elif CS == States.ID:
-                    buf = c
-                    c = fd.read(1)
-                    while c.isalnum() or c == '_':
-                        buf += c
-                        c = fd.read(1)
-                    if is_kword(buf):
-                        tok = token(Toknames.KWORD, buf)
-                    else:
-                        tok = token(Toknames.IDENT, buf)
-                    add_token(tok)
-                    CS = States.H
+                        self.out(1, self.z)#OUT для обычной лексемы
+                        self.z += 1
+                    self.buffer = ""
+                    self.state = "H"
 
-                elif CS == States.NM:
-                    buf = ''
-                    while c.isdigit() or c in ['B', 'O', 'D', 'H', '.', 'b', 'o', 'd', 'h']:
-                        buf += c
-                        c = fd.read(1)
+                    if char != " " and not char.isalnum():#не   и не идент часть
+                        if self.buffer:
+                            self.out(1, self.z)
+                            self.buffer = ""
+                    if char != " ":
+                        self.position -= 1
 
-                    #проверка на валидность формата числа
-                    if buf[-1].lower() in ['b', 'o', 'd', 'h'] and buf[:-1].isdigit():
-                        tok = token(Toknames.NUM, buf)
-                    elif buf.isdigit() or '.' in buf:
-                        tok = token(Toknames.NUM, buf)
-                    else:
-                        tok = token(Toknames.ERR, buf)#формат нен слслответсувует числу
+            elif self.state == "C1":
+                if char == "*":
+                    self.state = "C2"#в C2
 
-                    add_token(tok)
-                    CS = States.H
+            elif self.state == "C2":
+                if char == "*":
+                    self.state = "C3"#в C3
+                elif char != "}":
+                    self.state = "C2"#остаетмся в C2
+                else:
+                    self.state = "ER"#в  ER (ошибка)
 
-    except FileNotFoundError:
-        print(f"\ncannot open file {filename}.\n")
+            elif self.state == "C3":#C3
+                if char == "/":
+                    self.state = "H"#в начальное H
+                else:
+                    self.state = "C2"#в  C2 
 
-        return -1
+            elif self.state == "ER":#ER (ошибка)
+                print("Ошибка: некорректный комментарий")
+                self.state = "H"#в H
 
+            elif self.state == "M1":#M1 (оператор <)
+                if char == "=":
+                    self.out(2, 16)
+                elif char == ">":
+                    self.out(2, 18)
+                else:
+                    self.out(2, 21)
+                self.state = "H"#в начальное  H
 
-def print_tokens(lt_head):
-    current = lt_head
+            elif self.state == "M2":#M2 (оператор >)
+                if char == "=":
+                    self.out(2, 20)
+                else:
+                    self.out(2, 22)
 
-    while current:
-        print(f"token name: {current.tok.token_name}, token value: {current.tok.token_value}")
+                if self.buffer:
+                    self.out(1, self.z)
+                self.state = "H"
 
-        current = current.next
+#input_string = "a < b"
+#input_string = "varName123 another_var"
+#input_string = "let > x"
+#input_string = "a <= b"
 
-def main():
-    filename = "text.txt"
-    result = lexer(filename)
-    if result == -1:
-        print("lexical analysis failed")
-    else:
-        print("\nlexical analysis successful")
-        print_tokens(lt_head)
+input_string = "a <> b"#не до конца
 
-if __name__ == "__main__":
-    main()
+#input_string = "/* комментарий */ let x"#выводится не до конца
+#input_string = "/* незакрытый комментарий let x"#баг - не выводится
+
+#input_string = "a < 100}"
+#input_string = "a >= b}"
+#input_string = "a *"
+#input_string = "123abc"   # баг - не выводится
+#input_string = "}"
+
+#input_string = "let /* коммент */ var123 > b <="
+#PUT(let)
+#OUT(4, 1)
+#OUT(1, 2)
+#OUT(2, 22)
+#OUT(1, 3)
+#OUT(2, 16)
+
+lexer = LexicalAnalyzer(input_string)
+lexer.process()
