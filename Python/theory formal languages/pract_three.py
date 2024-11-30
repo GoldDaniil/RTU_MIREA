@@ -1,132 +1,531 @@
-class LexicalAnalyzer:
-    def __init__(self, input_string):#инициалзция
-        self.state = "H"#начальное
-        self.buffer = ""#буфер = накопление с лексемы
-        self.z = 1#индекс лексемы
-        self.input_string = input_string
-        self.position = 0#текущая позиция в строке
+RESERVED_WORDS = {
+    "read": 1, "write": 2, "if": 3, "then": 4, "else": 5, "for": 6, "to": 7,
+    "while": 8, "do": 9, "true": 10, "false": 11, "or": 12, "and": 13, "not": 14, "as": 15
+}
 
-    def out(self, code1, code2):
-        print(f"OUT({code1}, {code2})")
+DELIMITERS = {
+    "{": 1, "}": 2, "%": 3, "!": 4, "$": 5, ",": 6, ";": 7, "[": 8, "]": 9,
+    ":": 10, "(": 11, ")": 12, "+": 13, "-": 14, "*": 15, "/": 16, "=": 17,
+    "<>": 18, ">": 19, "<": 20, "<=": 21, ">=": 22, "/*": 23, "*/": 24
+}
 
-    def put(self, lexeme):
-        print(f"PUT({lexeme})")
+def is_letter(ch):
+    return ch.isalpha()
 
-    def process(self):
-        while self.position <= len(self.input_string):
-            char = self.input_string[self.position] if self.position < len(self.input_string) else None
+def is_digit(ch):
+    return ch.isdigit()
+
+def is_hex_digit(ch):
+    return ch in "0123456789ABCDEFabcdef"
+
+class LexerState:
+    def __init__(self):
+        self.current_state = "H"
+        self.buffer = ""
+        self.current_char = None
+        self.position = 0
+        self.input_text = ""
+        self.output = []
+
+    def set_input(self, input_text):
+        self.input_text = input_text + "\n" 
+        self.position = 0
+
+    def get_char(self):
+        if self.position < len(self.input_text):
+            self.current_char = self.input_text[self.position]
             self.position += 1
+        else:
+            self.current_char = None
 
-            if self.state == "H":#начальное состояние
-                if char and (char.isalpha() or char.isdigit()):
-                    self.buffer += char
-                    self.state = "I"
-                elif char == "}":
-                    self.out(2, 2)
-                    self.state = "V"# в  V - завершение
-                elif char == "/":
-                    self.state = "C1"# в  C1 - начало коммента)
-                elif char == "<":
-                    self.state = "M1"# в  M1 - оператор
-                elif char == ">":
-                    self.state = "M2"# в M2 - оператор
+    def add_to_buffer(self):
+        self.buffer += self.current_char
 
-            elif self.state == "I":# идентификатор
-                if char and char.isalnum():
-                    self.buffer += char
+    def clear_buffer(self):
+        self.buffer = ""
+
+    def out(self, table, index):
+        self.output.append((table, index))
+
+    def look(self, table):
+        if self.buffer in table:
+            return table[self.buffer]
+        return 0
+
+    def put(self, table):
+        if self.buffer not in table:
+            table[self.buffer] = len(table) + 1
+        return table[self.buffer]
+
+def lexical_analysis(input_text):
+    state = LexerState()
+    state.set_input(input_text)
+
+    while state.current_state != "V":
+        state.get_char()
+        
+        if state.current_state == "H":
+            if state.current_char is None:
+                break  
+            if state.current_char.isspace():
+                continue  
+            elif is_letter(state.current_char):
+                state.clear_buffer()
+                state.add_to_buffer()
+                state.current_state = "I"
+            elif state.current_char == "{":
+                state.out(2, DELIMITERS["{"])
+            elif state.current_char == "}":
+                state.out(2, DELIMITERS["}"])
+            elif state.current_char == "/":
+                state.current_state = "C1"
+            elif state.current_char == "<":
+                state.current_state = "M1"
+            elif state.current_char == ">":
+                state.current_state = "M2"
+            elif is_digit(state.current_char):
+                if state.current_char in "01":
+                    state.current_state = "N2"
+                elif state.current_char in "234567":
+                    state.current_state = "N8"
+                elif state.current_char in "89":
+                    state.current_state = "N10"
+            elif state.current_char in "ABCDEFabcdef":
+                state.current_state = "N16"
+            elif state.current_char in "Ee":
+                state.current_state = "E11"
+            elif state.current_char == "*":
+                state.current_state = "P1"
+
+        elif state.current_state == "I":
+            if is_letter(state.current_char) or is_digit(state.current_char):
+                state.add_to_buffer()
+            else:
+                z = state.look(RESERVED_WORDS)
+                if z != 0:
+                    state.out(1, z)
                 else:
-                    if self.buffer == "let":
-                        self.put(self.buffer)
-                        self.out(4, self.z)
-                    else:
-                        self.out(1, self.z)
-                    self.z += 1
-                    self.buffer = ""
-                    self.state = "H"
-                    if char:#возвращаем символ назад
-                        self.position -= 1
+                    z = state.put(RESERVED_WORDS)#или таблица идентификаторов
+                    state.out(4, z)
+                state.current_state = "H"
 
-            elif self.state == "C1":#комментарий (начало)
-                if char == "*":
-                    self.state = "C2"
+        elif state.current_state == "C1":
+            if state.current_char == "*":
+                state.current_state = "C2"
+            else:
+                state.out(2, DELIMITERS["/"])
+                state.current_state = "H"
+
+        elif state.current_state == "C2":
+            if state.current_char == "*":
+                state.current_state = "C3"
+            elif state.current_char is None:
+                raise ValueError("... EOF in comment")
+            else:
+                state.current_state = "C2"
+
+        elif state.current_state == "C3":
+            if state.current_char == "/":
+                state.current_state = "H"
+            elif state.current_char is None:
+                raise ValueError("... EOF in comment")
+            else:
+                state.current_state = "C2"
+
+        elif state.current_state == "M1":
+            if state.current_char == ">":
+                state.out(2, DELIMITERS["<>"])
+                state.current_state = "H"
+            elif state.current_char == "=":
+                state.out(2, DELIMITERS["<="])
+                state.current_state = "H"
+            else:
+                state.out(2, DELIMITERS["<"])
+                state.current_state = "H"
+
+        elif state.current_state == "M2":
+            if state.current_char == "=":
+                state.out(2, DELIMITERS[">="])
+                state.current_state = "H"
+            else:
+                state.out(2, DELIMITERS[">"])
+                state.current_state = "H"
+
+        elif state.current_state == "N2":
+            if state.current_char in "01":
+                state.add_to_buffer()
+            else:
+                if all(ch in "01" for ch in state.buffer): 
+                    state.out(3, int(state.buffer, 2))#бинарное значение
                 else:
-                    print("ошибка: некорректный комментарий")
-                    self.state = "H"
+                    raise ValueError(f"err binary number: {state.buffer}")
+                state.current_state = "H"
+                state.position -= 1#возврат символа для повторной обработки
 
-            elif self.state == "C2":#тело комментария
-                if char == "*":
-                    self.state = "C3"
-                elif char is None:
-                    print("ошибка: незакрытый комментарий")
-                    self.state = "H"
-
-            elif self.state == "C3":#завершение комментария
-                if char == "/":
-                    self.state = "H"
-                elif char is None:
-                    print("ошибка: незакрытый комментарий")
-                    self.state = "H"
+        elif state.current_state == "N8":
+            if state.current_char in "01234567":
+                state.add_to_buffer()
+            else:
+                if all(ch in "01234567" for ch in state.buffer):
+                    state.out(3, int(state.buffer, 8))#восьмеричное значение
                 else:
-                    self.state = "C2"
+                    raise ValueError(f"err octal number: {state.buffer}")
+                state.current_state = "H"
 
-            elif self.state == "M1":#оператор <
-                if char == "=":
-                    self.out(2, 16)
-                elif char == ">":
-                    self.out(2, 18)
+        elif state.current_state == "N10":
+            if is_digit(state.current_char):
+                state.add_to_buffer()
+            else:
+                if state.buffer.isdigit():  
+                    state.out(3, int(state.buffer, 10))  
                 else:
-                    self.out(2, 21)
-                    self.position -= 1#вернуться на символ назад
-                self.state = "H"
+                    raise ValueError(f"err decimal number: {state.buffer}")
+                state.current_state = "H"
 
-            elif self.state == "M2":#оператор >
-                if char == "=":
-                    self.out(2, 20)
+        elif state.current_state == "N16":
+            if is_hex_digit(state.current_char):
+                state.add_to_buffer()
+            else:
+                if all(ch in "0123456789ABCDEFabcdef" for ch in state.buffer): 
+                    state.out(3, int(state.buffer, 16)) 
                 else:
-                    self.out(2, 22)
-                    self.position -= 1#вернуться на символ назад
-                self.state = "H"
+                    raise ValueError(f"err hexadecimal number: {state.buffer}")
+                state.current_state = "H"
 
-            elif self.state == "V":#завершение
-                print("завершение обработки.")
-                break
+        elif state.current_state == "E11":
+            if state.current_char in "Ee":
+                state.add_to_buffer()
+            else:
+                state.out(3, float(state.buffer))#экспоненциальная запись
+                state.current_state = "H"
 
-            if char is None and self.state != "H":
-                #обрабатываем оставшиеся данные
-                if self.state == "I" and self.buffer:
-                    if self.buffer == "let":#завершаем лекс
-                        self.put(self.buffer)
-                        self.out(4, self.z)#OUT
-                    else:
-                        self.out(1, self.z)
-                    self.z += 1
-                elif self.state in {"M1", "M2"}:
-                    print("ошибка: незавершённый оператор")
-                elif self.state in {"C2", "C3"}:
-                    print("ошибка: незакрытый комментарий")
-                break
+        elif state.current_state == "P1":
+            if state.current_char == "*":
+                state.add_to_buffer()
+            else:
+                state.out(2, DELIMITERS["*"])
+                state.current_state = "H"
 
+        elif state.current_state == "N2":
+            if state.current_char in "01":
+                state.add_to_buffer()
+            elif state.current_char in "Bb":
+                state.add_to_buffer()
+                state.gc()  
+                state.current_state = "B"
+            elif state.current_char in "234567":
+                state.add_to_buffer()
+                state.gc()#переключение состояния
+                state.current_state = "N8"
+            elif state.current_char in "Oo":
+                state.gc()
+                state.current_state = "O"
+            elif state.current_char in "Hh":
+                state.current_state = "HX"
+            elif state.current_char in "Dd":
+                state.current_state = "D"
+            elif state.current_char in "ABCDEFabcdef" or state.current_char in "Ff":
+                state.add_to_buffer()
+                state.gc() 
+                state.current_state = "N16"
+            elif state.current_char in "89":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "N10"
+            elif state.current_char == "*":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "P1"
+            elif state.current_char in "Ee":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "E11"
+            elif state.current_char.isalpha():
+                raise ValueError(f"... '{state.current_char}' in binary context")
+            else:
+                raise ValueError(f"err tsnst from N2 with character '{state.current_char}'")
 
-# input_string = "a < b"
-# input_string = "varName123 another_var"
-# input_string = "let > x"
-# input_string = "a <= b"
+        elif state.current_state == "B":
+            if state.current_char.isalpha() and state.current_char not in "AFH":
+                raise ValueError(f"err character '{state.current_char}' in state B")
+            elif state.current_char in "Hh":
+                state.current_state = "HX"
+            elif state.current_char in "ABCDEFabcdef":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "N16"
+            elif state.current_char in "Dd":
+                state.current_state = "D"
+            elif state.current_char is None:
+                state.translate(2)
+                state.put("TN")
+                state.out(3, len(state.buffer))  #вывод
+                state.current_state = "H"
 
-# input_string = "/* комментарий */ let x"#выводится не до конца
-# input_string = "/* незакрытый комментарий let x"#баг - не выводится
+        elif state.current_state == "O":
+            if state.current_char in "Oo":
+                state.gc()
+                state.current_state = "N8"
+            elif state.current_char in "Dd":
+                state.current_state = "D"
+            elif state.current_char.isalpha() or is_digit(state.current_char):
+                raise ValueError(f"err character '{state.current_char}' in state O")
+            elif state.current_char in "89":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "N10"
+            elif state.current_char in "ABCDEFabcdef":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "N16"
+            elif state.current_char in "Ee":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "E11"
+            elif state.current_char == "*":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "P1"
 
-# input_string = "a < 100}"
-# input_string = "a >= b}"
-# input_string = "a *"
-# input_string = "123abc"   # баг - не выводится
-# input_string = "}"
+        elif state.current_state == "N8":
+            if state.current_char in "01234567":
+                state.add_to_buffer()
+                state.gc()
+            elif state.current_char in "Oo":
+                state.gc()
+                state.current_state = "O"
+            elif state.current_char in "89":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "N10"
+            elif state.current_char in "Dd":
+                state.current_state = "D"
+            elif state.current_char in "Hh":
+                state.gc()
+                state.current_state = "HX"
+            elif state.current_char in "ABCDEFabcdef":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "N16"
+            elif state.current_char in "Ee":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "E11"
+            elif state.current_char == "*":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "P1"
+            else:
+                raise ValueError(f"err tsnst from N8 with character '{state.current_char}'")
 
-# PUT(let)
-# OUT(4, 1)
-# OUT(1, 2)
-# OUT(2, 22)
-# OUT(1, 3)
-# OUT(2, 16)
-input_string = "let /* комментарий */ var123 > b <="
-lexer = LexicalAnalyzer(input_string)
-lexer.process()
+        elif state.current_state == "N10":
+            if state.current_char in "Hh":
+                state.gc()
+                state.current_state = "HX"
+            elif state.current_char in "ABCDEFabcdef":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "N16"
+            elif state.current_char in "Dd":
+                state.current_state = "D"
+            elif state.current_char in "Ee":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "E11"
+            elif state.current_char == "*":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "P1"
+            else:
+                raise ValueError(f"err tsnst from N10 with character '{state.current_char}'")
+
+        elif state.current_state == "D":
+            if state.current_char in "89":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "N10"
+            elif state.current_char in "Hh":
+                state.gc()
+                state.current_state = "HX"
+            elif state.current_char in "ABCDEFabcdef":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "N16"
+            elif state.current_char in "Ee":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "E11"
+            elif state.current_char == "*":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "P1"
+            else:
+                raise ValueError(f"err tsnst from D with character '{state.current_char}'")
+            
+        elif state.current_state == "N16":
+            if state.current_char in "Hh":
+                state.gc()
+                state.current_state = "HX"
+            elif state.current_char in "ABCDEFabcdef":
+                state.add_to_buffer()
+                state.gc()
+            else:
+                raise ValueError(f"err tsnst from N16 with character '{state.current_char}'")
+
+        elif state.current_state == "HX":
+            if state.current_char.isalpha() or state.current_char.isdigit():
+                state.gc()
+                state.current_state = "Er"
+            elif state.current_char in "Hh":
+                state.gc()
+                state.current_state = "N16"
+            else:
+                raise ValueError(f"err tsnst from HX with character '{state.current_char}'")
+
+        elif state.current_state == "E11":
+            if state.current_char.isdigit():
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "E12"
+            elif state.current_char.isalpha() or state.current_char == ".":
+                state.gc()
+                state.current_state = "ER"
+            elif state.current_char in "+-":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "ZN"
+            else:
+                raise ValueError(f"err tsnst from E11 with character '{state.current_char}'")
+
+        elif state.current_state == "E12":
+            if state.current_char.isdigit():
+                state.add_to_buffer()
+                state.gc()
+            elif state.current_char.isalpha() or state.current_char in "AFH":
+                state.current_state = "ER"
+            elif state.current_char == "H":
+                state.convert()
+                state.put("TN")
+                state.out(3, state.buffer)
+            else:
+                raise ValueError(f"err tsnst from E12 with character '{state.current_char}'")
+
+        elif state.current_state == "E13":
+            if state.current_char.isdigit():
+                state.add_to_buffer()
+                state.gc()
+            elif state.current_char.isalpha() or state.current_char in "AFH":
+                state.current_state = "ER"
+            elif state.current_char == "ZN":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "E13"
+            elif state.current_char == "H":
+                state.convert()
+                state.put("TN")
+                state.out(3, state.buffer)
+            else:
+                raise ValueError(f"err tsnst from E13 with character '{state.current_char}'")
+
+        elif state.current_state == "ZN":
+            if state.current_char.isdigit():
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "E13"
+            elif state.current_char.isalpha() or state.current_char in "AFH":
+                state.current_state = "ER"
+            elif state.current_char == "H":
+                state.convert()
+                state.put("TN")
+                state.out(3, state.buffer)
+            else:
+                raise ValueError(f"err tsnst from ZN with character '{state.current_char}'")
+            
+        elif state.current_state == "P1":
+            if state.current_char.isdigit():
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "P2"
+            else:
+                state.current_state = "Er"
+
+        # добавить еще
+        elif state.current_state == "P2":
+            if state.current_char.isdigit():
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "P2"
+            elif state.current_char in "Ee":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "E21"
+            else:
+                state.current_state = "Er"
+                
+        elif state.current_state == "E21":
+            if state.current_char.isdigit():
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "E22"
+            elif state.current_char in "+-":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "ZN"
+            elif state.current_char in "Ee":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "P2"
+            else:
+                state.current_state = "ER"
+                
+        elif state.current_state == "E22":
+            if state.current_char.isdigit():
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "E22"
+            elif state.current_char in "Ee":
+                state.add_to_buffer()
+                state.gc()
+                state.current_state = "E21"
+            elif state.current_char == "H":
+                state.convert()
+                state.put("TN")
+                state.out(3, state.buffer)
+            elif state.current_char in "let.":
+                state.current_state = "ER"
+            else:
+                state.current_state = "ER"
+                
+        elif state.current_state == "ZN":
+            if state.current_char == "+":
+                state.gc()
+                state.out(2, state.buffer)
+                state.current_state = "Z!=0"
+            elif state.current_char == "-":
+                state.gc()
+                state.current_state = "ER"
+            else:
+                raise ValueError(f"err tsnst from ZN with character '{state.current_char}'")
+            
+        elif state.current_state == "Z!=0":
+            if state.current_char == "+":
+                state.gc()
+                state.out(2, state.buffer)
+            elif state.current_char == "-":
+                state.current_state = "ER"
+            else:
+                raise ValueError(f"err tsnst from Z!=0 with character '{state.current_char}'")
+            
+        elif state.current_state == "OG":
+            if state.current_char != "0":
+                state.look("TL")
+            else:
+                raise ValueError(f"err tsnst from OG with character '{state.current_char}'")
+            
+        return state.output
+
+if __name__ == "__main__":
+    input_program = "a1b2c3"
+
+    result = lexical_analysis(input_program)
+    print(result)
