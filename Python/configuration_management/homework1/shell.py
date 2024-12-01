@@ -2,7 +2,10 @@ import os
 import subprocess
 import shutil
 import datetime
+import shell_gui
 from vfs import VFS
+import tkinter as tk
+from tkinter import font
 
 class Shell:
     def __init__(self, config):
@@ -11,6 +14,7 @@ class Shell:
         self.current_path = '/'
         self.user = config['user']
         self.host = config['host']
+        self.shell_gui = shell_gui
 
     def execute(self, command):
         parts = command.strip().split()
@@ -80,12 +84,22 @@ class Shell:
 
             self.vfs.delete_file(source)#удаляем исходный файл
 
-            return f"Moved {source} to {destination}"
+            return f"moved {source} to {destination}"
         except Exception as e:
             return f"mv: error moving file: {str(e)}"
 
     def clear(self):
-        return "\033c"#ANSI
+        if self.shell_gui:
+            self.shell_gui.clear_gui_output()
+
+        if os.name == 'nt':#windows
+            os.system('cls')
+            os.system('cls')#доп очистка
+        else:#linux/macOS
+            os.system('clear')
+            os.system('clear')#доп очистка
+
+        return ''
 
     def who(self):
         try:
@@ -104,4 +118,3 @@ class Shell:
             return f"wc: file '{filename}' not found"
         except Exception as e:
             return f"wc: error processing file '{filename}': {str(e)}"
-
