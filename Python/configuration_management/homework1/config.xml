@@ -1,0 +1,5 @@
+<config>
+    <user>user1</user>
+    <host>localhost</host>
+    <vfs_path>test.zip</vfs_path>
+</config>
