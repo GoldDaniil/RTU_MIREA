@@ -36,7 +36,14 @@ name_1
 "string_value"
 end
 ```
+
+<img width="639" alt="Screenshot 2024-12-02 at 10 28 51" src="https://github.com/user-attachments/assets/a0abdfd1-285c-4260-91c6-c275a0b56980">
+
+
+
 ### выходные данные:
+
+
 
 выходной текст:
 
@@ -49,6 +56,5 @@ name: name_1
 number: 42
 [[string_value]]
 
-<img width="730" alt="Screenshot 2024-12-02 at 10 26 36" src="https://github.com/user-attachments/assets/84001ed4-4fd9-4943-b38f-69d92957c2d2">
 
 
