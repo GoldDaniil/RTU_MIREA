@@ -49,6 +49,6 @@ name: name_1
 number: 42
 [[string_value]]
 
+<img width="730" alt="Screenshot 2024-12-02 at 10 26 36" src="https://github.com/user-attachments/assets/84001ed4-4fd9-4943-b38f-69d92957c2d2">
 
-<img width="574" alt="Screenshot 2024-12-02 at 10 23 14" src="https://github.com/user-attachments/assets/3032c8a0-86ca-4f36-af69-a8e89b938afa">
 
