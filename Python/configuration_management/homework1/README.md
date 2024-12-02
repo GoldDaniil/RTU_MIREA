@@ -7,7 +7,6 @@
 
 
 ## индивидуальный вариант
-![Screenshot 2024-12-02 at 09.55.52.png](..%2F..%2F..%2Fvar%2Ffolders%2Fmv%2Fgjx66vzd2db8kjn12x6n_0wm0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_vVK30F%2FScreenshot%202024-12-02%20at%2009.55.52.png)
 
 
 
@@ -15,35 +14,33 @@
 
 
 ## структура проекта
-![Screenshot 2024-12-02 at 09.56.20.png](..%2F..%2F..%2Fvar%2Ffolders%2Fmv%2Fgjx66vzd2db8kjn12x6n_0wm0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_zCoGE1%2FScreenshot%202024-12-02%20at%2009.56.20.png)
+<img width="1220" alt="Screenshot 2024-12-02 at 09 41 22" src="https://github.com/user-attachments/assets/97db5a59-2bae-4fed-a4b8-f29558e16536">
 
 
 
 
 
 ## реализация
-![Screenshot 2024-12-02 at 09.57.39.png](..%2FDesktop%2FScreenshot%202024-12-02%20at%2009.57.39.png)
+<img width="600" alt="Screenshot 2024-12-02 at 09 57 05" src="https://github.com/user-attachments/assets/add50c7a-a2e8-43c3-a4b1-9bf4dce2bdc4">
+<img width="600" alt="Screenshot 2024-12-02 at 09 57 39" src="https://github.com/user-attachments/assets/41fccc4f-dea9-4922-87af-c9ca6a15300b">
+<img width="600" alt="Screenshot 2024-12-02 at 09 57 32" src="https://github.com/user-attachments/assets/b3b3b328-e5bb-4b46-bc90-361c4f39a65b">
+<img width="600" alt="Screenshot 2024-12-02 at 09 57 26" src="https://github.com/user-attachments/assets/1894bea0-0707-47a6-adb5-56fc11b983a7">
+<img width="600" alt="Screenshot 2024-12-02 at 09 57 15" src="https://github.com/user-attachments/assets/fa619435-26ca-426c-9702-bafb504e2659">
+<img width="600" alt="Screenshot 2024-12-02 at 09 57 10" src="https://github.com/user-attachments/assets/877e94b5-bd9b-40ba-ae4e-80154bc055a0">
 
 
-![Screenshot 2024-12-02 at 09.57.32.png](..%2FDesktop%2FScreenshot%202024-12-02%20at%2009.57.32.png)
+<img width="799" alt="Screenshot 2024-12-02 at 10 01 36" src="https://github.com/user-attachments/assets/69cf3b73-38fb-4d5d-98ee-204d2b985ad6">
 
 
-![Screenshot 2024-12-02 at 09.57.26.png](..%2FDesktop%2FScreenshot%202024-12-02%20at%2009.57.26.png)
 
 
-![Screenshot 2024-12-02 at 09.57.15.png](..%2FDesktop%2FScreenshot%202024-12-02%20at%2009.57.15.png)
 
 
-![Screenshot 2024-12-02 at 09.57.10.png](..%2FDesktop%2FScreenshot%202024-12-02%20at%2009.57.10.png)
 
 
-![Screenshot 2024-12-02 at 09.57.05.png](..%2FDesktop%2FScreenshot%202024-12-02%20at%2009.57.05.png)
 
 
-![Screenshot 2024-12-02 at 10.01.36.png](..%2FDesktop%2FScreenshot%202024-12-02%20at%2010.01.36.png)
 
-
-![Screenshot 2024-12-02 at 10.01.48.png](..%2F..%2F..%2Fvar%2Ffolders%2Fmv%2Fgjx66vzd2db8kjn12x6n_0wm0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_ECZWkT%2FScreenshot%202024-12-02%20at%2010.01.48.png)
 
 ## особенности
 - поддержка работы с архивами `.tar`, включая добавление и извлечение файлов
