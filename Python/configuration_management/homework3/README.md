@@ -48,3 +48,7 @@ array:   1   2   3   4   "text"
 name: name_1
 number: 42
 [[string_value]]
+
+
+<img width="574" alt="Screenshot 2024-12-02 at 10 23 14" src="https://github.com/user-attachments/assets/3032c8a0-86ca-4f36-af69-a8e89b938afa">
+
