@@ -6,7 +6,7 @@ public class MountainBike extends Bike {
     private int frameSize;
 
     public MountainBike() {
-        this("Bull Horn", "Hardtail", "Maxxis", "dropper", 27, "RockShox XC32", "Pro", 19);
+        this("bull", "hardtail", "max", "dropper", 27, "XC32", "pro", 19);
     }
 
     public MountainBike(String handleBars, String frame, String tyres, String seatType, int numGears, String suspension, String type, int frameSize) {
