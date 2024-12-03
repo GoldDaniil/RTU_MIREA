@@ -1,5 +1,3 @@
-package fourteen;
-
 public class Tea extends Beverage {
     @Override
     protected void brew() {
