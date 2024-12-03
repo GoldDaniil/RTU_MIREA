@@ -1,4 +1,4 @@
-import java.util.Scanner; // из пакета java.util вытаскиваем класс Scanner
+import java.util.Scanner;//из пакета java.util вытаскиваем класс Scanner
 
 public class Main {
     public static void main(String[] args) {
@@ -96,7 +96,7 @@ public class Main {
                 }
             } else {
                 System.out.println("неверный ввод, введите целое число");
-                scanner.next(); // cчитываем неправильный ввод и игнорируем его
+                scanner.next();//cчитываем неправильный ввод и игнорируем его
             }
         }
         return number;
