@@ -1,3 +1,4 @@
+package twelve;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +16,7 @@ public class OrderAppGUI extends JFrame {
     private String[] defaultMainDishes = {"pizza", "burger", "pasta"};
     private String[] defaultSideDishes = {"fries", "salad", "rice"};
     private String[] defaultDrinks = {"water", "soda", "juice"};
-    private String[] defaultDesserts = {"ice Cream", "cake", "fruit"};
+    private String[] defaultDesserts = {"ice cream", "cake", "fruit"};
 
     public OrderAppGUI() {
         setTitle("restaurant order builder");
