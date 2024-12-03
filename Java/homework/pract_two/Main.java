@@ -1,4 +1,4 @@
-import java.util.Scanner; // из пакета java.util вытаскиваем класс Scanner
+import java.util.Scanner;//из пакета java.util вытаскиваем класс Scanner
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -130,7 +130,7 @@ public class Main {
                 System.out.println("2 - task two");
                 System.out.println("3 - exit");
                 System.out.print("enter task number: ");
-                scanner.next(); // cчитываем неправильный ввод и игнорируем его
+                scanner.next();//cчитываем неправильный ввод и игнорируем его
             }
         }
         return number;
