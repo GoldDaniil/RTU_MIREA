@@ -21,7 +21,7 @@ public class RoadBike extends Bike {
     @Override
     public void printDescription() {
         super.printDescription();
-        System.out.println("this Roadbike bike has " + this.tyreWidth + "mm tyres and a post height of " + this.postHeight);
+        System.out.println("this roadbike bike has " + this.tyreWidth + "mm tyres and a post height of " + this.postHeight);
     }
 }
 
