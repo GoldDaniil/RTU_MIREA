@@ -10,7 +10,7 @@ public class TestCar {
         System.out.println(car);
 
         car.setColor("black");
-        System.out.println("updated Car: " + car);
+        System.out.println("updated car: " + car);
 
         ElectricCar electricCar = new ElectricCar("tesla", "XYZ789", "red", 2021, "asg df", "987654321", 100);
         System.out.println(electricCar);
