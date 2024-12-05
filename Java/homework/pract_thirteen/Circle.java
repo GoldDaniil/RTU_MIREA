@@ -1,5 +1,3 @@
-package third;
-
 public class Circle extends Shape {
     private int x, y, radius;
 
