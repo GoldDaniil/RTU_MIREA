@@ -1,5 +1,3 @@
-package third;
-
 public class BlueColor implements DrawAPI {
     @Override
     public void drawShape(String shapeType, int x, int y, int size) {
