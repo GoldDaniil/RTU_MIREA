@@ -259,7 +259,7 @@ def lexical_analysis(input_text):
             elif state.current_char is None:
                 state.translate(2)
                 state.put("TN")
-                state.out(3, len(state.buffer))  #вывод
+                state.out(3, len(state.buffer))#вывод
                 state.current_state = "H"
 
         elif state.current_state == "O":
@@ -449,7 +449,7 @@ def lexical_analysis(input_text):
             else:
                 state.current_state = "Er"
 
-        # добавить еще
+        #добавить еще
         elif state.current_state == "P2":
             if state.current_char.isdigit():
                 state.add_to_buffer()
