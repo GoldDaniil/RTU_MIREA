@@ -1,5 +1,3 @@
-package third;
-
 public abstract class Shape {
     protected DrawAPI drawAPI;
 
