@@ -1,5 +1,3 @@
-package third;
-
 public class Square extends Shape {
     private int x, y, sideLength;
 
