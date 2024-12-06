@@ -1,4 +1,5 @@
 
+
 TW = ["read", "write", "if", "then", "else", "for", "to", "while", "do", "true", "false", "or", "and", "not", "as"]
 TL = [",", ";", ".", ":", "(", ")", "{", "}", "[", "]"]
 TI = ["sum", "x", "y", "var1"]
@@ -162,11 +163,11 @@ def process_lexeme(buffer, m1_symbols, m2_symbols, operation_tokens, operation_t
         z = TL.index(buffer) + 1
         out(2, z, buffer, "DELIM")
 
-    elif buffer.isdigit():#проверка на число
-        if buffer not in TN:
-            TN.append(buffer)
-        z = TN.index(buffer) + 1
-        out(4, z, buffer, "NUM")
+    #elif buffer.isdigit():#проверка на число
+    #    if buffer not in TN:
+    #        TN.append(buffer)
+    #    z = TN.index(buffer) + 1
+    #    out(4, z, buffer, "NUM")
 
     elif (
             buffer.replace('.', '', 1).isdigit() or
@@ -221,11 +222,11 @@ def process_lexeme(buffer, m1_symbols, m2_symbols, operation_tokens, operation_t
         z = 8#примерный индекс
         out(4, z, buffer, "BIN")
 
-    elif all(c in "01234567" for c in buffer[:-1]) and (buffer[-1].lower() == 'o'):
+    elif all(c in "01234567" for c in buffer[:-1]) and (buffer[-1].lower() == 'o') or all(c in "01234567" for c in buffer[:-1]) and (buffer[-1].lower() == 'O'):
         z = 9#примерный индекс
         out(4, z, buffer, "OCT")
 
-    elif all(c in "0123456789" for c in buffer[:-1]) and (buffer[-1].lower() == 'd'):
+    elif (all(c in "0123456789" for c in buffer[:-1]) and buffer[-1].lower() == 'd') or buffer.isdigit():
         z = 10#примерный индекс
         out(4, z, buffer, "DEC")
 
@@ -242,6 +243,8 @@ def is_binary_number(buffer):
     return False
 
 lexical_analysis()
+
+
 
 
 #баг !введите строку для анализа: 5D 9O 45 1e+1
