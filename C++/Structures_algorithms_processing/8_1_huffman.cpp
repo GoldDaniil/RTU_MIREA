@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 
-using namespace std;
+//using namespace std;
 
 struct huffman_node {//узел дерева хаффмана
     char symbol;
@@ -20,7 +20,7 @@ struct compare {//компаратор для приоритетной очер�
     }
 };
 
-void generate_huffman_codes(huffman_node* node, string current_code, map<char, string>& huffman_codes) {
+void generate_huffman_codes(huffman_node* node, std::string current_code, std::map<char, std::string>& huffman_codes) {
     if (!node) return;
     //рекурсивная функция для генерации кодов символов
 
@@ -40,14 +40,14 @@ void delete_huffman_tree(huffman_node* node) {//рекурсивное удал�
 }
 
 int main() {
-    string input_text = "Gold Daniil Vladimirovich";
+    std::string input_text = "Gold Daniil Vladimirovich";
 
-    map<char, double> frequency_map;
+    std::map<char, double> frequency_map;
     for (char c : input_text) {
         frequency_map[c]++;
     }
 
-    priority_queue<huffman_node*, vector<huffman_node*>, compare> priority_queue_huffman_nodes;//создание приоритетной очереди
+    std::priority_queue<huffman_node*, std::vector<huffman_node*>, compare> priority_queue_huffman_nodes;//создание приоритетной очереди
     for (auto pair : frequency_map) {
         huffman_node* new_huffman_node = new huffman_node{ pair.first, pair.second, nullptr, nullptr };
         priority_queue_huffman_nodes.push(new_huffman_node);
@@ -63,19 +63,19 @@ int main() {
     }
 
     huffman_node* root = priority_queue_huffman_nodes.top();//корень дерева хаффмана
-    map<char, string> huffman_codes;//генерация кодов символов
+    std::map<char, std::string> huffman_codes;//генерация кодов символов
     generate_huffman_codes(root, "", huffman_codes);
 
-    cout << "symbols codes:\n";//отображение кодов символов
+    std::cout << "symbols codes:\n";//отображение кодов символов
     for (auto pair : huffman_codes) {
-        cout << pair.first << " -> " << pair.second << endl;
+        std::cout << pair.first << " -> " << pair.second << std::endl;
     }
 
-    string encoded_text = "";
+    std::string encoded_text = "";
     for (char c : input_text) {
         encoded_text += huffman_codes[c];
     }
-    cout << "\nencoded text: " << encoded_text << endl;
+    std::cout << "\nencoded text: " << encoded_text << std::endl;
 
     //сжатый текст
     int original_size_bits = input_text.size() * 8;//исходный размер в битах (по 8 бит на символ)
@@ -101,13 +101,13 @@ int main() {
     int uniform_code_size = (int)ceil(log2(frequency_map.size())) * input_text.size();//равномерный код
     double compression_ratio_uniform = (double)original_size_bits / uniform_code_size;
 
-    cout << "\ncompressed size in bits: " << compressed_size_bits << endl;
-    cout << "compression ratio (ASCII): " << compression_ratio_ascii << endl;
-    cout << "compression ratio (uniform code): " << compression_ratio_uniform << endl;
-    cout << "average code length: " << average_code_length << " bits\n";
-    cout << "variance code length: " << variance << endl;
+    std::cout << "\ncompressed size in bits: " << compressed_size_bits << std::endl;
+    std::cout << "compression ratio (ASCII): " << compression_ratio_ascii << std::endl;
+    std::cout << "compression ratio (uniform code): " << compression_ratio_uniform << std::endl;
+    std::cout << "average code length: " << average_code_length << " bits\n";
+    std::cout << "variance code length: " << variance << std::endl;
 
-    string decoded_text = "";//декодирование текста
+    std::string decoded_text = "";//декодирование текста
     huffman_node* current_node = root;
     for (char bit : encoded_text) {
         if (bit == '0') {
@@ -123,7 +123,7 @@ int main() {
         }
     }
 
-    cout << "\ndecoded text: " << decoded_text << endl;
+    std::cout << "\ndecoded text: " << decoded_text << std::endl;
 
     delete_huffman_tree(root);
 
