@@ -9,19 +9,19 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
-#include<sstream>
+#include <sstream>
 
 
 #ifdef _WIN32
 #include <Windows.h>
 #endif
 
-using namespace std;
+//using namespace std;
 
 void comment_output() {
     HANDLE back_color = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(back_color, 0x0a);
-    cout << "-----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Loan' \n 2 task - 'Advance' \n 3 task - 'WorkingWFiles' \n 4 task - 'LetterSorting'" << endl;
+    std::cout << "-----------------------------------------------\n TASK NUMBER:  \n 1 task - 'Loan' \n 2 task - 'Advance' \n 3 task - 'WorkingWFiles' \n 4 task - 'LetterSorting'" << std::endl;
     SetConsoleTextAttribute(back_color, 0x07);
 }
 
@@ -29,35 +29,35 @@ void comment_output() {
 void loan() { // правильно
     double loan_S, monthly_payment_m, date_n, procent_p, object_r;
     while (true) {
-        cout << "enter procent_p : " << endl;
-        if (!(cin >> procent_p)) {
-            cin.clear();
-            cin.ignore();
-            cout << "Error, you entered a non-numeric value!" << endl;
+        std::cout << "enter procent_p : " << std::endl;
+        if (!(std::cin >> procent_p)) {
+            std::cin.clear();
+            std::cin.ignore();
+            std::cout << "Error, you entered a non-numeric value!" << std::endl;
             continue;
         }
         break;
     }
 
     object_r = procent_p / 100;
-    cout << "object_r : " << object_r << endl;
+    std::cout << "object_r : " << object_r << std::endl;
 
     while (true) {
-        cout << "enter loan_S in rubles : " << endl;
-        if (!(cin >> loan_S)) {
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
-            cout << "Error, you entered a non-numeric value!" << endl;
+        std::cout << "enter loan_S in rubles : " << std::endl;
+        if (!(std::cin >> loan_S)) {
+            std::cin.clear();
+            std::cin.ignore(INT_MAX, '\n');
+            std::cout << "Error, you entered a non-numeric value!" << std::endl;
             continue;
         }
         break;
     }
     while (true) {
-        cout << "enter date_n : " << endl;
-        if (!(cin >> date_n)) {
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
-            cout << "Error, you entered a non-numeric value!" << endl;
+        std::cout << "enter date_n : " << std::endl;
+        if (!(std::cin >> date_n)) {
+            std::cin.clear();
+            std::cin.ignore(INT_MAX, '\n');
+            std::cout << "Error, you entered a non-numeric value!" << std::endl;
             continue;
         }
         break;
@@ -65,10 +65,10 @@ void loan() { // правильно
 
     if ((12 * (pow((1 + object_r), object_r) - 1)) != 0 and (loan_S > 0 and object_r > 0 and date_n > 0)) {
         monthly_payment_m = (loan_S * object_r * pow((1 + object_r), date_n)) / (12 * (pow((1 + object_r), date_n) - 1));
-        cout << "monthly_payment_m : " << monthly_payment_m << " in rubles for " << date_n << " months" << endl << endl;
+        std::cout << "monthly_payment_m : " << monthly_payment_m << " in rubles for " << date_n << " months" << std::endl << std::endl;
     }
     else {
-        cout << "function m cannot be calculated" << endl << endl;
+        std::cout << "function m cannot be calculated" << std::endl << std::endl;
     }
 }
 
@@ -103,77 +103,77 @@ public:
         int date_n;
 
         while (true) {
-            cout << "enter the loan amount (S): ";
-            if (!(cin >> loan_S)) {
-                cin.clear();
-                cin.ignore();
-                cout << "error\n";
+            std::cout << "enter the loan amount (S): ";
+            if (!(std::cin >> loan_S)) {
+                std::cin.clear();
+                std::cin.ignore();
+                std::cout << "error\n";
                 continue;
             }
             break;
         }
 
         while (true) {
-            cout << "enter the monthly payment (m): ";
-            if (!(cin >> monthly_payment_mf)) {
-                cin.clear();
-                cin.ignore();
-                cout << "error\n";
+            std::cout << "enter the monthly payment (m): ";
+            if (!(std::cin >> monthly_payment_mf)) {
+                std::cin.clear();
+                std::cin.ignore();
+                std::cout << "error\n";
                 continue;
             }
             break;
         }
 
         while (true) {
-            cout << "Enter the loan term in years (n): ";
-            if (!(cin >> date_n)) {
-                cin.clear();
-                cin.ignore();
-                cout << "error\n";
+            std::cout << "Enter the loan term in years (n): ";
+            if (!(std::cin >> date_n)) {
+                std::cin.clear();
+                std::cin.ignore();
+                std::cout << "error\n";
                 continue;
             }
             break;
         }
 
         double interest_rate = findInterestRate(loan_S, monthly_payment_mf, date_n);
-        cout << "interest rate on the loan: " << interest_rate << "%" << endl;
+        std::cout << "interest rate on the loan: " << interest_rate << "%" << std::endl;
     }
 };
 
 
 // 3 и 4 задачи в одной функции - Задача «Копирование файла» - Задача «Фильтр».
 void working_w_files() { //правильно
-    string line, line_two, out_two;
+    std::string line, line_two, out_two;
 
-    cout << "\nЗадача «Копирование файла»\n";
-    ofstream out_file("text.txt");
+    std::cout << "\nЗадача «Копирование файла»\n";
+    std::ofstream out_file("text.txt");
     out_file << "asdkasodkaoskdpaskdoakspdkasodkpaosdkaposdkapsodkaopskd";
 
     out_file.close();
 
-    ifstream myText("text.txt");
-    while (getline(myText, line)) {
-        cout << line << endl;
+    std::ifstream myText("text.txt");
+    while (std::getline(myText, line)) {
+        std::cout << line << std::endl;
     }
     myText.close();
 
-    cout << "\nЗадача «Фильтр»\n";
-    ofstream out("text.txt");
+    std::cout << "\nЗадача «Фильтр»\n";
+    std::ofstream out("text.txt");
     out << "34a43a34atf3gfd";
     out.close();
 
-    ifstream myText_two("text.txt");
+    std::ifstream myText_two("text.txt");
 
-    while (getline(myText_two, line_two)) {
+    while (std::getline(myText_two, line_two)) {
         for (char one_character : line_two) {
             if (one_character >= '0' and one_character <= '9') {
-                cout << one_character;
+                std::cout << one_character;
             }
         }
     }
     myText_two.close();
 
-    cout << endl << endl;
+    std::cout << std::endl << std::endl;
 }
 
 // 5 задача задача «Сортировка букв»
@@ -183,10 +183,10 @@ void letter_sorting() {
     SetConsoleOutputCP(65001);
 #endif
 
-    string lum;
-    cin >> lum;
+    std::string lum;
+    std::cin >> lum;
 
-    sort(lum.begin(), lum.end(), [](char a, char b) {
+    std::sort(lum.begin(), lum.end(), [](char a, char b) {
         if (islower(a) and isupper(b)) {
             return false;
         }
@@ -198,7 +198,7 @@ void letter_sorting() {
         }
         });
 
-    cout << lum << endl;
+    std::cout << lum << std::endl;
 }
 
 
@@ -210,17 +210,17 @@ void launcher() {
 
     while (true) {
         comment_output();
-        cout << endl;
+        std::cout << std::endl;
 
         while (true) {
-            string task_number_str;
+            std::string task_number_str;
 
-            cout << "(if you want to exit the program, enter 'exit') \n";
-            cout << "enter task_number: ";
-            cin >> task_number_str;
+            std::cout << "(if you want to exit the program, enter 'exit') \n";
+            std::cout << "enter task_number: ";
+            std::cin >> task_number_str;
 
             if (task_number_str == "exit") {
-                cout << "program completed!\n";
+                std::cout << "program completed!\n";
                 return;
             }
 
@@ -233,56 +233,56 @@ void launcher() {
             }
 
             if (has_non_digit) {
-                cerr << "error, enter only numbers!\n";
-                cin.clear();
-                cin.ignore();
+                std::cerr << "error, enter only numbers!\n";
+                std::cin.clear();
+                std::cin.ignore();
             }
             else {
-                stringstream(task_number_str) >> task_number_int;
+                std::stringstream(task_number_str) >> task_number_int;
                 break;
             }
         }
 
         switch (task_number_int) {
         case 1:
-            cout << "\n";
+            std::cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
-            cout << "first task - 'Loan' \n";
+            std::cout << "first task - 'Loan' \n";
             SetConsoleTextAttribute(back_color, 0x07);
 
             //первая задача Задача «Заем»
             loan();
             break;
         case 2:
-            cout << "\n";
+            std::cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
-            cout << "second task - 'Advance' \n";
+            std::cout << "second task - 'Advance' \n";
             SetConsoleTextAttribute(back_color, 0x07);
             BinarySearch loan_task;
-            
+
             //вторая задача Задача «Ссуда»
             loan_task.calculateAndPrintInterestRate();
             break;
         case 3:
-            cout << "\n";
+            std::cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
-            cout << "third task - 'Copying a file' \n";
+            std::cout << "third task - 'Copying a file' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            
+
             //3 и 4 задачи в одной функции - Задача «Копирование файла» - Задача «Фильтр».
             working_w_files();
             break;
         case 4:
-            cout << "\n";
+            std::cout << "\n";
             SetConsoleTextAttribute(back_color, 0x0a);
-            cout << "fourth task - 'Filter' \n";
+            std::cout << "fourth task - 'Filter' \n";
             SetConsoleTextAttribute(back_color, 0x07);
-            
+
             //5 задача задача «Сортировка букв»
             letter_sorting();
             break;
         default:
-            cout << "\nerror! \n";
+            std::cout << "\nerror! \n";
             break;
         }
     }
