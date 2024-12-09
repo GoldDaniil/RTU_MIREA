@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iomanip> 
 
-using namespace std;
+//using namespace std;
 
 struct Edge {//структура для хранения ребра
     int u, v, weight;
@@ -16,7 +16,7 @@ bool compare_edges(const Edge& a, const Edge& b) {//функция для сра
 
 class UnionFind {//система непересек множеств
 private:
-    vector<int> parent, rank;
+    std::vector<int> parent, rank;
 
 public:
     UnionFind(int n) {
@@ -41,9 +41,11 @@ public:
         if (root_x != root_y) {//обьединяем множества
             if (rank[root_x] > rank[root_y]) {
                 parent[root_y] = root_x;
-            } else if (rank[root_x] < rank[root_y]) {
+            }
+            else if (rank[root_x] < rank[root_y]) {
                 parent[root_x] = root_y;
-            } else {
+            }
+            else {
                 parent[root_y] = root_x;//увелич его ранг
                 rank[root_x]++;
             }
@@ -51,20 +53,20 @@ public:
     }
 };
 
-void print_matrix(const vector<vector<int>>& matrix) {
+void print_matrix(const std::vector<std::vector<int>>& matrix) {
     int n = matrix.size();
-    cout << "original graph:\n";
+    std::cout << "original graph:\n";
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            cout << setw(3) << matrix[i][j] << " "; 
+            std::cout << std::setw(3) << matrix[i][j] << " ";
         }
-        cout << endl;
+        std::cout << std::endl;
     }
 }
 
-void kruskal(const vector<vector<int>>& matrix) {
+void kruskal(const std::vector<std::vector<int>>& matrix) {
     int n = matrix.size();//колво узлов в графе
-    vector<Edge> edges;//вектор для хранения ребер
+    std::vector<Edge> edges;//вектор для хранения ребер
 
     for (int i = 0; i < n; ++i) {// извлечение ребер из матрицы смежности
         for (int j = i + 1; j < n; ++j) {//ток верхний треуг матрицы
@@ -77,9 +79,9 @@ void kruskal(const vector<vector<int>>& matrix) {
     sort(edges.begin(), edges.end(), compare_edges);//сортировка по веса
 
     UnionFind uf(n);
-    vector<Edge> minimum_ostovnoe_tree;
+    std::vector<Edge> minimum_ostovnoe_tree;
     int minimum_ostovnoe_tree_weight = 0;
-    vector<Edge> edges_not_included; 
+    std::vector<Edge> edges_not_included;
 
     for (const auto& edge : edges) {//по cорт ребрам
         if (uf.find(edge.u) != uf.find(edge.v)) {//если не цикл
@@ -90,29 +92,30 @@ void kruskal(const vector<vector<int>>& matrix) {
             if (minimum_ostovnoe_tree.size() == n - 1) {
                 break;
             }
-        } else {
+        }
+        else {
             edges_not_included.push_back(edge);//не вход в мод
         }
     }
 
     print_matrix(matrix);
 
-    cout << "\n\nedges minimum ostovnoe tree:\n";
+    std::cout << "\n\nedges minimum ostovnoe tree:\n";
     for (const auto& edge : minimum_ostovnoe_tree) {
-        cout << edge.u + 1 << " - " << edge.v + 1 << " : " << edge.weight << endl;
+        std::cout << edge.u + 1 << " - " << edge.v + 1 << " : " << edge.weight << std::endl;
     }
-    cout << "\ntotal all weight: " << minimum_ostovnoe_tree_weight << endl;
+    std::cout << "\ntotal all weight: " << minimum_ostovnoe_tree_weight << std::endl;
 
-    cout << "\nnumber of edges in the minimum ostovnoe tree: " << minimum_ostovnoe_tree.size() << endl;
+    std::cout << "\nnumber of edges in the minimum ostovnoe tree: " << minimum_ostovnoe_tree.size() << std::endl;
 
-    cout << "\nedges are not included in minimum ostovnoe tree:\n";
+    std::cout << "\nedges are not included in minimum ostovnoe tree:\n";
     for (const auto& edge : edges_not_included) {
-        cout << edge.u + 1 << " - " << edge.v + 1 << " : " << edge.weight << endl;
+        std::cout << edge.u + 1 << " - " << edge.v + 1 << " : " << edge.weight << std::endl;
     }
 }
 
 int main() {
-    vector<vector<int>> matrix = {
+    std::vector<std::vector<int>> matrix = {
         {0, 20, 0, 0, 0, 23, 1},
         {20, 0, 15, 0, 0, 0, 4},
         {0, 15, 0, 3, 0, 0, 9},
