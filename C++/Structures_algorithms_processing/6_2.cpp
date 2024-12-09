@@ -6,11 +6,11 @@
 #include <string>
 #include <limits>
 
-using namespace std;
+//using namespace std;
 
-int calculate_distance(const string& word1, const string& word2) {
+int calculate_distance(const std::string& word1, const std::string& word2) {
     int distance = 0;
-    int min_length = min(word1.size(), word2.size());
+    int min_length = std::min(word1.size(), word2.size());
 
     for (int i = 0; i < min_length; ++i) {//считаем позиции - в которых символы различаются
         distance += (word1[i] != word2[i]) ? 1 : 0;
@@ -22,9 +22,9 @@ int calculate_distance(const string& word1, const string& word2) {
     return distance;
 }
 
-void find_closest_words(const string& sentence) {
-    vector<string> words;
-    string word = "";
+void find_closest_words(const std::string& sentence) {
+    std::vector<std::string> words;
+    std::string word = "";
 
     for (char ch : sentence) {//проходим по предложению и разбиваем на слова - игнорируя запятые
         if (ch == ' ' || ch == ',') {
@@ -41,8 +41,8 @@ void find_closest_words(const string& sentence) {
         words.push_back(word);
     }
 
-    int min_distance = numeric_limits<int>::max();
-    pair<string, string> closestPair;
+    int min_distance = std::numeric_limits<int>::max();
+    std::pair<std::string, std::string> closestPair;
 
 
     for (size_t i = 0; i < words.size(); ++i) {//линейный поиск - перебираем все пары слов
@@ -55,20 +55,20 @@ void find_closest_words(const string& sentence) {
         }
     }
 
-    cout << "couple words with minimum distance: " << closestPair.first
+    std::cout << "couple words with minimum distance: " << closestPair.first
         << " and " << closestPair.second << " (distance: " << min_distance << ")\n";
 }
 
 class BoyerMoreGoodSuffix {
 public:
-    vector<int> z_function(const string& s) {//функция для вычисления Z-функции
+    std::vector<int> z_function(const std::string& s) {//функция для вычисления Z-функции
         int line_length_n = s.length();//длина строки
-        vector<int> z(line_length_n, 0);//инициализируем массив z нулями
+        std::vector<int> z(line_length_n, 0);//инициализируем массив z нулями
         int left_index_border = 0, right_index_border = 0;//границы строки
 
         for (int i = 1; i < line_length_n; ++i) {//проходим по строке начиная с индекса 1
             if (i <= right_index_border) {
-                z[i] = min(right_index_border - i + 1, z[i - left_index_border]);
+                z[i] = std::min(right_index_border - i + 1, z[i - left_index_border]);
             }
             while (i + z[i] < line_length_n && s[z[i]] == s[i + z[i]]) {//расширяем совпадение
                 z[i]++;//увелич длин совпадения
@@ -82,15 +82,15 @@ public:
         return z;
     }
 
-    vector<int> build_good_suffix_table(const string& pattern) {
+    std::vector<int> build_good_suffix_table(const std::string& pattern) {
         int length_template_substring_m = pattern.length();//длина шаблона
-        string reversed_pattern = pattern;//строка-реверс шаблона
+        std::string reversed_pattern = pattern;//строка-реверс шаблона
         reverse(reversed_pattern.begin(), reversed_pattern.end());
 
-        string concatenation_string = pattern + "$" + reversed_pattern;//объединяем шаблон с его реверсией через разделитель
-        vector<int> z = z_function(concatenation_string);
+        std::string concatenation_string = pattern + "$" + reversed_pattern;//объединяем шаблон с его реверсией через разделитель
+        std::vector<int> z = z_function(concatenation_string);
 
-        vector<int> good_suffix(length_template_substring_m + 1, length_template_substring_m);
+        std::vector<int> good_suffix(length_template_substring_m + 1, length_template_substring_m);
         for (int j = 0; j < length_template_substring_m; ++j) {//проходим по всем индексам шаблона
             good_suffix[j] = length_template_substring_m - z[length_template_substring_m + 1 + j];//заполняем таблицу сдвигами
             //по совпавшим суффиксам
@@ -98,13 +98,13 @@ public:
         return good_suffix;
     }
 
-    void search(const string& text, const string& pattern) {
-        auto start = chrono::high_resolution_clock::now();
+    void search(const std::string& text, const std::string& pattern) {
+        auto start = std::chrono::high_resolution_clock::now();
 
         int line_length_n = text.length();//длина текста
         int length_template_substring_m = pattern.length();//длина шаблона
 
-        vector<int> good_suffix = build_good_suffix_table(pattern);
+        std::vector<int> good_suffix = build_good_suffix_table(pattern);
 
         int s = 0;//начальное смещение для шаблона
         int iterations = 0;
@@ -118,7 +118,7 @@ public:
             }
 
             if (j < 0) {//шаблон совпал
-                cout << "\npattern found at position: " << s << endl;
+                std::cout << "\npattern found at position: " << s << std::endl;
                 s += good_suffix[0]; // сдвиг шаблон = знач табл суффиксов
             }
             else {//нет
@@ -127,24 +127,24 @@ public:
             ++iterations;
         }
 
-        auto end = chrono::high_resolution_clock::now();
-        chrono::duration<double> duration = end - start;
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
 
-        cout << "\niterations: " << iterations << endl;
-        cout << "\ntime taken: " << duration.count() << " sec\n";
+        std::cout << "\niterations: " << iterations << std::endl;
+        std::cout << "\ntime taken: " << duration.count() << " sec\n";
     }
 };
 
 class BoyerMoreBadSuffix {
 public:
-    BoyerMoreBadSuffix(const string& pattern) {
+    BoyerMoreBadSuffix(const std::string& pattern) {
         this->pattern = pattern;
         this->m_pattern_length = pattern.length();
         create_bad_suffix_table();
     }
 
-    void search(const string& text) { //поиск подстроки в строке
-        auto start_time = chrono::high_resolution_clock::now();
+    void search(const std::string& text) { //поиск подстроки в строке
+        auto start_time = std::chrono::high_resolution_clock::now();
         int n_line_length = text.length();
         int i = 0; //индекс в тексте
         int count = 0; //счетчик итераций
@@ -156,59 +156,59 @@ public:
             }
 
             if (j < 0) { //совпадение найдено
-                cout << "\npattern found at position: " << i << endl;
+                std::cout << "\npattern found at position: " << i << std::endl;
                 i += good_suffix[0];//cдвиг по хорошему суффиксу
             }
             else {
-                int bad_char_shift = max(1, j - last_occurence[text[i + j]]); //вычисление сдвигов для плохого символа и
-               //хорошего суффикса
+                int bad_char_shift = std::max(1, j - last_occurence[text[i + j]]); //вычисление сдвигов для плохого символа и
+                //хорошего суффикса
                 int good_suffix_shift = good_suffix[j + 1];
 
-                i += max(bad_char_shift, good_suffix_shift); //сдвиг
+                i += std::max(bad_char_shift, good_suffix_shift); //сдвиг
             }
             count++;
         }
 
-        auto end_time = chrono::high_resolution_clock::now();
-        chrono::duration<double> duration = end_time - start_time;
+        auto end_time = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end_time - start_time;
 
-        cout << "\niterations: " << count << endl;
-        cout << "time taken: " << duration.count() << " sec\n";
+        std::cout << "\niterations: " << count << std::endl;
+        std::cout << "time taken: " << duration.count() << " sec\n";
     }
 
 private:
-    string pattern;
+    std::string pattern;
     int m_pattern_length;
-    vector<int> good_suffix;
-    unordered_map<char, int> last_occurence;
+    std::vector<int> good_suffix;
+    std::unordered_map<char, int> last_occurence;
 
     void create_bad_suffix_table() {
         for (int i = 0; i < m_pattern_length; i++) { //заполняем таблицу последних вхождений каждого символа
             last_occurence[pattern[i]] = i;
         }
 
-        good_suffix = vector<int>(m_pattern_length + 1, m_pattern_length); //создание таблицы хороших суффиксов
+        good_suffix = std::vector<int>(m_pattern_length + 1, m_pattern_length); //создание таблицы хороших суффиксов
         for (int i = m_pattern_length - 2; i >= 0; i--) {
             int j = i;
             while (j >= 0 && pattern[j] == pattern[m_pattern_length - 1 - (i - j)]) { //поиск наибольшего суффикса шаблона
                 j--;
             }
-            good_suffix[i] = max(1, m_pattern_length - (i - j));
+            good_suffix[i] = std::max(1, m_pattern_length - (i - j));
         }
     }
 };
 
 class BoyerMoreTurboShift {
 public:
-    BoyerMoreTurboShift(const string& pattern) {
+    BoyerMoreTurboShift(const std::string& pattern) {
         this->pattern = pattern;
         this->m_pattern_length = pattern.length();
         create_bad_suffix_table();
         create_good_suffix_table();
     }
 
-    void search(const string& text) {
-        auto start_time = chrono::high_resolution_clock::now();
+    void search(const std::string& text) {
+        auto start_time = std::chrono::high_resolution_clock::now();
         int n_line_length = text.length();
         int i = 0;//индекс в тексте
         int count = 0;//счетчик итераций
@@ -220,13 +220,13 @@ public:
                 j--;
             }
 
-            if (j < 0) { 
-                cout << "\npattern found position: " << i << endl;
+            if (j < 0) {
+                std::cout << "\npattern found position: " << i << std::endl;
 
                 //применяем турбосдвиг
                 if (turbo_shift_used) {
                     i += m_pattern_length;//применяем турбосдвиг
-                    cout << "turbo shift applied from index " << i - m_pattern_length << " to " << i << endl;
+                    std::cout << "turbo shift applied from index " << i - m_pattern_length << " to " << i << std::endl;
                 }
                 else {
                     turbo_shift_used = true;//после первого совпадения применяем турбосдвиг
@@ -234,27 +234,27 @@ public:
                 }
             }
             else {
-                int bad_char_shift = max(1, j - last_occurence[text[i + j]]);
+                int bad_char_shift = std::max(1, j - last_occurence[text[i + j]]);
                 int good_suffix_shift = good_suffix[j + 1];
 
-                int shift = max(bad_char_shift, good_suffix_shift);
+                int shift = std::max(bad_char_shift, good_suffix_shift);
                 i += shift;//jбычный сдвиг
             }
             count++;
         }
 
-        auto end_time = chrono::high_resolution_clock::now();
-        chrono::duration<double> duration = end_time - start_time;
+        auto end_time = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end_time - start_time;
 
-        cout << "\niterations: " << count << endl;
-        cout << "time taken: " << duration.count() << " sec\n";
+        std::cout << "\niterations: " << count << std::endl;
+        std::cout << "time taken: " << duration.count() << " sec\n";
     }
 
 private:
-    string pattern;
+    std::string pattern;
     int m_pattern_length;
-    vector<int> good_suffix;
-    unordered_map<char, int> last_occurence;
+    std::vector<int> good_suffix;
+    std::unordered_map<char, int> last_occurence;
 
     void create_bad_suffix_table() {
         for (int i = 0; i < m_pattern_length; i++) {
@@ -263,32 +263,32 @@ private:
     }
 
     void create_good_suffix_table() {
-        good_suffix = vector<int>(m_pattern_length + 1, m_pattern_length);//создание таблицы хороших суффиксов
+        good_suffix = std::vector<int>(m_pattern_length + 1, m_pattern_length);//создание таблицы хороших суффиксов
         for (int i = m_pattern_length - 2; i >= 0; i--) {
             int j = i;
             while (j >= 0 && pattern[j] == pattern[m_pattern_length - 1 - (i - j)]) {//поиск наибольшего суффикса шаблона
                 j--;
             }
-            good_suffix[i] = max(1, m_pattern_length - (i - j));
+            good_suffix[i] = std::max(1, m_pattern_length - (i - j));
         }
     }
 };
 
 int main() {
-    string text;
-    string pattern;
+    std::string text;
+    std::string pattern;
 
     //первое задание - распечатать те пары слов, расстояние между которыми наименьшее
     //string sentence = "ajdfkdfjk, kdasd a skdlksl ,  asdd dskdlk";
     //find_closest_words(sentence);
 
     //выбрать алгоритм бойера-мура:
-    
-    cout << "enter the text: ";
-    cin >> text;
 
-    cout << "enter the pattern: ";
-    cin >> pattern;
+    std::cout << "enter the text: ";
+    std::cin >> text;
+
+    std::cout << "enter the pattern: ";
+    std::cin >> pattern;
 
     //алгоритм бойера-мура с эвристикой хорошего суффикса
     //BoyerMoreGoodSuffix object;
