@@ -4,6 +4,7 @@
 
 //using namespace std;
 
+//динамическое программирование (снизу вверх)
 int max_path_sum_dp(std::vector<std::vector<int>>& triangle) {
     int n = triangle.size();
 
@@ -19,6 +20,7 @@ int max_path_sum_dp(std::vector<std::vector<int>>& triangle) {
     return triangle[0][0];
 }
 
+//метод грубой силы - рекурсивный brute_force
 int max_path_sum_brute_force(std::vector<std::vector<int>>& triangle, int row, int col) {
     if (row == triangle.size() - 1) {
         std::cout << "\nbrute force: reached base level with element " << triangle[row][col] << std::endl;
@@ -35,6 +37,7 @@ int max_path_sum_brute_force(std::vector<std::vector<int>>& triangle, int row, i
     return triangle[row][col] + std::max(left_recursive_level_element, right_recursive_level_element);
 }
 
+//максимум из четырех возможных чисел (соседей на уровне и следующем уровне)
 int max_path_sum_custom(std::vector<std::vector<int>>& triangle) {
     int n = triangle.size();
 
@@ -70,16 +73,21 @@ int main() {
     };
 
     std::vector<std::vector<int>> dp_triangle = triangle;
-    std::cout << "macs sum (1) = " << max_path_sum_dp(dp_triangle) << std::endl;
+    int dp_result = max_path_sum_dp(dp_triangle);
+    std::cout << "max sum (1) = " << dp_result << std::endl;
 
     std::cout << "\n";
 
-    std::cout << "macs sum (2) = " << max_path_sum_brute_force(triangle, 0, 0) << std::endl;
+    int brute_force_result = max_path_sum_brute_force(triangle, 0, 0);
+    std::cout << "max sum (2) = " << brute_force_result << std::endl;
 
     std::cout << "\n";
 
     std::vector<std::vector<int>> custom_triangle = triangle;
-    std::cout << "macs sum (3) = " << max_path_sum_custom(custom_triangle) << std::endl;
+    int custom_result = max_path_sum_custom(custom_triangle);
+    std::cout << "max sum (3) = " << custom_result << std::endl;
+
+    std::cout << "results: " << dp_result << " " << brute_force_result << " " << custom_result << std::endl;
 
     return 0;
 }
