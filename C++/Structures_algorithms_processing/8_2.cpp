@@ -2,15 +2,12 @@
 #include <vector>
 #include <algorithm>
 
-//using namespace std;
-
-
 int dp_count = 0;
 int brute_force_count = 0;
 int custom_count = 0;
 int top_down_count = 0;
 
-// динамическое программирование (снизу вверх)
+//динамическое программирование (снизу вверх)
 int max_path_sum_dp(std::vector<std::vector<int>>& triangle) {
     int n = triangle.size();
 
@@ -30,7 +27,7 @@ int max_path_sum_dp(std::vector<std::vector<int>>& triangle) {
     return triangle[0][0];
 }
 
-// метод грубой силы - рекурсивный brute_force
+//метод грубой силы - рекурсивный brute_force
 int max_path_sum_brute_force(std::vector<std::vector<int>>& triangle, int row, int col) {
     brute_force_count++;
     if (row == triangle.size() - 1) {
