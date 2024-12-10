@@ -122,25 +122,25 @@ int main() {
 
     std::vector<std::vector<int>> dp_triangle = triangle;
     int dp_result = max_path_sum_dp(dp_triangle);
-    std::cout << "максимальная сумма (1) = " << dp_result << std::endl << 
+    std::cout << "максимальная сумма (1) = " << dp_result << std::endl <<
         "переборы (1): " << dp_count << std::endl << std::endl;
-
 
     int brute_force_result = max_path_sum_brute_force(triangle, 0, 0);
     std::cout << "максимальная сумма (2) = " << brute_force_result << std::endl <<
-        "переборы (1): " << brute_force_count << std::endl << std::endl;
+        "переборы (2): " << brute_force_count << std::endl << std::endl;
 
     std::vector<std::vector<int>> custom_triangle = triangle;
     int custom_result = max_path_sum_custom(custom_triangle);
     std::cout << "максимальная сумма (3) = " << custom_result << std::endl <<
-        "переборы (1): " << custom_count << std::endl << std::endl;
+        "переборы (3): " << custom_count << std::endl << std::endl;
 
     std::vector<std::vector<int>> top_down_triangle = triangle;
     int top_down_result = max_path_sum_top_down(top_down_triangle);
     std::cout << "максимальная сумма (4) = " << top_down_result << std::endl <<
-        "переборы (1): " << top_down_count << std::endl << std::endl;
+        "переборы (4): " << top_down_count << std::endl << std::endl;
 
-    std::cout << "\n\nрезы: " << dp_result << " " << brute_force_result << " " << custom_result << " " << top_down_result << std::endl;
+    std::cout << "\n\nрезы: " << dp_result << " " << brute_force_result << " " 
+        << custom_result << " " << top_down_result << std::endl;
 
     std::cout << "\nпереборы: " << dp_count << " " << brute_force_count << " " << custom_count << " " << top_down_count;
 
