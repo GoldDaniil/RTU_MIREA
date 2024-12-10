@@ -12,8 +12,11 @@ int max_path_sum_dp(std::vector<std::vector<int>>& triangle) {
         for (int j = 0; j < triangle[i].size(); ++j) {
             int left = triangle[i + 1][j];
             int right = triangle[i + 1][j + 1];
-            std::cout << "\ndp: сhoosing between " << left << " and " << right << " for element " << triangle[i][j] << std::endl;
-            triangle[i][j] += std::max(left, right);
+            int chosen = std::max(left, right);
+            std::cout << "\ndp: выбор между " << left << " и " << right
+                << " для элемента " << triangle[i][j]
+                << ", выбираем " << chosen << std::endl;
+            triangle[i][j] += chosen;
         }
     }
 
@@ -23,18 +26,20 @@ int max_path_sum_dp(std::vector<std::vector<int>>& triangle) {
 //метод грубой силы - рекурсивный brute_force
 int max_path_sum_brute_force(std::vector<std::vector<int>>& triangle, int row, int col) {
     if (row == triangle.size() - 1) {
-        std::cout << "\nbrute force: reached base level with element " << triangle[row][col] << std::endl;
+        std::cout << "\nметод перебора: находимся на базовом уровенне с элементом " << triangle[row][col] << std::endl;
         return triangle[row][col];
     }
 
     int left_recursive_level_element = max_path_sum_brute_force(triangle, row + 1, col);
     int right_recursive_level_element = max_path_sum_brute_force(triangle, row + 1, col + 1);
+    int chosen = std::max(left_recursive_level_element, right_recursive_level_element);
 
-    std::cout << "bute force: for element " << triangle[row][col]
-        << ", choosing between " << left_recursive_level_element
-        << " (left) and " << right_recursive_level_element << " (right)" << std::endl;
+    std::cout << "метод перебора: для элемента " << triangle[row][col]
+        << ", выбор между " << left_recursive_level_element
+        << " (левый) и " << right_recursive_level_element
+        << " (правый), выбираем " << chosen << std::endl;
 
-    return triangle[row][col] + std::max(left_recursive_level_element, right_recursive_level_element);
+    return triangle[row][col] + chosen;
 }
 
 //максимум из четырех возможных чисел (соседей на уровне и следующем уровне)
@@ -48,20 +53,54 @@ int max_path_sum_custom(std::vector<std::vector<int>>& triangle) {
             int number_level_left_below_next = triangle[i + 1][j];
             int number_level_right_below_next = (j < triangle[i + 1].size() - 1) ? triangle[i + 1][j + 1] : 0;
 
-            std::cout << "\ncustom: for element " << triangle[i][j]
-                << ", considering options: "
-                << number_left_same_level << " (left same level), "
-                << number_right_same_level << " (right same level), "
-                << number_level_left_below_next << " (left below), "
-                << number_level_right_below_next << " (right below)" << std::endl;
+            int chosen = std::max({ number_left_same_level, number_right_same_level,
+                                    number_level_left_below_next, number_level_right_below_next });
 
-            triangle[i][j] += std::max({ number_left_same_level, number_right_same_level,
-                                         number_level_left_below_next, number_level_right_below_next });
+            std::cout << "\nдля элемента " << triangle[i][j]
+                << ", рассматриваются варианты: "
+                << number_left_same_level << " (слева на том же уровне), "
+                << number_right_same_level << " (справа на том же уровне), "
+                << number_level_left_below_next << " (слева на уровне ниже), "
+                << number_level_right_below_next << " (справа на уровне ниже), "
+                << "выбираем " << chosen << std::endl;
+
+            triangle[i][j] += chosen;
         }
     }
 
     return triangle[0][0];
 }
+
+//сверху вниз - c вершины треугольника итеративно добавляем значения к двум ближайшим элементам на след уровне
+int max_path_sum_top_down(std::vector<std::vector<int>>& triangle) {
+    int n = triangle.size();
+    std::vector<std::vector<int>> dp = triangle;
+
+    for (int i = 0; i < n - 1; ++i) {
+        for (int j = 0; j < triangle[i].size(); ++j) {
+            int left_choice = dp[i][j] + triangle[i + 1][j];
+            int right_choice = dp[i][j] + triangle[i + 1][j + 1];
+
+            dp[i + 1][j] = std::max(dp[i + 1][j], left_choice);
+            dp[i + 1][j + 1] = std::max(dp[i + 1][j + 1], right_choice);
+
+            std::cout << "метод сверху вниз: для узла [" << i << "][" << j << "] (значение: " << triangle[i][j]
+                << "), выбор между "
+                << left_choice << " (левый узел: [" << i + 1 << "][" << j << "]) и "
+                << right_choice << " (правый узел: [" << i + 1 << "][" << j + 1 << "]), ";
+
+            if (left_choice > right_choice) {
+                std::cout << "выбираем " << left_choice << std::endl;
+            }
+            else {
+                std::cout << "выбираем " << right_choice << std::endl;
+            }
+        }
+    }
+
+    return *std::max_element(dp[n - 1].begin(), dp[n - 1].end());
+}
+
 
 int main() {
     std::vector<std::vector<int>> triangle = {
@@ -74,20 +113,20 @@ int main() {
 
     std::vector<std::vector<int>> dp_triangle = triangle;
     int dp_result = max_path_sum_dp(dp_triangle);
-    std::cout << "max sum (1) = " << dp_result << std::endl;
-
-    std::cout << "\n";
+    std::cout << "максимальная сумма (1) = " << dp_result << std::endl << std::endl;
 
     int brute_force_result = max_path_sum_brute_force(triangle, 0, 0);
-    std::cout << "max sum (2) = " << brute_force_result << std::endl;
-
-    std::cout << "\n";
+    std::cout << "максимальная сумма (2) = " << brute_force_result << std::endl << std::endl;
 
     std::vector<std::vector<int>> custom_triangle = triangle;
     int custom_result = max_path_sum_custom(custom_triangle);
-    std::cout << "max sum (3) = " << custom_result << std::endl;
+    std::cout << "максимальная сумма (3) = " << custom_result << std::endl << std::endl;
 
-    std::cout << "results: " << dp_result << " " << brute_force_result << " " << custom_result << std::endl;
+    std::vector<std::vector<int>> top_down_triangle = triangle;
+    int top_down_result = max_path_sum_top_down(top_down_triangle);
+    std::cout << "максимальная сумма (4) = " << top_down_result << std::endl << std::endl;
+
+    std::cout << "\n\nрезы: " << dp_result << " " << brute_force_result << " " << custom_result << " " << top_down_result << std::endl;
 
     return 0;
 }
