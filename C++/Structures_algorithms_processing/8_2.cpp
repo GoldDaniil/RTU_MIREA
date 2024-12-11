@@ -28,7 +28,7 @@ int max_path_sum_dp(std::vector<std::vector<int>>& triangle) {
 }
 
 //метод грубой силы - рекурсивный brute_force
-int max_path_sum_brute_force(std::vector<std::vector<int>>& triangle, int row, int col) {
+int max_path_sum_brute_force(std::vector<std::vector<int>>& triangle, int 1row, int col) {
     brute_force_count++;
     if (row == triangle.size() - 1) {
         std::cout << "\nметод перебора: находимся на базовом уровне с элементом " << triangle[row][col] << std::endl;
@@ -46,7 +46,6 @@ int max_path_sum_brute_force(std::vector<std::vector<int>>& triangle, int row, i
 
     return triangle[row][col] + chosen;
 }
-
 
 //максимум из четырех возможных чисел (соседей на уровне и следующем уровне)
 int max_path_sum_custom(std::vector<std::vector<int>>& triangle) {
