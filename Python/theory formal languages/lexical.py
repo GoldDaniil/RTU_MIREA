@@ -1,10 +1,10 @@
+import re
 
-
-TW = ["read", "write", "if", "then", "else", "for", "to", "while", "do", "true", "false", "or", "and", "not", "as"]
+TW = ["read", "write", "if", "then", "else", "for", "to", "while", "do", "true", "false", "or", "and", "not", "as", "int", "float", "bool", "end", "begin", "next", "writeln", "readln"]
 TL = [",", ";", ".", ":", "(", ")", "{", "}", "[", "]"]
 TI = ["sum", "x", "y", "var1"]
 TN = ["1", "100", "99", "42"]
-Operators = [":", ":="]
+Operators = [":", ":=", "+", "-", "*", "/", "==", "!=", "<", ">", "<=", ">=", "="]
 
 Bin_num = ['1', '0', 'B', 'b']
 Oct_num = ['0', '1', '2', '3', '4', '5', '6', '7', 'O', 'o']
@@ -115,8 +115,11 @@ def lexical_analysis():
                 buffer += char
             else:#если встретили пробел - обрабатываем буферр
                 if buffer:
-                    process_lexeme(buffer, m1_symbols, m2_symbols, operation_tokens, operation_tokens_multiplication)
-                    buffer = ""#clear буфер
+                    if is_real_number(buffer):
+                        process_lexeme(buffer, m1_symbols, m2_symbols, operation_tokens, operation_tokens_multiplication)
+                    else:
+                        process_lexeme(buffer, m1_symbols, m2_symbols, operation_tokens, operation_tokens_multiplication)
+                    buffer = ""
 
         elif state == "C1":
             if char == comment_end:
@@ -155,6 +158,187 @@ def lexical_analysis():
 def process_lexeme(buffer, m1_symbols, m2_symbols, operation_tokens, operation_tokens_multiplication):
     print(f"\n!!!обрабатываем лексему: {buffer}")
 
+    pattern = r'([\(\),;])\s*([a-zA-Z_][a-zA-Z0-9_]*)|([a-zA-Z_][a-zA-Z0-9_]*)\s*([\(\),;])'
+    match = re.match(pattern, buffer)
+
+    if match:
+        if match.group(1) and match.group(2):
+            tl_token = match.group(1)
+            ident_token = match.group(2)
+
+            if tl_token not in TL:
+                TL.append(tl_token)
+            z_tl = TL.index(tl_token) + 1
+            out(2, z_tl, tl_token, "TL")
+
+            if ident_token not in TI:
+                TI.append(ident_token)
+            z_ident = TI.index(ident_token) + 1
+            out(3, z_ident, ident_token, "IDENT")
+
+        elif match.group(3) and match.group(4):
+            ident_token = match.group(3)
+            tl_token = match.group(4)
+
+            if ident_token not in TI:
+                TI.append(ident_token)
+            z_ident = TI.index(ident_token) + 1
+            out(3, z_ident, ident_token, "IDENT")
+
+            if tl_token not in TL:
+                TL.append(tl_token)
+            z_tl = TL.index(tl_token) + 1
+            out(2, z_tl, tl_token, "TL")
+
+        return
+
+    pattern_dec_tl = r'([^\w\s])\s*(\d+)|(\d+)\s*([^\w\s])|(\d+)\s*([^\w\s])([^\w\s])'
+    match = re.match(pattern_dec_tl, buffer)
+
+    if match:
+        if match.group(1) and match.group(2):
+            tl_token = match.group(1)
+            dec_token = match.group(2)
+
+            if tl_token not in TL:
+                TL.append(tl_token)
+            z_tl = TL.index(tl_token) + 1
+            out(2, z_tl, tl_token, "TL")
+
+            if dec_token not in TN:
+                TN.append(dec_token)
+            z_dec = TN.index(dec_token) + 1
+            out(4, z_dec, dec_token, "DEC")
+
+        elif match.group(3) and match.group(4):
+            dec_token = match.group(3)
+            tl_token = match.group(4)
+
+            if dec_token not in TN:
+                TN.append(dec_token)
+            z_dec = TN.index(dec_token) + 1
+            out(4, z_dec, dec_token, "DEC")
+
+            if tl_token not in TL:
+                TL.append(tl_token)
+            z_tl = TL.index(tl_token) + 1
+            out(2, z_tl, tl_token, "TL")
+
+        elif match.group(5) and match.group(6) and match.group(7):
+            dec_token = match.group(5)
+            tl_token1 = match.group(6)
+            tl_token2 = match.group(7)
+
+            if dec_token not in TN:
+                TN.append(dec_token)
+            z_dec = TN.index(dec_token) + 1
+            out(4, z_dec, dec_token, "DEC")
+
+            if tl_token1 not in TL:
+                TL.append(tl_token1)
+            z_tl1 = TL.index(tl_token1) + 1
+            out(2, z_tl1, tl_token1, "TL")
+
+            if tl_token2 not in TL:
+                TL.append(tl_token2)
+            z_tl2 = TL.index(tl_token2) + 1
+            out(2, z_tl2, tl_token2, "TL")
+
+        return
+
+    pattern_oper_dec_tl = r'([^\w\s])\s*(\d+)\s*([^\w\s])'
+    match = re.match(pattern_oper_dec_tl, buffer)
+
+    if match:
+        operator_token = match.group(1)
+        dec_token = match.group(2)
+        tl_token = match.group(3)
+
+        if operator_token in operation_tokens:
+            z_operator = operation_tokens.index(operator_token) + 1
+            out(8, z_operator, operator_token, "OPER")
+
+        if dec_token not in TN:
+            TN.append(dec_token)
+        z_dec = TN.index(dec_token) + 1
+        out(4, z_dec, dec_token, "DEC")
+
+        if tl_token not in TL:
+            TL.append(tl_token)
+        z_tl = TL.index(tl_token) + 1
+        out(2, z_tl, tl_token, "TL")
+
+        return
+
+    #------------------------------------------------------------------------------------------------------------------------------------------------
+
+        pattern_tw_tl_ident_op_ident = r'([a-zA-Z_][a-zA-Z0-9_]*)\s*([\(\)])\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*([\+\-\*/])\s*([a-zA-Z_][a-zA-Z0-9_]*)'
+        match = re.match(pattern_tw_tl_ident_op_ident, buffer)
+
+        if match:
+            tw_token = match.group(1)
+            tl_token = match.group(2)
+            ident1 = match.group(3)
+            operator = match.group(4)
+            ident2 = match.group(5)
+
+            if tw_token not in TW:
+                TW.append(tw_token)
+            z_tw = TW.index(tw_token) + 1
+            out(1, z_tw, tw_token, "TW")
+
+            if tl_token not in TL:
+                TL.append(tl_token)
+            z_tl = TL.index(tl_token) + 1
+            out(2, z_tl, tl_token, "TL")
+
+            if ident1 not in TI:
+                TI.append(ident1)
+            z_ident1 = TI.index(ident1) + 1
+            out(3, z_ident1, ident1, "IDENT")
+
+            if operator in operation_tokens:
+                z_operator = operation_tokens.index(operator) + 1
+                out(8, z_operator, operator, "OPER")
+
+            # IDENT 2
+            if ident2 not in TI:
+                TI.append(ident2)
+            z_ident2 = TI.index(ident2) + 1
+            out(3, z_ident2, ident2, "IDENT")
+
+            return
+
+    #------------------------------------------------------------------------------------------------------------------------------------------------
+
+    #IDENTOPERREALDELIM
+    if ":=" in buffer:
+        match = re.match(r'^([a-zA-Z_][a-zA-Z0-9_]*)\s*(:=)\s*([+-]?\d*\.?\d+(?:[eE][+-]?\d+)?)\s*([,;])$', buffer)
+        if match:
+            ident = match.group(1)
+            operator = match.group(2)
+            real_number = match.group(3)
+            delim = match.group(4)
+
+            if ident not in TI:  
+                TI.append(ident)
+            z_ident = TI.index(ident) + 1
+            out(3, z_ident, ident, "IDENT")
+
+            if operator == ":=":
+                z_operator = Operators.index(":=")  
+                out(8, z_operator, operator, "OPER (assign)")
+
+            if real_number not in TN:
+                TN.append(real_number)
+            z_real = TN.index(real_number) + 1
+            out(4, z_real, real_number, "REAL")
+
+            if delim in TL:
+                z_delim = TL.index(delim) + 1
+                out(2, z_delim, delim, "DELIM")
+            return
+
     if buffer in TW:#служебное слово
         z = TW.index(buffer) + 1
         out(1, z, buffer, "KWORD")
@@ -162,12 +346,6 @@ def process_lexeme(buffer, m1_symbols, m2_symbols, operation_tokens, operation_t
     elif buffer in TL:#ограничитель
         z = TL.index(buffer) + 1
         out(2, z, buffer, "DELIM")
-
-    #elif buffer.isdigit():#проверка на число
-    #    if buffer not in TN:
-    #        TN.append(buffer)
-    #    z = TN.index(buffer) + 1
-    #    out(4, z, buffer, "NUM")
 
     elif (
             buffer.replace('.', '', 1).isdigit() or
@@ -190,6 +368,12 @@ def process_lexeme(buffer, m1_symbols, m2_symbols, operation_tokens, operation_t
     elif buffer in Operators:#oператоры
         z = Operators.index(buffer) + 1
         out(5, z, buffer, "OPER")
+
+    elif re.fullmatch(r'[a-zA-Z_][a-zA-Z0-9_]*', buffer):
+        if buffer not in TI:
+            TI.append(buffer)
+        z = TI.index(buffer) + 1
+        out(3, z, buffer, "IDENT")
 
     elif buffer in m1_symbols:#M1 операторы
         z = m1_symbols.index(buffer) + 1
@@ -234,6 +418,12 @@ def process_lexeme(buffer, m1_symbols, m2_symbols, operation_tokens, operation_t
         z = 16#примерный индекс числа
         out(4, z, buffer, "HEX")
 
+    elif is_real_number(buffer):
+        if buffer not in TN:
+            TN.append(buffer)
+        z = TN.index(buffer) + 1
+        out(4, z, buffer, "REAL")
+
     else:
         print(f"неизвестная лексема: {buffer}")
 
@@ -242,24 +432,41 @@ def is_binary_number(buffer):
         return True
     return False
 
+def is_real_number(string):
+    if not string:
+        return False
+
+    index = 0
+    length = len(string)
+
+    if index < length and string[index].isdigit():
+        index = check_numeric_part(string, index)
+
+    if index < length and string[index] == '.':
+        index += 1
+        if index < length and string[index].isdigit():
+            index = check_numeric_part(string, index)
+        else:
+            return False
+
+    if index < length and string[index] in {'E', 'e'}:
+        index += 1
+        if index < length and string[index] in {'+', '-'}:
+            index += 1
+        if index < length and string[index].isdigit():
+            index = check_numeric_part(string, index)
+        else:
+            return False
+
+    return index == length
+
+def check_numeric_part(string, index):
+    while index < len(string) and string[index].isdigit():
+        index += 1
+    return index
+
+def is_identifier(buffer):
+    identifier_pattern = r"^[a-zA-Z_][a-zA-Z0-9_]*$"
+    return re.match(identifier_pattern, buffer) is not None
+
 lexical_analysis()
-
-
-
-
-#баг !введите строку для анализа: 5D 9O 45 1e+1
-
-!!!обрабатываем лексему: 5D #верно
-out(4, 10) записано в файл lexems.txt
-TOKEN name: DEC, TOKEN value: 5D
-
-!!!обрабатываем лексему: 9O #верно так как 01234567
-неизвестная лексема: 9O
-
-!!!обрабатываем лексему: 45 #верно
-out(4, 5) записано в файл lexems.txt
-TOKEN name: NUM, TOKEN value: 45
-
-!!!обрабатываем лексему: 1e+1#отработать
-неизвестная лексема: 1e+1
-
