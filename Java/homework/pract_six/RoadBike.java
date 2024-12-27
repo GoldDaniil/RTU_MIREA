@@ -1,5 +1,3 @@
-package bikeproject;
-
 public class RoadBike extends Bike {
     private int tyreWidth;
     private int postHeight;
