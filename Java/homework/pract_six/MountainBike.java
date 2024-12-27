@@ -1,5 +1,3 @@
-package bikeproject;
-
 public class MountainBike extends Bike {
     private String suspension;
     private String type;
