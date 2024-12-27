@@ -1,5 +1,3 @@
-package bikeproject;
-
 public class Bike {
     private String handleBars;
     private String frame;
