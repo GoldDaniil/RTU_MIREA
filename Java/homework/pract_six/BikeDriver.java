@@ -1,5 +1,3 @@
-package bikeproject;
-
 public class BikeDriver {
     public static void main(String[] args) {
         RoadBike bike1 = new RoadBike();
