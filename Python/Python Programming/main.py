@@ -1,14 +1,18 @@
+import math
+import tkinter as tk
+
 def launcher():
     while True:
         print("\nвыберите номер блока или 'exit' для заверщения:")
         print(" 1 - блок 1")
         print(" 2 - блок 2")
         print(" 3 - блок 3")
+        print(" 4 - блок 4")
         block = input("номер блока: ").strip()
         if block.lower() == "exit":
             print("пока")
             break
-        elif block in ['1', '2', '3']:
+        elif block in ['1', '2', '3', '4']:
             tasks_menu(block)
         else:
             print("неверный номер блока - введите еще раз")
@@ -231,6 +235,77 @@ if __name__ == '__main__':
     print("All tests passed.")
 ''')
 
+
+#--- 4 Пиксельные шейдеры----------------------------------------------------------------------------------------------------------------------------------------
+#def block_four_one():
+
+def block_four_two(shader, width, height):
+    image = bytearray((0, 0, 0) * width * height)
+    for y in range(height):
+        for x in range(width):
+            pos = (width * y + x) * 3
+            color = shader(x / width, y / height)
+            normalized = [max(min(int(c * 255), 255), 0) for c in color]
+            image[pos:pos + 3] = normalized
+    header = bytes(f'P6\n{width} {height}\n255\n', 'ascii')
+    return header + image
+
+def start(shader):
+    root = tk.Tk()
+    root.title("asdas")
+    img = tk.PhotoImage(data=block_four_two(shader, 256, 256)).zoom(2, 2)
+    label = tk.Label(root, image=img)
+    label.pack()
+    root.mainloop()
+
+def shader_41(x, y):
+    return 0.0, 0.0, 0.0
+
+def test_42(x, y):
+    cx, cy = 0.5, 0.5
+    radius = 0.4
+# ------------------------------------------------------------------------------
+
+    dx = x - cx  # будем делать арасст от центрва
+    dy = y - cy
+    r = math.sqrt(dx * dx + dy * dy)
+
+    mask = (1 - math.tanh((r - radius) * 20)) / 2
+    # https://github.com/Harry24k/adversarial-attacks-pytorch/blob/master/torchattacks/attacks/cw.py
+
+    t = (y - (cy - radius)) / (2 * radius)  # первый параметр: от 0 (верх) до 1 (низ)
+
+    # градиент
+    if t < 0.5:
+        f = t / 0.5  # f
+        r_col = 0.5 + f * (1.0 - 0.5)
+        g_col = 1.0  # f
+        b_col = 0.5 + f * (0.0 - 0.5)
+    else:
+        f = (t - 0.5) / 0.5  # от центра к низу
+        r_col = 1.0
+        g_col = 1.0 + f * (0.0 - 1.0)
+        b_col = 0.0  # f
+
+    bgBLACK = 0.05
+
+    red = bgBLACK + mask * (r_col - bgBLACK)
+    green = bgBLACK + mask * (g_col - bgBLACK)
+    blue = bgBLACK + mask * (b_col - bgBLACK)
+    return red, green, blue
+
+
+# def block_four_three():
+
+# def block_four_four():
+
+# def block_four_five():
+
+# def block_four_six():
+
+# def block_four_seven():
+
+
 def tasks_menu(block):
     while True:
         print(f"\nвыберите задание из блока {block} или 'exit' для возврата к выбору блока:")
@@ -258,6 +333,15 @@ def tasks_menu(block):
             print("2")
             print("3")
             print("4")
+        elif block == '4':
+            print('1')
+            print('2')
+            print('3')
+            print('4')
+            print('5')
+            print('6')
+            print('7')
+
         task = input("номер задания: ").strip()
 
         if task.lower() == "exit":
@@ -309,6 +393,15 @@ def tasks_menu(block):
             elif task == '3': block_third_third()
             elif task == '4': block_third_fourth()
             print("error - try again")
+        elif block == '4':
+            #if task == '1': block_four_one()
+            if task == '2': start(test_42)
+            #elif task == '3': block_four_three()
+            #elif task == '4': block_four_four()
+            #elif task == '5': block_four_five()
+            #elif task == '6': block_four_six()
+            #elif task == '7': block_four_seven()
+
 def main():
     launcher()
 
