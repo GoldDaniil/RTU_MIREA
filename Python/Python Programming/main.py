@@ -239,6 +239,9 @@ if __name__ == '__main__':
 #--- 4 Пиксельные шейдеры----------------------------------------------------------------------------------------------------------------------------------------
 #def block_four_one():
 
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 def block_four_two(shader, width, height):
     image = bytearray((0, 0, 0) * width * height)
     for y in range(height):
@@ -294,10 +297,75 @@ def test_42(x, y):
     blue = bgBLACK + mask * (b_col - bgBLACK)
     return red, green, blue
 
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
-# def block_four_three():
+def create_canvas(width, height):
+    root = tk.Tk()
+    root.title("sdflsdkl")
+    canvas = tk.Canvas(root, width=width, height=height, bg="black")
+    canvas.pack()
+    return root, canvas
 
-# def block_four_four():
+def draw_pacman(canvas, x, y, size):
+    mouth_angle = 70#size
+    start_angle = 35#right
+    extent_angle = 360 - mouth_angle#часть дуги
+
+    canvas.create_arc(x, y, x + size, y + size, start=start_angle,
+                      extent=extent_angle, fill="yellow", outline="yellow")
+
+    eye_radius = size * 0.05#size глаза относительно диаметра
+    eye_x = x + size * 0.65
+    eye_y = y + size * 0.25
+    canvas.create_oval(eye_x - eye_radius, eye_y - eye_radius,
+                       eye_x + eye_radius, eye_y + eye_radius,
+                       fill="black", outline="black")
+
+def block_four_three():
+    canvas_size = 400
+    root, canvas = create_canvas(canvas_size, canvas_size)
+
+    pacman_size = canvas_size * 0.8
+    pacman_x = (canvas_size - pacman_size) / 2
+    pacman_y = (canvas_size - pacman_size) / 2
+
+    draw_pacman(canvas, pacman_x, pacman_y, pacman_size)
+    root.mainloop()
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
+def noise(x, y):
+    n = x + y * 57#сворач х и у в одно
+
+    n = (n << 13) ^ n#бит операция - перемеш бит (хеш-функция)
+    n = n * (n * n * 60493 + 19990303) + 1376312589
+
+    n = n & 0x7fffffff#привет сиаод - 31 бит + убираем знак
+
+    return n / float(0x7fffffff)#ток 0..1
+
+def block_four_four():
+    width, height = 400, 400
+
+    root = tk.Tk()
+    root.title("gfdgd")
+
+    canvas = tk.Canvas(root, width=width, height=height, bg="white", highlightthickness=0)
+    canvas.pack()
+
+    for y in range(height):
+        for x in range(width):
+            val = noise(x, y)#знач
+            gray = int(val * 255)#серый от 0
+            color = f"#{gray:02x}{gray:02x}{gray:02x}"#RRGGBB
+            canvas.create_rectangle(x, y, x + 1, y + 1, outline=color, fill=color)
+
+    root.mainloop()
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # def block_four_five():
 
@@ -396,8 +464,8 @@ def tasks_menu(block):
         elif block == '4':
             #if task == '1': block_four_one()
             if task == '2': start(test_42)
-            #elif task == '3': block_four_three()
-            #elif task == '4': block_four_four()
+            elif task == '3': block_four_three()
+            elif task == '4': block_four_four()
             #elif task == '5': block_four_five()
             #elif task == '6': block_four_six()
             #elif task == '7': block_four_seven()
