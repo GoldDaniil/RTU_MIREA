@@ -215,8 +215,8 @@ def multiply_by_15(x):
     a = x + x  #2x
     b = a + a  #4x
     c = b + b  #8x
-    result = c + c - (a - x)#(c+c)=16x, (a - x)= (2x-x)=x, 16x - x = 15x
-    return result
+    d = c - (x - c)
+    return d
 ''')
 
 def block_third_fourth():
@@ -228,13 +228,153 @@ def naive_mul(x, y):
     return result
 
 if __name__ == '__main__':
-    import random
     for _ in range(10):
         a = random.randint(1, 100)
         b = random.randint(1, 100)
-        assert naive_mul(a, b) == a * b, f"Test failed for a={a}, b={b}"
-    print("All tests passed.")
+        assert naive_mul(a, b) == a * b"
+    print("all tests passed")
 ''')
+
+def block_third_fifth():
+    print('''\
+def fast_mul(x, y):
+    result = 0
+    shift = 0
+    while y > 0:
+        if y & 1:
+            result += x << shift
+        y >>= 1
+        shift += 1
+    return result
+assert fast_mul(15, 10) == 15 * 10
+    ''')
+
+def block_third_six():
+    print('''\
+    result = 1
+    while n > 0:
+        if n & 1:
+            result *= x
+        x *= x
+        n >>= 1
+    return result
+assert fast_pow(5, 3) == pow(5, 3)
+    ''')
+
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+
+def block_third_seven_bits(x, y, bits):
+    x &= (2 ** bits - 1)
+    y &= (2 ** bits - 1)
+    return x * y
+
+def block_third_seven_l16(x, y):
+    xLow = x & 0x00FF
+    xHigh = (x & 0xFF00) >> 8
+    yLow = y & 0x00FF
+    yHigh = (y & 0xFF00) >> 8
+
+    xLow_yLow = block_third_seven_bits(xLow, yLow, 8)
+    xHigh_yLow = block_third_seven_bits(xHigh, yLow, 8)
+    xLow_yHigh = block_third_seven_bits(xLow, yHigh, 8)
+    xHigh_yHigh = block_third_seven_bits(xHigh, yHigh, 8)
+
+    return ((xHigh_yHigh) << 16) + ((xHigh_yLow + xLow_yHigh) << 8) + (xLow_yLow)
+assert block_third_seven_l16(65025, 63100) == 65025 * 63100
+
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+
+def block_third_eight(x, y):
+    x0 = x & 0xFF
+    x1 = (x >> 8) & 0xFF
+
+    y0 = y & 0xFF
+    y1 = (y >> 8) & 0xFF
+
+    z0 = x0 * y0
+    z1 = x1 * y1
+    z2 = (x1 + x0) * (y1 + y0) - z1 - z0
+
+    result = (z1 << 16) + (z2 << 8) + z0
+    return result
+
+assert block_third_eight(65025, 63100) == 65025 * 63100
+
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+
+#3.9
+def fast_mul_gen(var):
+
+    def fast_mul(x, y):
+        print("-" * 30)
+        result = 0
+        sums = 0
+        print('f(x) =', result, '\ny = ', y)
+        sums += 1
+        shift = 0
+        while x:
+            if x % 2 != 0:
+                print(f'f(x) = {result} + {y}')
+                result += y << shift
+                sums += 1
+            print('y = y + ', y)
+            x >>= 1
+            shift += 1
+            sums += 1
+        print('f(x) =', result, '\nsummaries made:', sums)
+        return result
+
+    def task12(x):
+        return fast_mul(x, 12)
+    def task16(x):
+        return fast_mul(x, 16)
+    def task15(x):
+        return fast_mul(x, 15)
+
+    print(task12(var))
+    print(task16(var))
+    print(task15(var))
+
+fast_mul_gen(2)
+
+
+
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+
+def block_third_ten(var):
+
+    def fast_pow(x, y):
+        print("-" * 30)
+        result = 1
+        oper = 0
+        print('f(x) =', result, '\ny = ', y)
+        oper += 1
+        while y > 0:
+            if y & 1:
+                print(f'f(x) = {result} + {y}')
+                result *= x
+                oper += 1
+            print('y = y + ', y)
+            oper += 1
+            x *= x
+            y >>= 1
+        print('f(x) =', result, '\nOperations made:', oper)
+        return result
+
+    def task1(x):
+        return fast_pow(x, 2)
+    def task2(x):
+        return fast_pow(x, 4)
+    def task3(x):
+        return fast_pow(x, 8)
+
+    print(task1(var))
+    print(task2(var))
+    print(task3(var))
 
 
 #--- 4 Пиксельные шейдеры----------------------------------------------------------------------------------------------------------------------------------------
@@ -565,6 +705,12 @@ def tasks_menu(block):
             elif task == '2': block_third_second()
             elif task == '3': block_third_third()
             elif task == '4': block_third_fourth()
+            elif task == '5': block_third_fifth()
+            elif task == '6': block_third_six()
+            elif task == '7': block_third_fourth()
+            elif task == '8': block_third_eight()
+            elif task == '9': block_third_fourth()
+            elif task == '10':block_third_ten(2)
             print("error - try again")
         elif block == '4':
             #if task == '1': block_four_one()
