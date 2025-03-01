@@ -8,11 +8,12 @@ def launcher():
         print(" 2 - блок 2")
         print(" 3 - блок 3")
         print(" 4 - блок 4")
+        print(" 5 - блок 5")
         block = input("номер блока: ").strip()
         if block.lower() == "exit":
             print("пока")
             break
-        elif block in ['1', '2', '3', '4']:
+        elif block in ['1', '2', '3', '4', '5']:
             tasks_menu(block)
         else:
             print("неверный номер блока - введите еще раз")
@@ -367,9 +368,113 @@ def block_four_four():
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 
-# def block_four_five():
+def block_four_five() :
+    width, height = 256, 256
+    scale = 16.0
 
-# def block_four_six():
+    root = tk.Tk()
+    root.title("asdasdsad")
+
+    canvas = tk.Canvas(root, width=width, height=height, bg="white", highlightthickness=0)
+    canvas.pack()
+
+    for y in range(height):
+        for x in range(width):
+            px = x / scale
+            py = y / scale
+
+            val = val_noise(px, py)
+
+            gray = int(val * 255)
+            color = f"#{gray:02x}{gray:02x}{gray:02x}"
+
+            canvas.create_rectangle(x, y, x + 1, y + 1, outline=color, fill=color)
+
+    root.mainloop()
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
+def fade(t):
+    return 3 * (t**2) - 2 * (t**3)
+
+def val_noise(px, py):
+    x0 = math.floor(px)#округление вниз
+    y0 = math.floor(py)
+    x1 = x0 + 1
+    y1 = y0 + 1
+
+    dx = px - x0#float
+    dy = py - y0
+
+    v00 = noise(x0, y0)#noise squard
+    v10 = noise(x1, y0)
+    v01 = noise(x0, y1)
+    v11 = noise(x1, y1)
+
+    u = fade(dx)
+    v = fade(dy)
+
+    # Интерполяция по x
+    ix0 = v00 + u * (v10 - v00)#интер х
+    ix1 = v01 + u * (v11 - v01)
+
+    return ix0 + v * (ix1 - ix0)#y
+
+def fractal_noise(px, py, octaves=5, persistence=0.5, lacunarity=2.0):
+    total = 0.0
+    amplitude = 1.0
+    frequency = 1.0
+    max_value = 0.0#нужно чтобы нормировать результат в диапазон [0..1]
+
+    for _ in range(octaves):
+        total += val_noise(px * frequency, py * frequency) * amplitude#текущ частота
+
+        max_value += amplitude
+        amplitude *= persistence
+        frequency *= lacunarity
+
+    return total / max_value
+
+def blend_colors(c1, c2, t):
+    r = int(c1[0] + (c2[0] - c1[0]) * t)#интерпол с1 / с2
+    g = int(c1[1] + (c2[1] - c1[1]) * t)
+    b = int(c1[2] + (c2[2] - c1[2]) * t)
+    return (r, g, b)
+
+def block_four_six():
+    width, height = 512, 512
+
+    octaves = 5#фрактал шум
+    persistence = 0.5
+    lacunarity = 2.0
+
+    scale = 0.01#масггтаб по осям
+
+    sky_color = (70, 130, 180)
+    cloud_color = (255, 255, 255)
+
+    root = tk.Tk()
+    root.title("Fractal Clouds (fBm)")
+
+    canvas = tk.Canvas(root, width=width, height=height, bg="white", highlightthickness=0)
+    canvas.pack()
+
+    for y in range(height):
+        for x in range(width):
+            val = fractal_noise(x * scale, y * scale, octaves, persistence, lacunarity)#фрактал шум
+
+            #val = val**1.3
+
+            r, g, b = blend_colors(sky_color, cloud_color, val)
+
+            color_hex = f"#{r:02x}{g:02x}{b:02x}"#RRGGBB
+
+            canvas.create_rectangle(x, y, x + 1, y + 1, outline=color_hex, fill=color_hex)#1x1
+
+    root.mainloop()
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # def block_four_seven():
 
@@ -466,8 +571,8 @@ def tasks_menu(block):
             if task == '2': start(test_42)
             elif task == '3': block_four_three()
             elif task == '4': block_four_four()
-            #elif task == '5': block_four_five()
-            #elif task == '6': block_four_six()
+            elif task == '5': block_four_five()
+            elif task == '6': block_four_six()
             #elif task == '7': block_four_seven()
 
 def main():
