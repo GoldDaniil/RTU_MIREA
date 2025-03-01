@@ -595,7 +595,7 @@ def block_four_six():
     cloud_color = (255, 255, 255)
 
     root = tk.Tk()
-    root.title("Fractal Clouds (fBm)")
+    root.title("fjdskfsl")
 
     canvas = tk.Canvas(root, width=width, height=height, bg="white", highlightthickness=0)
     canvas.pack()
@@ -719,8 +719,7 @@ def tasks_menu(block):
             elif task == '4': block_four_four()
             elif task == '5': block_four_five()
             elif task == '6': block_four_six()
-            #elif task == '7': block_four_seven()
-
+            elif task == '7': block_four_seven()
 def main():
     launcher()
 
