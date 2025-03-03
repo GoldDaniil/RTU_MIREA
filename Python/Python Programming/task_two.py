@@ -164,28 +164,28 @@ def block_second_fourth():
         print("err caught:", e)
 
 def block_third_first(s):
-    print("Преобразование строк в числа:", list(map(int, s)))
+    print("преобразование строк в числа:", list(map(int, s)))
 
 def block_third_second(s):
-    print("Количество уникальных элементов:", len(set(s)))
+    print("колво уник элементов:", len(set(s)))
 
 def block_third_third(s):
-    print("Обратная последовательность:", s[::-1])
+    print("обрат послед:", s[::-1])
 
 def block_third_fourth(s, x):
-    print("Индексы x в s:", [i for i, val in enumerate(s) if val == x])
+    print("индексы x в s:", [i for i, val in enumerate(s) if val == x])
 
 def block_third_fifth(s):
-    print("Сумма элементов с четными индексами:", sum(s[::2]))
+    print("sum элементов с 2 индексами:", sum(s[::2]))
 
 def block_third_sixth(s):
-    print("Строка максимальной длины:", max(s, key=len))
+    print("строка макс длины:", max(s, key=len))
 
 def block_third_seventh(n):
-    print("Число является харшад-числом:", n % sum(map(int, str(n))) == 0)
+    print("число является харшад числом:", n % sum(map(int, str(n))) == 0)
 
 def block_third_eighth(size):
-    print("Случайная строка:", ''.join(random.choices(string.ascii_letters, k=size)))
+    print("рандом строка:", ''.join(random.choices(string.ascii_letters, k=size)))
 
 def block_third_ninth(text):
     print("RLE-сжатие:", [(char, len(list(group))) for char, group in groupby(text)])
