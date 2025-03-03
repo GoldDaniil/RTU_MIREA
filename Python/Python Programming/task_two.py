@@ -2,18 +2,20 @@ import pycodestyle
 import random
 import string
 from itertools import groupby
-
+import struct
 def launcher():
     while True:
         print("\nвыберите номер блока или 'exit' для завершения:")
         print(" 1 - блок 1")
         print(" 2 - блок 2")
         print(" 3 - блок 3")
+        print(" 4 - блок 4")
+
         block = input("номер блока: ").strip()
         if block.lower() == "exit":
             print("пока")
             break
-        elif block in ['1', '2', '3']:
+        elif block in ['1', '2', '3', '4']:
             tasks_menu(block)
         else:
             print("неверный номер блока - введите еще раз")
@@ -190,6 +192,36 @@ def block_third_eighth(size):
 def block_third_ninth(text):
     print("RLE-сжатие:", [(char, len(list(group))) for char, group in groupby(text)])
 
+def block_fourth_first():
+    try:
+        '''
+        generate_groups = lambda: [f"{x}{y}" for x in "АБВГДЕ" for y in range(1, 6)]
+        '''
+        print("generate_groups:", [f"{x}{y}" for x in "АБВГДЕ" for y in range(1, 6)])
+    except Exception as e:
+        print("4.1 err caught:", e)
+
+
+def decrypt_tea(data, key):
+    v0, v1 = data
+    sum = 0xC6EF3720
+    delta = 0x9E3779B9
+    k0, k1, k2, k3 = key
+    for _ in range(32):
+        v1 -= ((v0 << 4) + k2) ^ (v0 + sum) ^ ((v0 >> 5) + k3)
+        v0 -= ((v1 << 4) + k0) ^ (v1 + sum) ^ ((v1 >> 5) + k1)
+        sum -= delta
+    return v0, v1
+
+def block_fourth_second():
+    try:
+        encrypted_data = [0xE3238557, 0x6204A1F8]
+        key = [0, 4, 5, 1]
+        decrypted = decrypt_tea(encrypted_data, key)
+        print("decrypt_tea:", decrypted)
+    except Exception as e:
+        print("4.2 err caught:", e)
+
 def tasks_menu(block):
     while True:
         print(f"\nвыберите задание из блока {block} или 'exit' для возврата к выбору блока:")
@@ -217,6 +249,9 @@ def tasks_menu(block):
             print("7")
             print("8")
             print("9")
+        if block == '4':
+            print("1")
+            print("2")
 
         task = input("номер задания: ").strip()
 
@@ -271,6 +306,13 @@ def tasks_menu(block):
                 block_third_eighth(10)
             elif task == '9':
                 block_third_ninth("ABBCCCDEF")
+            else:
+                print("error - try again")
+        elif block == '4':
+            if task == '1':
+                block_fourth_first()
+            elif task == '2':
+                block_fourth_second()
             else:
                 print("error - try again")
 
