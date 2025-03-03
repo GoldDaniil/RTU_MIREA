@@ -616,9 +616,6 @@ def block_four_six():
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 
-# def block_four_seven():
-
-
 def tasks_menu(block):
     while True:
         print(f"\nвыберите задание из блока {block} или 'exit' для возврата к выбору блока:")
@@ -719,7 +716,7 @@ def tasks_menu(block):
             elif task == '4': block_four_four()
             elif task == '5': block_four_five()
             elif task == '6': block_four_six()
-            elif task == '7': block_four_seven()
+            # elif task == '7': block_four_seven()
 def main():
     launcher()
 
