@@ -10,12 +10,13 @@ def launcher():
         print(" 2 - блок 2")
         print(" 3 - блок 3")
         print(" 4 - блок 4")
+        print(" 5 - блок 5")
 
         block = input("номер блока: ").strip()
         if block.lower() == "exit":
             print("пока")
             break
-        elif block in ['1', '2', '3', '4']:
+        elif block in ['1', '2', '3', '4', '5']:
             tasks_menu(block)
         else:
             print("неверный номер блока - введите еще раз")
@@ -222,6 +223,114 @@ def block_fourth_second():
     except Exception as e:
         print("4.2 err caught:", e)
 
+
+def block_fifth_first():
+    def ham_dist(x, y):
+        return bin(x ^ y).count('1')
+
+    print("5.1")
+
+    print(ham_dist(0b10, 0b11))#1
+
+    print(ham_dist(0b1100, 0b0011))#4
+
+
+#5.2
+def block_fifth_second():
+    def encode_val(k, m, n):
+        return int(''.join([bin(n)[2:].zfill(k)] * m), 2)#двочиное представление - + нули до l k
+
+    def decode_val(k, m, n):
+        bin_n = bin(n)[2:]#2-представ - игнор 0b
+
+        bin_n = bin_n.zfill(len(bin_n) + (k - len(bin_n) % k) % k)#add 0 , чтобы д % k
+
+        blocks = [bin_n[i:i + k] for i in range(0, len(bin_n), k)]#строку на блоки по к
+
+        decoded = int(''.join(blocks), 2)#возврат
+
+        return decoded
+
+    def ham_dist(x, y):
+        return bin(x ^ y).count('1')
+
+    encoded = encode_val(4, 3, 0b1011)
+    print(f"coded значение: {bin(encoded)}")
+
+    decoded = decode_val(4, 3, 0b111000111111)
+    print(f"decoded значение: {bin(decoded)}")
+
+    print(ham_dist(encode_val(4, 3, 0b1001), encode_val(4, 3, 0b1000)))
+
+    decoded = decode_val(4, 3, 0b110010110111)#декод с коррекцией
+    print(f"excep значение: {bin(decoded)}")
+
+def block_fifth_third():
+    def levenshtein_distance(s1, s2):
+        len_s1, len_s2 = len(s1), len(s2)
+        dp = [[0] * (len_s2 + 1) for _ in range(len_s1 + 1)]
+
+        for i in range(len_s1 + 1):
+            dp[i][0] = i
+        for j in range(len_s2 + 1):
+            dp[0][j] = j
+
+        for i in range(1, len_s1 + 1):
+            for j in range(1, len_s2 + 1):
+                cost = 0 if s1[i - 1] == s2[j - 1] else 1
+                dp[i][j] = min(
+                    dp[i - 1][j] + 1,#del
+                    dp[i][j - 1] + 1,#add
+                    dp[i - 1][j - 1] + cost#rep
+                )
+
+        return dp[len_s1][len_s2]
+
+    print(levenshtein_distance('столб', 'слон'))
+
+def block_fifth_fourth():
+    def levenshtein_operations(s1, s2):
+        len_s1, len_s2 = len(s1), len(s2)
+        dp = [[0] * (len_s2 + 1) for _ in range(len_s1 + 1)]
+
+        for i in range(len_s1 + 1):
+            dp[i][0] = i
+        for j in range(len_s2 + 1):
+            dp[0][j] = j
+
+        for i in range(1, len_s1 + 1):
+            for j in range(1, len_s2 + 1):
+                cost = 0 if s1[i - 1] == s2[j - 1] else 1
+                dp[i][j] = min(
+                    dp[i - 1][j] + 1,#del
+                    dp[i][j - 1] + 1,#add
+                    dp[i - 1][j - 1] + cost#rep
+                )
+
+        i, j = len_s1, len_s2#восстанов пути
+        operations = []
+
+        while i > 0 or j > 0:
+            if i > 0 and dp[i][j] == dp[i - 1][j] + 1:
+                operations.append('удаление')
+                i -= 1
+            elif j > 0 and dp[i][j] == dp[i][j - 1] + 1:
+                operations.append('вставка')
+                j -= 1
+            elif i > 0 and j > 0 and dp[i][j] == dp[i - 1][j - 1] + 1:
+                operations.append('замена')
+                i -= 1
+                j -= 1
+            else:
+                i -= 1
+                j -= 1
+
+        operations.reverse()
+        return operations
+
+    print(levenshtein_operations('столб', 'слон'))
+
+
 def tasks_menu(block):
     while True:
         print(f"\nвыберите задание из блока {block} или 'exit' для возврата к выбору блока:")
@@ -252,6 +361,11 @@ def tasks_menu(block):
         if block == '4':
             print("1")
             print("2")
+        if block == '5':
+            print("1")
+            print("2")
+            print("3")
+            print("4")
 
         task = input("номер задания: ").strip()
 
@@ -313,6 +427,17 @@ def tasks_menu(block):
                 block_fourth_first()
             elif task == '2':
                 block_fourth_second()
+            else:
+                print("error - try again")
+        elif block == '5':
+            if task == '1':
+                block_fifth_first()
+            elif task == '2':
+                block_fifth_second()
+            elif task == '3':
+                block_fifth_third()
+            elif task == '4':
+                block_fifth_fourth()
             else:
                 print("error - try again")
 
