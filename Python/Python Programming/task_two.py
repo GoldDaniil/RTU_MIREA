@@ -11,12 +11,13 @@ def launcher():
         print(" 3 - блок 3")
         print(" 4 - блок 4")
         print(" 5 - блок 5")
+        print(" 8 - блок 8")
 
         block = input("номер блока: ").strip()
         if block.lower() == "exit":
             print("пока")
             break
-        elif block in ['1', '2', '3', '4', '5']:
+        elif block in ['1', '2', '3', '4', '5', '8']:
             tasks_menu(block)
         else:
             print("неверный номер блока - введите еще раз")
@@ -463,6 +464,87 @@ def block_fifth_seventh():
     print(' '.join(corrected))
 
 
+
+
+
+def block_eighth_first():
+    import os
+    import argparse
+
+    def list_dir(path, all=False, long=False):
+        try:
+            entries = os.listdir(path)
+            if not all:
+                entries = [e for e in entries if not e.startswith('.')]
+            if long:
+                for entry in entries:
+                    full_path = os.path.join(path, entry)
+                    stats = os.stat(full_path)
+                    print(f'{stats.st_mode} {stats.st_size} {entry}')
+            else:
+                for entry in entries:
+                    print(entry)
+        except Exception as e:
+            print(f"error: {e}")
+
+    parser = argparse.ArgumentParser(description='аналог коаманды ls')
+    parser.add_argument('path', nargs='?', default='.', help='путь к директории')
+    parser.add_argument('-a', '--all', action='store_true', help='покащать все файлы - включая скрытые')
+    parser.add_argument('-l', '--long', action='store_true', help='показать подробную инфу')
+    args = parser.parse_args()
+
+    list_dir(args.path, args.all, args.long)
+
+def block_eighth_second():
+    import os
+
+    def build_tree(path, prefix=''):
+        entries = os.listdir(path)
+        for entry in entries:
+            full_path = os.path.join(path, entry)
+            if os.path.isdir(full_path):
+                print(f'{prefix}"{entry}" [shape=folder];')
+                build_tree(full_path, prefix + '    ')
+            else:
+                print(f'{prefix}"{entry}" [shape=file];')
+
+    start_path = input('введи путь: ').strip()
+    print('digraph G {')
+    build_tree(start_path)
+    print('}')
+
+def block_eighth_third():
+    import argparse
+    import sys
+    import re
+
+    def convert_quotes(text):
+        result = []
+        inside_code = False
+        quote_open = True
+        for line in text.splitlines():
+            if line.strip().startswith('```'):
+                inside_code = not inside_code
+                result.append(line)
+                continue
+            if not inside_code:
+                line = re.sub(r'"(.*?)"', lambda m: f'«{m.group(1)}»', line)
+            result.append(line)
+        return '\n'.join(result)
+
+    parser = argparse.ArgumentParser(description='преобразование кавычек в кавычки-елочки')
+    parser.add_argument('file', nargs='?', help='путь к файоу')
+    args = parser.parse_args()
+
+    if args.file:
+        with open(args.file, 'r', encoding='utf-8') as f:
+            content = f.read()
+    else:
+        content = sys.stdin.read()
+
+    print(convert_quotes(content))
+
+
 def tasks_menu(block):
     while True:
         print(f"\nвыберите задание из блока {block} или 'exit' для возврата к выбору блока:")
@@ -501,6 +583,10 @@ def tasks_menu(block):
             print("5")
             print("6")
             print("7")
+        if block == '8':
+            print("1")
+            print("2")
+            print("3")
 
         task = input("номер задания: ").strip()
 
@@ -579,6 +665,15 @@ def tasks_menu(block):
                 block_fifth_six()
             elif task == '7':
                 block_fifth_seventh()
+            else:
+                print("error - try again")
+        if block == '8':
+            if task == '1':
+                block_eighth_first()
+            elif task == '2':
+                block_eighth_second()
+            elif task == '3':
+                block_eighth_third()
             else:
                 print("error - try again")
 
