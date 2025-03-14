@@ -330,6 +330,138 @@ def block_fifth_fourth():
 
     print(levenshtein_operations('столб', 'слон'))
 
+def block_fifth_five():
+    def levenshtein_distance(s1, s2):
+        dp = [[0] * (len(s2) + 1) for _ in range(len(s1) + 1)]
+        for i in range(len(s1) + 1):
+            dp[i][0] = i
+        for j in range(len(s2) + 1):
+            dp[0][j] = j
+        for i in range(1, len(s1) + 1):
+            for j in range(1, len(s2) + 1):
+                cost = 0 if s1[i - 1] == s2[j - 1] else 1
+                dp[i][j] = min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost)
+        return dp[-1][-1]
+
+    def lev_dist_gen(s1, s2):
+        operations = []
+        i, j = len(s1), len(s2)
+        dp = [[0] * (j + 1) for _ in range(i + 1)]
+        for x in range(i + 1):
+            dp[x][0] = x
+        for y in range(j + 1):
+            dp[0][y] = y
+
+        for x in range(1, i + 1):
+            for y in range(1, j + 1):
+                cost = 0 if s1[x - 1] == s2[y - 1] else 1
+                dp[x][y] = min(
+                    dp[x - 1][y] + 1,
+                    dp[x][y - 1] + 1,
+                    dp[x - 1][y - 1] + cost
+                )
+
+        x, y = i, j
+        while x > 0 or y > 0:
+            if x > 0 and dp[x][y] == dp[x - 1][y] + 1:
+                operations.append(f"del x[{x - 1}]")
+                x -= 1
+            elif y > 0 and dp[x][y] == dp[x][y - 1] + 1:
+                operations.append(f"x.insert({x}, y[{y - 1}])")
+                y -= 1
+            elif x > 0 and y > 0:
+                if s1[x - 1] != s2[y - 1]:
+                    operations.append(f"x[{x - 1}] = y[{y - 1}]")
+                x -= 1
+                y -= 1
+
+        return '\n'.join(reversed(operations))
+
+    print(lev_dist_gen('достаток', 'остаточный'))
+
+    s1 = ''.join(random.choices(string.ascii_lowercase, k=10))
+    s2 = ''.join(random.choices(string.ascii_lowercase, k=10))
+    print(f"s1: {s1}, s2: {s2}")
+    print(lev_dist_gen(s1, s2))
+
+def block_fifth_six():
+    def spell(word, dictionary):
+        if word in dictionary:
+            return word
+
+        def candidates(dist):
+            return [w for w in dictionary if levenshtein_distance(word, w) == dist]
+
+        def best_candidate(candidates):
+            return max(candidates, key=lambda w: dictionary[w], default=word)
+
+        for dist in [1, 2]:
+            found = candidates(dist)
+            if found:
+                return best_candidate(found)
+
+        return word
+
+    def levenshtein_distance(s1, s2):
+        dp = [[0] * (len(s2) + 1) for _ in range(len(s1) + 1)]
+        for i in range(len(s1) + 1):
+            dp[i][0] = i
+        for j in range(len(s2) + 1):
+            dp[0][j] = j
+        for i in range(1, len(s1) + 1):
+            for j in range(1, len(s2) + 1):
+                cost = 0 if s1[i - 1] == s2[j - 1] else 1
+                dp[i][j] = min(
+                    dp[i - 1][j] + 1,
+                    dp[i][j - 1] + 1,
+                    dp[i - 1][j - 1] + cost
+                )
+        return dp[-1][-1]
+
+    dictionary = {'по-моему': 10, 'я': 100, 'написал': 90, 'всё': 80, 'правильно': 70}
+    sentence = 'помоему я напесал усё правильна'.split()
+    corrected = ' '.join(spell(word, dictionary) for word in sentence)
+    print(corrected)
+
+def block_fifth_seventh():
+    similar_letters = {'a': 'а', 'e': 'е', 'o': 'о', 'p': 'р', 'c': 'с', 'x': 'х'}
+
+    def modified_lev_dist(s1, s2):
+        len_s1, len_s2 = len(s1), len(s2)
+        dp = [[0] * (len_s2 + 1) for _ in range(len_s1 + 1)]
+
+        for i in range(len_s1 + 1):
+            dp[i][0] = i
+        for j in range(len_s2 + 1):
+            dp[0][j] = j
+
+        for i in range(1, len_s1 + 1):
+            for j in range(1, len_s2 + 1):
+                cost = 0 if s1[i - 1] == s2[j - 1] or similar_letters.get(s1[i - 1]) == s2[j - 1] else 1
+                dp[i][j] = min(
+                    dp[i - 1][j] + 1,
+                    dp[i][j - 1] + 1,
+                    dp[i - 1][j - 1] + cost
+                )
+                if i > 1 and j > 1 and s1[i - 1] == s2[j - 2] and s1[i - 2] == s2[j - 1]:
+                    dp[i][j] = min(dp[i][j], dp[i - 2][j - 2] + 1)
+        return dp[len_s1][len_s2]
+
+    def advanced_spell(word, dictionary):
+        if word in dictionary:
+            return word
+
+        candidates = [(w, freq) for w, freq in dictionary.items() if modified_lev_dist(word, w) <= 2]
+        if candidates:
+            return max(candidates, key=lambda x: x[1])[0]
+        return word
+
+    dictionary = {'по-моему': 100, 'я': 200, 'написал': 150, 'всё': 300, 'правильно': 250}
+    text = 'pomoymu ya napisal vsyo pravilno'
+    words = text.split()
+    corrected = [advanced_spell(word, dictionary) for word in words]
+    print(' '.join(corrected))
+
 
 def tasks_menu(block):
     while True:
@@ -366,6 +498,9 @@ def tasks_menu(block):
             print("2")
             print("3")
             print("4")
+            print("5")
+            print("6")
+            print("7")
 
         task = input("номер задания: ").strip()
 
@@ -438,6 +573,12 @@ def tasks_menu(block):
                 block_fifth_third()
             elif task == '4':
                 block_fifth_fourth()
+            elif task == '5':
+                block_fifth_five()
+            elif task == '6':
+                block_fifth_six()
+            elif task == '7':
+                block_fifth_seventh()
             else:
                 print("error - try again")
 
