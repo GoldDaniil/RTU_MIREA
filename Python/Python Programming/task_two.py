@@ -3,6 +3,9 @@ import random
 import string
 from itertools import groupby
 import struct
+import argparse
+import sys
+import re
 def launcher():
     while True:
         print("\nвыберите номер блока или 'exit' для завершения:")
@@ -514,9 +517,7 @@ def block_eighth_second():
     print('}')
 
 def block_eighth_third():
-    import argparse
-    import sys
-    import re
+
 
     def convert_quotes(text):
         result = []
@@ -533,7 +534,7 @@ def block_eighth_third():
         return '\n'.join(result)
 
     parser = argparse.ArgumentParser(description='преобразование кавычек в кавычки-елочки')
-    parser.add_argument('file', nargs='?', help='путь к файоу')
+    parser.add_argument('file', nargs='?', help='example.md')
     args = parser.parse_args()
 
     if args.file:
@@ -667,6 +668,13 @@ def tasks_menu(block):
                 block_fifth_seventh()
             else:
                 print("error - try again")
+        #elif block == '6':
+
+        #else:
+        #    print("error - try again")
+            #if task == '1': block_six_first()
+            #if task == '2': block_six_second()
+            #if task == '3': block_six_second()
         if block == '8':
             if task == '1':
                 block_eighth_first()
