@@ -14,13 +14,14 @@ def launcher():
         print(" 3 - блок 3")
         print(" 4 - блок 4")
         print(" 5 - блок 5")
+        print(" 6 - блок 6")
         print(" 8 - блок 8")
 
         block = input("номер блока: ").strip()
         if block.lower() == "exit":
             print("пока")
             break
-        elif block in ['1', '2', '3', '4', '5', '8']:
+        elif block in ['1', '2', '3', '4', '5', '6', '8']:
             tasks_menu(block)
         else:
             print("неверный номер блока - введите еще раз")
@@ -466,8 +467,118 @@ def block_fifth_seventh():
     corrected = [advanced_spell(word, dictionary) for word in words]
     print(' '.join(corrected))
 
+def block_six_first():
+    table = [
+        ["Коллеги,", "парадигма цифровой экономики", "открывает новые возможности для", "дальнейшего углубления"],
+        ["В то же время,", "контекст цифровой трансформации", "выдвигает новые требования",
+         "бюджетного финансирования"],
+        ["Однако,", "диджитализация бизнес-процессов", "несёт в себе риски", "синергетического эффекта"],
+        ["Тем не менее,", "прагматичный подход к цифровым платформам", "расширяет горизонты",
+         "компрометации конфиденциальных"]
+    ]
+
+    def generate_report(table, num_paragraphs=3):
+        paragraphs = []
+        for _ in range(num_paragraphs):
+            sentences = []
+            rows = random.sample(table, len(table))
+            for row in rows:
+                sentence = f"{row[0]} {row[1]} {row[2]} {row[3]}."
+                sentences.append(sentence)
+            paragraph = " ".join(sentences)
+            paragraphs.append(paragraph)
+
+        report = "Уважаемые коллеги, вашему вниманию представляется доклад по вопросам цифровой экономики.\n\n"
+        report += "\n\n".join(paragraphs)
+        return report
+
+    #генерация доклада
+    report_text = generate_report(table)
+    print(report_text)
 
 
+def block_six_second(text):
+    sentences = text.replace("\n", " ").split(". ")
+    table = []
+
+    for sentence in sentences:
+        sentence = sentence.strip()
+        if not sentence:
+            continue
+
+        words = sentence.split()
+
+        while len(words) < 4:
+            words.append("")
+
+        part_length = max(1, len(words) // 4)
+        row = []
+
+        for i in range(0, len(words), part_length):
+            part = " ".join(words[i:i + part_length])
+            row.append(part)
+
+        if len(row) > 4:
+            row = row[:4]
+
+        while len(row) < 4:
+            row.append("")
+
+        table.append(row)
+
+    return table
+
+def block_six_third():
+    def generate_name():
+        first_names = [
+            "даниил", "вадик", "ярик", "сеня", "Николай", "леха", "тоха",
+            "амир", "илья", "игорт", "семен", "иван", "ваня", "даня"
+        ]
+        middle_initial = random.choice("АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ")
+
+        syllables_start = ["Фу", "Фе", "Шо", "Та", "Му", "Чер", "На", "Ку", "Гу", "Се", "Ба", "Гид", "Са"]
+        syllables_end = ["ций", "чли", "дяк", "сяк", "дич", "ев", "бян", "арий", "янц", "мидяк", "ко", "ин", "ский"]
+
+        last_name = random.choice(syllables_start) + random.choice(syllables_end)
+        return f"{random.choice(first_names)} {middle_initial}. {last_name}"
+
+    for _ in range(10):
+        print(generate_name())
+
+def block_six_fourth():
+    import random
+    from collections import defaultdict
+
+    def build_model(text, prefix_len):
+        model = defaultdict(lambda: defaultdict(int))
+        for i in range(len(text) - prefix_len):
+            prefix = text[i:i + prefix_len]
+            next_char = text[i + prefix_len]
+            model[prefix][next_char] += 1
+        return model
+
+    def generate_text(model, prefix_len, length, start=None):
+        if start is None:
+            start = random.choice(list(model.keys()))
+        result = start
+
+        current_prefix = start
+        for _ in range(length - prefix_len):
+            if current_prefix not in model:
+                break
+            next_chars = list(model[current_prefix].keys())
+            weights = list(model[current_prefix].values())
+            next_char = random.choices(next_chars, weights=weights)[0]
+            result += next_char
+            current_prefix = result[-prefix_len:]
+        return result
+
+    text = "на дворе трава, на траве дрова"
+    prefix_len = 2
+
+    model = build_model(text, prefix_len)
+    generated = generate_text(model, prefix_len, 100)
+    print(generated)
 
 
 def block_eighth_first():
@@ -545,7 +656,6 @@ def block_eighth_third():
 
     print(convert_quotes(content))
 
-
 def tasks_menu(block):
     while True:
         print(f"\nвыберите задание из блока {block} или 'exit' для возврата к выбору блока:")
@@ -584,6 +694,11 @@ def tasks_menu(block):
             print("5")
             print("6")
             print("7")
+        if block == '6':
+            print("1")
+            print("2")
+            print("3")
+            print("4")
         if block == '8':
             print("1")
             print("2")
@@ -668,8 +783,19 @@ def tasks_menu(block):
                 block_fifth_seventh()
             else:
                 print("error - try again")
-        #elif block == '6':
-
+        elif block == '6':
+            if task == '1':
+                block_six_first()
+            elif task == '2':
+                text = input("введите текст для преобразования:\n")
+                table = block_six_second(text)
+                print("\nполученная таблица:")
+                for row in table:
+                    print(row)
+            elif task == '3':
+                block_six_third()
+            elif task == '4':
+                block_six_fourth()
         #else:
         #    print("error - try again")
             #if task == '1': block_six_first()
