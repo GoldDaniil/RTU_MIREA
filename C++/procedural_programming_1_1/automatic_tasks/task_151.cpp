@@ -51,7 +51,7 @@ struct Poacher {
     bool active; // активен ли браконьер в этом сезоне
 };
 
-const int max_poachers = 10;
+const int max_poachers = 100;
 Poacher poachers[max_poachers];
 
 const char poacher_symbol = 'B';
@@ -205,6 +205,8 @@ void printGrid(const Animal grid[][screen_width], int herbivore_count, int preda
         << " | Remaining Grass: " << remaining_grass_count
         << " | Step: " << current_step + 1
         << " | Current Temperature: " << current_temperature << "^C"
+        << " | Poacher: " << poachers
+        << " | Max poacher: " << max_poachers
         << " | Season: ";
 
     switch (current_season) {
@@ -829,6 +831,3 @@ int main() {
 
     return 0;
 }
-
-// добавить систему бранокьеров - они работают два сезона, летом и весной, сделать их колво рандомным, сделать движение рандомным. сделать так чтобы близко по 
-// окончанию сезона охотники шли близко к границе. 
