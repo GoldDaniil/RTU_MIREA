@@ -24,13 +24,13 @@ const char mountain_symbol = '^';
 int mountain_population = 100; // количество гор
 const int screen_width = 200;
 const int screen_height = 30;
-int predator_population = 1200;
+int predator_population = 1800;
 int herbivore_population = 1200;
 int grass_population = 4000; // количество травы
 const double grass_regrowth_rate_summer = 0.031; // вероятность восстанавливаемости травы летом 
 const double grass_regrowth_rate_springfall = 0.0155; // вероятность восстанавливаемости травы осенью и весной 
 const double grass_regrowth_rate_winter = 0.0; // вероятность восстанавливаемости травы зимой 
-const double death_probability_per_step = 0.1; 
+const double death_probability_per_step = 0.1;
 double current_temperature = 20.0; // начальная температура
 double tsunami_probability = 0.3; // вероятность цунами
 const int young_herbivore_hunger_threshold = 3; // сколько шагов молодое травоядное животное может пройти без еды
@@ -44,6 +44,105 @@ struct Animal {
     int age;
     int steps_without_eating;
 };
+
+struct Poacher {
+    int x;
+    int y;
+    bool active; // активен ли браконьер в этом сезоне
+};
+
+const int max_poachers = 10;
+Poacher poachers[max_poachers];
+
+const char poacher_symbol = 'B';
+
+void spawnPoachers(Poacher poachers[], Animal grid[][screen_width], std::string season) {
+    int poacherCount = 0;
+    for (int i = 0; i < max_poachers; ++i) {
+        poachers[i].active = false;
+    }
+
+    if (season == "spring" || season == "summer") {
+        poacherCount = rand() % (max_poachers / 2 + 1) + (max_poachers / 2); // от 5 до 10
+
+        for (int i = 0; i < poacherCount; ++i) {
+            while (true) {
+                int x = rand() % screen_height;
+                int y = rand() % screen_width;
+
+                if (grid[x][y].symbol == ' ') {
+                    poachers[i] = { x, y, true };
+                    grid[x][y].symbol = 'P'; // символ браконьера
+                    break;
+                }
+            }
+        }
+    }
+}
+
+#include <algorithm> // Для std::min и std::max
+
+void movePoachers(Poacher poachers[], int count, Animal grid[][screen_width],
+    int& herbivore_count, int& predator_count) {
+    for (int i = 0; i < count; ++i) {
+        if (!poachers[i].active) continue;
+
+        // Удаляем старый символ
+        grid[poachers[i].x][poachers[i].y].symbol = ' ';
+
+        // Случайное перемещение
+        int dx = (rand() % 3) - 1; // -1, 0, 1
+        int dy = (rand() % 3) - 1;
+        int newX = std::min(std::max(poachers[i].x + dx, 0), screen_height - 1);
+        int newY = std::min(std::max(poachers[i].y + dy, 0), screen_width - 1);
+
+        poachers[i].x = newX;
+        poachers[i].y = newY;
+
+        // Убиваем животных рядом
+        for (int x = std::max(0, newX - 1); x <= std::min(screen_height - 1, newX + 1); ++x) {
+            for (int y = std::max(0, newY - 1); y <= std::min(screen_width - 1, newY + 1); ++y) {
+                char sym = grid[x][y].symbol;
+                if (sym == herbivore_symbol_young || sym == herbivore_symbol_old) {
+                    grid[x][y].symbol = ' ';
+                    --herbivore_count;
+                }
+                else if (sym == predator_symbol_young || sym == predator_symbol_old) {
+                    grid[x][y].symbol = ' ';
+                    --predator_count;
+                }
+            }
+        }
+
+        // Отображаем браконьера
+        grid[newX][newY].symbol = poacher_symbol;
+    }
+}
+
+void poachersKillNearbyAnimals(Poacher poachers[], Animal grid[][screen_width]) {
+    const char animals[] = { herbivore_symbol_young, herbivore_symbol_old,
+                            predator_symbol_young, predator_symbol_old };
+
+    for (int i = 0; i < max_poachers; ++i) {
+        if (!poachers[i].active) continue;
+
+        for (int dx = -1; dx <= 1; ++dx) {
+            for (int dy = -1; dy <= 1; ++dy) {
+                int x = poachers[i].x + dx;
+                int y = poachers[i].y + dy;
+
+                if (x >= 0 && x < screen_height && y >= 0 && y < screen_width) {
+                    for (char animal : animals) {
+                        if (grid[x][y].symbol == animal) {
+                            grid[x][y].symbol = ' ';
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 int natural_death_predator_count = 0;
 int predator_count = 0;
@@ -73,8 +172,6 @@ void initializeGrid(Animal grid[][screen_width]) {
     // случайное место горы
     placeRandomMountains(grid, mountain_population);
 }
-
-
 
 void placeRandomRivers(Animal grid[][screen_width], int riverCount) {
     for (int i = 0; i < riverCount; ++i) {
@@ -374,7 +471,7 @@ void ageAnimals(Animal grid[][screen_width], int& herbivore_count, int& predator
                         }
                     }
 
-                    else if (grid[i][j].age >= 350) { 
+                    else if (grid[i][j].age >= 350) {
                         // если хищник достиг возраста 10 = он становится старым
                         if (grid[i][j].symbol == predator_symbol_young) {
                             grid[i][j].symbol = predator_symbol_old;
@@ -529,6 +626,20 @@ void checkStarvationHerbivores(Animal grid[][screen_width], int& herbivore_count
     }
 }
 
+void placeRandomPoachers(Poacher poachers[], int count, Animal grid[][screen_width]) {
+    for (int i = 0; i < count; ++i) {
+        int x, y;
+        do {
+            x = rand() % screen_height;
+            y = rand() % screen_width;
+        } while (grid[x][y].symbol != ' '); // свободная ячейка
+
+        poachers[i] = { x, y, true };
+        grid[x][y].symbol = poacher_symbol;
+    }
+}
+
+
 int main() {
     srand(static_cast<unsigned>(time(0)));
 
@@ -553,9 +664,14 @@ int main() {
     double current_regrowth_rate = 0.0;
     int old_age_death_count = 0;
 
+
     bool is_tsunami = false;
     bool game_ended = false;
     string user_input;  // переменная для хранения пользовательских данных
+
+    int poacher_count = rand() % max_poachers;
+    placeRandomPoachers(poachers, poacher_count, grid);
+
 
     while (steps < 576 && !game_ended) {
         system(CLEAR_SCREEN);
@@ -565,23 +681,13 @@ int main() {
         }
 
         if (is_tsunami) {
-            // все синие - цунами
             cout << "\033[1;34m";
-
-            // все синие - цунами
             for (int i = 0; i < screen_height; ++i) {
                 for (int j = 0; j < screen_width; ++j) {
-                    if (grid[i][j].symbol == ' ') {
-                        cout << ' ';
-                    }
-                    else {
-                        cout << grid[i][j].symbol;
-                    }
+                    cout << (grid[i][j].symbol == ' ' ? ' ' : grid[i][j].symbol);
                 }
                 cout << endl;
             }
-
-            // сбрасываем цвет терминала
             cout << "\033[0m";
 
             // удялаем всех живых животных из сетки
@@ -666,6 +772,9 @@ int main() {
                     }
                 }
             }
+            
+            movePoachers(poachers, max_poachers, grid, herbivore_count, predator_count);
+
 
             // увеличение возраста на 1 - животных кажждые 24 шага 
             ageAnimals(grid, herbivore_count, predator_count, dead_herbivore_count, steps, old_age_death_count);
