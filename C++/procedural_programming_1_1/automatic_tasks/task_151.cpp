@@ -641,6 +641,14 @@ void placeRandomPoachers(Poacher poachers[], int count, Animal grid[][screen_wid
     }
 }
 
+void deactivatePoachers(Poacher poachers[], Animal grid[][screen_width]) {
+    for (int i = 0; i < max_poachers; ++i) {
+        if (poachers[i].active) {
+            grid[poachers[i].x][poachers[i].y].symbol = ' ';
+            poachers[i].active = false;
+        }
+    }
+}
 
 int main() {
     srand(static_cast<unsigned>(time(0)));
@@ -671,8 +679,10 @@ int main() {
     bool game_ended = false;
     string user_input;  // переменная для хранения пользовательских данных
 
-    int poacher_count = rand() % max_poachers;
-    placeRandomPoachers(poachers, poacher_count, grid);
+    //int poacher_count = rand() % max_poachers;
+    //placeRandomPoachers(poachers, poacher_count, grid);
+
+    spawnPoachers(poachers, grid, "summer");
 
 
     while (steps < 576 && !game_ended) {
@@ -774,7 +784,7 @@ int main() {
                     }
                 }
             }
-            
+
             movePoachers(poachers, max_poachers, grid, herbivore_count, predator_count);
 
 
@@ -817,7 +827,23 @@ int main() {
             // обновления сезона каждые 6 шагов
             if ((steps + 1) % 6 == 0) {
                 current_season = (current_season + 1) % 4;
+
+                string season_name;
+                switch (current_season) {
+                case 0: season_name = "summer"; break;
+                case 1: season_name = "fall"; break;
+                case 2: season_name = "winter"; break;
+                case 3: season_name = "spring"; break;
+                }
+
+                if (season_name == "summer" || season_name == "spring") {
+                    spawnPoachers(poachers, grid, season_name);
+                }
+                else {
+                    deactivatePoachers(poachers, grid);
+                }
             }
+
 
             // вызов countAnimals для обновления подсчета
             countAnimals(grid, herbivore_count, predator_count, young_herbivore_count, young_predator_count, old_herbivore_count, old_predator_count);
