@@ -155,6 +155,137 @@ def block_second_third():
             print(f"{key} вложенно видит: {k} -> {v}")
     print("итерация и вложенные циклы работают корректно")
 
+class Num:
+    def __init__(self, value):
+        self.value = value
+
+class Add:
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
+
+class Mul:
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
+
+class PrintVisitor:
+    def visit(self, node):
+        method_name = 'visit_' + node.__class__.__name__
+        method = getattr(self, method_name)
+        return method(node)
+
+    def visit_Num(self, node):
+        return str(node.value)
+
+    def visit_Add(self, node):
+        return f"({self.visit(node.left)} + {self.visit(node.right)})"
+
+    def visit_Mul(self, node):
+        return f"({self.visit(node.left)} * {self.visit(node.right)})"
+
+class CalcVisitor:
+    def visit(self, node):
+        method = getattr(self, f"visit_{node.__class__.__name__}")
+        return method(node)
+
+    def visit_Num(self, node):
+        return node.value
+
+    def visit_Add(self, node):
+        return self.visit(node.left) + self.visit(node.right)
+
+    def visit_Mul(self, node):
+        return self.visit(node.left) * self.visit(node.right)
+
+class StackVisitor:
+    def visit(self, node):
+        method = getattr(self, f"visit_{node.__class__.__name__}")
+        return method(node)
+
+    def visit_Num(self, node):
+        return f"PUSH {node.value}"
+
+    def visit_Add(self, node):
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+        return f"{left}\n{right}\nADD"
+
+    def visit_Mul(self, node):
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+        return f"{left}\n{right}\nMUL"
+
+def block_third_first():
+    print("3.1: создание дерева выражения")
+    ast = Add(Num(7), Mul(Num(3), Num(2)))
+    print("AST создан: Add(Num(7), Mul(Num(3), Num(2)))")
+
+def block_third_second():
+    print("3.2: печать выражения через PrintVisitor")
+    ast = Add(Num(7), Mul(Num(3), Num(2)))
+    pv = PrintVisitor()
+    print("результат:", pv.visit(ast))  # -> (7 + (3 * 2))
+
+def block_third_third():
+    print("3.3: вычисление выражения через CalcVisitor")
+    ast = Add(Num(7), Mul(Num(3), Num(2)))
+    cv = CalcVisitor()
+    print("результат:", cv.visit(ast))  # -> 13
+
+def block_third_fourth():
+    print("3.4: генерация кода стековой машины через StackVisitor")
+    ast = Add(Num(7), Mul(Num(3), Num(2)))
+    sv = StackVisitor()
+    print("код:")
+    print(sv.visit(ast))
+
+class HTML:
+    def __init__(self):
+        self.code = []
+        self.indent = 0
+
+    def _add_line(self, line):
+        self.code.append(" " * self.indent + line)
+
+    def get_code(self):
+        return "\n".join(self.code)
+
+    def body(self):
+        return Tag(self, "body")
+
+    def div(self):
+        return Tag(self, "div")
+
+    def p(self, text):
+        self._add_line(f"<p>{text}</p>")
+
+class Tag:
+    def __init__(self, html, tag):
+        self.html = html
+        self.tag = tag
+
+    def __enter__(self):
+        self.html._add_line(f"<{self.tag}>")
+        self.html.indent += 4
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.html.indent -= 4
+        self.html._add_line(f"</{self.tag}>")
+
+def block_fourth_first():
+    html = HTML()
+    with html.body():
+        with html.div():
+            with html.div():
+                html.p('1 строка')
+                html.p('2 строка')
+            with html.div():
+                html.p('3 строка')
+
+    print("сгенерированный HTML:\n")
+    print(html.get_code())
+
 def tasks_menu(block):
     while True:
         print(f"\nвыберите задание из блока {block} или 'exit' для возврата к выбору блока:")
@@ -208,32 +339,20 @@ def tasks_menu(block):
             else:
                 print("error - try again")
         elif block == '3':
-            # if task == '1':
-            #     block_third_first(["1", "2", "3"])
-            # elif task == '2':
-            #     block_third_second([1, 2, 2, 3, 4])
-            # elif task == '3':
-            #     block_third_third([1, 2, 3, 4])
-            # elif task == '4':
-            #     block_third_fourth([1, 2, 3, 1, 2, 3], 2)
-            # elif task == '5':
-            #     block_third_fifth([1, 2, 3, 4, 5])
-            # elif task == '6':
-            #     block_third_sixth(["short", "longer", "longest"])
-            # elif task == '7':
-            #     block_third_seventh(18)
-            # elif task == '8':
-            #     block_third_eighth(10)
-            # elif task == '9':
-            #     block_third_ninth("ABBCCCDEF")
-            # else:
+            if task == '1':
+                block_third_first()
+            elif task == '2':
+                block_third_second()
+            elif task == '3':
+                block_third_third()
+            elif task == '4':
+                block_third_fourth()
+            else:
                 print("error - try again")
         elif block == '4':
-            # if task == '1':
-                # block_fourth_first()
-            # elif task == '2':
-                # block_fourth_second()
-            # else:
+            if task == '1':
+                block_fourth_first()
+            else:
                 print("error - try again")
         elif block == '5':
             # if task == '1':
@@ -258,4 +377,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-  
