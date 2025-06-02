@@ -152,3 +152,54 @@ ALTER TABLE pilot_participation
 ADD CONSTRAINT fk_pp_participation FOREIGN KEY (participation_id)
 REFERENCES participation(participation_id);
 
+
+INSERT INTO position (position_id, name, description, base_salary) VALUES
+(1, 'Механик', 'Отвечает за техническое обслуживание', 50000),
+(2, 'Инженер', 'Проводит осмотр и диагностику', 70000),
+(3, 'Менеджер', 'Организует процессы на трассе', 60000);
+
+INSERT INTO employee (employee_id, last_name, first_name, middle_name, position_id, salary) VALUES
+(1, 'Иванов', 'Алексей', 'Петрович', 1, 52000),
+(2, 'Сидорова', 'Марина', 'Игоревна', 2, 71000),
+(3, 'Петров', 'Илья', 'Алексеевич', 3, 61000);
+
+INSERT INTO pilot (pilot_id, last_name, first_name, middle_name, phone) VALUES
+(1, 'Кузнецов', 'Дмитрий', 'Сергеевич', '89991234567'),
+(2, 'Орлова', 'Анна', 'Михайловна', '89993456789');
+
+INSERT INTO cards (card_id, card_model, card_state) VALUES
+(1, 'Sodi RT8', 'Готов'),
+(2, 'CRG Road Rebel', 'В ремонте');
+
+INSERT INTO inspection (inspection_id, card_id, employee_id, date, status) VALUES
+(1, 1, 1, '2025-05-01', 'Пройдено'),
+(2, 2, 2, '2025-05-02', 'Требует ремонта');
+
+INSERT INTO chat (chat_id, pilot_id, employee_id) VALUES
+(1, 1, 1),
+(2, 2, 3);
+
+INSERT INTO message (chat_id, text, time, sender) VALUES
+(1, 'Здравствуйте, когда будет следующая проверка?', '2025-05-03', 'pilot'),
+(1, 'В пятницу утром. Будьте готовы.', '2025-05-03', 'employee'),
+(2, 'У меня проблема с картом', '2025-05-04', 'pilot');
+
+INSERT INTO track (track, name, city) VALUES
+(1, 'Sochi Autodrom', 'Сочи'),
+(2, 'Kazan Ring', 'Казань');
+
+INSERT INTO race (race_id, date, time, track_id) VALUES
+(1, '2025-06-10', '10:00:00', 1),
+(2, '2025-06-15', '12:00:00', 2);
+
+INSERT INTO participation (participation_id, pilot_id, card_id, place) VALUES
+(1, 1, 1, 1),
+(2, 2, 2, 2);
+
+INSERT INTO participation_race (participation_race_id, participation_id, race_id) VALUES
+(1, 1, 1),
+(2, 2, 2);
+
+INSERT INTO pilot_participation (pilot_id, participation_id) VALUES
+(1, 1),
+(2, 2);
